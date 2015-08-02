@@ -1,0 +1,57 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	{% set world = apiclient.v2_worlds(account.world) %}
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-2">Name</div>
+				<div class="col-sm-10"><b>{{ account.name }}</b></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-2">Creation date</div>
+				<div class="col-sm-10">{{ account.created|date('Y-m-d H:i:s')|slice(0,16) }}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-2">World</div>
+				<div class="col-sm-10">{{ world.0.name }}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-2">Guilds</div>
+				<div class="col-sm-10">
+					{% for guildid in account.guilds %}
+						<div>
+							{{ apiclient.guild_name(guildid) }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block js %}
+	{{ parent() }}
+
+	<script>
+		$(function () {
+
+		});
+	</script>
+{% endblock %}

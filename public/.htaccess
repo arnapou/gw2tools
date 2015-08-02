@@ -1,0 +1,22 @@
+RewriteEngine On
+
+AddType text/css .less
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType image/* M311040000
+	ExpiresByType text/css M311040000
+	ExpiresByType application/javascript M311040000
+</IfModule>
+
+DirectorySlash Off
+
+FileETag MTime Size
+Options -Indexes -MultiViews -ExecCGI +FollowSymLinks +SymLinksIfOwnerMatch
+
+# Default
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule . index.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L,QSA]

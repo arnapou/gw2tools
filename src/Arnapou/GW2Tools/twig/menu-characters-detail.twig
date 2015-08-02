@@ -1,0 +1,274 @@
+{% extends "base.twig" %}
+
+{% block css %}
+	{{ parent () }}
+	<style>
+
+		.panel-body table {
+			margin: 0;
+		}
+
+		.panel-body tr:first-child td {
+			border-top: 0;
+		}
+
+		tr.object td:first-child {
+			width: 3.5em;
+		}
+
+		tr.object td:nth-child(2) {
+			width: 9em;
+		}
+
+		{% for type, color in {
+			'Junk' : 'aaaaaa',
+			'Basic' : '000000',
+			'Fine' : '1a9306',
+			'Masterwork' : '62A4DA',
+			'Rare' : 'fcd00b',
+			'Exotic' : 'ffa405',
+			'Ascended' : 'fb3e8d',
+			'Legendary' : '4C139D',
+		} %}
+			img.rarity-{{ type }}{
+				/*box-shadow: 0 0 2px 1px #{{ color }};*/
+				border: 1px solid #{{ color }};
+			}
+			.rarity-{{ type }} {
+				color: #{{ color }};
+			}
+		{% endfor %}
+		.rarity-Junk {
+			color: #aaaaaa;
+		}
+
+
+		img.craft{
+			height: 1.42857em;
+			vertical-align: middle;
+		}
+		img.upgrade,
+		img.infusion {
+			height: 2em;
+			vertical-align: middle;
+			margin-right: 4px;
+		}
+		img.item {
+			height: 3em;
+			vertical-align: middle;
+		}
+		
+		.summary tr td:first-child {
+			width: 30%;
+		}
+		.stats tr td:first-child {
+			width: 50%;
+		}
+	</style>
+
+{% endblock %}
+
+{% macro objects(equipment, types) %}
+	<table class="table table-condensed">
+		<tbody>
+			{% for type in types %}
+				{% set obj = equipment[type] %}
+				{% if obj.id %}
+					<tr class="object">
+						<td>
+							{% if obj.skin %}
+								<img data-toggle="tooltip" title="{{ obj.skin.name }}" src="{{ obj.skin.icon}}" class="item rarity-{{ obj.item.rarity }}" />
+							{% else %}
+								<img data-toggle="tooltip" title="{{ obj.item.name }}" src="{{ obj.item.icon}}" class="item rarity-{{ obj.item.rarity }}" />
+							{% endif %}
+						</td>
+						<td>
+							{% for upgrade in obj.upgrades %}
+								<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon}}" class="infusion rarity-{{ upgrade.rarity }}" />
+							{% endfor %}
+							{% for infusion in obj.infusions %}
+								<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon}}" class="upgrade rarity-{{ infusion.rarity }}" />
+							{% endfor %}
+						</td>
+						<td>
+							{% if obj.stats_name and obj.stats %}
+								<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.item.rarity }}">{{ obj.stats_name }}</span>
+							{% elseif obj.stats_name %}
+								<span class="stats rarity-{{ obj.item.rarity }}">{{ obj.stats_name }}</span>
+							{% else %}
+								<span class="stats rarity-{{ obj.item.rarity }}">{{ obj.stats }}</span>
+							{% endif %}
+						</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}
+
+{% block content %}
+
+	<div class="row">
+		<div class="col-sm-8 summary">
+			<div class="panel panel-default">
+				<div class="panel-heading"><b>{{ char.name }}</b></div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-6">
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<td>Level</td>
+										<td>{{ char.level }}</td>
+									</tr>
+									<tr>
+										<td>Gender</td>
+										<td>{{ char.gender }}</td>
+									</tr>
+									<tr>
+										<td>Race</td>
+										<td>{{ char.race }}</td>
+									</tr>
+									<tr>
+										<td>Profession</td>
+										<td>{{ char.profession }}</td>
+									</tr>
+									<tr>
+										<td>Guild</td>
+										<td>{{ apiclient.guild_name(char.guild) }}</td>
+									</tr>
+									<tr>
+										<td>Crafting</td>
+										<td>
+											{% for craft in char.crafting %}
+												<span data-toggle="tooltip" title="{{ craft.discipline }}">
+													{% if craft.active and craft.rating %}
+														<img class="craft" src="{{ apiclient.craft_icon(craft.discipline) }}" />
+														{{ craft.rating }}
+													{% endif %}
+												</span> 
+											{% endfor %}
+										</td>
+									</tr>
+									<tr>
+										<td>Created</td>
+										<td>{{ char.created|date('Y-m-d H:i:s')|slice(0,16) }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-6">
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<td>Days</td>
+										<td>{{ (('now'|date('U') - char.created|date('U')) / 86400)|round(0, 'floor') }}</td>
+									</tr>
+									<tr>
+										<td>Played</td>
+										<td>{{ (char.age/3600)|round(0, 'floor') }}</td>
+									</tr>
+									<tr>
+										<td>Deaths</td>
+										<td>{{ char.deaths }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4 stats">
+			<div class="panel panel-default">
+				<div class="panel-heading">Base attributes (only stuff)</div>
+				<div class="panel-body">
+					<table class="table table-condensed">
+						<tbody>
+							{% for k, v in char.stats %}
+								<tr>
+									{% if k == 'CritDamage' %}
+										<td>Ferocity</td>
+										<td>
+											{{ v }} <span class="pull-right">({{ (150 + v/15)|round }}%)</span>
+										</td>
+									{% elseif k == 'Precision' %}
+										<td>{{ k }}</td>
+										<td>
+											{{ v }} <span class="pull-right">({{ ((v - 916)/21)|round }}%)</span>
+										</td>
+									{% else %}
+										<td>{{ k }}</td>
+										<td>{{ v }} </td>
+									{% endif %}
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<div class="row">
+		{% set equipment = char.equipment %}
+
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">Weapons set 1</div>
+				<div class="panel-body">
+					{{ _self.objects(equipment, ['WeaponA1', 'WeaponA2']) }}
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Weapons set 2</div>
+				<div class="panel-body">
+					{{ _self.objects(equipment, ['WeaponB1', 'WeaponB2']) }}
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Weapons Aquatic</div>
+				<div class="panel-body">
+					{{ _self.objects(equipment, ['WeaponAquaticA', 'WeaponAquaticB']) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">Armor</div>
+				<div class="panel-body">
+					{{ _self.objects(equipment, ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic']) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">Trinkets</div>
+				<div class="panel-body">
+					{{ _self.objects(equipment, ['Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2']) }}
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Backpack</div>
+				<div class="panel-body">
+					{{ _self.objects(equipment, ['Backpack']) }}
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<script>console.log({{ char|json_encode|raw }})</script>
+{% endblock %}
+
+{% block js %}
+	{{ parent() }}
+
+	<script>
+		$(function () {
+		});
+	</script>
+{% endblock %}

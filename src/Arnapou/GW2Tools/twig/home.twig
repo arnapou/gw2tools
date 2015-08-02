@@ -1,0 +1,31 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	<div id="access-token-form">
+		<div class="form-group">
+			<label for="auth-pwd">Access Token</label>
+			<input type="text" class="form-control" name="access_token" placeholder="Paste your access token here">
+		</div>
+		<button type="button" class="btn btn-default">
+			Continue <i class="glyphicon glyphicon-arrow-right"></i>
+		</button>
+	</div>
+{% endblock %}
+
+{% block js %}
+	{{ parent() }}
+
+	<script>
+		$(function () {
+			$('#access-token-form button').click(function () {
+				var token = String($('#access-token-form input[name=access_token]').val());
+				if (!token.match(/^[A-F0-9-]{70,80}$/)) {
+					alert('The provided token is not valid.');
+				}
+				else {
+					window.location = './' + token + '/';
+				}
+			});
+		});
+	</script>
+{% endblock %}
