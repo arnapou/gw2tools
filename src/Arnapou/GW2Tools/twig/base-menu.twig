@@ -1,0 +1,53 @@
+{% extends "base.twig" %}
+
+{% block css %}
+	{{ parent () }}
+	
+	<style>
+		{% for type, color in {
+			'Junk'      : 'aaaaaa',
+			'Basic'     : '000000',
+			'Fine'      : '1a9306',
+			'Masterwork': '62A4DA',
+			'Rare'      : 'fcd00b',
+			'Exotic'    : 'ffa405',
+			'Ascended'  : 'fb3e8d',
+			'Legendary' : '4C139D',
+		} %}
+			img.rarity-{{ type }}{
+				border: 1px solid #{{ color }};
+			}
+			.rarity-{{ type }} {
+				color: #{{ color }};
+			}
+		{% endfor %}
+	</style>
+{% endblock %}
+
+{% block menu %}
+	<div class="collapse navbar-collapse">
+		<ul class="nav navbar-nav">
+			{% for k, v in module.menu %}
+				<li{% if menu == k %} class="active"{% endif %}>
+					<a href="../{{ k }}/">{{ v }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+		{% if account %}
+			<ul class="nav navbar-nav navbar-right">
+				<li><p class="navbar-text"><b>{{ account.name }}</b></p></li>
+			</ul>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block content %}
+
+	<div class="panel panel-default page-{{ menu }}">
+		<div class="panel-heading">{{ module.menu[menu] }}</div>
+		<div class="panel-body" data-content="ajax" data-src="./content.html">
+			<div class="spinner-loader"></div>
+		</div>
+	</div>
+
+{% endblock %}

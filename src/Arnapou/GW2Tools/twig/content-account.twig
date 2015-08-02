@@ -1,0 +1,27 @@
+
+<table class="table table-condensed">
+	<tbody>
+		<tr>
+			<td>Name</td>
+			<td><b>{{ account.name }}</b></td>
+		</tr>
+		<tr>
+			<td>Creation date</td>
+			<td>{{ account.created|date('Y-m-d H:i:s')|slice(0,16) }}</td>
+		</tr>
+		<tr>
+			<td>World</td>
+			<td>{{ apiclient.worldname(account.world) }}</td>
+		</tr>
+		<tr>
+			<td>Guilds</td>
+			<td>
+				{% for guildid in account.guilds %}
+					<div>
+						{{ apiclient.guildname(guildid) }}
+					</div>
+				{% endfor %}
+			</td>
+		</tr>
+	</tbody>
+</table>

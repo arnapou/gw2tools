@@ -1,0 +1,48 @@
+
+{% set lists = {
+	'Armors' : ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'],
+	'Weapons' : ['WeaponA1', 'WeaponA2', 'WeaponB1', 'WeaponB2', 'WeaponAquaticA', 'WeaponAquaticB'],
+	'Trinkets' : ['Backpack', 'Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2'],
+} %}
+
+{% for title, list in lists %}
+	<div class="panel panel-default">
+		<div class="panel-heading">{{ title }}</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						{% for type in list %}
+							<th>{{ type }}</th>
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for char in apiclient.characters %}
+						{% set equipment = char.equipments %}
+						<tr>
+							<td><a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a></td>
+							{% for type in list %}
+								{% set obj = equipment[type] %}
+								<td>
+									{% if obj %}
+										{% if obj.stats_name and obj.stats %}
+											<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
+										{% elseif obj.stats_name %}
+											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
+										{% elseif obj.stats %}
+											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
+										{% else %}
+											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+										{% endif %}
+									{% endif %}
+								</td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endfor %}

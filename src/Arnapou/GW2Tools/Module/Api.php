@@ -11,11 +11,15 @@
 
 namespace Arnapou\GW2Tools\Module;
 
+use Arnapou\GW2Tools\ApiClient;
+
 class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	protected $menu = [
 		'account'	 => 'Account',
 		'characters' => 'Characters',
+		'stuff'		 => 'Stuff stats',
+		'attributes' => 'Attributes',
 	];
 
 	public function configure() {
@@ -27,7 +31,9 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 		$this->addRoute('', [$this, 'routeHome']);
 		$this->addRoute('{token}/', [$this, 'routeHomeToken'])->assert('token', $regexpToken);
 		$this->addRoute('{token}/{menu}/', [$this, 'routeMenu'])->assert('token', $regexpToken)->assert('menu', $regexpMenu);
-		$this->addRoute('{token}/characters/{name}', [$this, 'routeCharacter'])->assert('token', $regexpToken);
+		$this->addRoute('{token}/{menu}/content.html', [$this, 'routeMenuContent'])->assert('token', $regexpToken)->assert('menu', $regexpMenu);
+		$this->addRoute('{token}/character/{name}', [$this, 'routeCharacter'])->assert('token', $regexpToken);
+		$this->addRoute('{token}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('token', $regexpToken);
 	}
 
 	public function getMenu() {
@@ -45,16 +51,29 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	public function routeCharacter($token, $name) {
 		$apiClient = $this->newApiClient($token);
-		$characters = $apiClient->v2_characters();
+		$characters = $apiClient->getCharacters();
 		$name = rawurldecode($name);
-		if (in_array($name, $characters)) {
+		if (isset($characters[$name])) {
 			$context = [
 				'apiclient'	 => $apiClient,
-				'char'		 => $apiClient->get_formatted_character($name),
 				'account'	 => $apiClient->v2_account(),
-				'menu'		 => 'characters',
+				'char'		 => $characters[$name],
 			];
-			return $this->renderPage('menu-characters-detail.twig', $context);
+			return $this->renderPage('menu-character.twig', $context);
+		}
+	}
+
+	public function routeCharacterContent($token, $name) {
+		$apiClient = $this->newApiClient($token);
+		$characters = $apiClient->getCharacters();
+		$name = rawurldecode($name);
+		if (isset($characters[$name])) {
+			$context = [
+				'apiclient'	 => $apiClient,
+				'account'	 => $apiClient->v2_account(),
+				'char'		 => $characters[$name],
+			];
+			return $this->renderPage('content-character.twig', $context);
 		}
 	}
 
@@ -66,6 +85,16 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 			'menu'		 => $menu,
 		];
 		return $this->renderPage('menu-' . $menu . '.twig', $context);
+	}
+
+	public function routeMenuContent($token, $menu) {
+		$apiClient = $this->newApiClient($token);
+		$context = [
+			'apiclient'	 => $apiClient,
+			'account'	 => $apiClient->v2_account(),
+			'menu'		 => $menu,
+		];
+		return $this->renderPage('content-' . $menu . '.twig', $context);
 	}
 
 }

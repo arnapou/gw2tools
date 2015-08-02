@@ -6,6 +6,7 @@
 		<meta http-equiv="Expires" content="-1">
 		{% block css %}
 			<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+			<link href="/assets/style.css" rel="stylesheet" />
 		{% endblock %}
 	</head>
 	<body>
@@ -14,22 +15,6 @@
 				<div class="navbar-header">
 					<a href="/" class="navbar-brand">GW2 Tools</a>
 				</div>
-				{% if menu %}
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav">
-							{% for k, v in module.menu %}
-								<li{% if menu == k %} class="active"{% endif %}>
-									<a href="../{{ k }}/">{{ v }}</a>
-								</li>
-							{% endfor %}
-						</ul>
-						{% if account %}
-							<ul class="nav navbar-nav navbar-right">
-								<li><p class="navbar-text"><b>{{ account.name }}</b></p></li>
-							</ul>
-						{% endif %}
-					</div>
-				{% endif %}
 				{% block menu %}
 				{% endblock %}
 			</div>

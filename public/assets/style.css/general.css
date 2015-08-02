@@ -1,0 +1,65 @@
+
+body {
+	padding-bottom: 3em;
+}
+
+img.craft {
+	height: 1.42857em;
+	vertical-align: middle;
+}
+
+img.upgrade,
+img.infusion {
+	height: 2em;
+	vertical-align: middle;
+	margin-right: 4px;
+}
+
+img.item {
+	height: 3em;
+	vertical-align: middle;
+}
+
+table.table {
+	margin: 0;
+}
+table.table > tbody tr:first-child td {
+	border-top: 0;
+}
+
+.page-attributes tr td {
+	width: 10%;
+	white-space: nowrap;
+}
+.page-attributes tr td:first-child {
+	width: 20%;
+}
+.page-attributes tr td:last-child {
+	width: 10%;
+}
+
+td > .RA:before {
+	content: ' / ';
+	display: inline-block;
+	margin: 0 .2em;
+}
+td > .RA:first-child:before {
+	content: '';
+	display: none;
+	margin: 0;
+}
+
+.page-character tr.object td:first-child {
+	width: 3.5em;
+}
+
+.page-character tr.object td:nth-child(2) {
+	width: 10em;
+}
+
+.page-character .summary tr td:first-child {
+	width: 30%;
+}
+.page-character .stats tr td:first-child {
+	width: 50%;
+}
