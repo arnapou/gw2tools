@@ -70,3 +70,7 @@ td > .AR:first-child:before {
 .page-character .stats tr td:first-child {
 	width: 50%;
 }
+
+.page-stuff tbody td:first-child {
+	width: 15%;
+}
