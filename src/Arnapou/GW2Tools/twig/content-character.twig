@@ -2,10 +2,15 @@
 
 {% block content %}
 
+	{% set attributes = char.attributes %}
+							
 	<div class="row">
 		<div class="col-sm-8 summary">
 			<div class="panel panel-default">
-				<div class="panel-heading"><b>{{ char.name }}</b></div>
+				<div class="panel-heading">
+					<img src="{{ char.professioniconbig }}" title="{{ char.profession }}" class="profession" />
+					<b> {{ char.name }}</b>
+				</div>
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-sm-6">
@@ -31,12 +36,6 @@
 										<td>Guild</td>
 										<td>{{ char.guild.name }}</td>
 									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="col-sm-6">
-							<table class="table table-condensed">
-								<tbody>
 									<tr>
 										<td>Crafting</td>
 										<td>
@@ -47,6 +46,12 @@
 											{% endfor %}
 										</td>
 									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-6">
+							<table class="table table-condensed">
+								<tbody>
 									<tr>
 										<td>Created</td>
 										<td>{{ char.created }}</td>
@@ -72,11 +77,17 @@
 		</div>
 		<div class="col-sm-4 stats">
 			<div class="panel panel-default">
-				<div class="panel-heading">Attributes (only stuff)</div>
+				<div class="panel-heading">
+					Attributes (only stuff)
+					{% if attributes.unknown|length %}
+						<span class="pull-right text-danger" data-toggle="tooltip" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
+							<i class="glyphicon glyphicon-exclamation-sign"></i>
+						</span>
+					{% endif %}
+				</div>
 				<div class="panel-body">
 					<table class="table table-condensed">
 						<tbody>
-							{% set attributes = char.attributes %}
 							{% for attr in [
 								'Power',
 								'Precision',
@@ -85,23 +96,23 @@
 								'Ferocity',
 								'Condition',
 								'Healing',
-								'RA',
+								'AR',
 							] %}
 								<tr>
 									<td>{{ attr }}</td>
 									<td>
-										{% if attr == 'RA' %}
-											{% for k, v in attributes[attr] %}
-												<span class="RA" data-toggle="tooltip" title="{{ k }}">
+										{% if attr == 'AR' %}
+											{% for k, v in attributes.list[attr] %}
+												<span class="AR" data-toggle="tooltip" title="{{ k }}">
 													{{ v }}
 												</span>
 											{% endfor %}
 										{% else %}
-											{{ attributes[attr] }}
-											{% if attributes[attr~'_pct'] %}
+											{{ attributes.list[attr] }}
+											{% if attributes.list[attr~'_pct'] %}
 												&nbsp;&nbsp;
 												<small class="text-muted">
-													{{ attributes[attr~'_pct'] }}%
+													{{ attributes.list[attr~'_pct'] }}%
 												</small>
 											{% endif %}
 										{% endif %}
@@ -173,7 +184,7 @@
 			{% for type in types %}
 				{% set obj = equipment[type] %}
 				{% if obj %}
-					<tr class="object">
+					<tr class="object" data-id="{{ obj.id }}">
 						<td>
 							<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon}}" class="item rarity-{{ obj.rarity }}" />
 						</td>
@@ -194,6 +205,9 @@
 								<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
 							{% else %}
 								<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+							{% endif %}
+							{% if 'Weapon' in type %}
+								<br />{{ obj.type }}
 							{% endif %}
 						</td>
 					</tr>

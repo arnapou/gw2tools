@@ -22,7 +22,10 @@
 					{% for char in apiclient.characters %}
 						{% set equipment = char.equipments %}
 						<tr>
-							<td><a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a></td>
+							<td>
+								<img src="{{ char.professionicon }}" title="{{ char.profession }}" class="profession pull-right" />
+								<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+							</td>
 							{% for type in list %}
 								{% set obj = equipment[type] %}
 								<td>
@@ -35,6 +38,9 @@
 											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
 										{% else %}
 											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+										{% endif %}
+										{% if 'Weapon' in type %}
+											<span class="text-muted"> {{ obj.type }}</span>
 										{% endif %}
 									{% endif %}
 								</td>

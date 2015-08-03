@@ -7,13 +7,14 @@
 	'Ferocity',
 	'Condition',
 	'Healing',
-	'RA',
+	'AR',
 ] %}
 
 <table class="table">
 	<thead>
 		<tr>
 			<th>Name</th>
+			<th></th>
 			{% for k, v in attrs %}
 				<th>{{ v }}</th>
 			{% endfor %}
@@ -23,21 +24,31 @@
 		{% for char in apiclient.characters %}
 			{% set attributes = char.attributes %}
 			<tr>
-				<td><a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a></td>
+				<td>
+					<img src="{{ char.professionicon }}" title="{{ char.profession }}" class="profession pull-right" />
+					<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+				</td>
+				<td class="text-center" style="width: 2em">
+					{% if attributes.unknown|length %}
+						<span class="text-danger" data-toggle="tooltip" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
+							<i class="glyphicon glyphicon-exclamation-sign"></i>
+						</span>
+					{% endif %}
+				</td>
 				{% for attr in attrs %}
 					<td>
-						{% if attr == 'RA' %}
-							{% for k, v in attributes[attr] %}
-								<span class="RA" data-toggle="tooltip" title="{{ k }}">
+						{% if attr == 'AR' %}
+							{% for k, v in attributes.list[attr] %}
+								<span class="AR" data-toggle="tooltip" title="{{ k }}">
 									{{ v }}
 								</span>
 							{% endfor %}
 						{% else %}
-							{{ attributes[attr] }}
-							{% if attributes[attr~'_pct'] %}
+							{{ attributes.list[attr] }}
+							{% if attributes.list[attr~'_pct'] %}
 								&nbsp;&nbsp;
 								<small class="text-muted">
-									{{ attributes[attr~'_pct'] }}%
+									{{ attributes.list[attr~'_pct'] }}%
 								</small>
 							{% endif %}
 						{% endif %}

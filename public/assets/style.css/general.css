@@ -3,9 +3,19 @@ body {
 	padding-bottom: 3em;
 }
 
-img.craft {
+
+.text-danger[data-toggle="tooltip"] {
+	cursor: default;
+}
+
+img.craft,
+img.profession {
 	height: 1.42857em;
 	vertical-align: middle;
+}
+
+.tooltip {
+	white-space: normal !important;
 }
 
 img.upgrade,
@@ -32,18 +42,15 @@ table.table > tbody tr:first-child td {
 	white-space: nowrap;
 }
 .page-attributes tr td:first-child {
-	width: 20%;
-}
-.page-attributes tr td:last-child {
-	width: 10%;
+	width: auto;
 }
 
-td > .RA:before {
+td > .AR:before {
 	content: ' / ';
 	display: inline-block;
 	margin: 0 .2em;
 }
-td > .RA:first-child:before {
+td > .AR:first-child:before {
 	content: '';
 	display: none;
 	margin: 0;

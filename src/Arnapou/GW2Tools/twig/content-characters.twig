@@ -18,7 +18,10 @@
 	<tbody>
 		{% for char in apiclient.characters %}
 			<tr>
-				<td><a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a></td>
+				<td>
+					<img src="{{ char.professionicon }}" title="{{ char.profession }}" class="profession pull-right" />
+					<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+				</td>
 				<td>{{ char.level }}</td>
 				<td>{{ char.gender }}</td>
 				<td>{{ char.race }}</td>

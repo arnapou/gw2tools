@@ -168,6 +168,28 @@ class Character {
 	 * 
 	 * @return int
 	 */
+	public function getProfessionIcon() {
+		if (isset($this->data['profession'])) {
+			return $this->apiClient->getFileIcon('icon_' . strtolower($this->data['profession']));
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @return int
+	 */
+	public function getProfessionIconBig() {
+		if (isset($this->data['profession'])) {
+			return $this->apiClient->getFileIcon('icon_' . strtolower($this->data['profession']) . '_big');
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @return int
+	 */
 	public function getGender() {
 		if (isset($this->data['gender'])) {
 			return $this->data['gender'];
@@ -253,12 +275,13 @@ class Character {
 			'CritDamage'		 => 0,
 			'ConditionDamage'	 => 0,
 			'Healing'			 => 0,
-			'RA'				 => [
+			'AR'				 => [
 				'WeaponA'		 => 0,
 				'WeaponB'		 => 0,
 				'WeaponAquatic'	 => 0,
 			],
 		];
+		$unknown = [];
 		$equipments = $this->getEquipments();
 		if ($equipments) {
 			foreach ($equipments as $type => $equipment) {
@@ -269,20 +292,27 @@ class Character {
 						}
 					}
 				}
+				elseif (in_array($type, [
+						'Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic',
+						'WeaponA1', 'WeaponA2', 'WeaponB1', 'WeaponB2', 'WeaponAquaticA', 'WeaponAquaticB',
+						'Backpack', 'Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2',
+					])) {
+					$unknown[] = $type;
+				}
 				if (isset($equipment['infusions'])) {
 					foreach ($equipment['infusions'] as $infusion) {
 						if (isset($infusion['buff'])) {
 							if (preg_match('!\+([0-9]+).*agony!i', $infusion['buff'], $m)) {
 								$found = false;
-								foreach ($attributes['RA'] as $key => $value) {
+								foreach ($attributes['AR'] as $key => $value) {
 									if (strpos($type, $key) !== false) {
-										$attributes['RA'][$key] += $m[1];
+										$attributes['AR'][$key] += $m[1];
 										$found = true;
 									}
 								}
 								if (!$found) {
-									foreach ($attributes['RA'] as $key => $value) {
-										$attributes['RA'][$key] += $m[1];
+									foreach ($attributes['AR'] as $key => $value) {
+										$attributes['AR'][$key] += $m[1];
 									}
 								}
 							}
@@ -291,28 +321,26 @@ class Character {
 				}
 			}
 		}
-		if ($attributes['RA']['WeaponA'] == $attributes['RA']['WeaponB'] &&
-			$attributes['RA']['WeaponA'] == $attributes['RA']['WeaponAquatic']
+		if ($attributes['AR']['WeaponA'] == $attributes['AR']['WeaponB'] &&
+			$attributes['AR']['WeaponA'] == $attributes['AR']['WeaponAquatic']
 		) {
-			$attributes['RA'] = ['AllWeapons' => $attributes['RA']['WeaponA']];
+			$attributes['AR'] = ['AllWeapons' => $attributes['AR']['WeaponA']];
 		}
 
 		$attributes['Precision_pct'] = round(($attributes['Precision'] - 916) / 21);
 		$attributes['Ferocity_pct'] = round(150 + $attributes['CritDamage'] / 15);
+
 		$attributes['Ferocity'] = $attributes['CritDamage'];
 		unset($attributes['CritDamage']);
+
 		$attributes['Condition'] = $attributes['ConditionDamage'];
 		unset($attributes['ConditionDamage']);
 
 		$this->computed['attributes'] = $attributes;
-		return $attributes;
-	}
-
-	protected function getItem($id) {
-		if (!isset($this->computed['item.' . $id])) {
-			$this->computed['item.' . $id] = $this->formatItem($this->apiClient->getItem($id));
-		}
-		return $this->computed['item.' . $id];
+		return [
+			'unknown'	 => $unknown,
+			'list'		 => $attributes,
+		];
 	}
 
 	protected function formatItem($item) {
@@ -328,8 +356,10 @@ class Character {
 			}
 		}
 		if (isset($item['details'])) {
-			if (isset($item['details']['type'])) {
-				$return['type'] = $item['details']['type'];
+			foreach (['type', 'defense', 'weight_class'] as $key) {
+				if (isset($item['details'][$key])) {
+					$return[$key] = $item['details'][$key];
+				}
 			}
 			if (isset($item['details']['infix_upgrade'])) {
 				if (isset($item['details']['infix_upgrade']['buff'])) {
@@ -360,7 +390,7 @@ class Character {
 								$return['stats_name'] = self::$STATS[$return['stats']];
 							}
 						}
-						if(isset($return['stats'])){
+						if (isset($return['stats'])) {
 							$return['stats'] = str_replace('CritDamage', 'Ferocity', $return['stats']);
 							$return['stats'] = str_replace('ConditionDamage', 'Condition', $return['stats']);
 						}
@@ -385,6 +415,16 @@ class Character {
 					if (isset($equipment['skin'])) {
 						$skins[] = $equipment['skin'];
 					}
+					if (isset($equipment['upgrades'])) {
+						foreach ($equipment['upgrades'] as $upgrade) {
+							$objects[] = $upgrade;
+						}
+					}
+					if (isset($equipment['infusions'])) {
+						foreach ($equipment['infusions'] as $infusion) {
+							$objects[] = $infusion;
+						}
+					}
 				}
 				$objects = $this->apiClient->getItems($objects);
 				$skins = $this->apiClient->getSkins($skins);
@@ -397,14 +437,18 @@ class Character {
 						if (isset($equipment['upgrades'])) {
 							$upgrades = [];
 							foreach ($equipment['upgrades'] as $upgrade) {
-								$upgrades[] = $this->getItem($upgrade);
+								if (isset($objects[$upgrade])) {
+									$upgrades[] = $this->formatItem($objects[$upgrade]);
+								}
 							}
 							$obj['upgrades'] = $upgrades;
 						}
 						if (isset($equipment['infusions'])) {
 							$infusions = [];
 							foreach ($equipment['infusions'] as $infusion) {
-								$infusions[] = $this->getItem($infusion);
+								if (isset($objects[$upgrade])) {
+									$infusions[] = $this->formatItem($objects[$infusion]);
+								}
 							}
 							$obj['infusions'] = $infusions;
 						}
@@ -440,7 +484,7 @@ class Character {
 			'CritDamage'		 => 0,
 			'ConditionDamage'	 => 0,
 			'Healing'			 => 0,
-			'RA'				 => 0,
+			'AR'				 => 0,
 		];
 		$ids = [];
 		$skins = [];
@@ -459,7 +503,7 @@ class Character {
 					foreach ($equipment['infusions'] as $infusion) {
 						if (isset($infusion['details'], $infusion['details']['infix_upgrade'], $infusion['details']['infix_upgrade']['buff'])) {
 							if (preg_match('!\+([0-9]+).*agony!i', $infusion['details']['infix_upgrade']['buff']['description'], $m)) {
-								$char['stats']['RA'] += $m[1];
+								$char['stats']['AR'] += $m[1];
 							}
 						}
 					}

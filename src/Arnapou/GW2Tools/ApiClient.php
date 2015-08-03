@@ -76,21 +76,53 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		return null;
 	}
 
-	public function getItems($ids) {
+	protected function smartCaching($method, $cachePrefix, $ids) {
+		if (empty($ids)) {
+			return [];
+		}
 		try {
-			if (!empty($ids)) {
-				$objects = $this->clientV2->apiItems($ids)->execute(self::RETENTION)->getData();
+			if (is_array($ids)) {
+				$cache = $this->clientV2->getRequestManager()->getCache();
+				$objectsFromCache = [];
+				$idsToRequest = [];
+				foreach ($ids as $id) {
+					$result = $cache->get($cachePrefix . ':' . $id);
+					if (is_array($result)) {
+						$objectsFromCache[$id] = $result;
+					}
+					else {
+						$idsToRequest[] = $id;
+					}
+				}
+				$return = $objectsFromCache;
+				if (!empty($idsToRequest)) {
+					$objects = $this->clientV2->$method($idsToRequest)->execute(self::RETENTION)->getData();
+					foreach ($objects as $object) {
+						if (isset($object['id'])) {
+							$cache->set($cachePrefix . ':' . $object['id'], $object, self::RETENTION);
+							$return[$object['id']] = $object;
+						}
+					}
+				}
+				return $return;
+			}
+			else {
 				$return = [];
+				$objects = $this->clientV2->$method($ids)->execute(self::RETENTION)->getData();
 				foreach ($objects as $object) {
 					$return[$object['id']] = $object;
 				}
 				return $return;
 			}
 		}
-		catch (\Exception $ex) {
+		catch (\Exception $e) {
 			
 		}
 		return [];
+	}
+
+	public function getItems($ids) {
+		return $this->smartCaching('apiItems', __METHOD__, $ids);
 	}
 
 	public function getSkin($id) {
@@ -104,20 +136,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 	}
 
 	public function getSkins($ids) {
-		try {
-			if (!empty($ids)) {
-				$objects = $this->clientV2->apiSkins($ids)->execute(self::RETENTION)->getData();
-				$return = [];
-				foreach ($objects as $object) {
-					$return[$object['id']] = $object;
-				}
-				return $return;
-			}
-		}
-		catch (\Exception $ex) {
-			
-		}
-		return [];
+		return $this->smartCaching('apiSkins', __METHOD__, $ids);
 	}
 
 }
