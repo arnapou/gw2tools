@@ -15,6 +15,7 @@ namespace Arnapou\GW2Tools;
 abstract class AbstractModule extends \Arnapou\Toolbox\Http\Service\AbstractModule {
 
 	protected function renderPage($template, $context = []) {
+		$context['config'] = $this->getService()->getConfig();
 		$context['module'] = $this;
 		$context['service'] = $this->getService();
 		return $this->getService()->getTwig()->render($template, $context);
