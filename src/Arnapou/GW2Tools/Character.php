@@ -490,37 +490,40 @@ class Character {
 
 				$equipments = [];
 				foreach ($this->data['equipment'] as $equipment) {
+					$obj = [
+						'id' => $equipment['id'],
+					];
 					if (isset($objects[$equipment['id']])) {
 						$obj = $this->formatItem($objects[$equipment['id']]);
-						if (isset($equipment['upgrades'])) {
-							$upgrades = [];
-							foreach ($equipment['upgrades'] as $upgrade) {
-								if (isset($objects[$upgrade])) {
-									$upgrades[] = $this->formatItem($objects[$upgrade]);
-								}
-							}
-							$obj['upgrades'] = $upgrades;
-						}
-						if (isset($equipment['infusions'])) {
-							$infusions = [];
-							foreach ($equipment['infusions'] as $infusion) {
-								if (isset($objects[$upgrade])) {
-									$infusions[] = $this->formatItem($objects[$infusion]);
-								}
-							}
-							$obj['infusions'] = $infusions;
-						}
-						if (isset($equipment['skin']) && isset($skins[$equipment['skin']])) {
-							$skin = $this->formatItem($skins[$equipment['skin']]);
-							if (isset($skin['icon'])) {
-								$obj['icon'] = $skin['icon'];
-							}
-							if (isset($skin['name'])) {
-								$obj['name'] = $skin['name'];
-							}
-						}
-						$equipments[$equipment['slot']] = $obj;
 					}
+					if (isset($equipment['upgrades'])) {
+						$upgrades = [];
+						foreach ($equipment['upgrades'] as $upgrade) {
+							if (isset($objects[$upgrade])) {
+								$upgrades[] = $this->formatItem($objects[$upgrade]);
+							}
+						}
+						$obj['upgrades'] = $upgrades;
+					}
+					if (isset($equipment['infusions'])) {
+						$infusions = [];
+						foreach ($equipment['infusions'] as $infusion) {
+							if (isset($objects[$upgrade])) {
+								$infusions[] = $this->formatItem($objects[$infusion]);
+							}
+						}
+						$obj['infusions'] = $infusions;
+					}
+					if (isset($equipment['skin']) && isset($skins[$equipment['skin']])) {
+						$skin = $this->formatItem($skins[$equipment['skin']]);
+						if (isset($skin['icon'])) {
+							$obj['icon'] = $skin['icon'];
+						}
+						if (isset($skin['name'])) {
+							$obj['name'] = $skin['name'];
+						}
+					}
+					$equipments[$equipment['slot']] = $obj;
 				}
 				$this->computed['equipment'] = $equipments;
 				return $equipments;
