@@ -252,6 +252,9 @@ class Character {
 		$equipments = $this->getEquipments();
 		if ($equipments) {
 			foreach ($equipments as $type => $equipment) {
+				if ($type == 'HelmAquatic') {
+					continue;
+				}
 				if (isset($equipment['attributes'])) {
 					foreach ($equipment['attributes'] as $attribute => $value) {
 						if (isset($attributes[$attribute])) {
@@ -260,7 +263,7 @@ class Character {
 					}
 				}
 				elseif (in_array($type, [
-						'Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic',
+						'Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots',
 						'WeaponA1', 'WeaponA2', 'WeaponB1', 'WeaponB2', 'WeaponAquaticA', 'WeaponAquaticB',
 						'Backpack', 'Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2',
 					])) {
@@ -418,7 +421,8 @@ class Character {
 							}
 							if (isset($objects[$object['id']])) {
 								$obj = $this->formatItem($objects[$object['id']]);
-								if (!isset($obj['type'])) {
+								if (!isset($obj['type']) || !isset($obj['rarity']) ||
+									!in_array($obj['rarity'], ['Exotic', 'Ascended', 'Legendary'])) {
 									continue;
 								}
 								if (isset($object['upgrades'])) {
@@ -493,7 +497,7 @@ class Character {
 
 				$equipments = [];
 				foreach ($this->data['equipment'] as $equipment) {
-					if(in_array($equipment['slot'], ['Sickle', 'Axe', 'Pick'])) {
+					if (in_array($equipment['slot'], ['Sickle', 'Axe', 'Pick'])) {
 						continue;
 					}
 					$obj = [
