@@ -176,43 +176,112 @@
 		</div>
 
 	</div>
+				
+	<div class="row">
+		{% set inventory = char.inventory %}
+
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">Inventory Weapons</div>
+				<div class="panel-body">
+					<table class="table table-condensed equipment">
+						<tbody>
+							{% for type, items in inventory %}
+								{% if type in [	'Axe', 'Hammer', 'LongBow', 'Mace', 'Greatsword', 'Sword', 'Warhorn', 'Harpoon',
+												'Speargun', 'Rifle', 'Shield', 'Scepter', 'Focus', 'Trident', 'Torch', 'Pistol',
+												'ShortBow', 'Dagger', 'Staff'] %}
+									{{ _self.object(items) }}
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">Inventory Armors</div>
+				<div class="panel-body">
+					<table class="table table-condensed equipment">
+						<tbody>
+							{% for type, items in inventory %}
+								{% if type in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
+									{{ _self.object(items, type) }}
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">Inventory Trinkets</div>
+				<div class="panel-body">
+					<table class="table table-condensed equipment">
+						<tbody>
+							{% for type, items in inventory %}
+								{% if type in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
+									{{ _self.object(items, type) }}
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
 {% endblock %}
 
 {% macro objects(equipment, types) %}
-	<table class="table table-condensed">
+	<table class="table table-condensed equipment">
 		<tbody>
 			{% for type in types %}
-				{% set obj = equipment[type] %}
-				{% if obj %}
-					<tr class="object" data-id="{{ obj.id }}">
-						<td>
-							<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon}}" class="item rarity-{{ obj.rarity }}" />
-						</td>
-						<td>
-							{% for upgrade in obj.upgrades %}
-								<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon}}" class="infusion rarity-{{ upgrade.rarity }}" />
-							{% endfor %}
-							{% for infusion in obj.infusions %}
-								<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon}}" class="upgrade rarity-{{ infusion.rarity }}" />
-							{% endfor %}
-						</td>
-						<td>
-							{% if obj.stats_name and obj.stats %}
-								<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
-							{% elseif obj.stats_name %}
-								<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
-							{% elseif obj.stats %}
-								<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
-							{% else %}
-								<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
-							{% endif %}
-							{% if 'Weapon' in type %}
-								<br />{{ obj.type }}
-							{% endif %}
-						</td>
-					</tr>
-				{% endif %}
+				{{ _self.object(equipment[type]) }}
 			{% endfor %}
 		</tbody>
 	</table>
+{% endmacro %}
+
+{% macro object(obj) %}
+	{% if obj.id %}
+		<tr class="object" data-id="{{ obj.id }}">
+			<td>
+				<a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
+					<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon}}" class="item rarity-{{ obj.rarity }}" />
+				</a>
+			</td>
+			<td>
+				{% for upgrade in obj.upgrades %}
+					<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
+						<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon}}" class="infusion rarity-{{ upgrade.rarity }}" />
+					</a>
+				{% endfor %}
+				{% for infusion in obj.infusions %}
+					<a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
+						<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon}}" class="upgrade rarity-{{ infusion.rarity }}" />
+					</a>
+				{% endfor %}
+			</td>
+			<td>
+				{% if obj.stats_name and obj.stats %}
+					<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
+				{% elseif obj.stats_name %}
+					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
+				{% elseif obj.stats %}
+					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
+				{% else %}
+					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+				{% endif %}
+				<span class="equipment-type">{{ obj.type }}</span>
+			</td>
+		</tr>
+	{% elseif obj is iterable %}
+		{% for item in obj %}
+			{{ _self.object(item) }}
+		{% endfor %}
+	{% endif %}
 {% endmacro %}

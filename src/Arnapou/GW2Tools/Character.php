@@ -402,6 +402,95 @@ class Character {
 		return $return;
 	}
 
+	public function getInventory() {
+		if (isset($this->computed['inventory'])) {
+			return $this->computed['inventory'];
+		}
+		if (isset($this->data['bags'])) {
+			try {
+				$objects = [];
+				$skins = [];
+				foreach ($this->data['bags'] as $bag) {
+					if (isset($bag['inventory'])) {
+						foreach ($bag['inventory'] as $object) {
+							if (empty($object) || isset($object['count']) && $object['count'] != 1 || !isset($object['id'])) {
+								continue;
+							}
+							$objects[] = $object['id'];
+							if (isset($object['skin'])) {
+								$skins[] = $object['skin'];
+							}
+							if (isset($object['upgrades'])) {
+								foreach ($object['upgrades'] as $upgrade) {
+									$objects[] = $upgrade;
+								}
+							}
+							if (isset($object['infusions'])) {
+								foreach ($object['infusions'] as $infusion) {
+									$objects[] = $infusion;
+								}
+							}
+						}
+					}
+				}
+				$objects = $this->apiClient->getItems($objects);
+				$skins = $this->apiClient->getSkins($skins);
+
+				$inventory = [];
+				foreach ($this->data['bags'] as $bag) {
+					if (isset($bag['inventory'])) {
+						foreach ($bag['inventory'] as $object) {
+							if (empty($object) || isset($object['count']) && $object['count'] != 1 || !isset($object['id'])) {
+								continue;
+							}
+							if (isset($objects[$object['id']])) {
+								$obj = $this->formatItem($objects[$object['id']]);
+								if (!isset($obj['type'])) {
+									continue;
+								}
+								if (isset($object['upgrades'])) {
+									$upgrades = [];
+									foreach ($object['upgrades'] as $upgrade) {
+										if (isset($objects[$upgrade])) {
+											$upgrades[] = $this->formatItem($objects[$upgrade]);
+										}
+									}
+									$obj['upgrades'] = $upgrades;
+								}
+								if (isset($object['infusions'])) {
+									$infusions = [];
+									foreach ($object['infusions'] as $infusion) {
+										if (isset($objects[$upgrade])) {
+											$infusions[] = $this->formatItem($objects[$infusion]);
+										}
+									}
+									$obj['infusions'] = $infusions;
+								}
+								if (isset($object['skin']) && isset($skins[$object['skin']])) {
+									$skin = $this->formatItem($skins[$object['skin']]);
+									if (isset($skin['icon'])) {
+										$obj['icon'] = $skin['icon'];
+									}
+									if (isset($skin['name'])) {
+										$obj['name'] = $skin['name'];
+									}
+								}
+								$inventory[$obj['type']][] = $obj;
+							}
+						}
+					}
+				}
+				ksort($inventory);
+				$this->computed['inventory'] = $inventory;
+				return $inventory;
+			}
+			catch (\Exception $e) {
+				
+			}
+		}
+		return null;
+	}
+
 	public function getEquipments() {
 		if (isset($this->computed['equipment'])) {
 			return $this->computed['equipment'];
@@ -433,7 +522,6 @@ class Character {
 				foreach ($this->data['equipment'] as $equipment) {
 					if (isset($objects[$equipment['id']])) {
 						$obj = $this->formatItem($objects[$equipment['id']]);
-						$ids[] = $equipment['id'];
 						if (isset($equipment['upgrades'])) {
 							$upgrades = [];
 							foreach ($equipment['upgrades'] as $upgrade) {

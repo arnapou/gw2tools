@@ -36,6 +36,10 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		}
 	}
 
+	public function getCharacterNames() {
+		return $this->v2_characters();
+	}
+
 	public function getCharacters() {
 		$items = $this->v2_characters($this->v2_characters());
 		usort($items, function($a, $b) {

@@ -3,9 +3,12 @@ body {
 	padding-bottom: 3em;
 }
 
-
 .text-danger[data-toggle="tooltip"] {
 	cursor: default;
+}
+
+.tooltip {
+	white-space: normal !important;
 }
 
 img.craft,
@@ -13,10 +16,6 @@ img.profession {
 	height: 1.42857em;
 	width: 1.42857em;
 	vertical-align: middle;
-}
-
-.tooltip {
-	white-space: normal !important;
 }
 
 img.upgrade,
@@ -62,16 +61,21 @@ td > .AR:first-child:before {
 .page-character tr.object td:first-child {
 	width: 3.5em;
 }
-
 .page-character tr.object td:nth-child(2) {
 	width: 10em;
 }
-
 .page-character .summary tr td:first-child {
 	width: 30%;
 }
 .page-character .stats tr td:first-child {
 	width: 50%;
+}
+.page-character .equipment a {
+	outline: 0;
+}
+.page-character .equipment-type {
+	display: block;
+	color: #999;
 }
 
 .page-stuff tbody td:first-child {
