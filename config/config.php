@@ -13,6 +13,6 @@ return array(
 	'path.cache' => __DIR__ . '/../cache',
 	'path.data' => __DIR__ . '/../data',
 	'path.log' => __DIR__ . '/../log',
-	'date.timezone' => 'Europe/Paris',
+	'date.timezone' => 'UTC',
 	'version' => 7,
 );
