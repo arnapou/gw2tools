@@ -33,8 +33,10 @@
 						</th>
 						{% for char in characters %}
 							<th>
-								<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession" />
-								<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+								{% if char %}
+									<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession" />
+									<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+										{% endif %}
 							</th>
 						{% endfor %}
 					</tr>
@@ -55,18 +57,20 @@
 								<td>{{ type }}</td>
 								{% for char in characters %}
 									<td>
-										{% for objtype, obj in char.equipments %}
-											{% if obj.type == type or objtype == type and type == 'Backpack' %}
-												{{ _self.object(obj) }}
-											{% endif %}
-										{% endfor %}
-										{% for objtype, items in char.inventory %}
-											{% if objtype == type %}
-												{% for obj in items %}
+										{% if char %}
+											{% for objtype, obj in char.equipments %}
+												{% if obj.type == type or objtype == type and type == 'Backpack' %}
 													{{ _self.object(obj) }}
-												{% endfor %}
-											{% endif %}
-										{% endfor %}
+												{% endif %}
+											{% endfor %}
+											{% for objtype, items in char.inventory %}
+												{% if objtype == type %}
+													{% for obj in items %}
+														{{ _self.object(obj) }}
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
 									</td>
 								{% endfor %}
 							</tr>
