@@ -252,7 +252,11 @@ class Character {
 		$equipments = $this->getEquipments();
 		if ($equipments) {
 			foreach ($equipments as $type => $equipment) {
-				if ($type == 'HelmAquatic') {
+				if (!in_array($type, [
+						'Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots',
+						'WeaponA1', 'WeaponA2',
+						'Backpack', 'Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2',
+					])) {
 					continue;
 				}
 				if (isset($equipment['attributes'])) {
@@ -262,11 +266,7 @@ class Character {
 						}
 					}
 				}
-				elseif (in_array($type, [
-						'Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots',
-						'WeaponA1', 'WeaponA2', 'WeaponB1', 'WeaponB2', 'WeaponAquaticA', 'WeaponAquaticB',
-						'Backpack', 'Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2',
-					])) {
+				else {
 					$unknown[] = $type;
 				}
 				if (isset($equipment['infusions'])) {
