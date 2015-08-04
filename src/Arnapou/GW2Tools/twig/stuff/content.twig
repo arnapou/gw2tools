@@ -59,7 +59,7 @@
 									<td>
 										{% if char %}
 											{% for objtype, obj in char.equipments %}
-												{% if objtype == type %}
+												{% if objtype == type or obj.type == type %}
 													{{ _self.object(obj) }}
 												{% endif %}
 											{% endfor %}
