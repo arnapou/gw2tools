@@ -1,54 +1,113 @@
 
+{% set nbcolumns = 5 %}
+
 {% set lists = {
 	'Armors' : ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'],
-	'Weapons' : ['WeaponA1', 'WeaponA2', 'WeaponB1', 'WeaponB2', 'WeaponAquaticA', 'WeaponAquaticB'],
-	'Trinkets' : ['Backpack', 'Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2'],
+	'Weapons two hands' : ['Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff'],
+	'Weapons one hand' : ['Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger'],
+	'Weapons aquatic' : ['Speargun', 'Harpoon', 'Trident'],
+	'Backpack' : ['Backpack'],
+	'Trinkets' : ['Amulet', 'Ring', 'Accessory', 'Accessory'],
 } %}
 
-{% for title, list in lists %}
+{% set characters_lists = apiclient.characters|chunk(nbcolumns) %}
+
+<style>
+	table tr td,
+	table tr th {
+		width: {{ (90/nbcolumns)|round(9) }}%;
+	}
+	table tr td:first-child,
+	table tr th:first-child {
+		width: 10%;
+	}
+</style>
+
+{% for characters in characters_lists %}
 	<div class="panel panel-default">
-		<div class="panel-heading">{{ title }}</div>
-		<div class="panel-body">
-			<table class="table">
+		<div class="panel-heading">
+			<table class="table table-condensed">
 				<thead>
 					<tr>
-						<th>Name</th>
-						{% for type in list %}
-							<th>{{ type }}</th>
+						<th>
+						</th>
+						{% for char in characters %}
+							<th>
+								<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession" />
+								<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+							</th>
 						{% endfor %}
 					</tr>
 				</thead>
+			</table>
+		</div>
+		<div class="panel-body">
+			<table class="table table-condensed">
 				<tbody>
-					{% for char in apiclient.characters %}
-						{% set equipment = char.equipments %}
-						<tr>
-							<td>
-								<img src="{{ char.professionicon }}" title="{{ char.profession }}" class="profession pull-right" />
-								<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+					{% for title, types in lists %}
+						<tr class="separator">
+							<td colspan="{{ nbcolumns + 1 }}" class="text-center">
+								<b>{{ title }}</b>
 							</td>
-							{% for type in list %}
-								{% set obj = equipment[type] %}
-								<td>
-									{% if obj %}
-										{% if obj.stats_name and obj.stats %}
-											<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
-										{% elseif obj.stats_name %}
-											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
-										{% elseif obj.stats %}
-											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
-										{% else %}
-											<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
-										{% endif %}
-										{% if 'Weapon' in type %}
-											<span class="text-muted"> {{ obj.type }}</span>
-										{% endif %}
-									{% endif %}
-								</td>
-							{% endfor %}
 						</tr>
+						{% for type in types %}
+							<tr>
+								<td>{{ type }}</td>
+								{% for char in characters %}
+									<td>
+										{% for objtype, obj in char.equipments %}
+											{% if obj.type == type or objtype == type and type == 'Backpack' %}
+												{{ _self.object(obj) }}
+											{% endif %}
+										{% endfor %}
+										{% for objtype, items in char.inventory %}
+											{% if objtype == type %}
+												{% for obj in items %}
+													{{ _self.object(obj) }}
+												{% endfor %}
+											{% endif %}
+										{% endfor %}
+									</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
 {% endfor %}
+
+{% macro object(obj) %}
+	<div class="object">
+		<span class="icons">
+			<a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
+				<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon}}" class="item" />
+			</a>
+			{% for upgrade in obj.upgrades %}
+				<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
+					<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon}}" class="infusion" />
+				</a>
+			{% endfor %}
+			{% for infusion in obj.infusions %}
+				<a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
+					<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon}}" class="upgrade" />
+				</a>
+			{% endfor %}
+		</span>
+		<span class="name">
+			{% if obj.stats_name and obj.stats %}
+				<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
+			{% elseif obj.stats_name %}
+				<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
+			{% elseif obj.stats %}
+				<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
+			{% else %}
+				<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+			{% endif %}
+			{% if 'Weapon' in type %}
+				<span class="text-muted"> {{ obj.type }}</span>
+			{% endif %}
+		</span>
+	</div>
+{% endmacro %}

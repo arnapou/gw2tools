@@ -13,9 +13,11 @@ namespace Arnapou\GW2Tools\Module;
 
 use Arnapou\GW2Tools\ApiClient;
 use Arnapou\GW2Tools\Exception\TokenException;
+use Arnapou\GW2Tools\FileVault;
 use Arnapou\GW2Tools\TokenVault;
 use Arnapou\Toolbox\Functions\Directory;
 use Arnapou\Toolbox\Http\ResponseJson;
+use Arnapou\Toolbox\Http\ResponsePng;
 
 class Api extends \Arnapou\GW2Tools\AbstractModule {
 
@@ -29,12 +31,15 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 	public function configure() {
 		parent::configure();
 
-		$regexpToken = '[A-F0-9-]{70,80}';
 		$regexpCode = '[A-Za-z0-9]{10}';
 		$regexpMenu = implode('|', array_keys($this->menu));
 
 		$this->addRoute('', [$this, 'routeHome']);
 		$this->addRoute('token-check', [$this, 'routeTokenCheck']);
+		$this->addRoute('guild-emblem-{id}.png', [$this, 'routeImageGuildEmblem'])->assert('id', '[A-F0-9-]{35,40}');
+		$this->addRoute('profession-{id}.png', [$this, 'routeImageProfession'])->assert('id', '[a-z]+');
+		$this->addRoute('crafting-{id}.png', [$this, 'routeImageCrafting'])->assert('id', '[a-z]+');
+		$this->addRoute('render-file/{id}.png', [$this, 'routeImageRenderFile'])->assert('id', '[A-F0-9]+/[0-9]+');
 		$this->addRoute('{code}/', [$this, 'routeHomeToken'])->assert('code', $regexpCode);
 		$this->addRoute('{code}/{menu}/', [$this, 'routeMenu'])->assert('code', $regexpCode)->assert('menu', $regexpMenu);
 		$this->addRoute('{code}/{menu}/content.html', [$this, 'routeMenuContent'])->assert('code', $regexpCode)->assert('menu', $regexpMenu);
@@ -48,6 +53,49 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	public function routeHome() {
 		return $this->renderPage('home.twig');
+	}
+
+	public function routeImageCrafting($id) {
+		return $this->renderImage(function(ApiClient $apiClient) use ($id) {
+				$map = [
+					'armorsmith'	 => 'map_crafting_armorsmith',
+					'artificer'		 => 'map_crafting_artificer',
+					'chef'			 => 'map_crafting_cook',
+					'huntsman'		 => 'map_crafting_huntsman',
+					'jeweler'		 => 'map_crafting_jeweler',
+					'leatherworker'	 => 'map_crafting_leatherworker',
+					'tailor'		 => 'map_crafting_tailor',
+					'weaponsmith'	 => 'map_crafting_weaponsmith',
+				];
+				if (isset($map[$id])) {
+					$icon = $apiClient->getFileIcon($map[$id]);
+					return FileVault::getVaultCrafting()->getResponse($icon);
+				}
+			});
+	}
+
+	public function routeImageRenderFile($id) {
+		return $this->renderImage(function(ApiClient $apiClient) use ($id) {
+				$url = 'https://render.guildwars2.com/file/' . $id . '.png';
+				return FileVault::getVaultRender()->getResponse($url);
+			});
+	}
+
+	public function routeImageProfession($id) {
+		return $this->renderImage(function(ApiClient $apiClient) use ($id) {
+				$icon = $apiClient->getFileIcon('icon_' . $id);
+				return FileVault::getVaultProfessions()->getResponse($icon);
+			});
+	}
+
+	public function routeImageGuildEmblem($id) {
+		return $this->renderImage(function(ApiClient $apiClient) use ($id) {
+				$guild = $apiClient->getGuild($id);
+				if ($guild) {
+					$url = 'http://data.gw2.fr/guild-emblem/name/' . rawurlencode($guild['name']) . '/128.png';
+					return FileVault::getVaultEmblems()->getResponse($url);
+				}
+			});
 	}
 
 	public function routeHomeToken($code) {
@@ -138,10 +186,13 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 			if (empty($token)) {
 				throw new TokenException('No token was provided.');
 			}
+			elseif (!preg_match('!^[A-F0-9-]{70,80}$!', $token)) {
+				throw new TokenException('Invalid token.');
+			}
 			$vault = TokenVault::getInstance();
 
 			$apiClient = $this->apiClientFromToken($token); // if no error is raised, the token is valid
-			
+
 			if ($vault->exists($token)) {
 				$code = $vault->get($token);
 			}
@@ -174,13 +225,27 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 	 * 
 	 * @return ApiClient
 	 */
-	protected function apiClientFromToken($token) {
+	protected function apiClientFromToken($token = null) {
 		$path = $this->getService()->getPathCache() . '/gw2api';
 		Directory::createIfNotExists($path);
 
 		$client = ApiClient::EN($path);
-		$client->setAccessToken($token);
+		if ($token) {
+			$client->setAccessToken($token);
+		}
 		return $client;
+	}
+
+	protected function renderImage($callback) {
+		try {
+			$apiClient = $this->apiClientFromToken();
+			if ($apiClient) {
+				return $callback($apiClient);
+			}
+		}
+		catch (\Exception $e) {
+			
+		}
 	}
 
 }

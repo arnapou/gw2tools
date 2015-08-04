@@ -14,5 +14,5 @@ return array(
 	'path.data' => __DIR__ . '/../data',
 	'path.log' => __DIR__ . '/../log',
 	'date.timezone' => 'Europe/Paris',
-	'version' => 4,
+	'version' => 5,
 );

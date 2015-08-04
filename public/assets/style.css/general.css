@@ -17,6 +17,12 @@ img.profession {
 	width: 1.42857em;
 	vertical-align: middle;
 }
+img.emblem {
+	width: 3em;
+	height: 3em;
+	margin-right: .5em;
+	vertical-align: middle;
+}
 
 img.upgrade,
 img.infusion {
@@ -67,6 +73,14 @@ td > .AR:first-child:before {
 .page-character .summary tr td:first-child {
 	width: 30%;
 }
+.page-character .summary table td {
+	line-height: 32px;
+}
+.page-character .summary table td img {
+	height: 32px;
+	width: 32px;
+	margin-right: .1em;
+}
 .page-character .stats tr td:first-child {
 	width: 50%;
 }
@@ -78,6 +92,36 @@ td > .AR:first-child:before {
 	color: #999;
 }
 
-.page-stuff tbody td:first-child {
-	width: 15%;
+
+.page-stuff table th {
+	border: 0 !important;
 }
+.page-stuff table tr.separator td {
+	background-color: #f5f5f5 !important;
+	border-top: 1px solid #ddd !important;
+}
+.page-stuff table th,
+.page-stuff table td {
+	padding: 2px 5px !important;
+}
+.page-stuff .object .icons {
+	margin-right: .7em;
+}
+.page-stuff .object img {
+	width: 1.42857em;
+	height: 1.42857em;
+	margin-right: 3px;
+}
+.page-stuff .object img.infusion,
+.page-stuff .object img.upgrade {
+	width: 1em;
+	height: 1em;
+	margin-right: 1px;
+}
+.page-stuff .panel {
+	margin-bottom: 6em;
+}
+.page-stuff thead .profession {
+	margin-right: .3em;
+}
+

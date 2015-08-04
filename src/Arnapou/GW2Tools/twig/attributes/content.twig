@@ -25,7 +25,7 @@
 			{% set attributes = char.attributes %}
 			<tr>
 				<td>
-					<img src="{{ char.professionicon }}" title="{{ char.profession }}" class="profession pull-right" />
+					<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession pull-right" />
 					<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
 				</td>
 				<td class="text-center" style="width: 2em">

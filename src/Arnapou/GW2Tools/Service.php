@@ -61,6 +61,28 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
 				});
 				return $array;
 			}));
+			$factory->addFilter(new \Twig_SimpleFilter('chunk', function($array, $n) {
+				$return = [];
+				$current = [];
+				$i = 0;
+				foreach ($array as $key => $value) {
+					$current[$key] = $value;
+					$i++;
+					if ($i == $n) {
+						$return[] = $current;
+						$current = [];
+						$i = 0;
+					}
+				}
+				if ($i > 0) {
+					while ($i < $n) {
+						$current[] = null;
+						$i++;
+					}
+					$return[] = $current;
+				}
+				return $return;
+			}));
 			$this->twigFactory = $factory;
 		}
 		return $this->twigFactory->getEnvironment();

@@ -17,8 +17,10 @@
 			<td>Guilds</td>
 			<td>
 				{% for guildid in account.guilds %}
+					{% set guild = apiclient.guild(guildid) %}
 					<div>
-						{{ apiclient.guildname(guildid) }}
+						<img src="{{ guild.icon }}" class="emblem" />
+						{{ guild.fullname }}
 					</div>
 				{% endfor %}
 			</td>

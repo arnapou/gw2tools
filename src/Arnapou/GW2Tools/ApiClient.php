@@ -37,13 +37,15 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 	}
 
 	public function getCharacterNames() {
-		return $this->v2_characters();
+		$names = $this->v2_characters();
+		sort($names);
+		return $names;
 	}
 
 	public function getCharacters() {
 		$items = $this->v2_characters($this->v2_characters());
 		usort($items, function($a, $b) {
-			return strcmp($a['created'], $b['created']);
+			return $a['age'] == $b['age'] ? 0 : ($a['age'] < $b['age'] ? 1 : -1);
 		});
 		$characters = [];
 		foreach ($items as $item) {
@@ -78,11 +80,17 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		return null;
 	}
 
-	public function getGuildName($id) {
+	public function getGuild($id) {
 		try {
 			$data = $this->clientV1->apiGuildDetails($id)->execute(self::RETENTION)->getData();
 			if (isset($data['guild_name']) && isset($data['tag'])) {
-				return $data['guild_name'] . ' [' . $data['tag'] . ']';
+				return [
+					'id'		 => $id,
+					'name'		 => $data['guild_name'],
+					'tag'		 => $data['tag'],
+					'icon'		 => isset($data['emblem']) ? '/api/guild-emblem-' . $id . '.png' : '/assets/images/no-emblem.png',
+					'fullname'	 => $data['guild_name'] . ' [' . $data['tag'] . ']',
+				];
 			}
 		}
 		catch (\Exception $ex) {

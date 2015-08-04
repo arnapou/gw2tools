@@ -101,10 +101,7 @@ class Character {
 	 */
 	public function getGuild() {
 		if (isset($this->data['guild'])) {
-			return [
-				'id'	 => $this->data['guild'],
-				'name'	 => $this->apiClient->getGuildName($this->data['guild']),
-			];
+			return $this->apiClient->getGuild($this->data['guild']);
 		}
 		return null;
 	}
@@ -159,29 +156,10 @@ class Character {
 	 */
 	public function getProfession() {
 		if (isset($this->data['profession'])) {
-			return $this->data['profession'];
-		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * @return int
-	 */
-	public function getProfessionIcon() {
-		if (isset($this->data['profession'])) {
-			return $this->apiClient->getFileIcon('icon_' . strtolower($this->data['profession']));
-		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * @return int
-	 */
-	public function getProfessionIconBig() {
-		if (isset($this->data['profession'])) {
-			return $this->apiClient->getFileIcon('icon_' . strtolower($this->data['profession']) . '_big');
+			return [
+				'name'	 => $this->data['profession'],
+				'icon'	 => '/api/profession-' . strtolower($this->data['profession']) . '.png',
+			];
 		}
 		return null;
 	}
@@ -229,27 +207,16 @@ class Character {
 		}
 		if (isset($this->data['crafting'])) {
 			$items = [];
-			$map = [
-				'Armorsmith'	 => 'map_crafting_armorsmith',
-				'Artificer'		 => 'map_crafting_artificer',
-				'Chef'			 => 'map_crafting_cook',
-				'Huntsman'		 => 'map_crafting_huntsman',
-				'Jewler'		 => 'map_crafting_jeweler',
-				'Leatherworker'	 => 'map_crafting_leatherworker',
-				'Tailor'		 => 'map_crafting_tailor',
-				'Weaponsmith'	 => 'map_crafting_weaponsmith',
-			];
 			try {
 				foreach ($this->data['crafting'] as $craft) {
 					if (isset($craft['rating'], $craft['active'], $craft['discipline']) &&
 						$craft['rating'] &&
-						$craft['active'] &&
-						isset($map[$craft['discipline']])
+						$craft['active']
 					) {
 						$items[] = [
 							'discipline' => $craft['discipline'],
 							'level'		 => $craft['rating'],
-							'icon'		 => $this->apiClient->getFileIcon($map[$craft['discipline']]),
+							'icon'		 => '/api/crafting-' . strtolower($craft['discipline']) . '.png',
 						];
 					}
 				}
@@ -350,10 +317,13 @@ class Character {
 		$return = [
 			'id' => $item['id'],
 		];
-		foreach (['level', 'rarity', 'name', 'icon'] as $key) {
+		foreach (['level', 'rarity', 'name'] as $key) {
 			if (isset($item[$key])) {
 				$return[$key] = $item[$key];
 			}
+		}
+		if (isset($item['icon'])) {
+			$return['icon'] = preg_replace('!^.*file/(.*?)\.png$!i', '/api/render-file/$1.png', $item['icon']);
 		}
 		if (isset($item['details'])) {
 			foreach (['type', 'defense', 'weight_class'] as $key) {
