@@ -258,18 +258,18 @@
 		<tr class="object" data-id="{{ obj.id }}">
 			<td>
 				<a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
-					<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon}}" class="item rarity-{{ obj.rarity }}" />
+					<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon }}" class="item rarity-{{ obj.rarity }}" />
 				</a>
 			</td>
 			<td>
 				{% for upgrade in obj.upgrades %}
 					<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
-						<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon}}" class="infusion rarity-{{ upgrade.rarity }}" />
+						<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon }}" class="infusion rarity-{{ upgrade.rarity }}" />
 					</a>
 				{% endfor %}
 				{% for infusion in obj.infusions %}
 					<a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
-						<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon}}" class="upgrade rarity-{{ infusion.rarity }}" />
+						<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon }}" class="upgrade rarity-{{ infusion.rarity }}" />
 					</a>
 				{% endfor %}
 			</td>
@@ -279,7 +279,7 @@
 				{% elseif obj.stats_name %}
 					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
 				{% elseif obj.stats %}
-					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
+					<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
 				{% else %}
 					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
 				{% endif %}

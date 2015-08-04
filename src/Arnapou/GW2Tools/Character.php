@@ -322,8 +322,11 @@ class Character {
 				$return[$key] = $item[$key];
 			}
 		}
-		if (isset($item['icon'])) {
+		if (!empty($item['icon'])) {
 			$return['icon'] = preg_replace('!^.*file/(.*?)\.png$!i', '/api/render-file/$1.png', $item['icon']);
+		}
+		else {
+			$return['icon'] = '/assets/images/nothing.png';
 		}
 		if (isset($item['details'])) {
 			foreach (['type', 'defense', 'weight_class'] as $key) {
@@ -490,8 +493,12 @@ class Character {
 
 				$equipments = [];
 				foreach ($this->data['equipment'] as $equipment) {
+					if(in_array($equipment['slot'], ['Sickle', 'Axe', 'Pick'])) {
+						continue;
+					}
 					$obj = [
-						'id' => $equipment['id'],
+						'id'	 => $equipment['id'],
+						'icon'	 => '/assets/images/nothing.png',
 					];
 					if (isset($objects[$equipment['id']])) {
 						$obj = $this->formatItem($objects[$equipment['id']]);

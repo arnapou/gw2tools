@@ -7,7 +7,7 @@
 	'Weapons one hand' : ['Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger'],
 	'Weapons aquatic' : ['Speargun', 'Harpoon', 'Trident'],
 	'Backpack' : ['Backpack'],
-	'Trinkets' : ['Amulet', 'Ring', 'Accessory', 'Accessory'],
+	'Trinkets' : ['Amulet', 'Ring', 'Accessory'],
 } %}
 
 {% set characters_lists = apiclient.characters|chunk(nbcolumns) %}
@@ -59,7 +59,7 @@
 									<td>
 										{% if char %}
 											{% for objtype, obj in char.equipments %}
-												{% if obj.type == type or objtype == type and type == 'Backpack' %}
+												{% if objtype == type %}
 													{{ _self.object(obj) }}
 												{% endif %}
 											{% endfor %}
@@ -86,16 +86,16 @@
 	<div class="object">
 		<span class="icons">
 			<a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
-				<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon}}" class="item" />
+				<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon }}" class="item" />
 			</a>
 			{% for upgrade in obj.upgrades %}
 				<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
-					<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon}}" class="infusion" />
+					<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon }}" class="infusion" />
 				</a>
 			{% endfor %}
 			{% for infusion in obj.infusions %}
 				<a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
-					<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon}}" class="upgrade" />
+					<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon }}" class="upgrade" />
 				</a>
 			{% endfor %}
 		</span>
@@ -105,7 +105,7 @@
 			{% elseif obj.stats_name %}
 				<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
 			{% elseif obj.stats %}
-				<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats }}</span>
+				<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
 			{% else %}
 				<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
 			{% endif %}

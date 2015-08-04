@@ -88,7 +88,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 					'id'		 => $id,
 					'name'		 => $data['guild_name'],
 					'tag'		 => $data['tag'],
-					'icon'		 => isset($data['emblem']) ? '/api/guild-emblem-' . $id . '.png' : '/assets/images/no-emblem.png',
+					'icon'		 => isset($data['emblem']) ? '/api/guild-emblem-' . $id . '.png' : '/assets/images/nothing.png',
 					'fullname'	 => $data['guild_name'] . ' [' . $data['tag'] . ']',
 				];
 			}
