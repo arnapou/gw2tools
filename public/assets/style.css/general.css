@@ -107,6 +107,9 @@ td > .AR:first-child:before {
 .page-stuff .object .icons {
 	margin-right: .7em;
 }
+.page-stuff .object {
+	margin: .2em 0;
+}
 .page-stuff .object img {
 	width: 1.42857em;
 	height: 1.42857em;
