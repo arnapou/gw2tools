@@ -11,9 +11,30 @@
 
 namespace Arnapou\GW2Tools;
 
+use Arnapou\GW2Tools\Exception\TokenException;
+
 class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 
 	const RETENTION = 864000; // 10 days
+
+	public function setAccessToken($token) {
+		parent::setAccessToken($token);
+
+		try {
+			$tokeninfo = $this->v2_tokeninfo();
+			if (!isset($tokeninfo['id']) || !isset($tokeninfo['permissions'])) {
+				throw new TokenException('Invalid token');
+			}
+			foreach (['account', 'characters', 'inventories'] as $permission) {
+				if (!in_array($permission, $tokeninfo['permissions'])) {
+					throw new TokenException('The token is missing permission "' . $permission . '"');
+				}
+			}
+		}
+		catch (\Exception $e) {
+			throw new TokenException($e->getMessage());
+		}
+	}
 
 	public function getCharacters() {
 		$items = $this->v2_characters($this->v2_characters());

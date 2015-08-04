@@ -2,6 +2,10 @@
 
 {% block content %}
 	<div id="access-token-form">
+		{% if token_error %}
+			{% include 'token-error.twig' %}
+		{% endif %}
+
 		<div class="form-group">
 			<label for="auth-pwd">Access Token</label>
 			<input type="text" class="form-control" name="access_token" placeholder="Paste your access token here">
@@ -23,7 +27,18 @@
 					alert('The provided token is not valid.');
 				}
 				else {
-					window.location = './' + token + '/';
+					$.getJSON('/api/token-check', {token: token})
+							.done(function (json) {
+								if (json && json.code) {
+									window.location = '/api/' + json.code + '/';
+								}
+							})
+							.fail(function (json) {
+								if (json && json.error) {
+									alert(json.error);
+								}
+							});
+
 				}
 			});
 		});
