@@ -3,11 +3,10 @@
 
 {% set lists = {
 	'Armors' : ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'],
-	'Weapons two hands' : ['Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff'],
-	'Weapons one hand' : ['Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger'],
+	'Backpack / Trinkets' : ['Backpack', 'Amulet', 'Accessory', 'Ring'],
+	'Weapons two hands' : ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
+	'Weapons one hand' : ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'],
 	'Weapons aquatic' : ['Speargun', 'Harpoon', 'Trident'],
-	'Backpack' : ['Backpack'],
-	'Trinkets' : ['Amulet', 'Ring', 'Accessory'],
 } %}
 
 {% set characters_lists = apiclient.characters|chunk(nbcolumns) %}
