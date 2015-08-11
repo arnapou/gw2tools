@@ -1,6 +1,4 @@
 
-{% set nbcolumns = 5 %}
-
 {% set lists = {
 	'Armors' : ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'],
 	'Backpack / Trinkets' : ['Backpack', 'Amulet', 'Accessory', 'Ring'],
@@ -9,77 +7,80 @@
 	'Weapons aquatic' : ['Speargun', 'Harpoon', 'Trident'],
 } %}
 
-{% set characters_lists = apiclient.characters|chunk(nbcolumns) %}
+{% set characters = apiclient.characters %}
+{% set nbcolumns = characters|length %}
 
-<style>
-	table tr td,
-	table tr th {
-		width: {{ (90/nbcolumns)|round(9) }}%;
-	}
-	table tr td:first-child,
-	table tr th:first-child {
-		width: 10%;
-	}
-</style>
+{% if nbcolumns > 5 %}
+	<script>
+		$('#container').removeClass('container').addClass('container-fluid');
+		$('.page-stuff').addClass('big');
+	</script>
+{% endif %}
 
-{% for characters in characters_lists %}
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<table class="table table-condensed">
-				<thead>
-					<tr>
+<table class="table table-condensed">
+	<tbody>
+		{% block table_header %}
+			<tr>
+				{% set index = 0 %}
+				{% for char in characters %}
+					{% if index % 5 == 0 %}
 						<th>
 						</th>
-						{% for char in characters %}
-							<th>
-								{% if char %}
-									<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession" />
-									<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
-										{% endif %}
-							</th>
-						{% endfor %}
-					</tr>
-				</thead>
-			</table>
-		</div>
-		<div class="panel-body">
-			<table class="table table-condensed">
-				<tbody>
-					{% for title, types in lists %}
-						<tr class="separator">
-							<td colspan="{{ nbcolumns + 1 }}" class="text-center">
-								<b>{{ title }}</b>
+					{% endif %}
+					<th>
+						{% if char %}
+							<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession" />
+							<a href="../character/{{ char.name }}">
+								<b>{{ char.name }}</b>
+							</a>
+						{% endif %}
+					</th>
+					{% set index = index + 1 %}
+				{% endfor %}
+			</tr>
+		{% endblock %}
+
+		{% for title, types in lists %}
+			{% block separator %}
+				<tr class="separator">
+					<td colspan="{{ nbcolumns + (nbcolumns/5)|round(0, 'ceil') }}" class="text-center"></td>
+				</tr>
+			{% endblock %}
+			{% for type in types %}
+				<tr>
+					{% set index = 0 %}
+					{% for char in characters %}
+						{% if index % 5 == 0 %}
+							<td class="type">
+								{{ type }}
 							</td>
-						</tr>
-						{% for type in types %}
-							<tr>
-								<td>{{ type }}</td>
-								{% for char in characters %}
-									<td>
-										{% if char %}
-											{% for objtype, obj in char.equipments %}
-												{% if objtype == type or obj.type == type %}
-													{{ _self.object(obj) }}
-												{% endif %}
-											{% endfor %}
-											{% for objtype, items in char.inventory %}
-												{% if objtype == type %}
-													{% for obj in items %}
-														{{ _self.object(obj) }}
-													{% endfor %}
-												{% endif %}
-											{% endfor %}
-										{% endif %}
-									</td>
+						{% endif %}
+						<td>
+							{% if char %}
+								{% for objtype, obj in char.equipments %}
+									{% if objtype == type or obj.type == type %}
+										{{ _self.object(obj) }}
+									{% endif %}
 								{% endfor %}
-							</tr>
-						{% endfor %}
+								{% for objtype, items in char.inventory %}
+									{% if objtype == type %}
+										{% for obj in items %}
+											{{ _self.object(obj) }}
+										{% endfor %}
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						</td>
+						{% set index = index + 1 %}
 					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
-{% endfor %}
+				</tr>
+			{% endfor %}
+		{% endfor %}
+
+		{{ block('separator') }}
+		{{ block('table_header') }}
+	</tbody>
+</table>
 
 {% macro object(obj) %}
 	<div class="object">

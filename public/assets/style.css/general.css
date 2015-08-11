@@ -96,13 +96,21 @@ td > .AR:first-child:before {
 .page-stuff table th {
 	border: 0 !important;
 }
+.page-stuff table th img {
+	margin-right: .4em;
+}
 .page-stuff table tr.separator td {
-	background-color: #f5f5f5 !important;
-	border-top: 1px solid #ddd !important;
+	background-color: #ddd !important;
 }
 .page-stuff table th,
 .page-stuff table td {
 	padding: 3px 5px !important;
+	white-space: nowrap; 
+}
+.page-stuff table td.type,
+.page-stuff table th.type {
+	text-align: right;
+	background: #eee !important;
 }
 .page-stuff .object .icons {
 	margin-right: .7em;
@@ -124,10 +132,16 @@ td > .AR:first-child:before {
 	height: 1em;
 	margin-right: 1px;
 }
-.page-stuff .panel {
-	margin-bottom: 6em;
-}
 .page-stuff thead .profession {
 	margin-right: .3em;
 }
-
+.page-stuff table {
+	table-layout: fixed;
+	width: auto !important;
+}
+.page-stuff.big {
+	overflow: auto;
+}
+.page-stuff.big table {
+	margin : 1em auto 2em auto;
+}
