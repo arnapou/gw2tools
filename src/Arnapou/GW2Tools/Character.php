@@ -17,53 +17,6 @@ class Character {
 	 *
 	 * @var array
 	 */
-	protected static $STATS = [
-		'Power/Precision/CritDamage'			 => "Berserker's",
-		'Power/CritDamage/Precision'			 => "Berserker's",
-		'Power/Healing/Precision'				 => "Zealot's",
-		'Power/Precision/Healing'				 => "Zealot's",
-		'Power/Toughness/Vitality'				 => "Soldier's",
-		'Power/Vitality/Toughness'				 => "Soldier's",
-		'Power/CritDamage/Vitality'				 => "Valkyrie",
-		'Power/Vitality/CritDamage'				 => "Valkyrie",
-		'Precision/Toughness/Power'				 => "Captain's",
-		'Precision/Power/Toughness'				 => "Captain's",
-		'Precision/ConditionDamage/Power'		 => "Rampager's",
-		'Precision/Power/ConditionDamage'		 => "Rampager's",
-		'Precision/CritDamage/Power'			 => "Assassin's",
-		'Precision/Power/CritDamage'			 => "Assassin's",
-		'Toughness/Precision/Power'				 => "Knight's",
-		'Toughness/Power/Precision'				 => "Knight's",
-		'Toughness/Power/CritDamage'			 => "Cavalier's",
-		'Toughness/CritDamage/Power'			 => "Cavalier's",
-		'Toughness/Healing/Vitality'			 => "Nomad's",
-		'Toughness/Vitality/Healing'			 => "Nomad's",
-		'Toughness/Healing/ConditionDamage'		 => "Settler's",
-		'Toughness/ConditionDamage/Healing'		 => "Settler's",
-		'Vitality/Toughness/Power'				 => "Sentinel's",
-		'Vitality/Toughness/Power'				 => "Sentinel's",
-		'Vitality/Healing/ConditionDamage'		 => "Shaman's",
-		'Vitality/ConditionDamage/Healing'		 => "Shaman's",
-		'ConditionDamage/Precision/Power'		 => "Sinister",
-		'ConditionDamage/Power/Precision'		 => "Sinister",
-		'ConditionDamage/Vitality/Power'		 => "Carrion",
-		'ConditionDamage/Power/Vitality'		 => "Carrion",
-		'ConditionDamage/Toughness/Precision'	 => "Rabid",
-		'ConditionDamage/Precision/Toughness'	 => "Rabid",
-		'ConditionDamage/Vitality/Toughness'	 => "Dire",
-		'ConditionDamage/Toughness/Vitality'	 => "Dire",
-		'Healing/Toughness/Power'				 => "Cleric's",
-		'Healing/Power/Toughness'				 => "Cleric's",
-		'Healing/Vitality/Precision'			 => "Magi",
-		'Healing/Precision/Vitality'			 => "Magi",
-		'Healing/ConditionDamage/Toughness'		 => "Apothecary's",
-		'Healing/Toughness/ConditionDamage'		 => "Apothecary's",
-	];
-
-	/**
-	 *
-	 * @var array
-	 */
 	protected $data;
 
 	/**
@@ -312,71 +265,6 @@ class Character {
 		];
 	}
 
-	protected function formatItem($item) {
-		if (empty($item)) {
-			return null;
-		}
-		$return = [
-			'id' => $item['id'],
-		];
-		foreach (['level', 'rarity', 'name'] as $key) {
-			if (isset($item[$key])) {
-				$return[$key] = $item[$key];
-			}
-		}
-		if (!empty($item['icon'])) {
-			$return['icon'] = preg_replace('!^.*file/(.*?)\.png$!i', '/api/render-file/$1.png', $item['icon']);
-		}
-		else {
-			$return['icon'] = '/assets/images/nothing.png';
-		}
-		if (isset($item['details'])) {
-			foreach (['type', 'defense', 'weight_class'] as $key) {
-				if (isset($item['details'][$key])) {
-					$return[$key] = $item['details'][$key];
-				}
-			}
-			if (isset($item['details']['infix_upgrade'])) {
-				if (isset($item['details']['infix_upgrade']['buff'])) {
-					if (isset($item['details']['infix_upgrade']['buff']['description'])) {
-						$return['buff'] = $item['details']['infix_upgrade']['buff']['description'];
-					}
-				}
-				if (isset($item['details']['infix_upgrade']['attributes'])) {
-					$attributes = $item['details']['infix_upgrade']['attributes'];
-					if (!empty($attributes)) {
-						usort($attributes, function($a, $b) {
-							if ($a['modifier'] == $b['modifier']) {
-								return 0;
-							}
-							return $a['modifier'] < $b['modifier'] ? 1 : -1;
-						});
-						$tmp = [];
-						foreach ($attributes as $attribute) {
-							$tmp[$attribute['attribute']] = $attribute['modifier'];
-						}
-						$attributes = $tmp;
-						if (count($attributes) >= 7) {
-							$return['stats_name'] = 'Celestial';
-						}
-						else {
-							$return['stats'] = implode('/', array_keys($attributes));
-							if (isset(self::$STATS[$return['stats']])) {
-								$return['stats_name'] = self::$STATS[$return['stats']];
-							}
-						}
-						if (isset($return['stats'])) {
-							$return['stats'] = str_replace('CritDamage', 'Ferocity', $return['stats']);
-							$return['stats'] = str_replace('ConditionDamage', 'Condition', $return['stats']);
-						}
-						$return['attributes'] = $attributes;
-					}
-				}
-			}
-		}
-		return $return;
-	}
-
 	public function getInventory() {
 		if (isset($this->computed['inventory'])) {
 			return $this->computed['inventory'];
@@ -419,7 +307,7 @@ class Character {
 								continue;
 							}
 							if (isset($objects[$object['id']])) {
-								$obj = $this->formatItem($objects[$object['id']]);
+								$obj = $this->apiClient->formatItem($objects[$object['id']]);
 								if (!isset($obj['type']) || !isset($obj['rarity']) ||
 									!in_array($obj['rarity'], ['Exotic', 'Ascended', 'Legendary'])) {
 									continue;
@@ -428,7 +316,7 @@ class Character {
 									$upgrades = [];
 									foreach ($object['upgrades'] as $upgrade) {
 										if (isset($objects[$upgrade])) {
-											$upgrades[] = $this->formatItem($objects[$upgrade]);
+											$upgrades[] = $this->apiClient->formatItem($objects[$upgrade]);
 										}
 									}
 									$obj['upgrades'] = $upgrades;
@@ -437,13 +325,13 @@ class Character {
 									$infusions = [];
 									foreach ($object['infusions'] as $infusion) {
 										if (isset($objects[$upgrade])) {
-											$infusions[] = $this->formatItem($objects[$infusion]);
+											$infusions[] = $this->apiClient->formatItem($objects[$infusion]);
 										}
 									}
 									$obj['infusions'] = $infusions;
 								}
 								if (isset($object['skin']) && isset($skins[$object['skin']])) {
-									$skin = $this->formatItem($skins[$object['skin']]);
+									$skin = $this->apiClient->formatItem($skins[$object['skin']]);
 									if (isset($skin['icon'])) {
 										$obj['icon'] = $skin['icon'];
 									}
@@ -501,16 +389,16 @@ class Character {
 					}
 					$obj = [
 						'id'	 => $equipment['id'],
-						'icon'	 => '/assets/images/nothing.png',
+						'icon'	 => ApiClient::IMG_NOTHING,
 					];
 					if (isset($objects[$equipment['id']])) {
-						$obj = $this->formatItem($objects[$equipment['id']]);
+						$obj = $this->apiClient->formatItem($objects[$equipment['id']]);
 					}
 					if (isset($equipment['upgrades'])) {
 						$upgrades = [];
 						foreach ($equipment['upgrades'] as $upgrade) {
 							if (isset($objects[$upgrade])) {
-								$upgrades[] = $this->formatItem($objects[$upgrade]);
+								$upgrades[] = $this->apiClient->formatItem($objects[$upgrade]);
 							}
 						}
 						$obj['upgrades'] = $upgrades;
@@ -519,13 +407,13 @@ class Character {
 						$infusions = [];
 						foreach ($equipment['infusions'] as $infusion) {
 							if (isset($objects[$upgrade])) {
-								$infusions[] = $this->formatItem($objects[$infusion]);
+								$infusions[] = $this->apiClient->formatItem($objects[$infusion]);
 							}
 						}
 						$obj['infusions'] = $infusions;
 					}
 					if (isset($equipment['skin']) && isset($skins[$equipment['skin']])) {
-						$skin = $this->formatItem($skins[$equipment['skin']]);
+						$skin = $this->apiClient->formatItem($skins[$equipment['skin']]);
 						if (isset($skin['icon'])) {
 							$obj['icon'] = $skin['icon'];
 						}

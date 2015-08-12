@@ -22,10 +22,30 @@ use Arnapou\Toolbox\Http\ResponsePng;
 class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	protected $menu = [
-		'account'	 => 'Account',
-		'characters' => 'Characters',
-		'stuff'		 => 'Stuff stats',
-		'attributes' => 'Attributes',
+		'account'	 => [
+			'label'	 => 'Account',
+			'owner'	 => false,
+		],
+		'characters' => [
+			'label'	 => 'Characters',
+			'owner'	 => false,
+		],
+		'stuff'		 => [
+			'label'	 => 'Stuff stats',
+			'owner'	 => false,
+		],
+		'attributes' => [
+			'label'	 => 'Attributes',
+			'owner'	 => false,
+		],
+//		'bank' => [
+//			'label'	 => 'Bank',
+//			'owner'	 => true,
+//		],
+		'collectibles' => [
+			'label'	 => 'Collectibles',
+			'owner'	 => true,
+		],
 	];
 
 	public function configure() {
@@ -45,6 +65,17 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 		$this->addRoute('{code}/{menu}/content.html', [$this, 'routeMenuContent'])->assert('code', $regexpCode)->assert('menu', $regexpMenu);
 		$this->addRoute('{code}/character/{name}', [$this, 'routeCharacter'])->assert('code', $regexpCode);
 		$this->addRoute('{code}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('code', $regexpCode);
+	}
+
+	public function getAccessToken($code) {
+		$token = $this->getService()->getRequest()->cookies->get('accesstoken');
+		$vault = TokenVault::getInstance();
+		if ($vault->exists($token)) {
+			if ($code == $vault->get($token)) {
+				return $token;
+			}
+		}
+		return null;
 	}
 
 	public function getMenu() {
@@ -112,7 +143,7 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 				if (isset($characters[$name])) {
 					$context = [
 						'apiclient'	 => $apiClient,
-						'account'	 => $apiClient->v2_account(),
+						'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 						'char'		 => $characters[$name],
 					];
 					return $this->renderPage('character/page.twig', $context);
@@ -133,7 +164,7 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 				if (isset($characters[$name])) {
 					$context = [
 						'apiclient'	 => $apiClient,
-						'account'	 => $apiClient->v2_account(),
+						'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 						'char'		 => $characters[$name],
 					];
 					return $this->renderPage('character/content.twig', $context);
@@ -151,7 +182,7 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 			if ($apiClient) {
 				$context = [
 					'apiclient'	 => $apiClient,
-					'account'	 => $apiClient->v2_account(),
+					'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 					'menu'		 => $menu,
 				];
 				return $this->renderPage($menu . '/page.twig', $context);
@@ -168,7 +199,7 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 			if ($apiClient) {
 				$context = [
 					'apiclient'	 => $apiClient,
-					'account'	 => $apiClient->v2_account(),
+					'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 					'menu'		 => $menu,
 				];
 				return $this->renderPage($menu . '/content.twig', $context);

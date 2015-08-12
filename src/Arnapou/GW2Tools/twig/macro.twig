@@ -1,0 +1,30 @@
+
+
+{% macro amount(value) %}
+	{% set g = (value / 10000)|round(0, 'floor') %}
+	{% set s = (value / 100)|round(0, 'floor') % 100 %}
+	{% set c = value % 100 %}
+	{% if g %}
+		<span class="gold">{{ g }}</span>
+		<span class="silver">{{ s }}</span>
+		<span class="copper">{{ c }}</span>
+	{% elseif s %}
+		<span class="silver">{{ s }}</span>
+		<span class="copper">{{ c }}</span>
+	{% else %}
+		<span class="copper">{{ c }}</span>
+	{% endif %}
+{% endmacro %}
+
+{% macro amount_txt(value) %}
+	{% set g = (value / 10000)|round(0, 'floor') %}
+	{% set s = (value / 100)|round(0, 'floor') % 100 %}
+	{% set c = value % 100 %}
+	{% if g %}
+		{{ g }}g {{ s }}s {{ c }}
+	{% elseif s %}
+		{{ s }}s {{ c }}
+	{% else %}
+		{{ c }}
+	{% endif %}
+{% endmacro %}

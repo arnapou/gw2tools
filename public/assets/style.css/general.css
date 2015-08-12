@@ -11,6 +11,26 @@ body {
 	white-space: normal !important;
 }
 
+.gold, .silver, .copper {
+	padding-right: 18px;
+	margin: 0 .2em;
+	display: inline-block;
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+.gold {
+	color: #c9a900;
+	background-image: url(./images/coin-gold.png);
+}
+.silver {
+	color: #888;
+	background-image: url(./images/coin-silver.png);
+}
+.copper {
+	color: #b1672d;
+	background-image: url(./images/coin-copper.png);
+}
+
 img.craft,
 img.profession {
 	height: 1.42857em;
@@ -144,4 +164,56 @@ td > .AR:first-child:before {
 }
 .page-stuff.big table {
 	margin : 1em auto 2em auto;
+}
+
+/* owner specific */
+.text-owner:before {
+	content: "\2605";
+	color: red;
+	margin-right: .5em;
+}
+
+#owner-legend {
+	display: none;
+	width: 60em;
+	margin-top: 5em;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+#owner-legend em {
+	color: red;
+}
+
+
+.page-collectibles .collectible {
+	display: inline-block;
+	vertical-align: middle;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-bottom: 1px solid #aaa;
+	border-right: 1px solid #aaa;
+	box-sizing: border-box;
+	width: 10%;
+	position: relative;
+}
+.page-collectibles .collectible img {
+	width: 100%;
+}
+.page-collectibles .collectible .count {
+	position: absolute;
+	color: white;
+	right: 5px;
+	bottom: 0px;
+	text-shadow: 1px 1px 2px black, -1px 1px 2px black, 1px -1px 2px black, -1px -1px 2px black;
+}
+.page-collectibles .collectible.empty img {
+	opacity: .4;
+}
+.page-collectibles .collectible.empty img.nothing {
+	opacity: 1;
+}
+.page-collectibles .collectible.empty .count {
+	display: none;
 }

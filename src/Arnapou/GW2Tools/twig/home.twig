@@ -15,32 +15,3 @@
 		</button>
 	</div>
 {% endblock %}
-
-{% block js %}
-	{{ parent() }}
-
-	<script>
-		$(function () {
-			$('#access-token-form button').click(function () {
-				var token = String($('#access-token-form input[name=access_token]').val());
-				if (!token.match(/^[A-F0-9-]{70,80}$/)) {
-					alert('The provided token is not valid.');
-				}
-				else {
-					$.getJSON('/api/token-check', {token: token})
-							.done(function (json) {
-								if (json && json.code) {
-									window.location = '/api/' + json.code + '/';
-								}
-							})
-							.fail(function (json) {
-								if (json && json.error) {
-									alert(json.error);
-								}
-							});
-
-				}
-			});
-		});
-	</script>
-{% endblock %}

@@ -27,21 +27,27 @@
 {% block menu %}
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
-			{% for k, v in module.menu %}
-				{% if k == 'characters' %}
+			{% for key, item in module.menu %}
+				{% if key == 'characters' %}
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ v }} <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							{{ item.label }} <span class="caret"></span>
+						</a>
 						<ul class="dropdown-menu">
-							<li><a href="../{{ k }}/">See all</a></li>
+							<li><a href="../{{ key }}/">See all</a></li>
 							<li role="separator" class="divider"></li>
 							{% for char in apiclient.characternames %}
 								<li><a href="../character/{{ char }}">{{ char }}</a></li>
 							{% endfor %}
 						</ul>
 					</li>
-				{% else %}
-					<li{% if menu == k %} class="active"{% endif %}>
-						<a href="../{{ k }}/">{{ v }}</a>
+				{% elseif not item.owner %}
+					<li class="{{ menu == key ? 'active' : '' }}">
+						<a href="../{{ key }}/">{{ item.label }}</a>
+					</li>
+				{% elseif account.token %}
+					<li class="{{ menu == key ? 'active' : '' }}">
+						<a href="../{{ key }}/" class="text-owner">{{ item.label }}</a>
 					</li>
 				{% endif %}
 			{% endfor %}
@@ -57,7 +63,7 @@
 {% block content %}
 
 	<div class="panel panel-default page-{{ menu }}">
-		<div class="panel-heading">{{ module.menu[menu] }}</div>
+		<div class="panel-heading">{{ module.menu[menu].label }}</div>
 		<div class="panel-body" data-content="ajax" data-src="./content.html">
 			<div class="spinner-loader"></div>
 		</div>

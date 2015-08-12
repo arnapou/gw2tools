@@ -1,0 +1,47 @@
+
+{% import "macro.twig" as macro %}
+
+{% if account.token %}
+
+	{% set collectibles = apiclient.collectibles %}
+
+	{% set index = 0 %}
+	<div class="row">
+		{% for category in collectibles %}
+			<div class="col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="pull-right">
+							{{ macro.amount(category.sum_min) }} &#8210; {{ macro.amount(category.sum_max) }}
+						</div>
+						{{ category.name }}
+					</div>
+					<div class="panel-body">
+						{% for item in category.items %}
+							<div class="collectible {{ item.count ? '' : 'empty' }}">
+								{% if item.id %}
+									<a href="http://db.dulfy.net/item/{{ item.id }}" target="_blank" title="{{ item.price.title }}">
+										<img src="{{ item.icon }}" />
+										<span class="count">{{ item.count }}</span>
+									</a>
+								{% else %}
+									<img src="/assets/images/nothing.png" class="nothing" />
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{% set index = index + 1 %}
+			{% if index % 2 == 0 %}
+			</div>
+			<div class="row">
+			{% endif %}
+		{% endfor %}
+	</div>
+
+{% else %}
+
+	{% include "not-owner-message.twig" %}
+
+{% endif %}

@@ -22,6 +22,12 @@
 		<div class="container" id="container">
 			{% block content %}
 			{% endblock %}
+		
+			{% if account.token %}
+				<div id="owner-legend">
+					<em class="text-owner">The little red star means that the information is only visible by the account owner: you are free to share the link safely.</em>
+				</div>
+			{% endif %}
 		</div>
 		{% block js %}
 			<script src="/assets/jquery.js?{{ config.version }}"></script>

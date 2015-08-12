@@ -25,5 +25,11 @@
 				{% endfor %}
 			</td>
 		</tr>
+		{% if account.token %}
+			<tr>
+				<td>Token</td>
+				<td class="text-owner">{{ account.token }}</td>
+			</tr>
+		{% endif %}
 	</tbody>
 </table>
