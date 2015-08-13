@@ -1,6 +1,6 @@
 
 body {
-	padding-bottom: 3em;
+	padding-bottom: 5em;
 }
 
 .text-danger[data-toggle="tooltip"] {
@@ -10,6 +10,8 @@ body {
 .tooltip {
 	white-space: normal !important;
 }
+
+/************************************************/
 
 .gold, .silver, .copper {
 	padding-right: 18px;
@@ -30,6 +32,8 @@ body {
 	color: #b1672d;
 	background-image: url(./images/coin-copper.png);
 }
+
+/************************************************/
 
 img.craft,
 img.profession {
@@ -58,20 +62,7 @@ img.item {
 	vertical-align: middle;
 }
 
-table.table {
-	margin: 0;
-}
-table.table > tbody tr:first-child td {
-	border-top: 0;
-}
-
-.page-attributes tr td {
-	width: 10%;
-	white-space: nowrap;
-}
-.page-attributes tr td:first-child {
-	width: auto;
-}
+/************************************************/
 
 td > .AR:before {
 	content: ' / ';
@@ -83,6 +74,18 @@ td > .AR:first-child:before {
 	display: none;
 	margin: 0;
 }
+
+/************************************************/
+
+.page-attributes tr td {
+	width: 10%;
+	white-space: nowrap;
+}
+.page-attributes tr td:first-child {
+	width: auto;
+}
+
+/************************************************/
 
 .page-character tr.object td:first-child {
 	width: 3.5em;
@@ -112,6 +115,7 @@ td > .AR:first-child:before {
 	color: #999;
 }
 
+/************************************************/
 
 .page-stuff table th {
 	border: 0 !important;
@@ -166,13 +170,13 @@ td > .AR:first-child:before {
 	margin : 1em auto 2em auto;
 }
 
-/* owner specific */
+/************************************************/
+
 .text-owner:before {
 	content: "\2605";
 	color: red;
 	margin-right: .5em;
 }
-
 #owner-legend {
 	display: none;
 	width: 60em;
@@ -181,39 +185,49 @@ td > .AR:first-child:before {
 	margin-right: auto;
 	text-align: center;
 }
-
 #owner-legend em {
 	color: red;
 }
 
+/************************************************/
 
-.page-collectibles .collectible {
+.slots .slot {
 	display: inline-block;
 	vertical-align: middle;
+	box-sizing: border-box;
+	width: 52px;
+	height: 52px;
+	position: relative;
 	border-top: 1px solid #000;
 	border-left: 1px solid #000;
-	border-bottom: 1px solid #aaa;
-	border-right: 1px solid #aaa;
-	box-sizing: border-box;
-	width: 10%;
-	position: relative;
+	border-bottom: 1px solid #a3847d;
+	border-right: 1px solid #a3847d;
+	background: #665349;
+	box-shadow: 0 0 3px black inset;
 }
-.page-collectibles .collectible img {
+.slots .slot img {
 	width: 100%;
+	height: 100%;
 }
-.page-collectibles .collectible .count {
+.slots .slot .count {
 	position: absolute;
 	color: white;
 	right: 5px;
 	bottom: 0px;
 	text-shadow: 1px 1px 2px black, -1px 1px 2px black, 1px -1px 2px black, -1px -1px 2px black;
 }
-.page-collectibles .collectible.empty img {
-	opacity: .4;
+.slots .slot.empty img {
+	opacity: .2;
 }
-.page-collectibles .collectible.empty img.nothing {
+.slots .slot.empty img.nothing {
 	opacity: 1;
 }
-.page-collectibles .collectible.empty .count {
+.slots .slot.empty .count {
 	display: none;
+}
+
+/************************************************/
+
+.page-bank .bank.slots {
+	margin: 1em 0;
 }

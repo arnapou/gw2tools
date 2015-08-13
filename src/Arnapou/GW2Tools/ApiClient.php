@@ -84,6 +84,16 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		}
 	}
 
+	public function getPrice($id) {
+		try {
+			return $this->getPrices([$id])[$id];
+		}
+		catch (\Exception $ex) {
+			
+		}
+		return null;
+	}
+
 	public function getPrices($ids) {
 		return $this->smartCaching('apiCommercePrices', __METHOD__, $ids, 1800);
 	}
@@ -97,6 +107,9 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 	public function getCharacters() {
 		$items = $this->v2_characters($this->v2_characters());
 		usort($items, function($a, $b) {
+			if (!isset($a['age'], $b ['age'])) {
+				return 0;
+			}
 			return $a['age'] == $b['age'] ? 0 : ($a['age'] < $b['age'] ? 1 : -1);
 		});
 		$characters = [];
@@ -104,6 +117,70 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 			$characters[$item['name']] = new Character($this, $item);
 		}
 		return $characters;
+	}
+
+	public function getBank() {
+		try {
+			$slots = $this->formatSlots($this->v2_account_bank());
+			$ids = [];
+			foreach ($slots as $slot) {
+				if ($slot && isset($slot['id'])) {
+					$ids[] = $slot['id'];
+				}
+			}
+			$prices = $this->getPrices($ids);
+			$banks = array_chunk($slots, 30);
+			$return = [];
+			foreach ($banks as $slots) {
+				$bank = [];
+				foreach ($slots as &$slot) {
+					$this->addPriceToItem($slot, $bank);
+				}
+				$bank['slots'] = $slots;
+				$return[] = $bank;
+			}
+			return $return;
+		}
+		catch (\Exception $ex) {
+			
+		}
+		return null;
+	}
+
+	protected function addPriceToItem(&$item, &$sum) {
+
+		if (!isset($sum['sum_min'])) {
+			$sum['sum_min'] = 0;
+		}
+		if (!isset($sum['sum_max'])) {
+			$sum['sum_max'] = 0;
+		}
+		if (!isset($item['id'], $item['count'])) {
+			return;
+		}
+		$price = $this->getPrice($item['id']);
+		if (empty($price)) {
+			return;
+		}
+		$n = $item['count'];
+		$min_unit = $price['buys']['unit_price'];
+		$max_unit = $price['sells']['unit_price'];
+
+		$item['price'] = [
+			'min'		 => $min_unit * $n,
+			'min_unit'	 => $min_unit,
+			'max_unit'	 => $max_unit,
+			'max'		 => $max_unit * $n,
+		];
+		$titleSingle = $this->getAmount($min_unit) . ' - ' . $this->getAmount($max_unit);
+		if ($n == 1) {
+			$item['price']['title'] = $titleSingle;
+		}
+		else {
+			$item['price']['title'] = $this->getAmount($min_unit * $n) . ' - ' . $this->getAmount($max_unit * $n) . ' / ' . $titleSingle;
+		}
+		$sum['sum_min'] += $min_unit * $n;
+		$sum['sum_max'] += $max_unit * $n;
 	}
 
 	public function getCollectibles() {
@@ -123,12 +200,6 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 				$items = [];
 				foreach ($category['items'] as $id) {
 					$items[$id] = isset($objects[$id]) ? $objects[$id] : null;
-					if (isset($prices[$id])) {
-						$items[$id]['price'] = [
-							'min_unit'	 => $prices[$id]['buys']['unit_price'],
-							'max_unit'	 => $prices[$id]['sells']['unit_price'],
-						];
-					}
 				}
 				$materials[$category['id']] = [
 					'id'	 => $category['id'],
@@ -148,20 +219,9 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 			}
 
 			foreach ($materials as &$category) {
-				$sum_min = 0;
-				$sum_max = 0;
 				foreach ($category['items'] as &$item) {
-					if (isset($item['count'], $item['price']) && $item['count'] > 0) {
-						$sum_min += $item['count'] * $item['price']['min_unit'];
-						$sum_max += $item['count'] * $item['price']['max_unit'];
-						$item['price']['min'] = $item['count'] * $item['price']['min_unit'];
-						$item['price']['max'] = $item['count'] * $item['price']['max_unit'];
-						$item['price']['title'] = $this->getAmount($item['price']['min']) . ' - ' . $this->getAmount($item['price']['max'])
-							. ' / ' . $this->getAmount($item['price']['min_unit']) . ' - ' . $this->getAmount($item['price']['max_unit']);
-					}
+					$this->addPriceToItem($item, $category);
 				}
-				$category['sum_min'] = $sum_min;
-				$category['sum_max'] = $sum_max;
 			}
 
 			return $materials;
@@ -234,7 +294,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 
 	public function getItem($id) {
 		try {
-			return $this->clientV2->apiItems($id)->execute(self::RETENTION)->getData()[0];
+			return $this->getItems([$id])[$id];
 		}
 		catch (\Exception $ex) {
 			
@@ -251,6 +311,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		}
 		try {
 			if (is_array($ids)) {
+				$ids = array_unique($ids);
 				$cache = $this->clientV2->getRequestManager()->getCache();
 				$objectsFromCache = [];
 				$idsToRequest = [];
@@ -265,15 +326,24 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 				}
 				$return = $objectsFromCache;
 				if (!empty($idsToRequest)) {
-					$chunks = array_chunk($idsToRequest, 100);
-					$objects = [];
-					foreach ($chunks as $chunk) {
-						$objects = $this->clientV2->$method($chunk)->execute($retention)->getData();
-						foreach ($objects as $object) {
-							if (isset($object['id'])) {
-								$cache->set($cachePrefix . ':' . $object['id'], $object, $retention);
-								$return[$object['id']] = $object;
-							}
+					$objects = $this->clientV2->$method($idsToRequest)->execute($retention)->getAllData();
+					$responseIds = [] ;
+					foreach ($objects as $object) {
+						if (isset($object['id'])) {
+							$cache->set($cachePrefix . ':' . $object['id'], $object, $retention);
+							$return[$object['id']] = $object;
+							$responseIds[] =$object['id'];
+						}
+					}
+					if(empty($responseIds)) {
+						$notFoundIds = $idsToRequest;
+					}
+					else {
+						$notFoundIds = array_diff($idsToRequest, $responseIds);
+					}
+					if(!empty($notFoundIds)){
+						foreach($notFoundIds as $id) {
+							$cache->set($cachePrefix . ':' . $id, [], $retention);
 						}
 					}
 				}
@@ -300,7 +370,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 
 	public function getSkin($id) {
 		try {
-			return $this->clientV2->apiSkins($id)->execute(self::RETENTION)->getData()[0];
+			return $this->getSkins([$id])[$id];
 		}
 		catch (\Exception $ex) {
 			
@@ -373,6 +443,95 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 					}
 				}
 			}
+		}
+
+		return $return;
+	}
+
+	/**
+	 * 
+	 * @param array $slots
+	 * @return array
+	 */
+	public function formatSlots($slots) {
+		$objects = [];
+		$skins = [];
+		foreach ($slots as $slot) {
+			$objects[] = $slot['id'];
+			if (isset($slot['skin'])) {
+				$skins[] = $slot['skin'];
+			}
+			if (isset($slot['upgrades'])) {
+				foreach ($slot['upgrades'] as $upgrade) {
+					$objects[] = $upgrade;
+				}
+			}
+			if (isset($slot['infusions'])) {
+				foreach ($slot['infusions'] as $infusion) {
+					$objects[] = $infusion;
+				}
+			}
+		}
+		$objects = $this->getItems($objects);
+		$skins = $this->getSkins($skins);
+
+		$return = [];
+		foreach ($slots as $index => $slot) {
+			$slot = $this->formatSlot($slot);
+			$return[$index] = $slot;
+		}
+		return $return;
+	}
+
+	/**
+	 * 
+	 * @param array $slot
+	 * @return array
+	 */
+	public function formatSlot($slot) {
+		if (!isset($slot['id'])) {
+			return null;
+		}
+		$return = $slot;
+		$obj = $this->formatItem($this->getItem($slot['id']));
+		if (empty($obj)) {
+			return [
+				'id'	 => $slot['id'],
+				'icon'	 => self::IMG_NOTHING,
+			];
+		}
+		foreach ($obj as $key => $value) {
+			$return[$key] = $value;
+		}
+		if (isset($slot['upgrades'])) {
+			$return['upgrades'] = [];
+			foreach ($slot['upgrades'] as $upgrade) {
+				$obj = $this->getItem($upgrade);
+				if ($obj) {
+					$return['upgrades'][] = $this->formatItem($obj);
+				}
+			}
+		}
+		if (isset($slot['infusions'])) {
+			$return['infusions'] = [];
+			foreach ($slot['infusions'] as $infusion) {
+				$obj = $this->getItem($infusion);
+				if ($obj) {
+					$return['infusions'][] = $this->formatItem($obj);
+				}
+			}
+		}
+		if (isset($slot['skin'])) {
+			$skin = $this->formatItem($this->getSkin($slot['skin']));
+			if ($skin) {
+				if (isset($skin['icon'])) {
+					$return['icon'] = $skin['icon'];
+				}
+				if (isset($skin['name'])) {
+					$return['name'] = $skin['name'];
+				}
+			}
+			unset($slot['skin']);
 		}
 		return $return;
 	}

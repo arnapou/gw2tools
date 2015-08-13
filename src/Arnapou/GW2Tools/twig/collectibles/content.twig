@@ -8,7 +8,7 @@
 	{% set index = 0 %}
 	<div class="row">
 		{% for category in collectibles %}
-			<div class="col-sm-6">
+			<div class="col-xs-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<div class="pull-right">
@@ -16,9 +16,9 @@
 						</div>
 						{{ category.name }}
 					</div>
-					<div class="panel-body">
+					<div class="panel-body slots">
 						{% for item in category.items %}
-							<div class="collectible {{ item.count ? '' : 'empty' }}">
+							<div class="slot {{ item.count ? '' : 'empty' }}">
 								{% if item.id %}
 									<a href="http://db.dulfy.net/item/{{ item.id }}" target="_blank" title="{{ item.price.title }}">
 										<img src="{{ item.icon }}" />

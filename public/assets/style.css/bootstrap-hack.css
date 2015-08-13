@@ -1,0 +1,12 @@
+
+.container {
+    width: 1170px !important;
+}
+
+table.table {
+	margin: 0;
+}
+
+table.table > tbody tr:first-child td {
+	border-top: 0;
+}

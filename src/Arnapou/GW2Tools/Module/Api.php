@@ -22,27 +22,27 @@ use Arnapou\Toolbox\Http\ResponsePng;
 class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	protected $menu = [
-		'account'	 => [
+		'account'		 => [
 			'label'	 => 'Account',
 			'owner'	 => false,
 		],
-		'characters' => [
+		'characters'	 => [
 			'label'	 => 'Characters',
 			'owner'	 => false,
 		],
-		'stuff'		 => [
+		'stuff'			 => [
 			'label'	 => 'Stuff stats',
 			'owner'	 => false,
 		],
-		'attributes' => [
+		'attributes'	 => [
 			'label'	 => 'Attributes',
 			'owner'	 => false,
 		],
-//		'bank' => [
-//			'label'	 => 'Bank',
-//			'owner'	 => true,
-//		],
-		'collectibles' => [
+		'bank'			 => [
+			'label'	 => 'Bank',
+			'owner'	 => true,
+		],
+		'collectibles'	 => [
 			'label'	 => 'Collectibles',
 			'owner'	 => true,
 		],
@@ -261,6 +261,13 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 		Directory::createIfNotExists($path);
 
 		$client = ApiClient::EN($path);
+
+//		// debug purpose
+//		$client->getClientV2()->getRequestManager()->getEventListener()->bind('onRequest', function($event) {
+//			$line = round($event['time'] * 1000) . " ms \t\t" . $event['uri'];
+//			file_put_contents(__DIR__ . '/../../../../requests.log', $line . "\n", FILE_APPEND);
+//		});
+
 		if ($token) {
 			$client->setAccessToken($token);
 		}
