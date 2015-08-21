@@ -28,19 +28,23 @@ $(function () {
 	$('#access-token-form button').click(function () {
 		var token = String($('#access-token-form input[name=access_token]').val());
 		if (!token.match(/^[A-F0-9-]{70,80}$/)) {
-			alert('The provided token is not valid.');
+			bootbox.alert('The provided token is not valid.');
 		}
 		else {
+			$('.alert.token-error').fadeOut(400);
 			$.getJSON('/api/token-check', {token: token})
 					.done(function (json) {
 						if (json && json.code) {
 							Cookies.set('accesstoken', token, {expires: cookieRetention});
 							window.location = '/api/' + json.code + '/';
 						}
+						if (json && json.error) {
+							bootbox.alert(json.error);
+						}
 					})
 					.fail(function (json) {
 						if (json && json.error) {
-							alert(json.error);
+							bootbox.alert(json.error);
 						}
 					});
 

@@ -11,7 +11,10 @@
 
 namespace Arnapou\GW2Tools;
 
+use Arnapou\GW2Tools\Exception\TokenException;
 use Arnapou\Toolbox\Functions\Directory;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class TokenVault extends \Arnapou\Toolbox\Vault\PhpDataVault {
 
@@ -34,16 +37,73 @@ class TokenVault extends \Arnapou\Toolbox\Vault\PhpDataVault {
 		return self::$instance;
 	}
 
-	public function set($key, $value) {
-		parent::set($key, $value);
-		parent::set($value, $key);
-	}
-
-	public function remove($key) {
-		if ($this->exists($key)) {
-			$value = $this->get($key);
-			parent::remove($key);
-			parent::remove($value);
+	static public function cleanTokens() {
+		$path = Service::getInstance()->getPathData() . '/tokens';
+		Directory::createIfNotExists($path);
+		$vault = self::getInstance();
+		foreach (Finder::create()->name('*.php')->in($path) as /* @var $file SplFileInfo */ $file) {
+			try {
+				$fh = fopen($file->getPathname(), 'r');
+				$content = fread($fh, 4096);
+				fclose($fh);
+				if (preg_match('!^<\?php\n/\* key = (.*?) \*/!si', $content, $m)) {
+					$key = $m[1];
+					$length = strlen($key);
+					try {
+						if ($length == 10) { // simple code
+							$value = $vault->get($key);
+							$vault->remove($key);
+							$vault->remove($value);
+							if (!empty($value)) {
+								User::create($value, $key)->save();
+							}
+							echo "migrate [$key]\n";
+						}
+						elseif ($length > 70 && $length < 75) { // simple token
+							$value = $vault->get($key);
+							$vault->remove($key);
+							$vault->remove($value);
+							if (!empty($value)) {
+								User::create($key, $value)->save();
+							}
+							echo "migrate [$key]\n";
+						}
+						else {
+							if (strpos($key, 'token.') === 0) { // new token
+								$user = User::findByToken(substr($key, 6));
+							}
+							elseif (strpos($key, 'code.') === 0) { // new code
+								$user = User::findByCode(substr($key, 5));
+							}
+							if (empty($user)) {
+								$vault->remove($key);
+								echo "remove [$key]\n";
+							}
+							elseif (time() - $user->getLastaccess() > 86400 * 180) {
+								echo "expired [$key]\n";
+								$user->delete();
+							}
+							else {
+								try {
+									$user->getApiClient();
+									$user->save();
+									echo "user ok [$key]\n";
+								}
+								catch (TokenException $e) {
+									echo "delete  [$key]\n";
+									$user->delete();
+								}
+							}
+						}
+					}
+					catch (\Exception $e) {
+						echo $e->getMessage() . "\n";
+					}
+				}
+			}
+			catch (\Exception $e) {
+				
+			}
 		}
 	}
 

@@ -73,7 +73,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 			if (!isset($tokeninfo['id']) || !isset($tokeninfo['permissions'])) {
 				throw new TokenException('Invalid token');
 			}
-			foreach (['account', 'characters', 'inventories'] as $permission) {
+			foreach ([ 'tradingpost', 'account', 'characters', 'inventories'] as $permission) {
 				if (!in_array($permission, $tokeninfo['permissions'])) {
 					throw new TokenException('The token is missing permission "' . $permission . '"');
 				}
@@ -199,7 +199,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 			foreach ($categories as $category) {
 				$items = [];
 				foreach ($category['items'] as $id) {
-					$items[$id] = isset($objects[$id]) ? $objects[$id] : null;
+					$items[$id] = isset($objects[$id]) ? $this->formatItem($objects[$id]) : null;
 				}
 				$materials[$category['id']] = [
 					'id'	 => $category['id'],
@@ -327,22 +327,22 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 				$return = $objectsFromCache;
 				if (!empty($idsToRequest)) {
 					$objects = $this->clientV2->$method($idsToRequest)->execute($retention)->getAllData();
-					$responseIds = [] ;
+					$responseIds = [];
 					foreach ($objects as $object) {
 						if (isset($object['id'])) {
 							$cache->set($cachePrefix . ':' . $object['id'], $object, $retention);
 							$return[$object['id']] = $object;
-							$responseIds[] =$object['id'];
+							$responseIds[] = $object['id'];
 						}
 					}
-					if(empty($responseIds)) {
+					if (empty($responseIds)) {
 						$notFoundIds = $idsToRequest;
 					}
 					else {
 						$notFoundIds = array_diff($idsToRequest, $responseIds);
 					}
-					if(!empty($notFoundIds)){
-						foreach($notFoundIds as $id) {
+					if (!empty($notFoundIds)) {
+						foreach ($notFoundIds as $id) {
 							$cache->set($cachePrefix . ':' . $id, [], $retention);
 						}
 					}

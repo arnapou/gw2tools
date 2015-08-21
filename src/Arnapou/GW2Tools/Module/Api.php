@@ -14,7 +14,9 @@ namespace Arnapou\GW2Tools\Module;
 use Arnapou\GW2Tools\ApiClient;
 use Arnapou\GW2Tools\Exception\TokenException;
 use Arnapou\GW2Tools\FileVault;
+use Arnapou\GW2Tools\Service;
 use Arnapou\GW2Tools\TokenVault;
+use Arnapou\GW2Tools\User;
 use Arnapou\Toolbox\Functions\Directory;
 use Arnapou\Toolbox\Http\ResponseJson;
 use Arnapou\Toolbox\Http\ResponsePng;
@@ -51,15 +53,23 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 	public function configure() {
 		parent::configure();
 
+		$path = $this->getService()->getPathCache() . '/gw2api';
+		Directory::createIfNotExists($path);
+
 		$regexpCode = '[A-Za-z0-9]{10}';
 		$regexpMenu = implode('|', array_keys($this->menu));
 
+		// generic
 		$this->addRoute('', [$this, 'routeHome']);
 		$this->addRoute('token-check', [$this, 'routeTokenCheck']);
+
+		// proxy images
 		$this->addRoute('guild-emblem-{id}.png', [$this, 'routeImageGuildEmblem'])->assert('id', '[A-F0-9-]{35,40}');
 		$this->addRoute('profession-{id}.png', [$this, 'routeImageProfession'])->assert('id', '[a-z]+');
 		$this->addRoute('crafting-{id}.png', [$this, 'routeImageCrafting'])->assert('id', '[a-z]+');
 		$this->addRoute('render-file/{id}.png', [$this, 'routeImageRenderFile'])->assert('id', '[A-F0-9]+/[0-9]+');
+
+		// user space
 		$this->addRoute('{code}/', [$this, 'routeHomeToken'])->assert('code', $regexpCode);
 		$this->addRoute('{code}/{menu}/', [$this, 'routeMenu'])->assert('code', $regexpCode)->assert('menu', $regexpMenu);
 		$this->addRoute('{code}/{menu}/content.html', [$this, 'routeMenuContent'])->assert('code', $regexpCode)->assert('menu', $regexpMenu);
@@ -69,11 +79,9 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	public function getAccessToken($code) {
 		$token = $this->getService()->getRequest()->cookies->get('accesstoken');
-		$vault = TokenVault::getInstance();
-		if ($vault->exists($token)) {
-			if ($code == $vault->get($token)) {
-				return $token;
-			}
+		$user = $this->getUserByCode($code);
+		if ($user && $user->getToken() == $token) {
+			return $token;
 		}
 		return null;
 	}
@@ -129,19 +137,37 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 			});
 	}
 
+	/**
+	 * 
+	 * @param string $code
+	 * @return User
+	 */
+	protected function getUserByCode($code) {
+		$user = User::findByCode($code);
+		if ($user) {
+			$user->setLastaccess()->save();
+			return $user;
+		}
+		return null;
+	}
+
 	public function routeHomeToken($code) {
-		$this->apiClientFromCode($code);
-		return $this->getService()->returnResponseRedirect('./account/');
+		$user = $this->getUserByCode($code);
+		if ($user) {
+			return $this->getService()->returnResponseRedirect('./account/');
+		}
 	}
 
 	public function routeCharacter($code, $name) {
 		try {
-			$apiClient = $this->apiClientFromCode($code);
-			if ($apiClient) {
+			$user = $this->getUserByCode($code);
+			if ($user) {
+				$apiClient = $user->getApiClient();
 				$characters = $apiClient->getCharacters();
 				$name = rawurldecode($name);
 				if (isset($characters[$name])) {
 					$context = [
+						'user'		 => $user,
 						'apiclient'	 => $apiClient,
 						'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 						'char'		 => $characters[$name],
@@ -157,12 +183,14 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	public function routeCharacterContent($code, $name) {
 		try {
-			$apiClient = $this->apiClientFromCode($code);
-			if ($apiClient) {
+			$user = $this->getUserByCode($code);
+			if ($user) {
+				$apiClient = $user->getApiClient();
 				$characters = $apiClient->getCharacters();
 				$name = rawurldecode($name);
 				if (isset($characters[$name])) {
 					$context = [
+						'user'		 => $user,
 						'apiclient'	 => $apiClient,
 						'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 						'char'		 => $characters[$name],
@@ -178,9 +206,11 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	public function routeMenu($code, $menu) {
 		try {
-			$apiClient = $this->apiClientFromCode($code);
-			if ($apiClient) {
+			$user = $this->getUserByCode($code);
+			if ($user) {
+				$apiClient = $user->getApiClient();
 				$context = [
+					'user'		 => $user,
 					'apiclient'	 => $apiClient,
 					'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 					'menu'		 => $menu,
@@ -195,9 +225,11 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 
 	public function routeMenuContent($code, $menu) {
 		try {
-			$apiClient = $this->apiClientFromCode($code);
-			if ($apiClient) {
+			$user = $this->getUserByCode($code);
+			if ($user) {
+				$apiClient = $user->getApiClient();
 				$context = [
+					'user'		 => $user,
 					'apiclient'	 => $apiClient,
 					'account'	 => $apiClient->v2_account() + ['token' => $this->getAccessToken($code)],
 					'menu'		 => $menu,
@@ -220,17 +252,12 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 			elseif (!preg_match('!^[A-F0-9-]{70,80}$!', $token)) {
 				throw new TokenException('Invalid token.');
 			}
-			$vault = TokenVault::getInstance();
 
-			$apiClient = $this->apiClientFromToken($token); // if no error is raised, the token is valid
-
-			if ($vault->exists($token)) {
-				$code = $vault->get($token);
+			$user = User::findByToken($token);
+			if (empty($user)) {
+				$user = User::create($token);
 			}
-			else {
-				$code = $vault->newKey();
-				$vault->set($code, $token);
-			}
+			$code = $user->getCode();
 
 			$data['code'] = $code;
 		}
@@ -240,46 +267,13 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 		return new ResponseJson($data);
 	}
 
-	/**
-	 * 
-	 * @return ApiClient
-	 */
-	protected function apiClientFromCode($code) {
-		$vault = TokenVault::getInstance();
-		if (!$vault->exists($code)) {
-			return null;
-		}
-		return $this->apiClientFromToken($vault->get($code));
-	}
-
-	/**
-	 * 
-	 * @return ApiClient
-	 */
-	protected function apiClientFromToken($token = null) {
-		$path = $this->getService()->getPathCache() . '/gw2api';
-		Directory::createIfNotExists($path);
-
-		$client = ApiClient::EN($path);
-
-//		// debug purpose
-//		$client->getClientV2()->getRequestManager()->getEventListener()->bind('onRequest', function($event) {
-//			$line = round($event['time'] * 1000) . " ms \t\t" . $event['uri'];
-//			file_put_contents(__DIR__ . '/../../../../requests.log', $line . "\n", FILE_APPEND);
-//		});
-
-		if ($token) {
-			$client->setAccessToken($token);
-		}
-		return $client;
-	}
-
 	protected function renderImage($callback) {
 		try {
-			$apiClient = $this->apiClientFromToken();
-			if ($apiClient) {
-				return $callback($apiClient);
-			}
+			$path = Service::getInstance()->getPathCache() . '/gw2api';
+			Directory::createIfNotExists($path);
+
+			$apiClient = ApiClient::EN($path);
+			return $callback($apiClient);
 		}
 		catch (\Exception $e) {
 			
