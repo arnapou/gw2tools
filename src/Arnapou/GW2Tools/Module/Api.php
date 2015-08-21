@@ -37,7 +37,7 @@ class Api extends \Arnapou\GW2Tools\AbstractModule {
 			'owner'	 => false,
 		],
 		'attributes'	 => [
-			'label'	 => 'Attributes',
+			'label'	 => 'Attributes (BETA)',
 			'owner'	 => false,
 		],
 		'bank'			 => [
