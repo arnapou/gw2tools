@@ -325,13 +325,13 @@ class Character {
 				return $equipments;
 			}
 			catch (\Exception $e) {
-
-				echo '<pre>';
-				echo $e->getMessage() . "\n";
-				echo $e->getTraceAsString() . "\n";
-
-				echo '</pre>';
-				exit;
+//
+//				echo '<pre>';
+//				echo $e->getMessage() . "\n";
+//				echo $e->getTraceAsString() . "\n";
+//
+//				echo '</pre>';
+//				exit;
 			}
 		}
 		return null;

@@ -88,7 +88,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		try {
 			return $this->getPrices([$id])[$id];
 		}
-		catch (\Exception $ex) {
+		catch (\Exception $e) {
 			
 		}
 		return null;
@@ -159,7 +159,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 			return;
 		}
 		$price = $this->getPrice($item['id']);
-		if (empty($price)) {
+		if (empty($price) || !isset($price['buys']) || !isset($price['sells'])) {
 			return;
 		}
 		$n = $item['count'];
