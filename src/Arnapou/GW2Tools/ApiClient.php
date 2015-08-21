@@ -343,7 +343,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 					}
 					if (!empty($notFoundIds)) {
 						foreach ($notFoundIds as $id) {
-							$cache->set($cachePrefix . ':' . $id, [], $retention);
+							$cache->set($cachePrefix . ':' . $id, ['id' => $id], $retention);
 						}
 					}
 				}
@@ -474,7 +474,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		}
 		$objects = $this->getItems($objects);
 		$skins = $this->getSkins($skins);
-
+		
 		$return = [];
 		foreach ($slots as $index => $slot) {
 			$slot = $this->formatSlot($slot);

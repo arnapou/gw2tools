@@ -37,8 +37,12 @@
 									<tr>
 										<td>Guild</td>
 										<td>
-											<img src="{{ char.guild.icon }}" class="emblem" />
-											{{ char.guild.fullname }}
+											{% if char.guild %}
+												<img src="{{ char.guild.icon }}" class="emblem" />
+												{{ char.guild.fullname }}
+											{% else %}
+												- none -
+											{% endif %}
 										</td>
 									</tr>
 								</tbody>
@@ -191,13 +195,13 @@
 				<div class="panel-body">
 					<table class="table table-condensed equipment">
 						<tbody>
-							{% for type, items in inventory %}
+							{% for type, item in inventory %}
 								{% if type in [	
 									'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
 									'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
 									'Speargun', 'Harpoon', 'Trident'
 								] %}
-									{{ _self.object(items) }}
+									{{ _self.object(item) }}
 								{% endif %}
 							{% endfor %}
 						</tbody>
@@ -212,9 +216,9 @@
 				<div class="panel-body">
 					<table class="table table-condensed equipment">
 						<tbody>
-							{% for type, items in inventory %}
+							{% for type, item in inventory %}
 								{% if type in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
-									{{ _self.object(items, type) }}
+									{{ _self.object(item) }}
 								{% endif %}
 							{% endfor %}
 						</tbody>
@@ -229,9 +233,9 @@
 				<div class="panel-body">
 					<table class="table table-condensed equipment">
 						<tbody>
-							{% for type, items in inventory %}
+							{% for type, item in inventory %}
 								{% if type in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
-									{{ _self.object(items, type) }}
+									{{ _self.object(item) }}
 								{% endif %}
 							{% endfor %}
 						</tbody>
