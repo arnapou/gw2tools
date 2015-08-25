@@ -1,4 +1,5 @@
 
+{% import "macro.twig" as macro %}
 
 {% block content %}
 
@@ -136,115 +137,177 @@
 
 	</div>
 
-	<div class="row">
+	<table class="stuff">
 		{% set equipment = char.equipments %}
+		{% set inventory = char.stuffinventory %}
+		<tbody>
+			<tr>
+				<td class="block">
+					<div class="panel panel-default">
 
-		<div class="col-xs-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">Weapons set 1</div>
-				<div class="panel-body">
-					{{ _self.objects(equipment, ['WeaponA1', 'WeaponA2']) }}
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">Weapons set 2</div>
-				<div class="panel-body">
-					{{ _self.objects(equipment, ['WeaponB1', 'WeaponB2']) }}
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">Weapons Aquatic</div>
-				<div class="panel-body">
-					{{ _self.objects(equipment, ['WeaponAquaticA', 'WeaponAquaticB']) }}
-				</div>
-			</div>
-		</div>
+						<div class="panel-heading">Weapons set 1</div>
+						<div class="panel-body">
+							{{ _self.objects(equipment, ['WeaponA1', 'WeaponA2']) }}
+						</div>
 
-		<div class="col-xs-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">Armor</div>
-				<div class="panel-body">
-					{{ _self.objects(equipment, ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic']) }}
-				</div>
-			</div>
-		</div>
+						<div class="panel-heading">Weapons set 2</div>
+						<div class="panel-body">
+							{{ _self.objects(equipment, ['WeaponB1', 'WeaponB2']) }}
+						</div>
 
-		<div class="col-xs-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">Trinkets</div>
-				<div class="panel-body">
-					{{ _self.objects(equipment, ['Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2']) }}
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">Backpack</div>
-				<div class="panel-body">
-					{{ _self.objects(equipment, ['Backpack']) }}
-				</div>
-			</div>
-		</div>
+						<div class="panel-heading">Weapons Aquatic</div>
+						<div class="panel-body">
+							{{ _self.objects(equipment, ['WeaponAquaticA', 'WeaponAquaticB']) }}
+						</div>
 
-	</div>
+					</div>
+				</td>
+				<td class="separator"></td>
+				<td class="block">
+					<div class="panel panel-default">
+
+						<div class="panel-heading">Armor</div>
+						<div class="panel-body">
+							{{ _self.objects(equipment, ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic']) }}
+						</div>
+
+					</div>
+				</td>
+				<td class="separator"></td>
+				<td class="block">
+					<div class="panel panel-default">
+
+						<div class="panel-heading">Trinkets</div>
+						<div class="panel-body">
+							{{ _self.objects(equipment, ['Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2']) }}
+						</div>
+
+						<div class="panel-heading">Backpack</div>
+						<div class="panel-body">
+							{{ _self.objects(equipment, ['Backpack']) }}
+						</div>
+
+					</div>
+				</td>
 				
-	<div class="row">
-		{% set inventory = char.inventory %}
+			</tr>
+			<tr>
+				<td class="block">
+					<div class="panel panel-default">
+					
+						<div class="panel-heading">Inventory</div>
+						<div class="panel-body">
+							<table class="table table-condensed equipment">
+								<tbody>
+									{% for type, item in inventory %}
+										{% if type in [	
+											'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
+											'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
+											'Speargun', 'Harpoon', 'Trident'
+										] %}
+											{{ _self.object(item) }}
+										{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+							
+					</div>
+				</td>
+				<td class="separator"></td>
+				<td class="block">
+					<div class="panel panel-default">
+					
+						<div class="panel-heading">Inventory</div>
+						<div class="panel-body">
+							<table class="table table-condensed equipment">
+								<tbody>
+									{% for type, item in inventory %}
+										{% if type in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
+											{{ _self.object(item) }}
+										{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+							
+					</div>
+				</td>
+				<td class="separator"></td>
+				<td class="block">
+					<div class="panel panel-default">
 
-		<div class="col-xs-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">Inventory Weapons</div>
-				<div class="panel-body">
-					<table class="table table-condensed equipment">
-						<tbody>
-							{% for type, item in inventory %}
-								{% if type in [	
-									'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
-									'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
-									'Speargun', 'Harpoon', 'Trident'
-								] %}
-									{{ _self.object(item) }}
-								{% endif %}
-							{% endfor %}
-						</tbody>
-					</table>
+						<div class="panel-heading">Inventory</div>
+						<div class="panel-body">
+							<table class="table table-condensed equipment">
+								<tbody>
+									{% for type, item in inventory %}
+										{% if type in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
+											{{ _self.object(item) }}
+										{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+					
+	{% if account.token %}
+		<div class="row">
+			{% set inventory = char.inventory %}
+
+			<div class="col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading text-owner">
+						<div class="pull-right">
+							{{ macro.amount(inventory.sum_min) }} &#8210; {{ macro.amount(inventory.sum_max) }}
+						</div>
+						Inventory
+					</div>
+					<div class="panel-body">
+						<table class="table table-condensed equipment">
+							<tbody>
+								{% for bag in inventory.bags %}
+									<tr>
+										<td class="slots">
+											<div class="slot bag">
+												{% if bag.container.id %}
+													<a href="http://db.dulfy.net/item/{{ bag.container.id }}" target="_blank" title="{{ bag.container.price.title }}">
+														<img src="{{ bag.container.icon }}" />
+													</a>
+												{% else %}
+													<img src="/assets/images/nothing.png" class="nothing" />
+												{% endif %}
+											</div>
+											
+											{% for item in bag.items %}
+												<div class="slot">
+													{% if item.id %}
+														<a href="http://db.dulfy.net/item/{{ item.id }}" target="_blank" title="{{ item.price.title }}">
+															<img src="{{ item.icon }}" />
+															{% if item.count > 1 %}
+																<span class="count">{{ item.count }}</span>
+															{% endif %}
+														</a>
+													{% endif %}
+												</div>
+											{% endfor %}
+											
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="col-xs-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">Inventory Armors</div>
-				<div class="panel-body">
-					<table class="table table-condensed equipment">
-						<tbody>
-							{% for type, item in inventory %}
-								{% if type in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
-									{{ _self.object(item) }}
-								{% endif %}
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</div>
 		</div>
-
-		<div class="col-xs-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">Inventory Trinkets</div>
-				<div class="panel-body">
-					<table class="table table-condensed equipment">
-						<tbody>
-							{% for type, item in inventory %}
-								{% if type in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
-									{{ _self.object(item) }}
-								{% endif %}
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-
-	</div>
+	{% endif %}
 {% endblock %}
 
 {% macro objects(equipment, types) %}

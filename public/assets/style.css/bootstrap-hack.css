@@ -10,3 +10,11 @@ table.table {
 table.table > tbody tr:first-child td {
 	border-top: 0;
 }
+
+.panel-heading {
+    border-top: 1px solid transparent;
+}
+
+.panel-heading:first-child {
+    border-top-width: 0;
+}

@@ -271,6 +271,57 @@ class Character {
 		}
 		if (isset($this->data['bags'])) {
 			try {
+
+				$priceids = [];
+				$ids = [];
+				$slots = [];
+				foreach ($this->data['bags'] as $bag) {
+					if (isset($bag['inventory'])) {
+						$ids[] = $bag['id'];
+						foreach ($bag['inventory'] as $object) {
+							if (empty($object) || !isset($object['id'])) {
+								continue;
+							}
+							$priceids[] = $object['id'];
+							$slots[] = $object;
+						}
+					}
+				}
+
+				$prices = $this->apiClient->getPrices($priceids);
+				$objects = $this->apiClient->getItems($ids);
+				$slots = $this->apiClient->formatSlots($slots);
+
+				$inventory = [];
+				foreach ($this->data['bags'] as $bag) {
+					if (isset($bag['inventory'])) {
+						$slots = $this->apiClient->formatSlots($bag['inventory']);
+						foreach ($slots as &$slot) {
+							$this->apiClient->addPriceToItem($slot, $inventory);
+						}
+						$inventory['bags'][] = [
+							'container'	 => $objects[$bag['id']],
+							'items'		 => $slots,
+						];
+					}
+				}
+
+				$this->computed['inventory'] = $inventory;
+				return $inventory;
+			}
+			catch (\Exception $e) {
+				
+			}
+		}
+		return null;
+	}
+
+	public function getStuffInventory() {
+		if (isset($this->computed['stuffinventory'])) {
+			return $this->computed['stuffinventory'];
+		}
+		if (isset($this->data['bags'])) {
+			try {
 				$slots = [];
 				foreach ($this->data['bags'] as $bag) {
 					if (isset($bag['inventory'])) {
@@ -296,7 +347,7 @@ class Character {
 					$inventory[$slot['type']][] = $slot;
 				}
 				ksort($inventory);
-				$this->computed['inventory'] = $inventory;
+				$this->computed['stuffinventory'] = $inventory;
 				return $inventory;
 			}
 			catch (\Exception $e) {

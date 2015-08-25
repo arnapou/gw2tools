@@ -62,7 +62,7 @@
 										{{ _self.object(obj) }}
 									{% endif %}
 								{% endfor %}
-								{% for objtype, items in char.inventory %}
+								{% for objtype, items in char.stuffinventory %}
 									{% if objtype == type %}
 										{% for obj in items %}
 											{{ _self.object(obj) }}

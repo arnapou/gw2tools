@@ -147,7 +147,7 @@ class ApiClient extends \Arnapou\GW2Api\SimpleClient {
 		return null;
 	}
 
-	protected function addPriceToItem(&$item, &$sum) {
+	public function addPriceToItem(&$item, &$sum) {
 
 		if (!isset($sum['sum_min'])) {
 			$sum['sum_min'] = 0;
