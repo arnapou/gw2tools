@@ -139,6 +139,7 @@
 
 	<table class="stuff">
 		{% set equipment = char.equipments %}
+		{% set tools     = char.tools %}
 		{% set inventory = char.stuffinventory %}
 		<tbody>
 			<tr>
@@ -250,6 +251,15 @@
 							</table>
 						</div>
 
+						<div class="panel-heading">Tools</div>
+						<div class="panel-body">
+							<table class="table table-condensed equipment">
+								<tbody>
+									{{ _self.objects(tools, ['Sickle', 'Axe', 'Pick'], true) }}
+								</tbody>
+							</table>
+						</div>
+
 					</div>
 				</td>
 			</tr>
@@ -310,17 +320,17 @@
 	{% endif %}
 {% endblock %}
 
-{% macro objects(equipment, types) %}
+{% macro objects(equipment, types, istool) %}
 	<table class="table table-condensed equipment">
 		<tbody>
 			{% for type in types %}
-				{{ _self.object(equipment[type]) }}
+				{{ _self.object(equipment[type], istool) }}
 			{% endfor %}
 		</tbody>
 	</table>
 {% endmacro %}
 
-{% macro object(obj) %}
+{% macro object(obj, istool) %}
 	{% if obj.id %}
 		<tr class="object" data-id="{{ obj.id }}">
 			<td>
@@ -328,6 +338,7 @@
 					<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon }}" class="item rarity-{{ obj.rarity }}" />
 				</a>
 			</td>
+			{% if not istool %}
 			<td>
 				{% for upgrade in obj.upgrades %}
 					<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
@@ -340,8 +351,11 @@
 					</a>
 				{% endfor %}
 			</td>
+			{% endif %}
 			<td>
-				{% if obj.stats_name and obj.stats %}
+				{% if istool %}
+					<span data-toggle="tooltip" class="stats rarity-{{ obj.rarity }}">{{ obj.name }}</span>
+				{% elseif obj.stats_name and obj.stats %}
 					<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
 				{% elseif obj.stats_name %}
 					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>

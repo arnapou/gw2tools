@@ -365,25 +365,34 @@ class Character {
 			try {
 				$slots = $this->apiClient->formatSlots($this->data['equipment']);
 
+				$tools = [];
 				$equipments = [];
 				foreach ($slots as $slot) {
-					if (!isset($slot['slot']) || in_array($slot['slot'], ['Sickle', 'Axe', 'Pick'])) {
+					if (!isset($slot['slot'])) {
 						continue;
 					}
-					$equipments[$slot['slot']] = $slot;
+					if (in_array($slot['slot'], ['Sickle', 'Axe', 'Pick'])) {
+						$tools[$slot['slot']] = $slot;
+					}
+					else {
+						$equipments[$slot['slot']] = $slot;
+					}
 				}
+				$this->computed['tools'] = $tools;
 				$this->computed['equipment'] = $equipments;
 				return $equipments;
 			}
 			catch (\Exception $e) {
-//
-//				echo '<pre>';
-//				echo $e->getMessage() . "\n";
-//				echo $e->getTraceAsString() . "\n";
-//
-//				echo '</pre>';
-//				exit;
+				
 			}
+		}
+		return null;
+	}
+
+	public function getTools() {
+		$this->getEquipments();
+		if (isset($this->computed['tools'])) {
+			return $this->computed['tools'];
 		}
 		return null;
 	}
