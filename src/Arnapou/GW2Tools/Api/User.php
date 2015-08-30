@@ -215,8 +215,10 @@ class User {
             'token'      => $token,
             'lastaccess' => time(),
             'rights'     => [
-                self::RIGHT_ACCOUNT,
-                self::RIGHT_CHARACTERS,
+                'account',
+                'character',
+                'characters',
+                'equipments',
             ],
         ];
         $object = new self($data);
