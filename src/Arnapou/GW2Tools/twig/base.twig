@@ -69,16 +69,14 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         {% for usr in users %}
-                                            {% if usr.code != code %}
-                                                <li title="{{ usr.account.permissions|join(', ') }}">
-                                                    <a href="/api/{{ usr.code }}/">{{ usr.account.name }}</a>
-                                                </li>
-                                            {% endif %}
+                                            <li title="{{ usr.account.permissions|join(', ') }}">
+                                                <a href="/api/{{ usr.code }}/">{{ usr.account.name }}</a>
+                                            </li>
                                         {% endfor %}
                                     </ul>
                                 </li>
                             {% elseif account %}
-                                    <li><p class="navbar-text"><b>{{ account.name }}</b></p></li>
+                                <li><p class="navbar-text"><b>{{ account.name }}</b></p></li>
                             {% endif %}
                         </ul>
                     {% endif %}

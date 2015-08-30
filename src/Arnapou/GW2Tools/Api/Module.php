@@ -228,14 +228,15 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
      * 
      * @return array
      */
-    public function getCookieUsers() {
+    public function getCookieUsers($all = false) {
         $users = [];
         foreach ($this->getCookieTokens() as $token) {
             try {
                 $user = $this->getUserByToken($token);
-                if (!empty($user)) {
-                    $account = $user->checkAccount();
-                    $users[] = $user;
+                if ($user && $user->checkAccount()) {
+                    if ($all || empty($this->user) || $user->getCode() !== $this->user->getCode()) {
+                        $users[] = $user;
+                    }
                 }
             }
             catch (Exception $e) {

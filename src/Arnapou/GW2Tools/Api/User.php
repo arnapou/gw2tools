@@ -181,7 +181,11 @@ class User {
      */
     public function checkAccount() {
         try {
-            return $this->getAccount();
+            $account = $this->getAccount();
+            if (empty($account->getName())) {
+                throw new InvalidTokenException();
+            }
+            return $account;
         }
         catch (InvalidTokenException $e) {
             $this->delete();
