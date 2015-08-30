@@ -1,35 +1,69 @@
 
+{% import "macro.twig" as macro %}
+
 <table class="table table-condensed">
-	<tbody>
-		<tr>
-			<td>Name</td>
-			<td><b>{{ account.name }}</b></td>
-		</tr>
-		<tr>
-			<td>Creation date</td>
-			<td>{{ account.created|date('Y-m-d H:i:s')|slice(0,16) }} <small>(UTC)</small></td>
-		</tr>
-		<tr>
-			<td>World</td>
-			<td>{{ apiclient.worldname(account.world) }}</td>
-		</tr>
-		<tr>
-			<td>Guilds</td>
-			<td>
-				{% for guildid in account.guilds %}
-					{% set guild = apiclient.guild(guildid) %}
-					<div>
-						<img src="{{ guild.icon }}" class="emblem" />
-						{{ guild.fullname }}
-					</div>
-				{% endfor %}
-			</td>
-		</tr>
-		{% if account.token %}
-			<tr>
-				<td>Token</td>
-				<td class="text-owner">{{ account.token }}</td>
-			</tr>
-		{% endif %}
-	</tbody>
+    <tbody>
+        <tr>
+            <td>Name</td>
+            <td><b>{{ account.name }}</b></td>
+        </tr>
+        <tr>
+            <td>Creation date</td>
+            <td>{{ account.created }} <small>(UTC)</small></td>
+        </tr>
+        <tr>
+            <td>World</td>
+            <td>{{ account.world.name }}</td>
+        </tr>
+        <tr>
+            <td>Guilds</td>
+            <td>
+                {% for guild in account.guilds %}
+                    <div>
+                        <img src="{{ guild|image }}" class="emblem" />
+                        {{ guild.fullname }}
+                    </div>
+                {% endfor %}
+            </td>
+        </tr>
+        {% if module.owner %}
+            <tr>
+                <td>Token</td>
+                <td class="text-owner">
+                    {{ account.accesstoken }}
+                    <span class="btn btn-default action-delete-token">Delete the token</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Permissions</td>
+                <td class="text-owner">
+                    {% for permission in module.permissionslist %}
+                        {% if account.haspermission(permission) %}
+                            <span class="label label-success">{{ permission }}</span>
+                        {% else %}
+                            <span class="label label-danger">{{ permission }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>Public access</td>
+                <td class="text-owner">
+                    <div class="rights">
+                        {% for right, txt in module.menu.rights %}
+                            {% set checked = user.hasRight(right) %}
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" {{ checked ? 'checked="checked"' : '' }} value="{{ right }}" />  {{ txt }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <span class="btn btn-default action-save-rights">Save the rights</span>
+                </td>
+            </tr>
+        {% endif %}
+    </tbody>
 </table>

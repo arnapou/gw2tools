@@ -1,104 +1,104 @@
 
 {% import "macro.twig" as macro %}
 
-{% block content %}
+{% set char = account.character(character_name) %}
 
-	{% set attributes = char.attributes %}
-							
-	<div class="row">
-		<div class="col-xs-8 summary">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<b> {{ char.name }}</b>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-xs-6">
-							<table class="table table-condensed">
-								<tbody>
-									<tr>
-										<td>Level</td>
-										<td>{{ char.level }}</td>
-									</tr>
-									<tr>
-										<td>Gender</td>
-										<td>{{ char.gender }}</td>
-									</tr>
-									<tr>
-										<td>Race</td>
-										<td>{{ char.race }}</td>
-									</tr>
-									<tr>
-										<td>Profession</td>
-										<td>
-											<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession" />
-											{{ char.profession.name }}
-										</td>
-									</tr>
-									<tr>
-										<td>Guild</td>
-										<td>
-											{% if char.guild %}
-												<img src="{{ char.guild.icon }}" class="emblem" />
-												{{ char.guild.fullname }}
-											{% else %}
-												- none -
-											{% endif %}
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="col-xs-6">
-							<table class="table table-condensed">
-								<tbody>
-									<tr>
-										<td>Crafting</td>
-										<td>
-											{% for craft in char.crafting %}
-												<span data-toggle="tooltip" title="{{ craft.discipline }}">
-													<img class="craft" src="{{ craft.icon }}" /> {{ craft.level }}
-												</span> 
-											{% endfor %}
-										</td>
-									</tr>
-									<tr>
-										<td>Created</td>
-										<td>{{ char.created }} <small>(UTC)</small></td>
-									</tr>
-									<tr>
-										<td>Days</td>
-										<td>{{ char.days }}</td>
-									</tr>
-									<tr>
-										<td>Age</td>
-										<td>{{ char.age }}</td>
-									</tr>
-									<tr>
-										<td>Deaths</td>
-										<td>{{ char.deaths }}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-4 stats">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Attributes (BETA)
-					{% if attributes.unknown|length %}
-						<span class="pull-right text-danger" data-toggle="tooltip" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
-							<i class="glyphicon glyphicon-exclamation-sign"></i>
-						</span>
-					{% endif %}
-				</div>
-				<div class="panel-body">
-					<table class="table table-condensed">
-						<tbody>
-							{% for attr in [
+{% set attributes = char.attributes %}
+
+<div class="row">
+    <div class="col-xs-8 summary">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b> {{ char.name }}</b>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td>Level</td>
+                                    <td>{{ char.level }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                    <td>{{ char.gender }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Race</td>
+                                    <td>{{ char.race }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Profession</td>
+                                    <td>
+                                        <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession" />
+                                        {{ char.profession }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Guild</td>
+                                    <td>
+                                        {% if char.guild %}
+                                            <img src="{{ char.guild|image }}" class="emblem" />
+                                            {{ char.guild.fullname }}
+                                        {% else %}
+                                            - none -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-6">
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td>Crafting</td>
+                                    <td>
+                                        {% for craft in char.crafting %}
+                                            <span title="{{ craft.name }}">
+                                                <img class="craft" src="{{ craft|image }}" /> {{ craft.rating }}
+                                            </span> 
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Created</td>
+                                    <td>{{ char.created }} <small>(UTC)</small></td>
+                                </tr>
+                                <tr>
+                                    <td>Days</td>
+                                    <td>{{ char.days }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Age</td>
+                                    <td>{{ (char.age/3600)|round }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Deaths</td>
+                                    <td>{{ char.deaths }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4 stats">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Attributes (BETA)
+                {% if attributes.unknown|length %}
+                    <span class="pull-right text-danger" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed">
+                    <tbody>
+                        {% for attr in [
 								'Power',
 								'Precision',
 								'Toughness',
@@ -108,268 +108,277 @@
 								'Healing',
 								'AR',
 							] %}
-								<tr>
-									<td>{{ attr }}</td>
-									<td>
-										{% if attr == 'AR' %}
-											{% for k, v in attributes.list[attr] %}
-												<span class="AR" data-toggle="tooltip" title="{{ k }}">
-													{{ v }}
-												</span>
-											{% endfor %}
-										{% else %}
-											{{ attributes.list[attr] }}
-											{% if attributes.list[attr~'_pct'] %}
-												&nbsp;&nbsp;
-												<small class="text-muted">
-													{{ attributes.list[attr~'_pct'] }}%
-												</small>
-											{% endif %}
-										{% endif %}
-									</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+                        <tr>
+                            <td>{{ attr }}</td>
+                            {% for k, v in attributes.list[attr] %}
+                                {% if attributes.list[attr]|length == 1 %}
+                                    {{ block('single_attributes') }}
+                                    {{ block('single_attributes') }}
+                                    {{ block('single_attributes') }}
+                                {% else %}
+                                    {% block single_attributes %}
+                                        <td class="attr" colspan="3">
+                                            <span class="attr" title="{{ k }}">
+                                                {{ v }}
+                                                {% if attributes.list[attr~'Pct'] %}
+                                                    &nbsp;&nbsp;
+                                                    <small class="text-muted">
+                                                        {{ attributes.list[attr~'Pct'][k] }}%
+                                                    </small>
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                    {% endblock %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-	</div>
+</div>
 
-	<table class="stuff">
-		{% set equipment = char.equipments %}
-		{% set tools     = char.tools %}
-		{% set inventory = char.stuffinventory %}
-		<tbody>
-			<tr>
-				<td class="block">
-					<div class="panel panel-default">
+<table class="stuff">
+    {% set equipment = char.equipments %}
+    {% set tools     = char.tools %}
+    <tbody>
+        <tr>
+            <td class="block">
+                <div class="panel panel-default">
 
-						<div class="panel-heading">Weapons set 1</div>
-						<div class="panel-body">
-							{{ _self.objects(equipment, ['WeaponA1', 'WeaponA2']) }}
-						</div>
+                    <div class="panel-heading">Weapons set 1</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {{ _self.object(equipment['WeaponA1']) }}
+                                {{ _self.object(equipment['WeaponA2']) }}
+                            </tbody>
+                        </table>
+                    </div>
 
-						<div class="panel-heading">Weapons set 2</div>
-						<div class="panel-body">
-							{{ _self.objects(equipment, ['WeaponB1', 'WeaponB2']) }}
-						</div>
+                    <div class="panel-heading">Weapons set 2</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {{ _self.object(equipment['WeaponB1']) }}
+                                {{ _self.object(equipment['WeaponB2']) }}
+                            </tbody>
+                        </table>
+                    </div>
 
-						<div class="panel-heading">Weapons Aquatic</div>
-						<div class="panel-body">
-							{{ _self.objects(equipment, ['WeaponAquaticA', 'WeaponAquaticB']) }}
-						</div>
+                    <div class="panel-heading">Weapons Aquatic</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {{ _self.object(equipment['WeaponAquaticA']) }}
+                                {{ _self.object(equipment['WeaponAquaticB']) }}
+                            </tbody>
+                        </table>
+                    </div>
 
-					</div>
-				</td>
-				<td class="separator"></td>
-				<td class="block">
-					<div class="panel panel-default">
+                </div>
+            </td>
+            <td class="separator"></td>
+            <td class="block">
+                <div class="panel panel-default">
 
-						<div class="panel-heading">Armor</div>
-						<div class="panel-body">
-							{{ _self.objects(equipment, ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic']) }}
-						</div>
+                    <div class="panel-heading">Armor</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {{ _self.object(equipment['Helm']) }}
+                                {{ _self.object(equipment['Shoulders']) }}
+                                {{ _self.object(equipment['Coat']) }}
+                                {{ _self.object(equipment['Gloves']) }}
+                                {{ _self.object(equipment['Leggings']) }}
+                                {{ _self.object(equipment['Boots']) }}
+                                {{ _self.object(equipment['HelmAquatic']) }}
+                            </tbody>
+                        </table>
+                    </div>
 
-					</div>
-				</td>
-				<td class="separator"></td>
-				<td class="block">
-					<div class="panel panel-default">
+                </div>
+            </td>
+            <td class="separator"></td>
+            <td class="block">
+                <div class="panel panel-default">
 
-						<div class="panel-heading">Trinkets</div>
-						<div class="panel-body">
-							{{ _self.objects(equipment, ['Amulet', 'Ring1', 'Ring2', 'Accessory1', 'Accessory2']) }}
-						</div>
+                    <div class="panel-heading">Trinkets</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {{ _self.object(equipment['Amulet']) }}
+                                {{ _self.object(equipment['Ring1']) }}
+                                {{ _self.object(equipment['Ring2']) }}
+                                {{ _self.object(equipment['Accessory1']) }}
+                                {{ _self.object(equipment['Accessory2']) }}
+                            </tbody>
+                        </table>
+                    </div>
 
-						<div class="panel-heading">Backpack</div>
-						<div class="panel-body">
-							{{ _self.objects(equipment, ['Backpack']) }}
-						</div>
+                    <div class="panel-heading">Backpack</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {{ _self.object(equipment['Backpack']) }}
+                            </tbody>
+                        </table>
+                    </div>
 
-					</div>
-				</td>
-				
-			</tr>
-			<tr>
-				<td class="block">
-					<div class="panel panel-default">
-					
-						<div class="panel-heading">Inventory</div>
-						<div class="panel-body">
-							<table class="table table-condensed equipment">
-								<tbody>
-									{% for type, item in inventory %}
-										{% if type in [	
-											'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
-											'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
-											'Speargun', 'Harpoon', 'Trident'
-										] %}
-											{{ _self.object(item) }}
-										{% endif %}
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-							
-					</div>
-				</td>
-				<td class="separator"></td>
-				<td class="block">
-					<div class="panel panel-default">
-					
-						<div class="panel-heading">Inventory</div>
-						<div class="panel-body">
-							<table class="table table-condensed equipment">
-								<tbody>
-									{% for type, item in inventory %}
-										{% if type in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
-											{{ _self.object(item) }}
-										{% endif %}
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-							
-					</div>
-				</td>
-				<td class="separator"></td>
-				<td class="block">
-					<div class="panel panel-default">
+                </div>
+            </td>
 
-						<div class="panel-heading">Inventory</div>
-						<div class="panel-body">
-							<table class="table table-condensed equipment">
-								<tbody>
-									{% for type, item in inventory %}
-										{% if type in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
-											{{ _self.object(item) }}
-										{% endif %}
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
+        </tr>
+        <tr>
+            <td class="block">
+                <div class="panel panel-default">
 
-						<div class="panel-heading">Tools</div>
-						<div class="panel-body">
-							<table class="table table-condensed equipment">
-								<tbody>
-									{{ _self.objects(tools, ['Sickle', 'Axe', 'Pick'], true) }}
-								</tbody>
-							</table>
-						</div>
+                    <div class="panel-heading">Inventory</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {% for bag in char.bags %}
+                                    {% for obj in bag.inventorystuff %}
+                                        {% if obj.subtype in [	
+                                            'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
+                                            'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
+                                            'Speargun', 'Harpoon', 'Trident'
+                                        ] %}
+                                            {{ _self.object(obj) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-					
-	{% if account.token %}
-		<div class="row">
-			{% set inventory = char.inventory %}
+                </div>
+            </td>
+            <td class="separator"></td>
+            <td class="block">
+                <div class="panel panel-default">
 
-			<div class="col-xs-12">
-				<div class="panel panel-default">
-					<div class="panel-heading text-owner">
-						<div class="pull-right">
-							{{ macro.amount(inventory.sum_min) }} &#8210; {{ macro.amount(inventory.sum_max) }}
-						</div>
-						Inventory
-					</div>
-					<div class="panel-body">
-						<table class="table table-condensed equipment">
-							<tbody>
-								{% for bag in inventory.bags %}
-									<tr>
-										<td class="slots">
-											<div class="slot bag">
-												{% if bag.container.id %}
-													<a href="http://db.dulfy.net/item/{{ bag.container.id }}" target="_blank" title="{{ bag.container.price.title }}">
-														<img src="{{ bag.container.icon }}" />
-													</a>
-												{% else %}
-													<img src="/assets/images/nothing.png" class="nothing" />
-												{% endif %}
-											</div>
-											
-											{% for item in bag.items %}
-												<div class="slot">
-													{% if item.id %}
-														<a href="http://db.dulfy.net/item/{{ item.id }}" target="_blank" title="{{ item.price.title }}">
-															<img src="{{ item.icon }}" />
-															{% if item.count > 1 %}
-																<span class="count">{{ item.count }}</span>
-															{% endif %}
-														</a>
-													{% endif %}
-												</div>
-											{% endfor %}
-											
-										</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+                    <div class="panel-heading">Inventory</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {% for bag in char.bags %}
+                                    {% for obj in bag.inventorystuff %}
+                                        {% if obj.subtype in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
+                                            {{ _self.object(obj) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-		</div>
-	{% endif %}
-{% endblock %}
+                </div>
+            </td>
+            <td class="separator"></td>
+            <td class="block">
+                <div class="panel panel-default">
 
-{% macro objects(equipment, types, istool) %}
-	<table class="table table-condensed equipment">
-		<tbody>
-			{% for type in types %}
-				{{ _self.object(equipment[type], istool) }}
-			{% endfor %}
-		</tbody>
-	</table>
-{% endmacro %}
+                    <div class="panel-heading">Inventory</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {% for bag in char.bags %}
+                                    {% for obj in bag.inventorystuff %}
+                                        {% if obj.subtype in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
+                                            {{ _self.object(obj) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="panel-heading">Tools</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed equipment">
+                            <tbody>
+                                {{ _self.object(equipment['Sickle'], true) }}
+                                {{ _self.object(equipment['Axe'], true) }}
+                                {{ _self.object(equipment['Pick'], true) }}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% if module.owner or user.hasright('inventories') %}
+    <div class="row">
+
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        {{ macro.amount(char.bagsprice) }}
+                    </div>
+                    Inventory
+                </div>
+                <div class="panel-body">
+                    {{ macro.character_bags(char) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endif %}
+
+
+
+
 
 {% macro object(obj, istool) %}
-	{% if obj.id %}
-		<tr class="object" data-id="{{ obj.id }}">
-			<td>
-				<a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
-					<img data-toggle="tooltip" title="{{ obj.name }}" src="{{ obj.icon }}" class="item rarity-{{ obj.rarity }}" />
-				</a>
-			</td>
-			{% if not istool %}
-			<td>
-				{% for upgrade in obj.upgrades %}
-					<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
-						<img data-toggle="tooltip" title="{{ upgrade.name }}" src="{{ upgrade.icon }}" class="infusion rarity-{{ upgrade.rarity }}" />
-					</a>
-				{% endfor %}
-				{% for infusion in obj.infusions %}
-					<a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
-						<img data-toggle="tooltip" title="{{ infusion.name }}" src="{{ infusion.icon }}" class="upgrade rarity-{{ infusion.rarity }}" />
-					</a>
-				{% endfor %}
-			</td>
-			{% endif %}
-			<td>
-				{% if istool %}
-					<span data-toggle="tooltip" class="stats rarity-{{ obj.rarity }}">{{ obj.name }}</span>
-				{% elseif obj.stats_name and obj.stats %}
-					<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
-				{% elseif obj.stats_name %}
-					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ obj.stats_name }}</span>
-				{% elseif obj.stats %}
-					<span data-toggle="tooltip" title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
-				{% else %}
-					<span data-toggle="tooltip" title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
-				{% endif %}
-				<span class="equipment-type">{{ obj.type }}</span>
-			</td>
-		</tr>
-	{% elseif obj is iterable %}
-		{% for item in obj %}
-			{{ _self.object(item) }}
-		{% endfor %}
-	{% endif %}
+    {% if obj.id %}
+        <tr class="object" data-id="{{ obj.id }}">
+            <td>
+                <a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
+                    <img title="{{ obj.name }}" src="{{ obj|image }}" class="item rarity-{{ obj.rarity }}" />
+                </a>
+            </td>
+            {% if not istool %}
+                <td>
+                    {% for upgrade in obj.upgrades %}
+                        <a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
+                            <img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion rarity-{{ upgrade.rarity }}" />
+                        </a>
+                    {% endfor %}
+                    {% for infusion in obj.infusions %}
+                        <a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
+                            <img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade rarity-{{ infusion.rarity }}" />
+                        </a>
+                    {% endfor %}
+                </td>
+            {% endif %}
+            <td>
+                {% set attrs = obj.attributes %}
+                {% if istool %}
+                    <span class="stats rarity-{{ obj.rarity }}">{{ obj.name }}</span>
+                {% elseif attrs.stats_name and obj.stats %}
+                    <span title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                {% elseif attrs.stats_name %}
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                {% elseif attrs.stats %}
+                    <span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                {% else %}
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                {% endif %}
+                <span class="equipment-type">{{ obj.subtype }}</span>
+            </td>
+        </tr>
+    {% elseif obj is iterable %}
+        {% for item in obj %}
+            {{ _self.object(item) }}
+        {% endfor %}
+    {% endif %}
 {% endmacro %}

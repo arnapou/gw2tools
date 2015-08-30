@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Arnapou\GW2Tools\Module;
+namespace Arnapou\GW2Tools\Assets;
 
-class Assets extends \Arnapou\GW2Tools\AbstractModule {
+class Module extends \Arnapou\GW2Tools\AbstractModule {
 	
 }

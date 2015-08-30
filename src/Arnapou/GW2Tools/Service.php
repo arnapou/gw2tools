@@ -11,81 +11,78 @@
 
 namespace Arnapou\GW2Tools;
 
+use Arnapou\GW2Api\Core\AbstractClient;
+use Arnapou\GW2Api\SimpleClient;
+use Arnapou\Toolbox\Functions\Directory;
 use Arnapou\Toolbox\Http\Service\Config;
 use Arnapou\Toolbox\Twig\TwigFactory;
 use Arnapou\Toolbox\Twig\TwigEnvironment;
 
 class Service extends \Arnapou\Toolbox\Http\Service\Service {
 
-	/**
-	 *
-	 * @var Service
-	 */
-	static protected $instance;
+    /**
+     *
+     * @var Service
+     */
+    static protected $instance;
 
-	/**
-	 *
-	 * @var TwigFactory 
-	 */
-	protected $twigFactory;
+    /**
+     *
+     * @var TwigFactory 
+     */
+    protected $twigFactory;
 
-	/**
-	 * 
-	 * @return Service
-	 */
-	static public function getInstance() {
-		if (!isset(self::$instance)) {
-			$config = new Config(__DIR__ . '/../../../config');
-			$service = new Service('GW2Tools', $config);
-			$service->addModule('api', new Module\Api($service));
-			$service->addModule('assets', new Module\Assets($service));
-			self::$instance = $service;
-		}
-		return self::$instance;
-	}
+    /**
+     * 
+     * @return Service
+     */
+    static public function getInstance() {
+        if (!isset(self::$instance)) {
+            $config         = new Config(__DIR__ . '/../../../config');
+            $service        = new Service('GW2Tools', $config);
+            $service->addModule('api', new Api\Module($service));
+            $service->addModule('assets', new Assets\Module($service));
+            self::$instance = $service;
+        }
+        return self::$instance;
+    }
 
-	/**
-	 * 
-	 * @return TwigEnvironment
-	 */
-	public function getTwig() {
-		if (!isset($this->twigFactory)) {
-			$factory = TwigFactory::create($this);
-			$factory->addPath(__DIR__ . '/twig');
-			$factory->addFilter(new \Twig_SimpleFilter('sort_array', function($array, $field) {
-				usort($array, function($a, $b) use($field) {
-					if (!isset($a[$field]) || !isset($b[$field]) || $a[$field] == $b[$field]) {
-						return 0;
-					}
-					return $a[$field] < $b[$field] ? -1 : 1;
-				});
-				return $array;
-			}));
-			$factory->addFilter(new \Twig_SimpleFilter('chunk', function($array, $n) {
-				$return = [];
-				$current = [];
-				$i = 0;
-				foreach ($array as $key => $value) {
-					$current[$key] = $value;
-					$i++;
-					if ($i == $n) {
-						$return[] = $current;
-						$current = [];
-						$i = 0;
-					}
-				}
-				if ($i > 0) {
-					while ($i < $n) {
-						$current[] = null;
-						$i++;
-					}
-					$return[] = $current;
-				}
-				return $return;
-			}));
-			$this->twigFactory = $factory;
-		}
-		return $this->twigFactory->getEnvironment();
-	}
+    /**
+     * 
+     * @return TwigEnvironment
+     */
+    public function getTwig() {
+        if (!isset($this->twigFactory)) {
+            $factory = TwigFactory::create($this);
+            $factory->addPath(__DIR__ . '/twig');
+            $factory->addFilter(new \Twig_SimpleFilter('image', function($url) {
+                return image($url);
+            }));
+            $factory->addFilter(new \Twig_SimpleFilter('amount', function($value) {
+                return amount($value);
+            }));
+            $factory->addFilter(new \Twig_SimpleFilter('columns', function($array, $n, $fill = true) {
+                return chunk($array, ceil(count($array) / $n), $fill);
+            }));
+            $factory->addFilter(new \Twig_SimpleFilter('chunk', function($array, $n, $fill = true) {
+                return chunk($array, $n, $fill);
+            }));
+            $this->twigFactory = $factory;
+        }
+        return $this->twigFactory->getEnvironment();
+    }
+
+    /**
+     * 
+     * @param string $lang
+     * @return SimpleClient
+     */
+    static public function newSimpleClient($lang = AbstractClient::LANG_EN) {
+
+        $path = self::getInstance()->getPathCache() . '/gw2api_' . $lang;
+        Directory::createIfNotExists($path);
+
+        return SimpleClient::create($lang, $path);
+    }
 
 }

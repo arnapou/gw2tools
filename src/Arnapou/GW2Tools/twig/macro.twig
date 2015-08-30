@@ -1,30 +1,65 @@
 
 
 {% macro amount(value) %}
-	{% set g = (value / 10000)|round(0, 'floor') %}
-	{% set s = (value / 100)|round(0, 'floor') % 100 %}
-	{% set c = value % 100 %}
-	{% if g %}
-		<span class="gold">{{ g }}</span>
-		<span class="silver">{{ s }}</span>
-		<span class="copper">{{ c }}</span>
-	{% elseif s %}
-		<span class="silver">{{ s }}</span>
-		<span class="copper">{{ c }}</span>
-	{% else %}
-		<span class="copper">{{ c }}</span>
-	{% endif %}
+    {% if value.buy is not none %}
+        {{ _self.amount(value.buy) }} &#8210; {{ _self.amount(value.sell) }}
+    {% else %}
+        {% set g = (value / 10000)|round(0, 'floor') %}
+        {% set s = (value / 100)|round(0, 'floor') % 100 %}
+        {% set c = value % 100 %}
+        {% if g %}
+            <span class="gold">{{ g }}</span>
+            <span class="silver">{{ s }}</span>
+            <span class="copper">{{ c }}</span>
+        {% elseif s %}
+            <span class="silver">{{ s }}</span>
+            <span class="copper">{{ c }}</span>
+        {% else %}
+            <span class="copper">{{ c }}</span>
+        {% endif %}
+    {% endif %}
 {% endmacro %}
 
-{% macro amount_txt(value) %}
-	{% set g = (value / 10000)|round(0, 'floor') %}
-	{% set s = (value / 100)|round(0, 'floor') % 100 %}
-	{% set c = value % 100 %}
-	{% if g %}
-		{{ g }}g {{ s }}s {{ c }}
-	{% elseif s %}
-		{{ s }}s {{ c }}
-	{% else %}
-		{{ c }}
-	{% endif %}
+
+
+{% macro character_bags(char) %}
+    <table class="table table-condensed equipment">
+        <tbody>
+            {% for bag in char.bags %}
+                <tr>
+                    <td class="slots">
+                        <div class="slot bag">
+                            {% if bag.id %}
+                                <a href="http://db.dulfy.net/item/{{ bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
+                                    <img src="{{ bag|image }}" />
+                                </a>
+                            {% else %}
+                                <img src="{{ ""|image }}" class="nothing" />
+                            {% endif %}
+                        </div>
+
+                        {% for item in bag.inventory %}
+                            {{ _self.inventory_slot(item) }}
+                        {% endfor %}
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
+
+
+
+{% macro inventory_slot(item) %}
+    <div class="slot">
+        {% if item.id %}
+            <a href="http://db.dulfy.net/item/{{ item.id }}" target="_blank" title="{{ item.price|amount }}">
+                <img src="{{ item|image }}" />
+                {% if item.count > 1 %}
+                    <span class="count">{{ item.count }}</span>
+                {% endif %}
+            </a>
+        {% endif %}
+    </div>
 {% endmacro %}

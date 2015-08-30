@@ -11,6 +11,6 @@
 
 namespace Arnapou\GW2Tools\Exception;
 
-class TokenException extends \Arnapou\Toolbox\Exception\Exception {
-	
+class AccessNotAllowedException extends \Arnapou\Toolbox\Exception\Exception {
+    
 }

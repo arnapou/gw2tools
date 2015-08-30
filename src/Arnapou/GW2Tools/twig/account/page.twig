@@ -1,1 +1,12 @@
-{% extends "base-menu.twig" %}
+{% extends "base.twig" %}
+
+{% block content %}
+
+    <div class="panel panel-default page-{{ page }}">
+        <div class="panel-heading">Account</div>
+        <div class="panel-body" data-content="ajax" data-src="./content.html">
+            <div class="spinner-loader"></div>
+        </div>
+    </div>
+
+{% endblock %}

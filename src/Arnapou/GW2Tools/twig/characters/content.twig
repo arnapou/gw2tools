@@ -1,64 +1,66 @@
 
+{% import "macro.twig" as macro %}
+
 {% set totalage = 0 %}
 {% set totaldeaths = 0 %}
 
 <table class="table">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Level</th>
-			<th>Gender</th>
-			<th>Race</th>
-			<th>Profession</th>
-			<th>Guild</th>
-			<th>Crafting</th>
-			<th>Created <small>(UTC)</small></th>
-			<th class="text-right">Days</th>
-			<th class="text-right">Age</th>
-			<th class="text-right">Deaths</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for char in apiclient.characters %}
-			{% set totalage = totalage + char.age %}
-			{% set totaldeaths = totaldeaths + char.deaths %}
-			<tr>
-				<td>
-					<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession pull-right" />
-					<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
-				</td>
-				<td>{{ char.level }}</td>
-				<td>{{ char.gender }}</td>
-				<td>{{ char.race }}</td>
-				<td>{{ char.profession.name }}</td>
-				<td>{{ char.guild.name }}</td>
-				<td>
-					{% for craft in char.crafting %}
-						<span data-toggle="tooltip" title="{{ craft.discipline }}">
-							<img class="craft" src="{{ craft.icon }}" /> {{ craft.level }}
-						</span> 
-					{% endfor %}
-				</td>
-				<td>{{ char.created }}</td>
-				<td class="text-right">{{ char.days }}</td>
-				<td class="text-right">{{ char.age }}</td>
-				<td class="text-right">{{ char.deaths }}</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-	<tfoot>
-		<tr>
-			<td>Total</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td class="text-right"></td>
-			<td class="text-right">{{ totalage }}</td>
-			<td class="text-right">{{ totaldeaths }}</td>
-		</tr>
-	</tfoot>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Level</th>
+            <th>Gender</th>
+            <th>Race</th>
+            <th>Profession</th>
+            <th>Guild</th>
+            <th>Crafting</th>
+            <th>Created <small>(UTC)</small></th>
+            <th class="text-right">Days</th>
+            <th class="text-right">Age</th>
+            <th class="text-right">Deaths</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for char in account.characters %}
+            {% set totalage = totalage + char.age/3600 %}
+            {% set totaldeaths = totaldeaths + char.deaths %}
+            <tr>
+                <td>
+                    <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession pull-right" />
+                    <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+                </td>
+                <td>{{ char.level }}</td>
+                <td>{{ char.gender }}</td>
+                <td>{{ char.race }}</td>
+                <td>{{ char.profession }}</td>
+                <td>{{ char.guild.name }}</td>
+                <td>
+                    {% for craft in char.crafting %}
+                        <span title="{{ craft.name }}">
+                            <img class="craft" src="{{ craft|image }}" /> {{ craft.rating }}
+                        </span> 
+                    {% endfor %}
+                </td>
+                <td>{{ char.created }}</td>
+                <td class="text-right">{{ char.days }}</td>
+                <td class="text-right">{{ (char.age/3600)|round }}</td>
+                <td class="text-right">{{ char.deaths }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Total</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="text-right"></td>
+            <td class="text-right">{{ totalage|round }}</td>
+            <td class="text-right">{{ totaldeaths }}</td>
+        </tr>
+    </tfoot>
 </table>

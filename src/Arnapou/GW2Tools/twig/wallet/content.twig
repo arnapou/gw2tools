@@ -1,0 +1,26 @@
+
+{% import "macro.twig" as macro %}
+
+<div class="row">
+    {% for currencies in account.wallet|columns(2, false) %}
+        <div class="col-xs-6">
+            <table class="table table-condensed">
+                <tbody>
+                    {% for currency in currencies %}
+                        <tr>
+                            <td class="column-name">{{ currency.name }}</td>
+                            <td class="column-icon"><img src="{{ currency|image }}" class="currency" /></td>
+                            <td class="column-quantity">
+                                {% if currency.id == 1 %}
+                                    {{ macro.amount(currency.quantity) }}
+                                {% else %}
+                                    {{ currency.quantity }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+</div>

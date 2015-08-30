@@ -1,61 +1,61 @@
 
+{% import "macro.twig" as macro %}
+
+
 {% set attrs = [
-	'Power',
-	'Precision',
-	'Toughness',
-	'Vitality',
-	'Ferocity',
-	'Condition',
-	'Healing',
-	'AR',
+    'Power',
+    'Precision',
+    'Toughness',
+    'Vitality',
+    'Ferocity',
+    'Condition',
+    'Healing',
+    'AR',
 ] %}
 
 <table class="table">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th></th>
-			{% for k, v in attrs %}
-				<th>{{ v }}</th>
-			{% endfor %}
-		</tr>
-	</thead>
-	<tbody>
-		{% for char in apiclient.characters %}
-			{% set attributes = char.attributes %}
-			<tr>
-				<td>
-					<img src="{{ char.profession.icon }}" title="{{ char.profession.name }}" class="profession pull-right" />
-					<a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
-				</td>
-				<td class="text-center" style="width: 2em">
-					{% if attributes.unknown|length %}
-						<span class="text-danger" data-toggle="tooltip" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
-							<i class="glyphicon glyphicon-exclamation-sign"></i>
-						</span>
-					{% endif %}
-				</td>
-				{% for attr in attrs %}
-					<td>
-						{% if attr == 'AR' %}
-							{% for k, v in attributes.list[attr] %}
-								<span class="AR" data-toggle="tooltip" title="{{ k }}">
-									{{ v }}
-								</span>
-							{% endfor %}
-						{% else %}
-							{{ attributes.list[attr] }}
-							{% if attributes.list[attr~'_pct'] %}
-								&nbsp;&nbsp;
-								<small class="text-muted">
-									{{ attributes.list[attr~'_pct'] }}%
-								</small>
-							{% endif %}
-						{% endif %}
-					</td>
-				{% endfor %}
-			</tr>
-		{% endfor %}
-	</tbody>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+                {% for k, v in attrs %}
+                <th>{{ v }}</th>
+                {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for char in account.characters %}
+            {% set attributes = char.attributes %}
+            <tr>
+                <td>
+                    <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession pull-right" />
+                    <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+                </td>
+                <td class="text-center" style="width: 2em">
+                    {% if attributes.unknown|length %}
+                        <span class="text-danger" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
+                            <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        </span>
+                    {% endif %}
+                </td>
+                {% for attr in attrs %}
+                    <td>
+                        {% for k, v in attributes.list[attr] %}
+                            <div style="{{ (attributes.list[attr]|length) == 1 ? 'line-height: 4.5em' : '' }}">
+                                <span class="attr" title="{{ k }}">
+                                    {{ v }}
+                                    {% if attributes.list[attr~'Pct'] %}
+                                        &nbsp;&nbsp;
+                                        <small class="text-muted">
+                                            {{ attributes.list[attr~'Pct'][k] }}%
+                                        </small>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
-	

@@ -8,6 +8,25 @@
 			<link href="/assets/bootstrap/css/bootstrap.min.css?{{ config.version }}" rel="stylesheet" />
 			<link href="/assets/style.css?{{ config.version }}" rel="stylesheet" />
 		{% endblock %}
+        <style>
+            {% for type, color in {
+                'Junk'      : 'aaaaaa',
+                'Basic'     : '000000',
+                'Fine'      : '1a9306',
+                'Masterwork': '62A4DA',
+                'Rare'      : 'fcd00b',
+                'Exotic'    : 'ffa405',
+                'Ascended'  : 'fb3e8d',
+                'Legendary' : '4C139D',
+            } %}
+                img.rarity-{{ type }}{
+                    border: 1px solid #{{ color }};
+                }
+                .rarity-{{ type }} {
+                    color: #{{ color }};
+                }
+            {% endfor %}
+        </style>
 	</head>
 	<body>
 		<div class="navbar navbar-inverse" role="navigation">
@@ -15,19 +34,62 @@
 				<div class="navbar-header">
 					<a href="/" class="navbar-brand">GW2 Tools</a>
 				</div>
-				{% block menu %}
-				{% endblock %}
+
+                <div class="collapse navbar-collapse">
+                    {% if code %}
+                        <ul class="nav navbar-nav">
+                            {% for list in module.menu %}
+                                {% set items = list.items(module.owner ? none : user) %}
+                                {% if items|length %}
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            {{ list.label }} <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            {% for item in items %}
+                                                {% if item.separator %}
+                                                    <li role="separator" class="divider"></li>
+                                                {% else %}
+                                                    <li><a href="../{{ item.uri }}">{{ item.label }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% set users = module.cookieusers %}
+                    {% if account or (users|length) %}
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if users|length %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        {{ account.name ? account.name : 'Accounts' }} <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for usr in users %}
+                                            {% if usr.code != code %}
+                                                <li title="{{ usr.account.permissions|join(', ') }}">
+                                                    <a href="/api/{{ usr.code }}/">{{ usr.account.name }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% elseif account %}
+                                    <li><p class="navbar-text"><b>{{ account.name }}</b></p></li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                
 			</div>
 		</div>
 		<div class="container" id="container">
 			{% block content %}
 			{% endblock %}
-		
-			{% if account.token %}
-				<div id="owner-legend">
-					<em class="text-owner">The little red star means that the information is only visible by the account owner: you are free to share the link safely.</em>
-				</div>
-			{% endif %}
 		</div>
 		{% block js %}
 			<script src="/assets/jquery.js?{{ config.version }}"></script>

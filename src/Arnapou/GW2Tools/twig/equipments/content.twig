@@ -1,0 +1,124 @@
+
+{% import "macro.twig" as macro %}
+
+
+{% set lists = {
+    'Armors' : ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'],
+    'Backpack / Trinkets' : ['Backpack', 'Amulet', 'Accessory', 'Ring'],
+    'Weapons two hands' : ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
+    'Weapons one hand' : ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'],
+    'Weapons aquatic' : ['Speargun', 'Harpoon', 'Trident'],
+} %}
+
+{% set characters = account.characters %}
+{% set nbcolumns = characters|length %}
+
+{% if nbcolumns > 5 %}
+    <script>
+        $('#container').removeClass('container').addClass('container-fluid');
+        $('.page-stuff').addClass('big');
+    </script>
+{% endif %}
+
+<table class="table table-condensed">
+    <tbody>
+        {% block table_header %}
+            <tr>
+                {% set index = 0 %}
+                {% for char in characters %}
+                    {% if index % 5 == 0 %}
+                        <th>
+                        </th>
+                    {% endif %}
+                    <th>
+                        {% if char %}
+                            <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession" />
+                            <a href="../character/{{ char.name }}">
+                                <b>{{ char.name }}</b>
+                            </a>
+                        {% endif %}
+                    </th>
+                    {% set index = index + 1 %}
+                {% endfor %}
+            </tr>
+        {% endblock %}
+
+        {% for title, types in lists %}
+            {% block separator %}
+                <tr class="separator">
+                    <td colspan="{{ nbcolumns + (nbcolumns/5)|round(0, 'ceil') }}" class="text-center"></td>
+                </tr>
+            {% endblock %}
+            {% for type in types %}
+                <tr>
+                    {% set index = 0 %}
+                    {% for char in characters %}
+                        {% if index % 5 == 0 %}
+                            <td class="type">
+                                {{ type }}
+                            </td>
+                        {% endif %}
+                        <td>
+                            {% if char %}
+                                {% for obj in char.equipments %}
+                                    {% if obj.subtype == type %}
+                                        {{ _self.object(obj) }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% for bag in char.bags %}
+                                    {% for obj in bag.inventorystuff %}
+                                        {% if obj.subtype == type %}
+                                            {{ _self.object(obj) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                        {% set index = index + 1 %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+
+        {{ block('separator') }}
+        {{ block('table_header') }}
+    </tbody>
+</table>
+
+
+
+
+
+
+
+{% macro object(obj) %}
+	<div class="object">
+		<span class="icons">
+			<a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
+				<img title="{{ obj.name }}" src="{{ obj|image }}" class="item" />
+			</a>
+			{% for upgrade in obj.upgrades %}
+				<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
+					<img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion" />
+				</a>
+			{% endfor %}
+			{% for infusion in obj.infusions %}
+				<a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
+					<img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade" />
+				</a>
+			{% endfor %}
+		</span>
+		<span class="name">
+            {% set attrs = obj.attributes %}
+			{% if attrs.stats_name and attrs.stats %}
+				<span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+			{% elseif attrs.stats_name %}
+				<span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+			{% elseif attrs.stats %}
+				<span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+			{% else %}
+				<span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+			{% endif %}
+		</span>
+	</div>
+{% endmacro %}

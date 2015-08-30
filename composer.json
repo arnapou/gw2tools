@@ -26,6 +26,7 @@
 	"autoload": {
 		"psr-0": {
 			"Arnapou\\GW2Tools": "src/"
-		}
+		},
+		"files": ["src/Arnapou/GW2Tools/functions.php"]
 	}
 }

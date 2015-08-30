@@ -1,0 +1,16 @@
+
+{% import "macro.twig" as macro %}
+
+{% for char in account.characters %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {{ macro.amount(char.bagsprice) }}
+            </div>
+            <b>{{ char.name }}</b>
+        </div>
+        <div class="panel-body">
+            {{ macro.character_bags(char) }}
+        </div>
+    </div>
+{% endfor %}

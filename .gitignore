@@ -6,3 +6,4 @@ config/config.prod.php
 nbproject
 data
 vendor
+test.php

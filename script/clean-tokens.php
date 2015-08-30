@@ -12,4 +12,4 @@
 include __DIR__ . '/../vendor/autoload.php';
 
 Arnapou\GW2Tools\Service::getInstance();
-Arnapou\GW2Tools\TokenVault::cleanTokens();
+Arnapou\GW2Tools\Api\TokenVault::cleanTokens();
