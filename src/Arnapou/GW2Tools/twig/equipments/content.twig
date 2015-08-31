@@ -16,7 +16,7 @@
 {% if nbcolumns > 5 %}
     <script>
         $('#container').removeClass('container').addClass('container-fluid');
-        $('.page-stuff').addClass('big');
+        $('.page-{{ page }}').addClass('big');
     </script>
 {% endif %}
 
@@ -59,20 +59,22 @@
                             </td>
                         {% endif %}
                         <td>
-                            {% if char %}
-                                {% for obj in char.equipments %}
-                                    {% if obj.subtype == type %}
-                                        {{ _self.object(obj) }}
-                                    {% endif %}
-                                {% endfor %}
-                                {% for bag in char.bags %}
-                                    {% for obj in bag.inventorystuff %}
-                                        {% if obj.subtype == type %}
+                            <div class="cell">
+                                {% if char %}
+                                    {% for obj in char.equipments %}
+                                        {% if obj.subtype == type or obj.type == 'Back' and type == 'Backpack'  %}
                                             {{ _self.object(obj) }}
                                         {% endif %}
                                     {% endfor %}
-                                {% endfor %}
-                            {% endif %}
+                                    {% for bag in char.bags %}
+                                        {% for obj in bag.inventorystuff %}
+                                            {% if obj.subtype == type %}
+                                                {{ _self.object(obj) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
                         </td>
                         {% set index = index + 1 %}
                     {% endfor %}

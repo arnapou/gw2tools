@@ -144,6 +144,11 @@ img.item {
     vertical-align: top;
     height: 100%;
 }
+.page-character .stuff td.block .panel-body {
+    max-height: 390px;
+    overflow: auto;
+    overflow-x: hidden;
+}
 .page-character .stuff .panel {
     margin-bottom: 0;
     height: 100%;
@@ -167,8 +172,11 @@ img.item {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
-.page-character .slot.bag {
-    margin-right: 5px;
+.page-character .slots .bag {
+    background: #665349;
+    padding-right: 5px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 /************************************************/
@@ -224,6 +232,12 @@ img.item {
 }
 .page-equipments.big table {
     margin : 1em auto 2em auto;
+}
+.page-equipments td .cell {
+    max-height: 15em;
+    overflow: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
 }
 
 /************************************************/

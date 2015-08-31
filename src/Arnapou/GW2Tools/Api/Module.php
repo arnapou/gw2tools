@@ -76,6 +76,26 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
 
     /**
      * 
+     * @return array
+     */
+    public function getBreadcrumb() {
+        if ($this->user) {
+            $code = $this->user->getCode();
+            $path = rawurldecode($this->getService()->getRequest()->getPathInfo());
+            foreach ($this->getMenu() as /* @var $menu Menu */ $menu) {
+                foreach ($menu->getItems() as $item) {
+                    if (isset($item['uri']))
+                        if (isset($item['uri']) && '/api/' . $code . '/' . $item['uri'] === $path) {
+                            return [$menu->getLabel(), $item['label']];
+                        }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 
      * @return boolean
      */
     public function isOwner() {
@@ -181,6 +201,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
 
     protected function renderPage($template, $context = array()) {
         try {
+            $context['request'] = $this->getService()->getRequest();
             return parent::renderPage($template, $context);
         }
         catch (\Twig_Error_Runtime $e) {
@@ -408,7 +429,9 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
             $code = $user->getCode();
 
             $data['code']   = $code;
-            $data['tokens'] = array_unique(array_merge($this->getCookieTokens(), [$token]));
+            $data['tokens'] = array_unique(array_merge(array_map(function(User $user) {
+                        return $user->getToken();
+                    }, $this->getCookieUsers(true)), [$token]));
         }
         catch (InvalidTokenException $e) {
             $data['error'] = $e->getMessage();

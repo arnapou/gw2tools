@@ -23,30 +23,26 @@
 
 
 {% macro character_bags(char) %}
-    <table class="table table-condensed equipment">
-        <tbody>
-            {% for bag in char.bags %}
-                <tr>
-                    <td class="slots">
-                        <div class="slot bag">
-                            {% if bag.id %}
-                                <a href="http://db.dulfy.net/item/{{ bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
-                                    <img src="{{ bag|image }}" />
-                                </a>
-                            {% else %}
-                                <img src="{{ ""|image }}" class="nothing" />
-                            {% endif %}
-                        </div>
+    {% for bag in char.bags %}
+        <div class="slots">
+            <div class="bag">
+            <div class="slot">
+                {% if bag.id %}
+                    <a href="http://db.dulfy.net/item/{{ bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
+                        <img src="{{ bag|image }}" />
+                    </a>
+                {% else %}
+                    <img src="{{ ""|image }}" class="nothing" />
+                {% endif %}
+            </div>
+            </div>
 
-                        {% for item in bag.inventory %}
-                            {{ _self.inventory_slot(item) }}
-                        {% endfor %}
-
-                    </td>
-                </tr>
+            {% for item in bag.inventory %}
+                {{ _self.inventory_slot(item) }}
             {% endfor %}
-        </tbody>
-    </table>
+
+        </div>
+    {% endfor %}
 {% endmacro %}
 
 

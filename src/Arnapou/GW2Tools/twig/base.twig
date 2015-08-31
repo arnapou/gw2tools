@@ -2,12 +2,25 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta http-equiv="Cache-control" content="no-cache">
-		<meta http-equiv="Expires" content="-1">
+        <link rel="shortcut icon" href="/favicon.ico" />
+		<meta http-equiv="Cache-control" content="no-cache" />
+		<meta http-equiv="Expires" content="-1" />
 		{% block css %}
 			<link href="/assets/bootstrap/css/bootstrap.min.css?{{ config.version }}" rel="stylesheet" />
 			<link href="/assets/style.css?{{ config.version }}" rel="stylesheet" />
 		{% endblock %}
+        <title>
+            {% set breadcrumb = module.breadcrumb %}
+            {% block title %}
+                {% if account and breadcrumb %}
+                    {{ account.name }} &raquo; {{ breadcrumb|join(' &raquo; ')|raw }}
+                {% elseif account %}
+                    {{ account.name }}
+                {% else %}
+                    GW2 Tools
+                {% endif %}
+            {% endblock %}
+        </title>
         <style>
             {% for type, color in {
                 'Junk'      : 'aaaaaa',
