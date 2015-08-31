@@ -19,10 +19,10 @@ use Arnapou\GW2Api\SimpleClient;
 use Arnapou\GW2Tools\Service;
 
 foreach ([
-AbstractClient::LANG_DE,
+// AbstractClient::LANG_DE,
  AbstractClient::LANG_EN,
- AbstractClient::LANG_ES,
- AbstractClient::LANG_FR
+// AbstractClient::LANG_ES,
+// AbstractClient::LANG_FR
 ] as $lang) {
 
     echo date('Y-m-d H:i:s') . ' ----- ' . $lang . " -----\n";
