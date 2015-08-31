@@ -145,7 +145,7 @@ img.item {
     height: 100%;
 }
 .page-character .stuff td.block .panel-body {
-    max-height: 390px;
+    max-height: 400px;
     overflow: auto;
     overflow-x: hidden;
 }
