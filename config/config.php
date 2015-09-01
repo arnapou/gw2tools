@@ -10,9 +10,10 @@
  */
 
 return array(
-	'path.cache' => __DIR__ . '/../cache',
-	'path.data' => __DIR__ . '/../data',
-	'path.log' => __DIR__ . '/../log',
-	'date.timezone' => 'UTC',
-	'version' => '1.0.1',
+    'path.cache'      => __DIR__ . '/../cache',
+    'path.data'       => __DIR__ . '/../data',
+    'path.log'        => __DIR__ . '/../log',
+    'date.timezone'   => 'UTC',
+    'version'         => '1.0.1',
+    'cache.memcached' => true,
 );

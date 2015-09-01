@@ -11,6 +11,9 @@
 
 namespace Arnapou\GW2Tools;
 
+use Arnapou\GW2Api\Cache\FileCache;
+use Arnapou\GW2Api\Cache\MemcachedCache;
+use Arnapou\GW2Api\Cache\MemoryCacheDecorator;
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\SimpleClient;
 use Arnapou\Toolbox\Functions\Directory;
@@ -38,8 +41,8 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function getInstance() {
         if (!isset(self::$instance)) {
-            $config         = new Config(__DIR__ . '/../../../config');
-            $service        = new Service('GW2Tools', $config);
+            $config = new Config(__DIR__ . '/../../../config');
+            $service = new Service('GW2Tools', $config);
             $service->addModule('api', new Api\Module($service));
             $service->addModule('assets', new Assets\Module($service));
             self::$instance = $service;
@@ -75,14 +78,25 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
     /**
      * 
      * @param string $lang
+     * @param boolean $withDecorator
      * @return SimpleClient
      */
-    static public function newSimpleClient($lang = AbstractClient::LANG_EN) {
+    static public function newSimpleClient($lang = AbstractClient::LANG_EN, $withDecorator = true) {
 
-        $path = self::getInstance()->getPathCache() . '/gw2api_' . $lang;
-        Directory::createIfNotExists($path);
+        if (self::getInstance()->getConfig()->get('cache.memcached')) {
+            $cache = new MemcachedCache();
+        }
+        else {
+            $path = self::getInstance()->getPathCache() . '/gw2api_' . $lang;
+            Directory::createIfNotExists($path);
 
-        return SimpleClient::create($lang, $path);
+            $cache = new FileCache($path);
+        }
+        if ($withDecorator) {
+            $cache = MemoryCacheDecorator($cache);
+        }
+
+        return SimpleClient::create($lang, $cache);
     }
 
 }

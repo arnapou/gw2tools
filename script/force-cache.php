@@ -18,17 +18,19 @@ use Arnapou\GW2Api\Core\RequestManager;
 use Arnapou\GW2Api\SimpleClient;
 use Arnapou\GW2Tools\Service;
 
+$cache = new MemcachedCache();
+
 foreach ([
 // AbstractClient::LANG_DE,
- AbstractClient::LANG_EN,
+AbstractClient::LANG_EN,
 // AbstractClient::LANG_ES,
 // AbstractClient::LANG_FR
 ] as $lang) {
 
     echo date('Y-m-d H:i:s') . ' ----- ' . $lang . " -----\n";
 
-    $simpleClient = Service::newSimpleClient($lang);
-    $clientV2     = $simpleClient->getClientV2();
+    $simpleClient = Service::newSimpleClient($lang, false);
+    $clientV2 = $simpleClient->getClientV2();
 
     $clientV2
         ->getRequestManager()
