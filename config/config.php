@@ -15,14 +15,14 @@ return array(
     'path.log'      => __DIR__ . '/../log',
     'date.timezone' => 'UTC',
     'version'       => '1.0.1',
-    'cache.type'    => 'mysql',
-//    'cache.type'    => 'memcached',
+//    'cache.type'    => 'mysql',
+    'cache.type'    => 'memcached',
 //    'cache.type'    => 'file',
-    'db'            => [
-        'type'     => 'mysql',
-        'host'     => 'localhost',
-        'dbname'   => 'YOUR_DB_NAME',
-        'user'     => 'YOUR_DB_USER',
-        'password' => 'YOUR_DB_PASSWORD',
-    ],
+//    'db'            => [
+//        'type'     => 'mysql',
+//        'host'     => 'localhost',
+//        'dbname'   => 'YOUR_DB_NAME',
+//        'user'     => 'YOUR_DB_USER',
+//        'password' => 'YOUR_DB_PASSWORD',
+//    ],
 );
