@@ -18,8 +18,6 @@ use Arnapou\GW2Api\Core\RequestManager;
 use Arnapou\GW2Api\SimpleClient;
 use Arnapou\GW2Tools\Service;
 
-$cache = new MemcachedCache();
-
 foreach ([
 // AbstractClient::LANG_DE,
 AbstractClient::LANG_EN,
