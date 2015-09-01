@@ -3,10 +3,10 @@
 
 {% set columns = account.bankvaults|columns(2) %}
 
-{% for vaults in columns %}
-    <div class="row">
-        {% for vault in vaults %}
-            <div class="col-xs-6">
+<div class="row">
+    {% for vaults in columns %}
+        <div class="col-xs-6">
+            {% for vault in vaults %}
                 {% if vault %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 {% endif %}
-            </div>
-        {% endfor %}
-    </div>
-{% endfor %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
