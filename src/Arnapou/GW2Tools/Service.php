@@ -93,7 +93,7 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
             $cache = new FileCache($path);
         }
         if ($withDecorator) {
-            $cache = MemoryCacheDecorator($cache);
+            $cache = new MemoryCacheDecorator($cache);
         }
 
         return SimpleClient::create($lang, $cache);
