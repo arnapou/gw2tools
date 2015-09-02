@@ -12,10 +12,28 @@
 namespace Arnapou\GW2Tools\Api;
 
 use Arnapou\GW2Api\Exception\InvalidTokenException;
+use Arnapou\GW2Tools\Service;
 use Arnapou\Toolbox\Exception\Exception;
-use Arnapou\Toolbox\Functions\Directory;
 
 class User {
+
+    /**
+     *
+     * @var string
+     */
+    protected $code;
+
+    /**
+     *
+     * @var string
+     */
+    protected $token;
+
+    /**
+     *
+     * @var int
+     */
+    protected $lastaccess;
 
     /**
      *
@@ -31,13 +49,29 @@ class User {
 
     /**
      * 
-     * @param array $data
+     * @return \Arnapou\Toolbox\Connection\Mysql
      */
-    private function __construct($data) {
-        if (!isset($data['code'], $data['token'], $data['lastaccess'])) {
-            throw new Exception('Corrupted data');
-        }
-        $this->data = $data;
+    public static function getConnection() {
+        return Service::getInstance()->getConnection();
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public static function table() {
+        return Service::getInstance()->getConfig()->get('table.tokens', 'tokens');
+    }
+
+    /**
+     * 
+     * @param array $row
+     */
+    public function __construct($row) {
+        $this->code = $row['code'];
+        $this->token = $row['token'];
+        $this->lastaccess = $row['lastaccess'];
+        $this->data = empty($row['data']) ? [] : (is_array($row['data']) ? $row['data'] : unserialize($row['data']));
     }
 
     /**
@@ -59,28 +93,10 @@ class User {
 
     /**
      * 
-     * @return array
-     */
-    public function toArray() {
-        return $this->data;
-    }
-
-    /**
-     * 
      * @return string
      */
     public function getCode() {
-        return $this->data['code'];
-    }
-
-    /**
-     * 
-     * @param string $code
-     * @return User
-     */
-    public function setCode($code) {
-        $this->data['code'] = $code;
-        return $this;
+        return $this->code;
     }
 
     /**
@@ -88,17 +104,7 @@ class User {
      * @return string
      */
     public function getToken() {
-        return $this->data['token'];
-    }
-
-    /**
-     * 
-     * @param string $token
-     * @return User
-     */
-    public function setToken($token) {
-        $this->data['token'] = $token;
-        return $this;
+        return $this->token;
     }
 
     /**
@@ -106,7 +112,7 @@ class User {
      * @return string
      */
     public function getLastaccess() {
-        return $this->data['lastaccess'];
+        return $this->lastaccess;
     }
 
     /**
@@ -114,7 +120,7 @@ class User {
      * @return User
      */
     public function setLastaccess() {
-        $this->data['lastaccess'] = time();
+        $this->lastaccess = time();
         return $this;
     }
 
@@ -138,18 +144,18 @@ class User {
      * @return mixed
      */
     public function set($key, $value) {
-        if ($key === 'code') {
-            $this->setCode($value);
-        }
-        elseif ($key === 'token') {
-            $this->setToken($value);
-        }
-        elseif ($key === 'lastaccess') {
-            $this->setLastaccess();
-        }
-        else {
-            $this->data[$key] = $value;
-        }
+        $this->data[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
+    public function remove($key) {
+        unset($this->data[$key]);
         return $this;
     }
 
@@ -158,21 +164,23 @@ class User {
      * @return User
      */
     public function save() {
-        $vault = TokenVault::getInstance();
-        $vault->set('code.' . $this->data['code'], $this->data);
-        $vault->set('token.' . $this->data['token'], $this->data['code']);
+        $conn = self::getConnection();
+        $this->setLastaccess();
+        $conn->executeReplace(self::table(), [
+            'code'       => $this->code,
+            'token'      => $this->token,
+            'lastaccess' => $this->lastaccess,
+            'data'       => serialize($this->data),
+        ]);
         return $this;
     }
 
     /**
      * 
-     * @return User
      */
     public function delete() {
-        $vault = TokenVault::getInstance();
-        $vault->remove('code.' . $this->data['code']);
-        $vault->remove('token.' . $this->data['token']);
-        return $this;
+        $conn = self::getConnection();
+        $conn->executeDelete(self::table(), '`code` = ' . $conn->quote($this->code));
     }
 
     /**
@@ -209,20 +217,32 @@ class User {
      * @return User
      */
     public static function create($token, $code = null) {
-        $vault  = TokenVault::getInstance();
-        $data   = [
-            'code'       => ($code && strlen($code) == 10) ? $code : $vault->newKey(),
+        $conn = self::getConnection();
+        if (strlen($code) !== 10) {
+            $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890';
+            $nbchars = strlen($chars);
+            $code = '';
+            do {
+                $n = 10;
+                while ($n--) {
+                    $code .= $chars[mt_rand(0, $nbchars - 1)];
+                }
+            } while ($code == $conn->getValue("SELECT `code` FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code)));
+        }
+
+        $object = new self([
+            'code'       => $code,
             'token'      => $token,
             'lastaccess' => time(),
-            'rights'     => [
-                'account',
-                'character',
-                'characters',
-                'equipments',
+            'data'       => [
+                'rights' => [
+                    'account',
+                    'character',
+                    'characters',
+                    'equipments',
+                ],
             ],
-        ];
-        $object = new self($data);
-        $object->getAccount(); // makes token controls
+        ]);
         $object->save();
         return $object;
     }
@@ -233,12 +253,13 @@ class User {
      * @return User
      */
     public static function findByToken($token) {
-        $vault = TokenVault::getInstance();
-        $code  = $vault->get('token.' . $token);
-        if (empty($code)) {
-            return null;
+        $conn = self::getConnection();
+        $sql = "SELECT * FROM `" . self::table() . "` WHERE `token`=" . $conn->quote($token);
+        $data = $conn->getFirstRow($sql);
+        if ($data) {
+            return new self($data);
         }
-        return self::findByCode($code);
+        return null;
     }
 
     /**
@@ -247,12 +268,13 @@ class User {
      * @return User
      */
     public static function findByCode($code) {
-        $vault = TokenVault::getInstance();
-        $data  = $vault->get('code.' . $code);
-        if (empty($data)) {
-            return null;
+        $conn = self::getConnection();
+        $sql = "SELECT * FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code);
+        $data = $conn->getFirstRow($sql);
+        if ($data) {
+            return new self($data);
         }
-        return new self($data);
+        return null;
     }
 
 }

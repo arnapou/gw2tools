@@ -44,8 +44,8 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function getInstance() {
         if (!isset(self::$instance)) {
-            $config         = new Config(__DIR__ . '/../../../config');
-            $service        = new Service('GW2Tools', $config);
+            $config = new Config(__DIR__ . '/../../../config');
+            $service = new Service('GW2Tools', $config);
             $service->addModule('api', new Api\Module($service));
             $service->addModule('assets', new Assets\Module($service));
             self::$instance = $service;
@@ -59,6 +59,7 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     public function getTwig() {
         if (!isset($this->twigFactory)) {
+            $this->getConnection();
             $factory = TwigFactory::create($this);
             $factory->addPath(__DIR__ . '/twig');
             $factory->addFilter(new \Twig_SimpleFilter('image', function($url) {
@@ -86,21 +87,20 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function newSimpleClient($lang = AbstractClient::LANG_EN, $withDecorator = true) {
 
-        $config    = self::getInstance()->getConfig();
+        $config = self::getInstance()->getConfig();
         $cacheType = $config->get('cache.type');
 
         if ('memcached' === $cacheType) {
             $cache = new MemcachedCache();
         }
         elseif ('mongo' === $cacheType) {
-            $mongo      = new \MongoClient();
+            $mongo = new \MongoClient();
             $collection = $mongo->selectCollection('gw2tool', 'cache');
-            $cache      = new MongoCache($collection);
+            $cache = new MongoCache($collection);
         }
         elseif ('mysql' === $cacheType) {
-            $dsn   = 'mysql:host=' . $config->get('db.host') . ';port=' . $config->get('db.port', 3306) . ';dbname=' . $config->get('db.dbname');
-            $pdo   = new Mysql($dsn, $config->get('db.user'), $config->get('db.password'));
-            $cache = new MysqlCache($pdo, 'cache');
+            $pdo = self::getInstance()->getConnection();
+            $cache = new MysqlCache($pdo, $config->get('table.cache', 'cache'));
         }
         else {
             $path = self::getInstance()->getPathCache() . '/gw2api_' . $lang;

@@ -12,4 +12,15 @@
 include __DIR__ . '/../vendor/autoload.php';
 
 Arnapou\GW2Tools\Service::getInstance();
-Arnapou\GW2Tools\Api\TokenVault::cleanTokens();
+
+use Arnapou\GW2Tools\Api\User;
+
+$conn = User::getConnection();
+
+// clean old non accessed codes / users
+$conn->executeDelete(User::table(), 'lastaccess < ' . (time() - 180 * 86400));
+
+foreach ($conn->query("SELECT * FROM `" . User::table() . "`") as $row) {
+    $user = new User($row);
+    $user->checkAccount(); // automatic delete if error with token
+}
