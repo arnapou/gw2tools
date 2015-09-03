@@ -417,6 +417,7 @@ img.item {
 }
 .page-trading-post .column-icom {
     width: 3em;
+    height: 3em;
 }
 .page-trading-post .column-date,
 .page-trading-post .column-quantity {
