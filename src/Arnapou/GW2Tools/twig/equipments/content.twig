@@ -61,17 +61,8 @@
                         <td>
                             <div class="cell">
                                 {% if char %}
-                                    {% for obj in char.equipments %}
-                                        {% if obj.subtype == type or obj.type == 'Back' and type == 'Backpack'  %}
-                                            {{ _self.object(obj) }}
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% for bag in char.bags %}
-                                        {% for obj in bag.inventorystuff %}
-                                            {% if obj.subtype == type %}
-                                                {{ _self.object(obj) }}
-                                            {% endif %}
-                                        {% endfor %}
+                                    {% for obj in char.inventorystuff[(type == 'Backpack' ? '' : type)] %}
+                                        {{ _self.object(obj) }}
                                     {% endfor %}
                                 {% endif %}
                             </div>
@@ -94,33 +85,35 @@
 
 
 {% macro object(obj) %}
-	<div class="object">
-		<span class="icons">
-			<a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
-				<img title="{{ obj.name }}" src="{{ obj|image }}" class="item" />
-			</a>
-			{% for upgrade in obj.upgrades %}
-				<a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
-					<img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion" />
-				</a>
-			{% endfor %}
-			{% for infusion in obj.infusions %}
-				<a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
-					<img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade" />
-				</a>
-			{% endfor %}
-		</span>
-		<span class="name">
-            {% set attrs = obj.attributes %}
-			{% if attrs.stats_name and attrs.stats %}
-				<span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
-			{% elseif attrs.stats_name %}
-				<span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
-			{% elseif attrs.stats %}
-				<span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
-			{% else %}
-				<span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
-			{% endif %}
-		</span>
-	</div>
+    {% if obj.id %}
+        <div class="object">
+            <span class="icons">
+                <a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
+                    <img title="{{ obj.name }}" src="{{ obj|image }}" class="item" />
+                </a>
+                {% for upgrade in obj.upgrades %}
+                    <a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
+                        <img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion" />
+                    </a>
+                {% endfor %}
+                {% for infusion in obj.infusions %}
+                    <a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
+                        <img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade" />
+                    </a>
+                {% endfor %}
+            </span>
+            <span class="name">
+                {% set attrs = obj.attributes %}
+                {% if attrs.stats_name and attrs.stats %}
+                    <span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                {% elseif attrs.stats_name %}
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                {% elseif attrs.stats %}
+                    <span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                {% else %}
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
 {% endmacro %}

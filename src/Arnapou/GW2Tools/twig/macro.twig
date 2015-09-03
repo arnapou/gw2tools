@@ -26,15 +26,15 @@
     {% for bag in char.bags %}
         <div class="slots">
             <div class="bag">
-            <div class="slot">
-                {% if bag.id %}
-                    <a href="http://db.dulfy.net/item/{{ bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
-                        <img src="{{ bag|image }}" />
-                    </a>
-                {% else %}
-                    <img src="{{ ""|image }}" class="nothing" />
-                {% endif %}
-            </div>
+                <div class="slot">
+                    {% if bag.id %}
+                        <a href="http://db.dulfy.net/item/{{ bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
+                            <img src="{{ bag|image }}" />
+                        </a>
+                    {% else %}
+                        <img src="{{ ""|image }}" class="nothing" />
+                    {% endif %}
+                </div>
             </div>
 
             {% for item in bag.inventory %}

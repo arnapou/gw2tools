@@ -68,10 +68,10 @@ class User {
      * @param array $row
      */
     public function __construct($row) {
-        $this->code = $row['code'];
-        $this->token = $row['token'];
+        $this->code       = $row['code'];
+        $this->token      = $row['token'];
         $this->lastaccess = $row['lastaccess'];
-        $this->data = empty($row['data']) ? [] : (is_array($row['data']) ? $row['data'] : unserialize($row['data']));
+        $this->data       = empty($row['data']) ? [] : (is_array($row['data']) ? $row['data'] : unserialize($row['data']));
     }
 
     /**
@@ -219,15 +219,16 @@ class User {
     public static function create($token, $code = null) {
         $conn = self::getConnection();
         if (strlen($code) !== 10) {
-            $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890';
+            $chars   = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890';
             $nbchars = strlen($chars);
-            $code = '';
+            $code    = '';
             do {
                 $n = 10;
                 while ($n--) {
                     $code .= $chars[mt_rand(0, $nbchars - 1)];
                 }
-            } while ($code == $conn->getValue("SELECT `code` FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code)));
+            }
+            while ($code == $conn->getValue("SELECT `code` FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code)));
         }
 
         $object = new self([
@@ -243,6 +244,7 @@ class User {
                 ],
             ],
         ]);
+        $object->getAccount();
         $object->save();
         return $object;
     }
@@ -254,7 +256,7 @@ class User {
      */
     public static function findByToken($token) {
         $conn = self::getConnection();
-        $sql = "SELECT * FROM `" . self::table() . "` WHERE `token`=" . $conn->quote($token);
+        $sql  = "SELECT * FROM `" . self::table() . "` WHERE `token`=" . $conn->quote($token);
         $data = $conn->getFirstRow($sql);
         if ($data) {
             return new self($data);
@@ -269,7 +271,7 @@ class User {
      */
     public static function findByCode($code) {
         $conn = self::getConnection();
-        $sql = "SELECT * FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code);
+        $sql  = "SELECT * FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code);
         $data = $conn->getFirstRow($sql);
         if ($data) {
             return new self($data);

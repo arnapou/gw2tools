@@ -112,7 +112,9 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
             $cache = new MemoryCacheDecorator($cache);
         }
 
-        return SimpleClient::create($lang, $cache);
+        $client = SimpleClient::create($lang, $cache);
+        $client->getClientV2()->getRequestManager()->setDefautCacheRetention(1800);
+        return $client;
     }
 
 }

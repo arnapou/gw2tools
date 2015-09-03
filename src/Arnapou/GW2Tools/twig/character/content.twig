@@ -241,14 +241,14 @@
                         <table class="table table-condensed equipment">
                             <tbody>
                                 {% for bag in char.bags %}
-                                    {% for obj in bag.inventorystuff %}
-                                        {% if obj.subtype in [	
-                                            'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
-                                            'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
-                                            'Speargun', 'Harpoon', 'Trident'
-                                        ] %}
+                                    {% for subtype in [	
+                                        'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
+                                        'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
+                                        'Speargun', 'Harpoon', 'Trident'
+                                    ] %}
+                                        {% for obj in bag.inventorystuff[subtype] %}
                                             {{ _self.object(obj) }}
-                                        {% endif %}
+                                        {% endfor %}
                                     {% endfor %}
                                 {% endfor %}
                             </tbody>
@@ -266,10 +266,10 @@
                         <table class="table table-condensed equipment">
                             <tbody>
                                 {% for bag in char.bags %}
-                                    {% for obj in bag.inventorystuff %}
-                                        {% if obj.subtype in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
+                                    {% for subtype in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
+                                        {% for obj in bag.inventorystuff[subtype] %}
                                             {{ _self.object(obj) }}
-                                        {% endif %}
+                                        {% endfor %}
                                     {% endfor %}
                                 {% endfor %}
                             </tbody>
@@ -287,10 +287,10 @@
                         <table class="table table-condensed equipment">
                             <tbody>
                                 {% for bag in char.bags %}
-                                    {% for obj in bag.inventorystuff %}
-                                        {% if obj.subtype in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
+                                    {% for subtype in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
+                                        {% for obj in bag.inventorystuff[subtype] %}
                                             {{ _self.object(obj) }}
-                                        {% endif %}
+                                        {% endfor %}
                                     {% endfor %}
                                 {% endfor %}
                             </tbody>
