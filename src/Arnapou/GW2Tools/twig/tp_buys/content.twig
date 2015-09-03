@@ -1,0 +1,74 @@
+
+{% set tp = account.tradingpost %}
+
+
+{% if (tp.currentbuys|length) + (tp.historybuys|length) %}
+
+    {{ _self.tp_list('Current buys', tp.currentbuys) }}
+    {{ _self.tp_list('History buys', tp.historybuys) }}
+
+{% else %}
+
+    <p>There is nothing to display : either in current or history.</p>
+
+{% endif %}
+
+
+{% macro tp_list(title, list) %}
+
+    {% import "macro.twig" as macro %}
+
+    {% if list|length %}
+        <div class="panel panel-inverse collapsed">
+            <div class="panel-heading">
+                <div class="pull-right">
+                    <div class="pull-right expandcollapse">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <i class="glyphicon glyphicon-minus"></i>
+                    </div>
+                </div>
+                <b>{{ title }}</b>
+            </div>
+        </div>
+
+        <div style="display: none">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="column-icon"></th>
+                                <th class="column-name">Name</th>
+                                <th class="column-date">Time</th>
+                                <th class="column-quantity">Quantity</th>
+                                <th class="column-amount">Unit price</th>
+                                <th class="column-amount">Total price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trade in list %}
+                                <tr>
+                                    <td class="column-icon">
+                                        <a href="http://db.dulfy.net/item/{{ trade.item.id }}" target="_blank">
+                                            <img src="{{ trade.item|image }}" class="rarity-{{ trade.item.rarity }}" />
+                                        </a>
+                                    </td>
+                                    <td class="column-name"><span class="rarity-{{ trade.item.rarity }}">{{ trade.item.name }}</span></td>
+                                    <td class="column-date"><span>{{ (trade.purchased ? trade.purchased : trade.created)|datediff }}</span></td>
+                                    <td class="column-quantity"><span>{{ trade.quantity }}</span></td>
+                                    <td class="column-amount">{{ macro.amount(trade.price) }}</td>
+                                    <td class="column-amount">{{ macro.amount(trade.quantity * trade.price) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endmacro %}
+
+<script type="text/javascript">
+    $('.page-trading-post .panel-inverse').eq(0).trigger('click');
+</script>

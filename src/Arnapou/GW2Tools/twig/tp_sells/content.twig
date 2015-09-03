@@ -1,0 +1,19 @@
+
+{% import "tp_buys/content.twig" as tp_macro %}
+
+{% set tp = account.tradingpost %}
+
+{% if (tp.currentbuys|length) + (tp.historybuys|length) %}
+
+    {{ tp_macro.tp_list('Current sells', tp.currentsells) }}
+    {{ tp_macro.tp_list('History sells', tp.historysells) }}
+
+{% else %}
+
+    <p>There is nothing to display : either in current or history.</p>
+
+{% endif %}
+
+<script type="text/javascript">
+    $('.page-trading-post .panel-inverse').eq(0).trigger('click');
+</script>

@@ -58,6 +58,21 @@ class MenuList implements \IteratorAggregate {
             ->addItem('collectibles', 'Collectibles')
         ;
         $this->addMenu($menu);
+
+        // menu 4
+        $menu = Menu::create('Unlocks')
+            ->addItem('wardrobe_armors', 'Wardrobe Armors')
+            ->addItem('wardrobe_weapons', 'Wardrobe Weapons')
+            ->addItem('dyes', 'Dyes')
+        ;
+        $this->addMenu($menu);
+
+        // menu 5
+        $menu = Menu::create('Trading post')
+            ->addItem('tp_buys', 'Buys')
+            ->addItem('tp_sells', 'Sells')
+        ;
+        $this->addMenu($menu);
     }
 
     /**

@@ -44,8 +44,8 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function getInstance() {
         if (!isset(self::$instance)) {
-            $config = new Config(__DIR__ . '/../../../config');
-            $service = new Service('GW2Tools', $config);
+            $config         = new Config(__DIR__ . '/../../../config');
+            $service        = new Service('GW2Tools', $config);
             $service->addModule('api', new Api\Module($service));
             $service->addModule('assets', new Assets\Module($service));
             self::$instance = $service;
@@ -74,6 +74,27 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
             $factory->addFilter(new \Twig_SimpleFilter('chunk', function($array, $n, $fill = true) {
                 return chunk($array, $n, $fill);
             }));
+            $factory->addFilter(new \Twig_SimpleFilter('datediff', function($date) {
+                $diff = (new \DateTime('now'))->getTimestamp() - (new \DateTime($date))->getTimestamp();
+                if ($diff < 60) {
+                    return '< 1 min.';
+                }
+                elseif ($diff < 3600) {
+                    return floor($diff / 60) . ' min.';
+                }
+                elseif ($diff < 86400) {
+                    $h = floor($diff / 3600);
+                    return $h . ' hour' . ($h > 1 ? 's' : '');
+                }
+                elseif ($diff < 2629728) {
+                    $d = floor($diff / 86400);
+                    return $d . ' day' . ($d > 1 ? 's' : '');
+                }
+                else {
+                    $m = floor($diff / 2629728);
+                    return $m . ' month' . ($m > 1 ? 's' : '');
+                }
+            }));
             $this->twigFactory = $factory;
         }
         return $this->twigFactory->getEnvironment();
@@ -87,19 +108,19 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function newSimpleClient($lang = AbstractClient::LANG_EN, $withDecorator = true) {
 
-        $config = self::getInstance()->getConfig();
+        $config    = self::getInstance()->getConfig();
         $cacheType = $config->get('cache.type');
 
         if ('memcached' === $cacheType) {
             $cache = new MemcachedCache();
         }
         elseif ('mongo' === $cacheType) {
-            $mongo = new \MongoClient();
+            $mongo      = new \MongoClient();
             $collection = $mongo->selectCollection('gw2tool', 'cache');
-            $cache = new MongoCache($collection);
+            $cache      = new MongoCache($collection);
         }
         elseif ('mysql' === $cacheType) {
-            $pdo = self::getInstance()->getConnection();
+            $pdo   = self::getInstance()->getConnection();
             $cache = new MysqlCache($pdo, $config->get('table.cache', 'cache'));
         }
         else {

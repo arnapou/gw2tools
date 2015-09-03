@@ -45,6 +45,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
 
         // generic
         $this->addRoute('', [$this, 'routeIndex']);
+        $this->addRoute('technical-infos', [$this, 'routeTechnicalInfos']);
         $this->addRoute('token-check', [$this, 'routeTokenCheck']);
 
         // proxy images
@@ -167,6 +168,14 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
             return $user;
         }
         return null;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function routeTechnicalInfos() {
+        return $this->renderPage('technical-infos.twig');
     }
 
     /**

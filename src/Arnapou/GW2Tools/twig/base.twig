@@ -102,6 +102,50 @@
 			{% block content %}
 			{% endblock %}
 		</div>
+        <div id="footer">
+            <div class="container">
+                {% block footer %}
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <ul>
+                                <li>
+                                    <i class="glyphicon glyphicon-user"></i> Site development: 
+                                    <a href="mailto:arnaud@arnapou.net">Arnaud Buathier</a>
+                                </li>
+                                <li>
+                                    <img src="/assets/images/github.png" /> GitHub: 
+                                    <a href="https://github.com/arnapou/gw2tools" target="_blank">GW2Tools Project</a> <em>(v{{ config.get('version') }})</em>
+                                </li>
+                                <li>
+                                    <i class="glyphicon glyphicon-list-alt"></i> Changelog: 
+                                    <a href="https://github.com/arnapou/gw2tools/blob/master/CHANGELOG.md" target="_blank">Project Changelog</a>
+                                </li>
+                                <li>
+                                    <i class="glyphicon glyphicon-wrench"></i> Technical: 
+                                    <a href="/api/technical-infos">For developers</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="logo">
+                                <a href="http://guildwars2.com/" target="_blank">
+                                    <img src="/assets/images/logo-gw2.png" width="128" />
+                                </a>
+                                <a href="http://www.arena.net/" target="_blank">
+                                    <img src="/assets/images/logo-anet.png" width="128" />
+                                </a>
+                                <a href="http://us.ncsoft.com/" target="_blank">
+                                    <img src="/assets/images/logo-ncsoft.png" width="128" />
+                                </a>
+                            </div>
+                            <p>
+                                 &copy; 2010-2015 ArenaNet, Inc. and NC Interactive, Inc. All rights reserved. Guild Wars, Guild Wars 2, ArenaNet, NCsoft, the Interlocking NC Logo, and all associated logos and designs are trademarks or registered trademarks of NCsoft Corporation. All other trademarks are the property of their respective owners.
+                            </p>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
 		{% block js %}
 			<script src="/assets/jquery.js?{{ config.version }}"></script>
 			<script src="/assets/bootstrap/js/bootstrap.min.js?{{ config.version }}"></script>

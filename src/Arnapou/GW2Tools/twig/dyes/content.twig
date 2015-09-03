@@ -1,0 +1,41 @@
+
+
+<div class="panel-heading">
+    <span class="pull-right">
+        {{ account.dyes.count }} / {{ account.dyes.total }}
+    </span>
+    Dyes
+</div>
+
+<div class="panel-body">
+
+    {% set columns = account.dyes.colors|columns(4) %}
+    <div class="row">
+        {% for colors in columns %}
+            <div class="col-xs-3">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Color</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for color in colors %}
+                            <tr class="{{ color.unlocked ? 'unlocked' : 'locked' }}">
+                                <td>
+                                    <span>{{ color.name }}</span>
+                                </td>
+                                <td>
+                                    {% set hex = color.categoryrgbhex('cloth') %}
+                                    <span class="dye" style="background: {{ hex }}">{{ hex }}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>

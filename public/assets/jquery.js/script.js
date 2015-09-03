@@ -81,6 +81,20 @@ $(function () {
 
     });
 
+    $(document).on('click', '.panel-inverse', function () {
+        var $panel = $(this);
+        if ($panel.hasClass('collapsed')) {
+            $panel.next('div').slideDown(500, function () {
+                $panel.removeClass('collapsed').addClass('expanded');
+            });
+        }
+        else {
+            $panel.next('div').slideUp(300, function () {
+                $panel.removeClass('expanded').addClass('collapsed');
+            });
+        }
+    });
+
     // refresh cookie
     (function (tokens) {
         if (tokens) {

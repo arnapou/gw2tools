@@ -1,0 +1,10 @@
+
+{% import "wardrobe_weapons/content.twig" as wardrobe_macro %}
+
+{% set types = ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic', 'Back'] %}
+
+{{ wardrobe_macro.group('Armors light', types, account.wardrobe.armorslight) }}
+{{ wardrobe_macro.group('Armors medium', types, account.wardrobe.armorsmedium) }}
+{{ wardrobe_macro.group('Armors heavy', types, account.wardrobe.armorsheavy) }}
+{{ wardrobe_macro.group('Others', types, account.wardrobe.backs) }}
+{{ wardrobe_macro.group('Clothing', types, account.wardrobe.armorsclothing) }}

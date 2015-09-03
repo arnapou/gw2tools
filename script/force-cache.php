@@ -15,6 +15,7 @@ Arnapou\GW2Tools\Service::getInstance();
 
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Core\RequestManager;
+use Arnapou\GW2Api\Model\AbstractObject;
 use Arnapou\GW2Api\SimpleClient;
 use Arnapou\GW2Tools\Service;
 
@@ -39,8 +40,11 @@ AbstractClient::LANG_EN,
 
 
     $ids = $clientV2->apiSkins()->execute()->getAllData();
-    $clientV2->smartRequest('apiSkins', $ids, 7 * 86400);
+    $clientV2->smartRequest('apiSkins', $ids, AbstractObject::$cacheDurationApiSkins);
 
     $ids = $clientV2->apiItems()->execute()->getAllData();
-    $clientV2->smartRequest('apiItems', $ids, 7 * 86400);
+    $clientV2->smartRequest('apiItems', $ids, AbstractObject::$cacheDurationApiItems);
+
+    $ids = $clientV2->apiColors()->execute()->getAllData();
+    $clientV2->smartRequest('apiColors', $ids, AbstractObject::$cacheDurationApiColors);
 }

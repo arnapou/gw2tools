@@ -1,0 +1,67 @@
+
+{% set groups = {
+    'Weapons two hands' : ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
+    'Weapons one hand' : ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'],
+    'Weapons aquatic' : ['Speargun', 'Harpoon', 'Trident'],
+} %}
+{% set wardrobe = account.wardrobe.weapons %}
+
+
+{% for group, types in groups %}
+
+    {{ _self.group(group, types,wardrobe) }}
+
+{% endfor %}
+
+
+{% macro group(name, types, wardrobe) %}
+    {% set count = 0 %}
+    {% set total = 0 %}
+    {% for type in types %}
+        {% set data = wardrobe[type] %}
+        {% set count = count + data.count %}
+        {% set total = total + data.total %}
+    {% endfor %}
+
+    {% if total %}
+        <div class="panel panel-inverse collapsed">
+            <div class="panel-heading">
+                <div class="pull-right expandcollapse">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <i class="glyphicon glyphicon-minus"></i>
+                </div>
+                <div class="pull-right" title="{{ (100 * count / total)|round }}%">
+                    {{ count }} / {{ total }}
+                </div>
+                <b>{{ name }}</b>
+            </div>
+        </div>
+
+        <div style="display: none">
+            {% for type in types %}
+                {% set data = wardrobe[type] %}
+                {% if data.total %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="pull-right" title="{{ (100 * data.count / data.total)|round }}">
+                                {{ data.count }} / {{ data.total }}
+                            </div>
+                            {{ type }}
+                        </div>
+                        <div class="panel-body slots">
+                            {% for skin in data.skins %}
+                                <div class="slot {{ skin.unlocked ? '' : 'empty' }}" title="{{ skin.name }}">
+                                    {% if skin.id %}
+                                        <img src="{{ skin|image }}" />
+                                    {% else %}
+                                        <img src="{{ ""|image }}" class="nothing" />
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endmacro %}

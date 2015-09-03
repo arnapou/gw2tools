@@ -1,17 +1,32 @@
 {% extends "base.twig" %}
 
 {% block content %}
-	<div id="access-token-form">
-		{% if token_error %}
-			{% include 'error-token.twig' %}
-		{% endif %}
-
-		<div class="form-group">
-			<label for="auth-pwd">Access Token</label>
-			<input type="text" class="form-control" name="access_token" placeholder="Paste your access token here">
-		</div>
-		<button type="button" class="btn btn-default">
-			Continue <i class="glyphicon glyphicon-arrow-right"></i>
-		</button>
-	</div>
+    <div id="access-token-form" class="page-home">
+        <div class="jumbotron">
+            <h1>Welcome !</h1>
+            <p>Paste your "api key" below to browse your Guildwars 2 account:</p>
+            {% if token_error %}
+                {% include 'error-token.twig' %}
+            {% endif %}
+            <div class="form-group">
+                <input type="text" class="form-control" name="access_token" placeholder="Paste your api key here">
+            </div>
+            <p>
+                <button type="button" class="btn btn-primary">
+                    Continue <i class="glyphicon glyphicon-arrow-right"></i>
+                </button>
+            </p>
+            <div class="faq">
+                <b>FAQ</b>
+                <ul>
+                    <li>
+                        <em>How to create an api key :</em> log in the <a href="https://account.arena.net/applications" target="_blank">Guildwars 2 account site</a> and go on the "application" tab.
+                    </li>
+                    <li>
+                        <em>What is an api key :</em> API keys are a way to grant third-party tools and applications partial read-only access to your Guild Wars 2 account. To use them, create a key, then copy and paste it into the field provided by the third-party tool or application. Each key is granted a fixed set of permissions that limit what third-party tools can access, and you can delete a key at any time to revoke the permissions granted.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}
