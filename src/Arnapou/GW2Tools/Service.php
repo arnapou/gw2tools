@@ -44,8 +44,8 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function getInstance() {
         if (!isset(self::$instance)) {
-            $config         = new Config(__DIR__ . '/../../../config');
-            $service        = new Service('GW2Tools', $config);
+            $config = new Config(__DIR__ . '/../../../config');
+            $service = new Service('GW2Tools', $config);
             $service->addModule('api', new Api\Module($service));
             $service->addModule('assets', new Assets\Module($service));
             self::$instance = $service;
@@ -108,26 +108,9 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function newSimpleClient($lang = AbstractClient::LANG_EN, $withDecorator = true) {
 
-        $config    = self::getInstance()->getConfig();
-        $cacheType = $config->get('cache.type');
+        $mongo = new \MongoClient();
+        $cache = new MongoCache($mongo->selectDB('gw2tool'), 'cache');
 
-        if ('memcached' === $cacheType) {
-            $cache = new MemcachedCache();
-        }
-        elseif ('mongo' === $cacheType) {
-            $mongo      = new \MongoClient();
-            $cache      = new MongoCache($mongo->selectDB('gw2tool'), 'cache');
-        }
-        elseif ('mysql' === $cacheType) {
-            $pdo   = self::getInstance()->getConnection();
-            $cache = new MysqlCache($pdo, $config->get('table.cache', 'cache'));
-        }
-        else {
-            $path = self::getInstance()->getPathCache() . '/gw2api_' . $lang;
-            Directory::createIfNotExists($path);
-
-            $cache = new FileCache($path);
-        }
         if ($withDecorator) {
             $cache = new MemoryCacheDecorator($cache);
         }

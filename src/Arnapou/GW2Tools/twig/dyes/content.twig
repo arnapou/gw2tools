@@ -9,10 +9,10 @@
 
 <div class="panel-body">
 
-    {% set columns = account.dyes.colors|columns(4) %}
+    {% set columns = account.dyes.colors|columns(3) %}
     <div class="row">
         {% for colors in columns %}
-            <div class="col-xs-3">
+            <div class="col-xs-4">
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -24,6 +24,11 @@
                         {% for color in colors %}
                             <tr class="{{ color.unlocked ? 'unlocked' : 'locked' }}">
                                 <td>
+                                    {% if color.unlocked %}
+                                        <i class="glyphicon glyphicon-ok"></i>
+                                    {% else %}
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    {% endif %}
                                     <span>{{ color.name }}</span>
                                 </td>
                                 <td>

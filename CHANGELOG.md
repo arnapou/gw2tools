@@ -1,3 +1,10 @@
+## 1.0.3 (2015-09-04)
+
+New:
+
+  - adding a mysql field
+  - better mongodb caching performance
+
 ## 1.0.2 (2015-09-03)
 
 New:

@@ -396,11 +396,10 @@ img.item {
     color: rgba(255,255,255,0.4);
 }
 .page-dyes .locked {
-    color: #800;
-    font-style: italic;
+    color: #a00;
 }
-.page-dyes .locked td {
-    background: #fff0f0;
+.page-dyes td .glyphicon {
+    margin-right: .5em;
 }
 
 /************************************************/

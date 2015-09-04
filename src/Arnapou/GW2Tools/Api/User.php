@@ -167,6 +167,7 @@ class User {
         $conn = self::getConnection();
         $this->setLastaccess();
         $conn->executeReplace(self::table(), [
+            'name'       => $this->getAccount()->getName(),
             'code'       => $this->code,
             'token'      => $this->token,
             'lastaccess' => $this->lastaccess,
@@ -227,8 +228,7 @@ class User {
                 while ($n--) {
                     $code .= $chars[mt_rand(0, $nbchars - 1)];
                 }
-            }
-            while ($code == $conn->getValue("SELECT `code` FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code)));
+            } while ($code == $conn->getValue("SELECT `code` FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code)));
         }
 
         $object = new self([
@@ -244,7 +244,6 @@ class User {
                 ],
             ],
         ]);
-        $object->getAccount();
         $object->save();
         return $object;
     }

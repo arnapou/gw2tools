@@ -17,8 +17,25 @@ use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Core\RequestManager;
 use Arnapou\GW2Api\Model\AbstractObject;
 use Arnapou\GW2Api\SimpleClient;
+use Arnapou\GW2Tools\Api\User;
 use Arnapou\GW2Tools\Service;
 
+/*
+ * DELETE OLD USERS
+ */
+$conn = User::getConnection();
+
+// clean old non accessed codes / users
+$conn->executeDelete(User::table(), 'lastaccess < ' . (time() - 180 * 86400));
+
+foreach ($conn->query("SELECT * FROM `" . User::table() . "`") as $row) {
+    $user = new User($row);
+    $user->checkAccount(); // automatic delete if error with token
+}
+
+/*
+ * FORCE CACHE CHECKS
+ */
 foreach ([
 // AbstractClient::LANG_DE,
 AbstractClient::LANG_EN,
@@ -29,22 +46,29 @@ AbstractClient::LANG_EN,
     echo date('Y-m-d H:i:s') . ' ----- ' . $lang . " -----\n";
 
     $simpleClient = Service::newSimpleClient($lang, false);
-    $clientV2 = $simpleClient->getClientV2();
 
-    $clientV2
+    $simpleClient->getClientV2()
         ->getRequestManager()
         ->getEventListener()
         ->bind(RequestManager::onRequest, function($event) {
             echo date('Y-m-d H:i:s') . ' ' . round($event['time'], 3) . "s " . $event['uri'] . " \n";
         });
 
-
-    $ids = $clientV2->apiSkins()->execute()->getAllData();
-    $clientV2->smartRequest('apiSkins', $ids, AbstractObject::$cacheDurationApiSkins);
-
-    $ids = $clientV2->apiItems()->execute()->getAllData();
-    $clientV2->smartRequest('apiItems', $ids, AbstractObject::$cacheDurationApiItems);
-
-    $ids = $clientV2->apiColors()->execute()->getAllData();
-    $clientV2->smartRequest('apiColors', $ids, AbstractObject::$cacheDurationApiColors);
+    foreach ([
+    'v2_colors',
+    'v2_currencies',
+    'v2_files',
+    'v2_items',
+    'v2_maps',
+    'v2_materials',
+    'v2_quaggans',
+    'v2_recipes',
+    'v2_skins',
+    'v2_specializations',
+    'v2_traits',
+    'v2_worlds',
+    ] as $api) {
+        $ids = $simpleClient->$api();
+        $simpleClient->$api($ids);
+    }
 }

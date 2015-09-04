@@ -14,15 +14,8 @@ return array(
     'path.data'     => __DIR__ . '/../data',
     'path.log'      => __DIR__ . '/../log',
     'date.timezone' => 'UTC',
-    'version'       => '1.0.2',
-    'cache'         => [
-        'type' => 'mongo',
-//        'type'  => 'memcached',
-//        'type'  => 'mysql',
-//        'type'  => 'file',  // path used is automatically {path.cache}/gw2api_{lang}
-    ],
+    'version'       => '1.0.3',
     'table'         => [
-        'cache'  => 'cache', // only used for cache.type = mysql
         'tokens' => 'tokens',
     ],
     'db'            => [

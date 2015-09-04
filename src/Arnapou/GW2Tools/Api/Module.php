@@ -120,7 +120,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
             if (!is_array($rights) || empty($rights)) {
                 $rights = [];
             }
-            $allowedRights = array_keys($this->getMenu()->getRights());
+            $allowedRights   = array_keys($this->getMenu()->getRights());
             $sanitizedRights = [];
             foreach ($rights as $right) {
                 if (in_array($right, $allowedRights)) {
@@ -151,7 +151,6 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
     public function getUserByCode($code) {
         $user = User::findByCode($code);
         if ($user) {
-            $user->setLastaccess()->save();
             return $user;
         }
         return null;
@@ -196,7 +195,13 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
         $user = $this->getUserByCode($code);
         if ($user) {
             $this->user = $user;
-            $this->isOwner = in_array($user->getToken(), $this->getCookieTokens());
+            if (in_array($user->getToken(), $this->getCookieTokens())) {
+                $this->isOwner = true;
+                $this->user->save();
+            }
+            else {
+                $this->isOwner = false;
+            }
             if ($any === '' || $any === null) {
                 return $this->getService()->returnResponseRedirect('./account/');
             }
@@ -240,7 +245,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
     public function routeImageGuild($id) {
         try {
             $client = Service::getInstance()->newSimpleClient();
-            $guild = new Guild($client, $id);
+            $guild  = new Guild($client, $id);
 
             $url = $guild->getIconLinkGw2Png();
             if ($url) {
@@ -447,7 +452,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
             }
             $code = $user->getCode();
 
-            $data['code'] = $code;
+            $data['code']   = $code;
             $data['tokens'] = array_unique(array_merge(array_map(function(User $user) {
                         return $user->getToken();
                     }, $this->getCookieUsers(true)), [$token]));
