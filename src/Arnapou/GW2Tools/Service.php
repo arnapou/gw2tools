@@ -116,8 +116,7 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
         }
         elseif ('mongo' === $cacheType) {
             $mongo      = new \MongoClient();
-            $collection = $mongo->selectCollection('gw2tool', 'cache');
-            $cache      = new MongoCache($collection);
+            $cache      = new MongoCache($mongo->selectDB('gw2tool'), 'cache');
         }
         elseif ('mysql' === $cacheType) {
             $pdo   = self::getInstance()->getConnection();
