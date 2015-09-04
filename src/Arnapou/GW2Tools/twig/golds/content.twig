@@ -1,0 +1,92 @@
+
+{% import "macro.twig" as macro %}
+
+{% set sum_min = 0 %}
+{% set sum_max = 0 %}
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th class="column-icon">Character inventories</th>
+            <th class="column-amount">Min</th>
+            <th class="column-amount">Max</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in account.characters %}
+            <tr>
+                <td class="column-name">
+                    <img src="{{ item.professionicon|image }}" title="{{ item.profession }}" class="profession pull-left" />
+                    <a href="../character/{{ item.name }}"><b>{{ item.name }}</b></a>
+                </td>
+                <td class="column-amount">{{ macro.amount(item.bagsprice.buy) }}</td>
+                <td class="column-amount">{{ macro.amount(item.bagsprice.sell) }}</td>
+            </tr>
+            {% set sum_min = sum_min + item.bagsprice.buy %}
+            {% set sum_max = sum_max + item.bagsprice.sell %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if account.haspermission('inventories') %}
+
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th class="column-icon">Banks</th>
+                <th class="column-amount"></th>
+                <th class="column-amount"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in account.bankvaults %}
+                <tr>
+                    <td class="column-name">Bank {{ item.id }}</td>
+                    <td class="column-amount">{{ macro.amount(item.price.buy) }}</td>
+                    <td class="column-amount">{{ macro.amount(item.price.sell) }}</td>
+                </tr>
+                {% set sum_min = sum_min + item.price.buy %}
+                {% set sum_max = sum_max + item.price.sell %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th class="column-icon">Collectibles</th>
+                <th class="column-amount"></th>
+                <th class="column-amount"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in account.collectibles %}
+                <tr>
+                    <td class="column-name">{{ item.name }}</td>
+                    <td class="column-amount">{{ macro.amount(item.price.buy) }}</td>
+                    <td class="column-amount">{{ macro.amount(item.price.sell) }}</td>
+                </tr>
+                {% set sum_min = sum_min + item.price.buy %}
+                {% set sum_max = sum_max + item.price.sell %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th class="column-icon">Total</th>
+            <th class="column-amount"></th>
+            <th class="column-amount"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="column-name"></td>
+            <td class="column-amount">{{ macro.amount(sum_min) }}</td>
+            <td class="column-amount">{{ macro.amount(sum_max) }}</td>
+        </tr>
+    </tbody>
+</table>

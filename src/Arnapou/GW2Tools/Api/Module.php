@@ -301,7 +301,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
      * @return array
      */
     protected function getContext($page) {
-        if ($this->user) {
+        if ($this->user && $this->getMenu()->pageExists($page)) {
             return [
                 'page'    => $page,
                 'user'    => $this->user,

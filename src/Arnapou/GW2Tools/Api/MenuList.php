@@ -34,6 +34,7 @@ class MenuList implements \IteratorAggregate {
         $menu = Menu::create('General')
             ->addItem('account', 'Account')
             ->addItem('wallet', 'Wallet')
+            ->addItem('golds', 'Golds')
         ;
         $this->addMenu($menu);
 
@@ -73,6 +74,22 @@ class MenuList implements \IteratorAggregate {
             ->addItem('tp_sells', 'Sells')
         ;
         $this->addMenu($menu);
+    }
+
+    /**
+     * 
+     * @param string $page
+     * @return boolean
+     */
+    public function pageExists($page) {
+        foreach ($this->menus as /* @var $menu Menu */ $menu) {
+            foreach ($menu->getItems() as $item) {
+                if (isset($item['page']) && $item['page'] == $page) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

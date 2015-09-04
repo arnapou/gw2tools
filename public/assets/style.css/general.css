@@ -423,3 +423,14 @@ img.item {
     text-align: right;
     width: 10%;
 }
+
+/************************************************/
+
+.page-golds img {
+    margin-right: .5em;
+}
+
+.page-golds .column-amount {
+    text-align: right;
+    width: 30%;
+}

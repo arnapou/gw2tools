@@ -51,4 +51,6 @@
 	margin: 1.5em;
 	overflow: hidden;
 	text-indent: 100%;
+    vertical-align: middle;
+    margin-right: 3em;
 }

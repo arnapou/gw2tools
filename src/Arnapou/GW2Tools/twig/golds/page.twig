@@ -1,10 +1,10 @@
 {% extends "base.twig" %}
 
 {% block content %}
-    <div class="page page-trading-post" data-content="ajax" data-src="./content.html">
+    <div class="page page-{{ page }}">
         <div class="panel panel-default">
-            <div class="panel-heading">Trading post sells</div>
-            <div class="panel-body">
+            <div class="panel-heading">Golds</div>
+            <div class="panel-body" data-content="ajax" data-src="./content.html">
                 <div class="spinner-loader"></div> <em>Please wait while the server is working ...</em>
             </div>
         </div>
