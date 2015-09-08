@@ -77,57 +77,31 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
                 return chunk($array, $n, $fill);
             }));
             $factory->addFilter(new \Twig_SimpleFilter('datediff', function($date) {
-                $diff = (new \DateTime('now'))->getTimestamp() - (new \DateTime($date))->getTimestamp();
-                if ($diff < 60) {
-                    return '< 1 min.';
-                }
-                elseif ($diff < 3600) {
-                    return floor($diff / 60) . ' min.';
-                }
-                elseif ($diff < 86400) {
-                    $h = floor($diff / 3600);
-                    return $h . ' hour' . ($h > 1 ? 's' : '');
-                }
-                elseif ($diff < 2629728) {
-                    $d = floor($diff / 86400);
-                    return $d . ' day' . ($d > 1 ? 's' : '');
-                }
-                else {
-                    $m = floor($diff / 2629728);
-                    return $m . ' month' . ($m > 1 ? 's' : '');
-                }
+                return datediff($date);
             }));
-            $factory->addSimpleFilter('trans', function (\Twig_Environment $env, $context, $string, $params = []) {
+            $factory->addSimpleFilter('trans', function (\Twig_Environment $env, $context, $string, $params = [], $prefix = '') {
                 if (isset($context['module'])) {
-                    return $context['module']->trans($string, $params);
+                    return $context['module']->trans($prefix . $string, $params);
                 }
                 else {
-                    return Translator::getInstance()->trans(trim($string, '.'), $params);
+                    return Translator::getInstance()->trans($prefix . $string, $params);
+                }
+            });
+            $factory->addSimpleFilter('transarray', function (\Twig_Environment $env, $context, $array, $params = [], $prefix = '') {
+                if (isset($context['module'])) {
+                    return array_map(function ($string) use ($context, $prefix, $params) {
+                        return $context['module']->trans($prefix . $string, $params);
+                    }, $array);
+                }
+                else {
+                    return array_map(function ($string) use ($prefix, $params) {
+                        return Translator::getInstance()->trans($prefix . $string, $params);
+                    }, $array);
                 }
             });
             $this->twigFactory = $factory;
         }
         return $this->twigFactory->getEnvironment();
-    }
-
-    /**
-     * 
-     * @param string $lang
-     * @param boolean $withDecorator
-     * @return SimpleClient
-     */
-    static public function newSimpleClient($lang = AbstractClient::LANG_EN, $withDecorator = true) {
-
-        $mongo = new \MongoClient();
-        $cache = new MongoCache($mongo->selectDB('gw2tool'), 'cache');
-
-        if ($withDecorator) {
-            $cache = new MemoryCacheDecorator($cache);
-        }
-
-        $client = SimpleClient::create($lang, $cache);
-        $client->getClientV2()->getRequestManager()->setDefautCacheRetention(1800);
-        return $client;
     }
 
 }

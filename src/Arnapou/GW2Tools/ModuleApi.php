@@ -90,11 +90,18 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
 
     /**
      * 
+     */
+    public function run() {
+        Translator::getInstance()->setLang($this->lang);
+    }
+
+    /**
+     * 
      * @return MenuList
      */
     public function getMenu() {
         if (!isset($this->menu)) {
-            $this->menu = new MenuList($this->user ? $this->user->getAccount($this->lang) : null);
+            $this->menu = new MenuList($this->user ? $this->user->getAccount() : null);
         }
         return $this->menu;
     }
@@ -232,24 +239,8 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         }
     }
 
-    /**
-     * 
-     * @param string $id
-     * @return \Arnapou\Toolbox\Http\Response
-     */
-    public function routeImageProxy($id) {
-        try {
-            $url = 'https://render.guildwars2.com/file/' . $id . '.png';
-            return FileVault::getVaultProxy()->getResponse($url);
-        }
-        catch (Exception $e) {
-            
-        }
-    }
-
     protected function renderPage($template, $context = array()) {
         try {
-            Translator::getInstance()->setLang($this->lang);
             $context['request'] = $this->getService()->getRequest();
             $context['lang']    = $this->getLang();
             return parent::renderPage($template, $context);
@@ -260,34 +251,6 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
                 throw $e;
             }
             return $this->renderPage('error-no-permission.twig', ['permission' => $previous->getMessage()]);
-        }
-    }
-
-    /**
-     * 
-     * @return SimpleClient
-     */
-    protected function newSimpleClient() {
-        return Service::getInstance()->newSimpleClient($this->lang);
-    }
-
-    /**
-     * 
-     * @param string $id
-     * @return \Arnapou\Toolbox\Http\Response
-     */
-    public function routeImageGuild($id) {
-        try {
-            $client = $this->newSimpleClient();
-            $guild  = new Guild($client, $id);
-
-            $url = $guild->getIconLinkGw2Png();
-            if ($url) {
-                return FileVault::getVaultEmblems()->getResponse($url);
-            }
-        }
-        catch (Exception $e) {
-            
         }
     }
 
@@ -323,7 +286,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             }
         }
         usort($users, function($a, $b) {
-            return strcmp($a->getAccount($this->lang)->getName(), $b->getAccount($this->lang)->getName());
+            return strcmp($a->getAccount()->getName(), $b->getAccount()->getName());
         });
         return $users;
     }
@@ -337,10 +300,11 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
     protected function getContext($page) {
         if ($this->user && $this->getMenu()->pageExists($page)) {
             return [
-                'page'    => $page,
-                'user'    => $this->user,
-                'code'    => $this->user->getCode(),
-                'account' => $this->user->getAccount($this->lang),
+                'page'      => $page,
+                'page_name' => $this->getMenu()->pageName($page),
+                'user'      => $this->user,
+                'code'      => $this->user->getCode(),
+                'account'   => $this->user->getAccount(),
             ];
         }
         return null;

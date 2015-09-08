@@ -4,12 +4,12 @@
 
 {% if (tp.currentbuys|length) + (tp.historybuys|length) %}
 
-    {{ _self.tp_list('Current buys', tp.currentbuys) }}
-    {{ _self.tp_list('History buys', tp.historybuys) }}
+    {{ _self.tp_list('global.tp_current_buys'|trans, tp.currentbuys) }}
+    {{ _self.tp_list('global.tp_history_buys'|trans, tp.historybuys) }}
 
 {% else %}
 
-    <p>There is nothing to display : either in current or history.</p>
+    <p>{{ "global.tp_empty"|trans }}</p>
 
 {% endif %}
 
@@ -38,18 +38,18 @@
                         <thead>
                             <tr>
                                 <th class="column-icon"></th>
-                                <th class="column-name">Name</th>
-                                <th class="column-date">Time</th>
-                                <th class="column-quantity">Quantity</th>
-                                <th class="column-amount">Unit price</th>
-                                <th class="column-amount">Total price</th>
+                                <th class="column-name">{{ "global.name"|trans }}</th>
+                                <th class="column-date">{{ "global.time"|trans }}</th>
+                                <th class="column-quantity">{{ "global.quantity"|trans }}</th>
+                                <th class="column-amount">{{ "global.unit_price"|trans }}</th>
+                                <th class="column-amount">{{ "global.total_price"|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for trade in list %}
                                 <tr>
                                     <td class="column-icon">
-                                        <a href="http://db.dulfy.net/item/{{ trade.item.id }}" target="_blank">
+                                        <a href="{{ ('gwdblink'|trans)~trade.item.id }}" target="_blank">
                                             <img src="{{ trade.item|image }}" class="rarity-{{ trade.item.rarity }}" />
                                         </a>
                                     </td>

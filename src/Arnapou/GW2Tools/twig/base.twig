@@ -125,12 +125,12 @@
                                     <a href="/technical-infos">{{ "footer.for_developers"|trans }}</a>
                                 </li>
                                 <li>
-                                    <i class="glyphicon glyphicon-flag"></i> {{ "footer.languages"|trans }}: 
+                                    <i class="glyphicon glyphicon-globe"></i> {{ "footer.languages"|trans }}: 
                                     {% for lang in module.langs %}
                                         {% if not loop.first %}
                                             <span>, </span>
                                         {% endif %}
-                                        <a href="/{{ lang }}/">{{ lang|upper }}</a>
+                                        <a href="/{{ lang }}{{ request.pathinfo|slice(3) }}">{{ lang|upper }}</a>
                                     {% endfor %}
                                 </li>
                             </ul>

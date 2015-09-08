@@ -7,16 +7,16 @@
 <table class="table table-condensed">
     <thead>
         <tr>
-            <th class="column-icon">Character inventories</th>
-            <th class="column-amount">Min</th>
-            <th class="column-amount">Max</th>
+            <th class="column-icon">{{ "global.inventories"|trans }}</th>
+            <th class="column-amount">{{ "global.buy"|trans }}</th>
+            <th class="column-amount">{{ "global.sell"|trans }}</th>
         </tr>
     </thead>
     <tbody>
         {% for item in account.characters %}
             <tr>
                 <td class="column-name">
-                    <img src="{{ item.professionicon|image }}" title="{{ item.profession }}" class="profession pull-left" />
+                    <img src="{{ item.professionicon|image }}" title="{{ ('profession.'~item.profession)|trans }}" class="profession pull-left" />
                     <a href="../character/{{ item.name }}"><b>{{ item.name }}</b></a>
                 </td>
                 <td class="column-amount">{{ macro.amount(item.bagsprice.buy) }}</td>
@@ -33,7 +33,7 @@
     <table class="table table-condensed">
         <thead>
             <tr>
-                <th class="column-icon">Banks</th>
+                <th class="column-icon">{{ "global.banks"|trans }}</th>
                 <th class="column-amount"></th>
                 <th class="column-amount"></th>
             </tr>
@@ -41,7 +41,7 @@
         <tbody>
             {% for item in account.bankvaults %}
                 <tr>
-                    <td class="column-name">Bank {{ item.id }}</td>
+                    <td class="column-name">{{ "global.bank"|trans }} {{ item.id }}</td>
                     <td class="column-amount">{{ macro.amount(item.price.buy) }}</td>
                     <td class="column-amount">{{ macro.amount(item.price.sell) }}</td>
                 </tr>
@@ -54,7 +54,7 @@
     <table class="table table-condensed">
         <thead>
             <tr>
-                <th class="column-icon">Collectibles</th>
+                <th class="column-icon">{{ "menu.vaults.collectibles"|trans }}</th>
                 <th class="column-amount"></th>
                 <th class="column-amount"></th>
             </tr>
@@ -77,7 +77,7 @@
 <table class="table table-condensed">
     <thead>
         <tr>
-            <th class="column-icon">Total</th>
+            <th class="column-icon">{{ "global.total"|trans }}</th>
             <th class="column-amount"></th>
             <th class="column-amount"></th>
         </tr>
@@ -90,3 +90,22 @@
         </tr>
     </tbody>
 </table>
+
+{% if account.haspermission('wallet') %}
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th class="column-icon">{{ "menu.general.wallet"|trans }}</th>
+                <th class="column-amount"></th>
+                <th class="column-amount"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="column-name"></td>
+                <td class="column-amount"></td>
+                <td class="column-amount">{{ macro.amount(account.wallet.1.quantity) }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}

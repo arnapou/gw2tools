@@ -29,24 +29,22 @@ class MenuList implements \IteratorAggregate {
      * 
      */
     public function __construct(Gw2Account $account = null) {
+        $trans = Translator::getInstance();
 
         // menu 1
-        $menu = Menu::create('General')
-            ->addItem('account', 'Account')
-            ->addItem('wallet', 'Wallet')
-            ->addItem('golds', 'Golds')
-        ;
+        $menu = Menu::create($trans['menu.general']);
+        foreach (['account', 'wallet', 'golds'] as $name) {
+            $menu->addItem($name, $trans['menu.general.' . $name]);
+        }
         $this->addMenu($menu);
 
         // menu 2
-        $menu = Menu::create('Characters')
-            ->addItem('characters', 'Summary')
-            ->addItem('equipments', 'Equipments')
-            ->addItem('inventories', 'Inventories')
-            ->addItem('attributes', 'Attributes (BETA)')
-            ->addSeparator()
-        ;
+        $menu = Menu::create($trans['menu.characters']);
+        foreach (['characters', 'equipments', 'inventories', 'attributes'] as $name) {
+            $menu->addItem($name, $trans['menu.characters.' . $name]);
+        }
         if ($account) {
+            $menu->addSeparator();
             foreach ($account->getCharacterNames() as $name) {
                 $menu->addItem('character', $name, 'character/' . $name);
             }
@@ -54,25 +52,24 @@ class MenuList implements \IteratorAggregate {
         $this->addMenu($menu);
 
         // menu 3
-        $menu = Menu::create('Vaults')
-            ->addItem('bank', 'Bank')
-            ->addItem('collectibles', 'Collectibles')
-        ;
+        $menu = Menu::create($trans['menu.vaults']);
+        foreach (['bank', 'collectibles'] as $name) {
+            $menu->addItem($name, $trans['menu.vaults.' . $name]);
+        }
         $this->addMenu($menu);
 
         // menu 4
-        $menu = Menu::create('Unlocks')
-            ->addItem('wardrobe_armors', 'Wardrobe Armors')
-            ->addItem('wardrobe_weapons', 'Wardrobe Weapons')
-            ->addItem('dyes', 'Dyes')
-        ;
+        $menu = Menu::create($trans['menu.unlocks']);
+        foreach (['wardrobe_armors', 'wardrobe_weapons', 'dyes'] as $name) {
+            $menu->addItem($name, $trans['menu.unlocks.' . $name]);
+        }
         $this->addMenu($menu);
 
         // menu 5
-        $menu = Menu::create('Trading post')
-            ->addItem('tp_buys', 'Buys')
-            ->addItem('tp_sells', 'Sells')
-        ;
+        $menu = Menu::create($trans['menu.tp']);
+        foreach (['tp_buys', 'tp_sells'] as $name) {
+            $menu->addItem($name, $trans['menu.tp.' . $name]);
+        }
         $this->addMenu($menu);
     }
 
@@ -82,14 +79,23 @@ class MenuList implements \IteratorAggregate {
      * @return boolean
      */
     public function pageExists($page) {
+        return $this->pageName($page) !== null;
+    }
+
+    /**
+     * 
+     * @param string $page
+     * @return string
+     */
+    public function pageName($page) {
         foreach ($this->menus as /* @var $menu Menu */ $menu) {
             foreach ($menu->getItems() as $item) {
                 if (isset($item['page']) && $item['page'] == $page) {
-                    return true;
+                    return $item['label'];
                 }
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -102,7 +108,7 @@ class MenuList implements \IteratorAggregate {
             foreach ($menu->getItems() as $item) {
                 if (isset($item['right'])) {
                     if ($item['right'] === 'character') {
-                        $list[$item['right']] = $menu->getLabel() . ' / Character details';
+                        $list[$item['right']] = $menu->getLabel() . ' / ' . Translator::getInstance()['menu.characters.character'];
                     }
                     else {
                         $list[$item['right']] = $menu->getLabel() . ' / ' . $item['label'];

@@ -3,9 +3,9 @@
 {% block content %}
     <div class="page page-trading-post" data-content="ajax" data-src="./content.html">
         <div class="panel panel-default">
-            <div class="panel-heading">Trading post sells</div>
+            <div class="panel-heading">{{ page_name }}</div>
             <div class="panel-body">
-                <div class="spinner-loader"></div> <em>Please wait while the server is working ...</em>
+                <div class="spinner-loader"></div> <em>{{ "global.loading"|trans }}</em>
             </div>
         </div>
     </div>

@@ -32,7 +32,7 @@
                     {% endif %}
                     <th>
                         {% if char %}
-                            <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession" />
+                            <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
                             <a href="../character/{{ char.name }}">
                                 <b>{{ char.name }}</b>
                             </a>
@@ -55,7 +55,7 @@
                     {% for char in characters %}
                         {% if index % 5 == 0 %}
                             <td class="type">
-                                {{ type }}
+                                {{ ('itemtype.'~type)|trans }}
                             </td>
                         {% endif %}
                         <td>
@@ -88,30 +88,31 @@
     {% if obj.id %}
         <div class="object">
             <span class="icons">
-                <a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
+                <a href="{{ ('gwdblink'|trans)~obj.id }}" target="_blank">
                     <img title="{{ obj.name }}" src="{{ obj|image }}" class="item" />
                 </a>
                 {% for upgrade in obj.upgrades %}
-                    <a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
+                    <a href="{{ ('gwdblink'|trans)~upgrade.id }}" target="_blank">
                         <img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion" />
                     </a>
                 {% endfor %}
                 {% for infusion in obj.infusions %}
-                    <a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
+                    <a href="{{ ('gwdblink'|trans)~infusion.id }}" target="_blank">
                         <img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade" />
                     </a>
                 {% endfor %}
             </span>
             <span class="name">
                 {% set attrs = obj.attributes %}
+                {% set stats = attrs.stats|split('/')|transarray({}, 'attribute.')|join('/') %}
                 {% if attrs.stats_name and attrs.stats %}
-                    <span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                    <span title="{{ stats }}" class="stats rarity-{{ obj.rarity }}">{{ ('stats.'~attrs.stats_name)|trans }}</span>
                 {% elseif attrs.stats_name %}
-                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ ('stats.'~attrs.stats_name)|trans }}</span>
                 {% elseif attrs.stats %}
-                    <span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                    <span title="{{ stats }}" class="stats rarity-{{ obj.rarity }}"><em>{{ 'global.unknown'|trans }}</em></span>
                 {% else %}
-                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>{{ 'global.unknown'|trans }}</em></span>
                 {% endif %}
             </span>
         </div>

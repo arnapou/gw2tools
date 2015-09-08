@@ -60,7 +60,7 @@ class ModuleGeneric extends \Arnapou\GW2Tools\AbstractModule {
      */
     public function routeImageGuild($id) {
         try {
-            $client = Service::getInstance()->newSimpleClient();
+            $client = SimpleClient::getInstance();
             $guild  = new Guild($client, $id);
 
             $url = $guild->getIconLinkGw2Png();

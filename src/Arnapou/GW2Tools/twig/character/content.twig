@@ -17,32 +17,32 @@
                         <table class="table table-condensed">
                             <tbody>
                                 <tr>
-                                    <td>Level</td>
+                                    <td>{{ 'global.level'|trans }}</td>
                                     <td>{{ char.level }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Gender</td>
-                                    <td>{{ char.gender }}</td>
+                                    <td>{{ 'global.gender'|trans }}</td>
+                                    <td>{{ ('gender.'~char.gender)|trans }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Race</td>
-                                    <td>{{ char.race }}</td>
+                                    <td>{{ 'global.race'|trans }}</td>
+                                    <td>{{ ('race.'~char.race)|trans }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Profession</td>
+                                    <td>{{ 'global.profession'|trans }}</td>
                                     <td>
-                                        <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession" />
-                                        {{ char.profession }}
+                                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
+                                        {{ ('profession.'~char.profession)|trans }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Guild</td>
+                                    <td>{{ 'global.guild'|trans }}</td>
                                     <td>
                                         {% if char.guild %}
                                             <img src="{{ char.guild|image }}" class="emblem" />
                                             {{ char.guild.fullname }}
                                         {% else %}
-                                            - none -
+                                            {{ 'global.none'|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -53,29 +53,33 @@
                         <table class="table table-condensed">
                             <tbody>
                                 <tr>
-                                    <td>Crafting</td>
+                                    <td>{{ 'global.crafting'|trans }}</td>
                                     <td>
-                                        {% for craft in char.crafting %}
-                                            <span title="{{ craft.name }}">
-                                                <img class="craft" src="{{ craft|image }}" /> {{ craft.rating }}
-                                            </span> 
-                                        {% endfor %}
+                                        {% if char.crafting|length %}
+                                            {% for craft in char.crafting %}
+                                                <span title="{{ ('crafting.'~craft.name)|trans }}">
+                                                    <img class="craft" src="{{ craft|image }}" /> {{ craft.rating }}
+                                                </span> 
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ 'global.none'|trans }}
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Created</td>
+                                    <td>{{ 'global.created'|trans }}</td>
                                     <td>{{ char.created }} <small>(UTC)</small></td>
                                 </tr>
                                 <tr>
-                                    <td>Days</td>
+                                    <td>{{ 'global.days'|trans }}</td>
                                     <td>{{ char.days }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Age</td>
+                                    <td>{{ 'global.age'|trans }}</td>
                                     <td>{{ (char.age/3600)|round }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Deaths</td>
+                                    <td>{{ 'global.deaths'|trans }}</td>
                                     <td>{{ char.deaths }}</td>
                                 </tr>
                             </tbody>
@@ -88,9 +92,11 @@
     <div class="col-xs-4 stats">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Attributes (BETA)
+                {{ 'menu.characters.attributes'|trans }}
                 {% if attributes.unknown|length %}
-                    <span class="pull-right text-danger" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
+                    <span class="pull-right text-danger" title="{{ 'global.unknown_attributes_for'|trans({
+                            'attributes': attributes.unknown|transarray({}, 'itemtype.')|join(', ')
+                            }) }}">
                         <i class="glyphicon glyphicon-exclamation-sign"></i>
                     </span>
                 {% endif %}
@@ -109,7 +115,7 @@
 								'AR',
 							] %}
                         <tr>
-                            <td>{{ attr }}</td>
+                            <td>{{ ('attribute.'~attr)|trans }}</td>
                             {% for k, v in attributes.list[attr] %}
                                 {% if attributes.list[attr]|length == 1 %}
                                     {{ block('single_attributes') }}
@@ -118,7 +124,7 @@
                                 {% else %}
                                     {% block single_attributes %}
                                         <td class="attr" colspan="3">
-                                            <span class="attr" title="{{ k }}">
+                                            <span class="attr" title="{{ ('itemtype.'~k)|trans }}">
                                                 {{ v }}
                                                 {% if attributes.list[attr~'Pct'] %}
                                                     &nbsp;&nbsp;
@@ -149,7 +155,7 @@
             <td class="block">
                 <div class="panel panel-default">
 
-                    <div class="panel-heading">Weapons set 1</div>
+                    <div class="panel-heading">{{ 'global.weapons_set1'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -159,7 +165,7 @@
                         </table>
                     </div>
 
-                    <div class="panel-heading">Weapons set 2</div>
+                    <div class="panel-heading">{{ 'global.weapons_set2'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -169,7 +175,7 @@
                         </table>
                     </div>
 
-                    <div class="panel-heading">Weapons Aquatic</div>
+                    <div class="panel-heading">{{ 'global.weapons_aquatic'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -185,7 +191,7 @@
             <td class="block">
                 <div class="panel panel-default">
 
-                    <div class="panel-heading">Armor</div>
+                    <div class="panel-heading">{{ 'global.armor'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -206,7 +212,7 @@
             <td class="block">
                 <div class="panel panel-default">
 
-                    <div class="panel-heading">Trinkets</div>
+                    <div class="panel-heading">{{ 'global.trinkets'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -219,7 +225,7 @@
                         </table>
                     </div>
 
-                    <div class="panel-heading">Backpack</div>
+                    <div class="panel-heading">{{ 'itemtype.Backpack'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -236,7 +242,7 @@
             <td class="block">
                 <div class="panel panel-default">
 
-                    <div class="panel-heading">Inventory</div>
+                    <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -261,7 +267,7 @@
             <td class="block">
                 <div class="panel panel-default">
 
-                    <div class="panel-heading">Inventory</div>
+                    <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -282,7 +288,7 @@
             <td class="block">
                 <div class="panel panel-default">
 
-                    <div class="panel-heading">Inventory</div>
+                    <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -297,7 +303,7 @@
                         </table>
                     </div>
 
-                    <div class="panel-heading">Tools</div>
+                    <div class="panel-heading">{{ 'global.tools'|trans }}</div>
                     <div class="panel-body">
                         <table class="table table-condensed equipment">
                             <tbody>
@@ -342,19 +348,19 @@
     {% if obj.id %}
         <tr class="object" data-id="{{ obj.id }}">
             <td>
-                <a href="http://db.dulfy.net/item/{{ obj.id }}" target="_blank">
+                <a href="{{ ('gwdblink'|trans)~obj.id }}" target="_blank">
                     <img title="{{ obj.name }}" src="{{ obj|image }}" class="item rarity-{{ obj.rarity }}" />
                 </a>
             </td>
             {% if not istool %}
                 <td>
                     {% for upgrade in obj.upgrades %}
-                        <a href="http://db.dulfy.net/item/{{ upgrade.id }}" target="_blank">
+                        <a href="{{ ('gwdblink'|trans)~upgrade.id }}" target="_blank">
                             <img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion rarity-{{ upgrade.rarity }}" />
                         </a>
                     {% endfor %}
                     {% for infusion in obj.infusions %}
-                        <a href="http://db.dulfy.net/item/{{ infusion.id }}" target="_blank">
+                        <a href="{{ ('gwdblink'|trans)~infusion.id }}" target="_blank">
                             <img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade rarity-{{ infusion.rarity }}" />
                         </a>
                     {% endfor %}
@@ -362,18 +368,19 @@
             {% endif %}
             <td>
                 {% set attrs = obj.attributes %}
+                {% set stats = attrs.stats|split('/')|transarray({}, 'attribute.')|join('/') %}
                 {% if istool %}
                     <span class="stats rarity-{{ obj.rarity }}">{{ obj.name }}</span>
-                {% elseif attrs.stats_name and obj.stats %}
-                    <span title="{{ obj.stats }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                {% elseif attrs.stats_name and attrs.stats %}
+                    <span title="{{ stats }}" class="stats rarity-{{ obj.rarity }}">{{ ('stats.'~attrs.stats_name)|trans }}</span>
                 {% elseif attrs.stats_name %}
-                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ attrs.stats_name }}</span>
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ ('stats.'~attrs.stats_name)|trans }}</span>
                 {% elseif attrs.stats %}
-                    <span title="{{ attrs.stats }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                    <span title="{{ stats }}" class="stats rarity-{{ obj.rarity }}"><em>{{ 'global.unknown'|trans }}</em></span>
                 {% else %}
-                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>unknown</em></span>
+                    <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>{{ 'global.unknown'|trans }}</em></span>
                 {% endif %}
-                <span class="equipment-type">{{ obj.subtype }}</span>
+                <span class="equipment-type">{{ ('itemtype.'~obj.subtype)|trans }}</span>
             </td>
         </tr>
     {% elseif obj is iterable %}

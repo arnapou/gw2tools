@@ -13,7 +13,7 @@
                             <div class="pull-right">
                                 {{ macro.amount(vault.price) }}
                             </div>
-                            Bank {{ vault.id }}
+                            {{ 'global.bank'|trans }} {{ vault.id }}
                         </div>
                         <div class="panel-body slots">
                             {% for item in vault.items %}

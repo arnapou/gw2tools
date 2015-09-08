@@ -22,13 +22,13 @@
 
 
 
-{% macro character_bags(char) %}
+{% macro character_bags(char, context) %}
     {% for bag in char.bags %}
         <div class="slots">
             <div class="bag">
                 <div class="slot">
                     {% if bag.id %}
-                        <a href="http://db.dulfy.net/item/{{ bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
+                        <a href="{{ ('gwdblink'|trans)~bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
                             <img src="{{ bag|image }}" />
                         </a>
                     {% else %}
@@ -47,10 +47,10 @@
 
 
 
-{% macro inventory_slot(item) %}
+{% macro inventory_slot(item, context) %}
     <div class="slot">
         {% if item.id %}
-            <a href="http://db.dulfy.net/item/{{ item.id }}" target="_blank" title="{{ item.price|amount }}">
+            <a href="{{ ('gwdblink'|trans)~item.id }}" target="_blank" title="{{ item.price|amount }}">
                 <img src="{{ item|image }}" />
                 {% if item.count > 1 %}
                     <span class="count">{{ item.count }}</span>

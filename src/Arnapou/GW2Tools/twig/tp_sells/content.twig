@@ -5,12 +5,12 @@
 
 {% if (tp.currentbuys|length) + (tp.historybuys|length) %}
 
-    {{ tp_macro.tp_list('Current sells', tp.currentsells) }}
-    {{ tp_macro.tp_list('History sells', tp.historysells) }}
+    {{ tp_macro.tp_list('global.tp_current_sells'|trans, tp.currentsells) }}
+    {{ tp_macro.tp_list('global.tp_history_sells'|trans, tp.historysells) }}
 
 {% else %}
 
-    <p>There is nothing to display : either in current or history.</p>
+    <p>{{ "global.tp_empty"|trans }}</p>
 
 {% endif %}
 

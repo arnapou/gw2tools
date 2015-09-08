@@ -16,9 +16,10 @@ Arnapou\GW2Tools\Service::getInstance();
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Core\RequestManager;
 use Arnapou\GW2Api\Model\AbstractObject;
-use Arnapou\GW2Api\SimpleClient;
 use Arnapou\GW2Tools\Api\User;
 use Arnapou\GW2Tools\Service;
+use Arnapou\GW2Tools\SimpleClient;
+use Arnapou\GW2Tools\Translator;
 
 /*
  * DELETE OLD USERS
@@ -36,16 +37,11 @@ foreach ($conn->query("SELECT * FROM `" . User::table() . "`") as $row) {
 /*
  * FORCE CACHE CHECKS
  */
-foreach ([
-// AbstractClient::LANG_DE,
-AbstractClient::LANG_EN,
-// AbstractClient::LANG_ES,
-// AbstractClient::LANG_FR
-] as $lang) {
+foreach (Translator::getInstance()->getLangs() as $lang) {
 
     echo date('Y-m-d H:i:s') . ' ----- ' . $lang . " -----\n";
 
-    $simpleClient = Service::newSimpleClient($lang, false);
+    $simpleClient = SimpleClient::getInstance($lang, false);
 
     $simpleClient->getClientV2()
         ->getRequestManager()

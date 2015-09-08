@@ -7,17 +7,17 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Level</th>
-            <th>Gender</th>
-            <th>Race</th>
-            <th>Profession</th>
-            <th>Guild</th>
-            <th>Crafting</th>
-            <th>Created <small>(UTC)</small></th>
-            <th class="text-right">Days</th>
-            <th class="text-right">Age</th>
-            <th class="text-right">Deaths</th>
+            <th>{{ 'global.name'|trans }}</th>
+            <th>{{ 'global.level'|trans }}</th>
+            <th>{{ 'global.gender'|trans }}</th>
+            <th>{{ 'global.race'|trans }}</th>
+            <th>{{ 'global.profession'|trans }}</th>
+            <th>{{ 'global.guild'|trans }}</th>
+            <th>{{ 'global.crafting'|trans }}</th>
+            <th>{{ 'global.created'|trans }} <small>(UTC)</small></th>
+            <th class="text-right">{{ 'global.days'|trans }}</th>
+            <th class="text-right">{{ 'global.age'|trans }}</th>
+            <th class="text-right">{{ 'global.deaths'|trans }}</th>
         </tr>
     </thead>
     <tbody>
@@ -26,17 +26,17 @@
             {% set totaldeaths = totaldeaths + char.deaths %}
             <tr>
                 <td>
-                    <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession pull-right" />
+                    <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
                     <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
                 </td>
                 <td>{{ char.level }}</td>
-                <td>{{ char.gender }}</td>
-                <td>{{ char.race }}</td>
-                <td>{{ char.profession }}</td>
+                <td>{{ ('gender.'~char.gender)|trans }}</td>
+                <td>{{ ('race.'~char.race)|trans }}</td>
+                <td>{{ ('profession.'~char.profession)|trans }}</td>
                 <td>{{ char.guild.name }}</td>
                 <td>
                     {% for craft in char.crafting %}
-                        <span title="{{ craft.name }}">
+                        <span title="{{ ('crafting.'~craft.name)|trans }}">
                             <img class="craft" src="{{ craft|image }}" /> {{ craft.rating }}
                         </span> 
                     {% endfor %}

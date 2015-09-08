@@ -16,10 +16,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
+            <th>{{ 'global.name'|trans }}</th>
             <th></th>
                 {% for k, v in attrs %}
-                <th>{{ v }}</th>
+                <th>{{ ('attribute.'~v)|trans }}</th>
                 {% endfor %}
         </tr>
     </thead>
@@ -28,12 +28,14 @@
             {% set attributes = char.attributes %}
             <tr>
                 <td>
-                    <img src="{{ char.professionicon|image }}" title="{{ char.profession }}" class="profession pull-right" />
+                    <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
                     <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
                 </td>
                 <td class="text-center" style="width: 2em">
                     {% if attributes.unknown|length %}
-                        <span class="text-danger" title="Unknown attributes for {{ attributes.unknown|join(', ') }}">
+                        <span class="text-danger" title="{{ 'global.unknown_attributes_for'|trans({
+                            'attributes': attributes.unknown|transarray({}, 'itemtype.')|join(', ')
+                            }) }}">
                             <i class="glyphicon glyphicon-exclamation-sign"></i>
                         </span>
                     {% endif %}
@@ -42,7 +44,7 @@
                     <td>
                         {% for k, v in attributes.list[attr] %}
                             <div style="{{ (attributes.list[attr]|length) == 1 ? 'line-height: 4.5em' : '' }}">
-                                <span class="attr" title="{{ k }}">
+                                <span class="attr" title="{{ ('itemtype.'~k)|trans }}">
                                     {{ v }}
                                     {% if attributes.list[attr~'Pct'] %}
                                         &nbsp;&nbsp;

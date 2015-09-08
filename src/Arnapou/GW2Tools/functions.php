@@ -17,6 +17,33 @@ use Arnapou\GW2Api\Model\InventorySlot;
 
 /**
  * 
+ * @param string $date
+ * @return string
+ */
+function datediff($date) {
+    $diff = (new \DateTime('now'))->getTimestamp() - (new \DateTime($date))->getTimestamp();
+    if ($diff < 60) {
+        return '< 1 min.';
+    }
+    elseif ($diff < 3600) {
+        return floor($diff / 60) . ' min.';
+    }
+    elseif ($diff < 86400) {
+        $h = floor($diff / 3600);
+        return $h . ' hour' . ($h > 1 ? 's' : '');
+    }
+    elseif ($diff < 2629728) {
+        $d = floor($diff / 86400);
+        return $d . ' day' . ($d > 1 ? 's' : '');
+    }
+    else {
+        $m = floor($diff / 2629728);
+        return $m . ' month' . ($m > 1 ? 's' : '');
+    }
+}
+
+/**
+ * 
  * @param string $url
  * @return string
  */

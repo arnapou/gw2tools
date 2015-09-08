@@ -4,19 +4,19 @@
 <table class="table table-condensed">
     <tbody>
         <tr>
-            <td>Name</td>
+            <td>{{ 'global.name'|trans }}</td>
             <td><b>{{ account.name }}</b></td>
         </tr>
         <tr>
-            <td>Creation date</td>
+            <td>{{ 'global.creation_date'|trans }}</td>
             <td>{{ account.created }} <small>(UTC)</small></td>
         </tr>
         <tr>
-            <td>World</td>
+            <td>{{ 'global.world'|trans }}</td>
             <td>{{ account.world.name }}</td>
         </tr>
         <tr>
-            <td>Guilds</td>
+            <td>{{ 'global.guilds'|trans }}</td>
             <td>
                 {% for guild in account.guilds %}
                     <div>
@@ -28,14 +28,14 @@
         </tr>
         {% if module.owner %}
             <tr>
-                <td>Api key</td>
+                <td>{{ 'global.api_key'|trans }}</td>
                 <td class="text-owner">
                     <span>{{ account.accesstoken }}</span>
-                    <span class="btn btn-default action-delete-token">Unregister the api key</span>
+                    <span class="btn btn-default action-delete-token">{{ 'global.unregister_api_key'|trans }}</span>
                 </td>
             </tr>
             <tr>
-                <td>Permissions</td>
+                <td>{{ 'global.permissions'|trans }}</td>
                 <td class="text-owner">
                     {% for permission in module.permissionslist %}
                         {% if account.haspermission(permission) %}
@@ -47,7 +47,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Public access</td>
+                <td>{{ 'global.public_access'|trans }}</td>
                 <td class="text-owner">
                     <div class="rights">
                         {% for right, txt in module.menu.rights %}
@@ -61,7 +61,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <span class="btn btn-default action-save-rights">Save preferences</span>
+                    <span class="btn btn-default action-save-rights">{{ 'global.save_preferences'|trans }}</span>
                 </td>
             </tr>
         {% endif %}

@@ -204,12 +204,11 @@ class User {
 
     /**
      * 
-     * @param string $lang
      * @return Gw2Account
      */
-    public function getAccount($lang = AbstractClient::LANG_EN) {
+    public function getAccount() {
         if (!isset($this->account)) {
-            $this->account = Gw2Account::getInstance($this->getToken(), $lang);
+            $this->account = Gw2Account::getInstance($this->getToken());
         }
         return $this->account;
     }
@@ -230,7 +229,8 @@ class User {
                 while ($n--) {
                     $code .= $chars[mt_rand(0, $nbchars - 1)];
                 }
-            } while ($code == $conn->getValue("SELECT `code` FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code)));
+            }
+            while ($code == $conn->getValue("SELECT `code` FROM `" . self::table() . "` WHERE `code`=" . $conn->quote($code)));
         }
 
         $object = new self([

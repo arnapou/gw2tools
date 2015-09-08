@@ -1,8 +1,8 @@
 
 {% set groups = {
-    'Weapons two hands' : ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
-    'Weapons one hand' : ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'],
-    'Weapons aquatic' : ['Speargun', 'Harpoon', 'Trident'],
+    ('global.unlock_weapon_twohands'|trans) : ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
+    ('global.unlock_weapon_onehand'|trans) : ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'],
+    ('global.unlock_weapon_aquatic'|trans) : ['Speargun', 'Harpoon', 'Trident'],
 } %}
 {% set wardrobe = account.wardrobe.weapons %}
 
@@ -46,7 +46,7 @@
                             <div class="pull-right" title="{{ (100 * data.count / data.total)|round }}">
                                 {{ data.count }} / {{ data.total }}
                             </div>
-                            {{ type }}
+                            {{ ('itemtype.'~type)|trans }}
                         </div>
                         <div class="panel-body slots">
                             {% for skin in data.skins %}

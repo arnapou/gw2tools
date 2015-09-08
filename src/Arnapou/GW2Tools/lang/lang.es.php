@@ -10,4 +10,5 @@
  */
 
 return [
+    'gwdblink' => 'http://db.guildwars2-spain.com/item/',
 ];

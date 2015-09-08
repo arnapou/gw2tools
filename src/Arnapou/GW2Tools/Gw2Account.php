@@ -13,18 +13,17 @@ namespace Arnapou\GW2Tools;
 
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
-use Arnapou\GW2Tools\Service;
 
 class Gw2Account extends \Arnapou\GW2Api\Model\Account {
 
     /**
      * 
      * @param string $accesToken
-     * @param string $lang
      * @return GwAccount
      */
-    public static function getInstance($accesToken, $lang = AbstractClient::LANG_EN) {
-        $client  = Service::getInstance()->newSimpleClient($lang);
+    public static function getInstance($accesToken) {
+        $lang    = Translator::getInstance()->getLang();
+        $client  = SimpleClient::getInstance($lang);
         $account = new self($client, $accesToken);
         if (!$account->hasPermission(self::PERMISSION_ACCOUNT)) {
             throw new MissingPermissionException(self::PERMISSION_ACCOUNT);

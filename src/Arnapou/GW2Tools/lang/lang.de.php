@@ -10,4 +10,5 @@
  */
 
 return [
+    'gwdblink' => 'http://db.guildnews.de/item/',
 ];

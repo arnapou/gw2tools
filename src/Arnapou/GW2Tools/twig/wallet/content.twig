@@ -7,7 +7,7 @@
             <table class="table table-condensed">
                 <tbody>
                     {% for currency in currencies %}
-                        <tr>
+                        <tr data-id="{{ currency.id }}">
                             <td class="column-name">{{ currency.name }}</td>
                             <td class="column-icon"><img src="{{ currency|image }}" class="currency" /></td>
                             <td class="column-quantity">
