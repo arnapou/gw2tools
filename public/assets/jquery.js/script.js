@@ -32,7 +32,7 @@ $(function () {
         }
         else {
             $('.alert.token-error').fadeOut(400);
-            $.getJSON('/api/token-check', {token: token})
+            $.getJSON('./token-check', {token: token})
                     .done(function (json) {
                         if (json && json.code) {
                             var tokens = json.tokens;
@@ -40,7 +40,7 @@ $(function () {
                                 tokens = tokens.reverse().slice(0, 20).reverse();
                             }
                             Cookies.set('accesstoken', tokens.join('|'), {expires: cookieRetention});
-                            window.location = '/api/' + json.code + '/';
+                            window.location = './' + json.code + '/';
                         }
                         if (json && json.error) {
                             bootbox.alert(json.error);
@@ -75,7 +75,12 @@ $(function () {
     $(document).on('click', '.page-account .action-delete-token', function () {
         if (window.confirm("Do you really want to delete the token ?\nIt cannot be cancelled.")) {
             $.post('./delete-token').always(function () {
-                window.location = '/api/';
+                if (LANG) {
+                    window.location = '/' + LANG + '/';
+                }
+                else {
+                    window.location = '/';
+                }
             });
         }
 
