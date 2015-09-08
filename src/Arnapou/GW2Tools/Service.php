@@ -44,10 +44,12 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
      */
     static public function getInstance() {
         if (!isset(self::$instance)) {
-            $config = new Config(__DIR__ . '/../../../config');
+            $config  = new Config(__DIR__ . '/../../../config');
             $service = new Service('GW2Tools', $config);
-            $service->addModule('api', new Api\Module($service));
-            $service->addModule('assets', new Assets\Module($service));
+            foreach (Translator::getInstance()->getLangs() as $lang) {
+                $service->addModule($lang, new ModuleApi($service, $lang));
+            }
+            $service->addModule('', new ModuleGeneric($service));
             self::$instance = $service;
         }
         return self::$instance;
@@ -95,6 +97,14 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
                     return $m . ' month' . ($m > 1 ? 's' : '');
                 }
             }));
+            $factory->addSimpleFilter('trans', function (\Twig_Environment $env, $context, $string, $params = []) {
+                if (isset($context['module'])) {
+                    return $context['module']->trans($string, $params);
+                }
+                else {
+                    return Translator::getInstance()->trans(trim($string, '.'), $params);
+                }
+            });
             $this->twigFactory = $factory;
         }
         return $this->twigFactory->getEnvironment();

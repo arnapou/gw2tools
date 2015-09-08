@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Arnapou\GW2Tools\Api;
+namespace Arnapou\GW2Tools;
 
+use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Tools\Service;
 use Arnapou\Toolbox\Exception\Exception;
@@ -203,11 +204,12 @@ class User {
 
     /**
      * 
+     * @param string $lang
      * @return Gw2Account
      */
-    public function getAccount() {
+    public function getAccount($lang = AbstractClient::LANG_EN) {
         if (!isset($this->account)) {
-            $this->account = Gw2Account::getInstance($this->getToken());
+            $this->account = Gw2Account::getInstance($this->getToken(), $lang);
         }
         return $this->account;
     }

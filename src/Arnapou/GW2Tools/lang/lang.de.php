@@ -9,8 +9,5 @@
  * file that was distributed with this source code.
  */
 
-namespace Arnapou\GW2Tools\Assets;
-
-class Module extends \Arnapou\GW2Tools\AbstractModule {
-	
-}
+return [
+];

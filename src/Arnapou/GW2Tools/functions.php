@@ -22,13 +22,13 @@ use Arnapou\GW2Api\Model\InventorySlot;
  */
 function image($url) {
     if (is_string($url) && !empty($url)) {
-        return str_replace('https://render.guildwars2.com/file/', '/api/proxy/', $url);
+        return str_replace('https://render.guildwars2.com/file/', '/proxy/', $url);
     }
     elseif ($url instanceof InventorySlot) {
         return image($url->getSkin() ? $url->getSkin()->getIcon() : $url->getIcon());
     }
     elseif ($url instanceof Guild) {
-        return image($url->hasEmblem() ? '/api/guild/' . $url->getId() . '.png' : '');
+        return image($url->hasEmblem() ? '/guild/' . $url->getId() . '.png' : '');
     }
     elseif ($url instanceof AbstractObject && method_exists($url, 'getIcon')) {
         return image($url->getIcon());

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Arnapou\GW2Tools\Api;
+namespace Arnapou\GW2Tools;
 
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Exception\MissingPermissionException;

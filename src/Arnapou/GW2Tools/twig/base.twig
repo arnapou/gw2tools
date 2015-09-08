@@ -78,12 +78,12 @@
                             {% if users|length %}
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        {{ account.name ? account.name : 'Accounts' }} <span class="caret"></span>
+                                        {{ account.name ? account.name : ('menu.accounts'|trans) }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         {% for usr in users %}
                                             <li title="{{ usr.account.permissions|join(', ') }}">
-                                                <a href="/api/{{ usr.code }}/">{{ usr.account.name }}</a>
+                                                <a href="/{{ lang }}/{{ usr.code }}/">{{ usr.account.name }}</a>
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -109,20 +109,29 @@
                         <div class="col-xs-6">
                             <ul>
                                 <li>
-                                    <i class="glyphicon glyphicon-user"></i> Site development: 
+                                    <i class="glyphicon glyphicon-user"></i> {{ "footer.site_development"|trans }}: 
                                     <a href="mailto:arnaud@arnapou.net">Arnaud Buathier</a>
                                 </li>
                                 <li>
                                     <img src="/assets/images/github.png" /> GitHub: 
-                                    <a href="https://github.com/arnapou/gw2tools" target="_blank">GW2Tools Project</a> <em>(v{{ config.get('version') }})</em>
+                                    <a href="https://github.com/arnapou/gw2tools" target="_blank">{{ "footer.gw2tools_project"|trans }}</a> <em>(v{{ config.get('version') }})</em>
                                 </li>
                                 <li>
-                                    <i class="glyphicon glyphicon-list-alt"></i> Changelog: 
-                                    <a href="https://github.com/arnapou/gw2tools/blob/master/CHANGELOG.md" target="_blank">Project Changelog</a>
+                                    <i class="glyphicon glyphicon-list-alt"></i> {{ "footer.changelog"|trans }}: 
+                                    <a href="https://github.com/arnapou/gw2tools/blob/master/CHANGELOG.md" target="_blank">{{ "footer.project_changelog"|trans }}</a>
                                 </li>
                                 <li>
-                                    <i class="glyphicon glyphicon-wrench"></i> Technical: 
-                                    <a href="/api/technical-infos">For developers</a>
+                                    <i class="glyphicon glyphicon-wrench"></i> {{ "footer.technical"|trans }}: 
+                                    <a href="/technical-infos">{{ "footer.for_developers"|trans }}</a>
+                                </li>
+                                <li>
+                                    <i class="glyphicon glyphicon-flag"></i> {{ "footer.languages"|trans }}: 
+                                    {% for lang in module.langs %}
+                                        {% if not loop.first %}
+                                            <span>, </span>
+                                        {% endif %}
+                                        <a href="/{{ lang }}/">{{ lang|upper }}</a>
+                                    {% endfor %}
                                 </li>
                             </ul>
                         </div>
@@ -139,7 +148,7 @@
                                 </a>
                             </div>
                             <p>
-                                 &copy; 2010-2015 ArenaNet, Inc. and NC Interactive, Inc. All rights reserved. Guild Wars, Guild Wars 2, ArenaNet, NCsoft, the Interlocking NC Logo, and all associated logos and designs are trademarks or registered trademarks of NCsoft Corporation. All other trademarks are the property of their respective owners.
+                                 &copy; {{ "footer.anet_copyright"|trans }}
                             </p>
                         </div>
                     </div>

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Arnapou\GW2Tools\Api;
+namespace Arnapou\GW2Tools;
 
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
@@ -20,13 +20,19 @@ use Arnapou\GW2Tools\Exception\AccessNotAllowedException;
 use Arnapou\GW2Tools\Service;
 use Arnapou\Toolbox\Http\ResponseJson;
 
-class Module extends \Arnapou\GW2Tools\AbstractModule {
+class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
 
     /**
      *
      * @var User
      */
     protected $user;
+
+    /**
+     *
+     * @var string
+     */
+    protected $lang;
 
     /**
      *
@@ -40,6 +46,28 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
      */
     protected $isOwner;
 
+    public function __construct(\Arnapou\Toolbox\Http\Service\Service $service, $lang) {
+        parent::__construct($service);
+
+        $this->lang = $lang;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getLang() {
+        return $this->lang;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getLangs() {
+        return Translator::getInstance()->getLangs();
+    }
+
     public function configure() {
         parent::configure();
 
@@ -47,10 +75,6 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('', [$this, 'routeIndex']);
         $this->addRoute('technical-infos', [$this, 'routeTechnicalInfos']);
         $this->addRoute('token-check', [$this, 'routeTokenCheck']);
-
-        // proxy images
-        $this->addRoute('guild/{id}.png', [$this, 'routeImageGuild'])->assert('id', '[A-F0-9-]{35,40}');
-        $this->addRoute('proxy/{id}.png', [$this, 'routeImageProxy'])->assert('id', '[A-F0-9]+/[0-9]+');
 
         // user space
         $regexpCode = '[A-Za-z0-9]{10}';
@@ -70,7 +94,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
      */
     public function getMenu() {
         if (!isset($this->menu)) {
-            $this->menu = new MenuList($this->user ? $this->user->getAccount() : null);
+            $this->menu = new MenuList($this->user ? $this->user->getAccount($this->lang) : null);
         }
         return $this->menu;
     }
@@ -86,7 +110,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
             foreach ($this->getMenu() as /* @var $menu Menu */ $menu) {
                 foreach ($menu->getItems() as $item) {
                     if (isset($item['uri']))
-                        if (isset($item['uri']) && '/api/' . $code . '/' . $item['uri'] === $path) {
+                        if (isset($item['uri']) && '/' . $this->lang . '/' . $code . '/' . $item['uri'] === $path) {
                             return [$menu->getLabel(), $item['label']];
                         }
                 }
@@ -225,7 +249,9 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
 
     protected function renderPage($template, $context = array()) {
         try {
+            Translator::getInstance()->setLang($this->lang);
             $context['request'] = $this->getService()->getRequest();
+            $context['lang']    = $this->getLang();
             return parent::renderPage($template, $context);
         }
         catch (\Twig_Error_Runtime $e) {
@@ -239,12 +265,20 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
 
     /**
      * 
+     * @return SimpleClient
+     */
+    protected function newSimpleClient() {
+        return Service::getInstance()->newSimpleClient($this->lang);
+    }
+
+    /**
+     * 
      * @param string $id
      * @return \Arnapou\Toolbox\Http\Response
      */
     public function routeImageGuild($id) {
         try {
-            $client = Service::getInstance()->newSimpleClient();
+            $client = $this->newSimpleClient();
             $guild  = new Guild($client, $id);
 
             $url = $guild->getIconLinkGw2Png();
@@ -289,7 +323,7 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
             }
         }
         usort($users, function($a, $b) {
-            return strcmp($a->getAccount()->getName(), $b->getAccount()->getName());
+            return strcmp($a->getAccount($this->lang)->getName(), $b->getAccount($this->lang)->getName());
         });
         return $users;
     }
@@ -306,10 +340,20 @@ class Module extends \Arnapou\GW2Tools\AbstractModule {
                 'page'    => $page,
                 'user'    => $this->user,
                 'code'    => $this->user->getCode(),
-                'account' => $this->user->getAccount(),
+                'account' => $this->user->getAccount($this->lang),
             ];
         }
         return null;
+    }
+
+    /**
+     * 
+     * @param string $key
+     * @param array $data
+     * @return string
+     */
+    public function trans($key, $data = []) {
+        return Translator::getInstance()->trans($key, $data);
     }
 
     /**

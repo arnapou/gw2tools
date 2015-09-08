@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Arnapou\GW2Tools\Api;
+namespace Arnapou\GW2Tools;
 
 class MenuList implements \IteratorAggregate {
 
