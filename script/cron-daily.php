@@ -16,7 +16,7 @@ Arnapou\GW2Tools\Service::getInstance();
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Core\RequestManager;
 use Arnapou\GW2Api\Model\AbstractObject;
-use Arnapou\GW2Tools\Api\User;
+use Arnapou\GW2Tools\User;
 use Arnapou\GW2Tools\Service;
 use Arnapou\GW2Tools\SimpleClient;
 use Arnapou\GW2Tools\Translator;
