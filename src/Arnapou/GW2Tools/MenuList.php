@@ -90,7 +90,7 @@ class MenuList implements \IteratorAggregate {
     public function pageName($page) {
         foreach ($this->menus as /* @var $menu Menu */ $menu) {
             foreach ($menu->getItems() as $item) {
-                if (isset($item['page']) && $item['page'] == $page) {
+                if (isset($item['page']) && $item['page'] === $page) {
                     return $item['label'];
                 }
             }
