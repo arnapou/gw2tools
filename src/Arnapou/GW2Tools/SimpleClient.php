@@ -40,12 +40,19 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
                 $cache = new MemoryCacheDecorator($cache);
             }
 
-            $client  = self::create($lang, $cache);
-            
+            $client = self::create($lang, $cache);
+
             $manager = $client->getClientV2()->getRequestManager();
             $manager->setDefautCacheRetention(1800);
             $manager->addCacheRetentionPolicy('/v2/commerce/listings', 3600);
             $manager->addCacheRetentionPolicy('/v2/commerce/prices', 3600);
+
+//            $manager
+//                ->getEventListener()
+//                ->bind('onRequest', function($event) {
+//                    $line = date('Y-m-d H:i:s') . ' ' . round($event['time'], 3) . "s " . $event['uri'] . " \n";
+//                    file_put_contents(__DIR__ . '/../../../requests.log', $line, FILE_APPEND);
+//                });
 
             self::$instances[$key] = $client;
         }
