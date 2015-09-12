@@ -177,7 +177,7 @@ return [
         'unlock_weapon_twohands' => 'Weapons two hands',
         'unlock_weapon_onehand'  => 'Weapons one hand',
         'unlock_weapon_aquatic'  => 'Weapons aquatic',
-        'unlock_armor_light'     => 'Ligth armors',
+        'unlock_armor_light'     => 'Light armors',
         'unlock_armor_medium'    => 'Medium armors',
         'unlock_armor_heavy'     => 'Heavy armors',
         'unlock_armor_others'    => 'Others',
