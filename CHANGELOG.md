@@ -1,4 +1,8 @@
-## 1.0.4 (2015-09-13)
+## 1.0.6 (2015-09-13)
+
+  - small js bugfix
+
+## 1.0.5 (2015-09-13)
 
   - adding tooltip over items
   - adding dyes related items (tooltip)
