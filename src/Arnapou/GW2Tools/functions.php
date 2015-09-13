@@ -91,7 +91,7 @@ function data_inventory_item(InventorySlot $item) {
     if ($item->getSkin()) {
         $url .= '/ski-' . $item->getSkin()->getId();
     }
-    if ($item->getCount()) {
+    if ($item->getCount() > 1) {
         $url .= '/cnt-' . $item->getCount();
     }
     $url.= '.html';
