@@ -15,9 +15,11 @@ use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Arnapou\GW2Api\Model\Guild;
-use Arnapou\GW2Api\SimpleClient;
+use Arnapou\GW2Api\Model\Item;
+use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Tools\Exception\AccessNotAllowedException;
 use Arnapou\GW2Tools\Service;
+use Arnapou\Toolbox\Http\Response;
 use Arnapou\Toolbox\Http\ResponseJson;
 
 class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
@@ -75,6 +77,12 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('', [$this, 'routeIndex']);
         $this->addRoute('technical-infos', [$this, 'routeTechnicalInfos']);
         $this->addRoute('token-check', [$this, 'routeTokenCheck']);
+        $this->addRoute('item/{id}{infusions}{upgrades}{skin}{count}.html', [$this, 'routeItem'])
+            ->assert('id', '[0-9]+')
+            ->assert('infusions', '(/inf(-[0-9]+)+)?')
+            ->assert('upgrades', '(/upg(-[0-9]+)+)?')
+            ->assert('skin', '(/ski-[0-9]+)?')
+            ->assert('count', '(/cnt-[0-9]+)?');
 
         // user space
         $regexpCode = '[A-Za-z0-9]{10}';
@@ -86,6 +94,50 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('{code}/account/delete-token', [$this, 'routeDeleteToken'], 'POST')->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}', [$this, 'routeCharacter'])->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('code', $regexpCode);
+    }
+
+    /**
+     * 
+     * @param integer $id
+     * @param string $infusions
+     * @param string $upgrades
+     * @param string $skin
+     * @param string $count
+     * @return string
+     */
+    public function routeItem($id, $infusions, $upgrades, $skin, $count) {
+        try {
+            $client = SimpleClient::getInstance($this->lang);
+            $data   = [
+                'id' => $id,
+            ];
+            if ($infusions) {
+                $data['infusions'] = explode('-', substr($infusions, 5));
+            }
+            if ($upgrades) {
+                $data['upgrades'] = explode('-', substr($upgrades, 5));
+            }
+            if ($skin) {
+                $data['skin'] = substr($skin, 5);
+            }
+            if ($count) {
+                $data['count'] = substr($count, 5);
+            }
+            $item = new InventorySlot($client, $data);
+            if ($item->getName()) {
+                $html     = $this->renderPage('item.twig', [
+                    'item' => $item,
+                ]);
+                $response = new Response($html);
+                $response->setMaxAge(600);
+                $response->setExpires(new \DateTime('@' . (time() + 600)));
+                $response->setPublic();
+                return $response;
+            }
+        }
+        catch (\Exception $e) {
+            
+        }
     }
 
     /**

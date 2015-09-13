@@ -28,9 +28,9 @@
             <div class="bag">
                 <div class="slot">
                     {% if bag.id %}
-                        <a href="{{ ('gwdblink'|trans)~bag.id }}" target="_blank" title="{{ bag.bagprice|amount }}">
+                        <span {{ bag|dataitem|raw }}>
                             <img src="{{ bag|image }}" />
-                        </a>
+                        </span>
                     {% else %}
                         <img src="{{ ""|image }}" class="nothing" />
                     {% endif %}
@@ -48,14 +48,14 @@
 
 
 {% macro inventory_slot(item, context) %}
-    <div class="slot">
+    <div class="slot rarity-{{ item.rarity }}">
         {% if item.id %}
-            <a href="{{ ('gwdblink'|trans)~item.id }}" target="_blank" title="{{ item.price|amount }}">
+            <span {{ item|dataitem|raw }}>
                 <img src="{{ item|image }}" />
                 {% if item.count > 1 %}
                     <span class="count">{{ item.count }}</span>
                 {% endif %}
-            </a>
+            </span>
         {% endif %}
     </div>
 {% endmacro %}

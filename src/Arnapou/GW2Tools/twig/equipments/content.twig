@@ -88,18 +88,18 @@
     {% if obj.id %}
         <div class="object">
             <span class="icons">
-                <a href="{{ ('gwdblink'|trans)~obj.id }}" target="_blank">
-                    <img title="{{ obj.name }}" src="{{ obj|image }}" class="item" />
-                </a>
+                <span {{ obj|dataitem|raw }}>
+                    <img src="{{ obj|image }}" class="item" />
+                </span>
                 {% for upgrade in obj.upgrades %}
-                    <a href="{{ ('gwdblink'|trans)~upgrade.id }}" target="_blank">
-                        <img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion" />
-                    </a>
+                    <span {{ upgrade|dataitem|raw }}>
+                        <img src="{{ upgrade|image }}" class="infusion" />
+                    </span>
                 {% endfor %}
                 {% for infusion in obj.infusions %}
-                    <a href="{{ ('gwdblink'|trans)~infusion.id }}" target="_blank">
-                        <img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade" />
-                    </a>
+                    <span {{ infusion|dataitem|raw }}>
+                        <img src="{{ infusion|image }}" class="upgrade" />
+                    </span>
                 {% endfor %}
             </span>
             <span class="name">

@@ -1,3 +1,10 @@
+## 1.0.4 (2015-09-13)
+
+  - adding tooltip over items
+  - adding dyes related items (tooltip)
+  - adding links to gw2spidy + gw2tp
+  - css update for items in inventories (better look)
+
 ## 1.0.3 (2015-09-09)
 
   - adding multiple languages support (en/fr/de/es)

@@ -348,21 +348,21 @@
     {% if obj.id %}
         <tr class="object" data-id="{{ obj.id }}">
             <td>
-                <a href="{{ ('gwdblink'|trans)~obj.id }}" target="_blank">
-                    <img title="{{ obj.name }}" src="{{ obj|image }}" class="item rarity-{{ obj.rarity }}" />
-                </a>
+                <span {{ obj|dataitem|raw }}>
+                    <img src="{{ obj|image }}" class="item rarity-{{ obj.rarity }}" />
+                </span>
             </td>
             {% if not istool %}
                 <td>
                     {% for upgrade in obj.upgrades %}
-                        <a href="{{ ('gwdblink'|trans)~upgrade.id }}" target="_blank">
-                            <img title="{{ upgrade.name }}" src="{{ upgrade|image }}" class="infusion rarity-{{ upgrade.rarity }}" />
-                        </a>
+                        <span {{ upgrade|dataitem|raw }}>
+                            <img src="{{ upgrade|image }}" class="infusion rarity-{{ upgrade.rarity }}" />
+                        </span>
                     {% endfor %}
                     {% for infusion in obj.infusions %}
-                        <a href="{{ ('gwdblink'|trans)~infusion.id }}" target="_blank">
-                            <img title="{{ infusion.name }}" src="{{ infusion|image }}" class="upgrade rarity-{{ infusion.rarity }}" />
-                        </a>
+                        <span {{ infusion|dataitem|raw }}>
+                            <img src="{{ infusion|image }}" class="upgrade rarity-{{ infusion.rarity }}" />
+                        </span>
                     {% endfor %}
                 </td>
             {% endif %}

@@ -100,6 +100,88 @@ $(function () {
         }
     });
 
+    (function () {
+        var cachedHtml = {};
+        var $gwitemdetail = $('#gwitemdetail');
+        var $body = $('body');
+
+        function forceTooltipMove(obj, e) {
+            var ev = $.Event('mousemove');
+            ev.pageX = e.pageX;
+            ev.pageY = e.pageY;
+            $(obj).trigger(ev);
+        }
+
+        $(document).on('click', 'body', function (e) {
+            $gwitemdetail.data('locked', false);
+            $gwitemdetail.hide();
+        });
+
+        $(document).on('click', '.gwitemlink', function (e) {
+            $gwitemdetail.data('locked', false);
+            $(this).trigger('mouseenter');
+            forceTooltipMove(this, e);
+            $gwitemdetail.data('locked', true);
+            e.stopPropagation();
+        });
+
+        $(document).on('mousemove', '.gwitemlink', function (e) {
+            if (!$gwitemdetail.data('locked')) {
+                var margin = 5;
+                var posX = e.pageX + margin;
+                var posY = e.pageY + margin;
+                var maxWidth = $body.innerWidth();
+                var maxHeight = $body.innerHeight();
+                var tooltipWidth = $gwitemdetail.width();
+                var tooltipHeight = $gwitemdetail.height();
+                var tooLarge = posX + tooltipWidth + 10 > maxWidth;
+                var tooHigh = posY + tooltipHeight > maxHeight;
+                if (tooLarge && tooHigh) {
+                    posX = posX - tooltipWidth - margin;
+                    posY = posY - tooltipHeight - margin;
+                }
+                else if (tooLarge) {
+                    posX = maxWidth - tooltipWidth - 10;
+                }
+                else if (tooHigh) {
+                    posY = maxHeight - tooltipHeight - 10;
+                }
+                $gwitemdetail.css({
+                    left: posX + 'px',
+                    top: posY + 'px'
+                });
+            }
+        });
+
+        $(document).on('mouseleave', '.gwitemlink', function () {
+            if (!$gwitemdetail.data('locked')) {
+                $gwitemdetail.hide();
+            }
+        });
+
+        $(document).on('mouseenter', '.gwitemlink', function (e) {
+            if (!$gwitemdetail.data('locked')) {
+                var url = '/' + LANG + '/item/' + $(this).data('url');
+                if (typeof (cachedHtml[url]) == 'undefined') {
+                    forceTooltipMove(this, e);
+                    $gwitemdetail.data('locked', false).html('<div class="spinner-loader-white"></div>').show();
+                    $.get(url)
+                            .done(function (html) {
+                                cachedHtml[url] = html;
+                                $gwitemdetail.html(html);
+                            })
+                            .fail(function () {
+                                $gwitemdetail.html('Error');
+                            })
+                }
+                else {
+                    $gwitemdetail.html(cachedHtml[url]).show();
+                }
+            }
+        });
+
+    })();
+
     // refresh cookie
     (function (tokens) {
         if (tokens) {

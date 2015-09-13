@@ -31,7 +31,7 @@
                                     {% endif %}
                                     <span>{{ color.name }}</span>
                                 </td>
-                                <td>
+                                <td {{ color.client.dyeitem(color.id)|dataitem|raw }}>
                                     {% set hex = color.categoryrgbhex('cloth') %}
                                     <span class="dye" style="background: {{ hex }}">{{ hex }}</span>
                                 </td>

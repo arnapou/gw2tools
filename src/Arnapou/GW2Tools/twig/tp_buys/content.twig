@@ -49,9 +49,9 @@
                             {% for trade in list %}
                                 <tr>
                                     <td class="column-icon">
-                                        <a href="{{ ('gwdblink'|trans)~trade.item.id }}" target="_blank">
+                                        <span {{ trade.item|dataitem|raw }}>
                                             <img src="{{ trade.item|image }}" class="rarity-{{ trade.item.rarity }}" />
-                                        </a>
+                                        </span>
                                     </td>
                                     <td class="column-name"><span class="rarity-{{ trade.item.rarity }}">{{ trade.item.name }}</span></td>
                                     <td class="column-date"><span>{{ (trade.purchased ? trade.purchased : trade.created)|datediff }}</span></td>

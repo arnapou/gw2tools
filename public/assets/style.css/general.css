@@ -11,6 +11,10 @@ body {
     white-space: normal !important;
 }
 
+.gwitemlink {
+    cursor: pointer;
+}
+
 /************************************************/
 
 .gold, .silver, .copper {
@@ -188,7 +192,7 @@ img.item {
     border-top-right-radius: 0;
 }
 .page-character .slots .bag {
-    background: #665349;
+    background: #2c1b0b;
     padding-right: 5px;
     display: inline-block;
     vertical-align: middle;
@@ -286,12 +290,10 @@ img.item {
     width: 52px;
     height: 52px;
     position: relative;
-    border-top: 1px solid #000;
-    border-left: 1px solid #000;
-    border-bottom: 1px solid #a3847d;
-    border-right: 1px solid #a3847d;
-    background: #665349;
-    box-shadow: 0 0 3px black inset;
+    border: 1px solid #2c1b0b;
+    background: #55452f;
+    box-shadow: 0 0 0 1px #5c4f3f inset, 0 0 15px #3a2d1d inset;
+    padding: 1px;
 }
 .slots .slot img {
     width: 100%;
@@ -313,6 +315,38 @@ img.item {
 .slots .slot.empty .count {
     display: none;
 }
+
+/************************************************/
+
+.rarity-Junk       { color: #aaaaaa; }
+.rarity-Basic      { color: #000000; }
+.rarity-Fine       { color: #1a9306; }
+.rarity-Masterwork { color: #62A4DA; }
+.rarity-Rare       { color: #fcd00b; }
+.rarity-Exotic     { color: #ffa405; }
+.rarity-Ascended   { color: #fb3e8d; }
+.rarity-Legendary  { color: #4C139D; }
+
+img.rarity-Junk       { border: 1px solid #aaaaaa; }
+img.rarity-Basic      { border: 1px solid #000000; }
+img.rarity-Fine       { border: 1px solid #1a9306; }
+img.rarity-Masterwork { border: 1px solid #62A4DA; }
+img.rarity-Rare       { border: 1px solid #fcd00b; }
+img.rarity-Exotic     { border: 1px solid #ffa405; }
+img.rarity-Ascended   { border: 1px solid #fb3e8d; }
+img.rarity-Legendary  { border: 1px solid #4C139D; }
+
+.slots .slot.rarity-Junk       { box-shadow: 0 0 0 1px #aaaaaa inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Basic      { box-shadow: 0 0 0 1px #000000 inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Fine       { box-shadow: 0 0 0 1px #1a9306 inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Masterwork { box-shadow: 0 0 0 1px #62A4DA inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Rare       { box-shadow: 0 0 0 1px #fcd00b inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Exotic     { box-shadow: 0 0 0 1px #ffa405 inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Ascended   { box-shadow: 0 0 0 1px #fb3e8d inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Legendary  { box-shadow: 0 0 0 1px #4C139D inset, 0 0 15px #3a2d1d inset; }
+
+.gwitem .rarity-Basic      { color: #ffffff; }
+.gwitem .rarity-Legendary  { color: #7744bb; }
 
 /************************************************/
 

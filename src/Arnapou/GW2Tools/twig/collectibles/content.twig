@@ -18,10 +18,10 @@
                     {% for item in category.items %}
                         <div class="slot {{ item.count ? '' : 'empty' }}">
                             {% if item.id %}
-                                <a href="{{ ('gwdblink'|trans)~item.id }}" target="_blank" title="{{ item.price|amount }}">
+                                <span {{ item|dataitem|raw }}>
                                     <img src="{{ item|image }}" />
                                     <span class="count">{{ item.count }}</span>
-                                </a>
+                                </span>
                             {% else %}
                                 <img src="{{ ""|image }}" class="nothing" />
                             {% endif %}

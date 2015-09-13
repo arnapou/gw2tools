@@ -21,25 +21,6 @@
                 {% endif %}
             {% endblock %}
         </title>
-        <style>
-            {% for type, color in {
-                'Junk'      : 'aaaaaa',
-                'Basic'     : '000000',
-                'Fine'      : '1a9306',
-                'Masterwork': '62A4DA',
-                'Rare'      : 'fcd00b',
-                'Exotic'    : 'ffa405',
-                'Ascended'  : 'fb3e8d',
-                'Legendary' : '4C139D',
-            } %}
-                img.rarity-{{ type }}{
-                    border: 1px solid #{{ color }};
-                }
-                .rarity-{{ type }} {
-                    color: #{{ color }};
-                }
-            {% endfor %}
-        </style>
         <script>
             var LANG = "{{ lang ? lang : '' }}";
         </script>
@@ -104,6 +85,7 @@
 		<div class="container" id="container">
 			{% block content %}
 			{% endblock %}
+            <div id="gwitemdetail"></div>
 		</div>
         <div id="footer">
             <div class="container">

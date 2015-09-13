@@ -14,6 +14,89 @@ namespace Arnapou\GW2Tools;
 use Arnapou\GW2Api\Model\AbstractObject;
 use Arnapou\GW2Api\Model\Guild;
 use Arnapou\GW2Api\Model\InventorySlot;
+use Arnapou\GW2Api\Model\Item;
+
+/**
+ * 
+ * @param Item $item
+ * @return string
+ */
+function consumableduration(Item $item) {
+    $ms = $item->getConsumableDurationMs();
+    if ($ms) {
+        $h = floor($ms / 3600000);
+        $m = round(($ms % 3600000) / 60000);
+        if ($h && $m) {
+            return $h . 'h' . $m . 'm';
+        }
+        elseif ($m) {
+            return $m . 'm';
+        }
+        elseif ($h) {
+            return $h . 'h';
+        }
+    }
+    return '';
+}
+
+/**
+ * 
+ * @param Item $item
+ * @return string
+ */
+function buffdescription(Item $item) {
+    $desc = $item->getBuffDescription();
+    if ($desc) {
+        if ($item->getSubType() == Item::SUBTYPE_UPGRADE_COMPONENT_RUNE) {
+            $lines = explode("\n", $desc);
+            $s     = '';
+            foreach ($lines as $i => $line) {
+                $s .= '(' . ($i + 1) . '): ' . $line . "\n";
+            }
+            return strip_tags($s);
+        }
+    }
+    return strip_tags($desc);
+}
+
+/**
+ * 
+ * @param Item $item
+ * @return string
+ */
+function data_item(Item $item) {
+    $url = $item->getId() . '.html';
+    return ' class="gwitemlink" data-url="' . $url . '"';
+}
+
+/**
+ * 
+ * @param InventorySlot $item
+ * @return string
+ */
+function data_inventory_item(InventorySlot $item) {
+    $url = $item->getId();
+    if (count($item->getInfusions())) {
+        $url .= '/inf';
+        foreach ($item->getInfusions() as $infusion) {
+            $url .= '-' . $infusion->getId();
+        }
+    }
+    if (count($item->getUpgrades())) {
+        $url .= '/upg';
+        foreach ($item->getUpgrades() as $upgrade) {
+            $url .= '-' . $upgrade->getId();
+        }
+    }
+    if ($item->getSkin()) {
+        $url .= '/ski-' . $item->getSkin()->getId();
+    }
+    if ($item->getCount()) {
+        $url .= '/cnt-' . $item->getCount();
+    }
+    $url.= '.html';
+    return ' class="gwitemlink" data-url="' . $url . '"';
+}
 
 /**
  * 
@@ -105,13 +188,13 @@ function amount($value) {
         return '';
     }
     if (is_array($value)) {
-        $s = '';
         if (isset($value['buy_total']) && $value['buy_total'] != $value['buy']) {
             return amount($value['buy_total']) . ' - ' . amount($value['sell_total']) . ' / ' . amount($value['buy']) . ' - ' . amount($value['sell']);
         }
         elseif (isset($value['buy'])) {
             return amount($value['buy']) . ' - ' . amount($value['sell']);
         }
+        return '';
     }
     else {
         $g = floor($value / 10000);

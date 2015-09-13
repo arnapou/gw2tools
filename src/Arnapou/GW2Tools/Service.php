@@ -76,8 +76,23 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
             $factory->addFilter(new \Twig_SimpleFilter('chunk', function($array, $n, $fill = true) {
                 return chunk($array, $n, $fill);
             }));
+            $factory->addFilter(new \Twig_SimpleFilter('buffdescription', function($item) {
+                return buffdescription($item);
+            }));
+            $factory->addFilter(new \Twig_SimpleFilter('consumableduration', function($item) {
+                return consumableduration($item);
+            }));
             $factory->addFilter(new \Twig_SimpleFilter('datediff', function($date) {
                 return datediff($date);
+            }));
+            $factory->addFilter(new \Twig_SimpleFilter('dataitem', function($item) {
+                if ($item instanceof \Arnapou\GW2Api\Model\InventorySlot) {
+                    return data_inventory_item($item);
+                }
+                elseif ($item instanceof \Arnapou\GW2Api\Model\Item) {
+                    return data_item($item);
+                }
+                return '';
             }));
             $factory->addSimpleFilter('trans', function (\Twig_Environment $env, $context, $string, $params = [], $prefix = '') {
                 if (isset($context['module'])) {

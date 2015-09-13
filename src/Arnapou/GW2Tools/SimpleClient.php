@@ -12,8 +12,7 @@
 namespace Arnapou\GW2Tools;
 
 use Arnapou\GW2Api\Core\AbstractClient;
-use Arnapou\GW2Api\Cache\MemoryCacheDecorator;
-use Arnapou\GW2Api\Cache\MongoCache;
+use Arnapou\GW2Api\Model\Item;
 
 class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
 
@@ -33,12 +32,7 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
         $key = $lang . '-' . ($withDecorator ? 'Y' : 'N');
         if (!isset(self::$instances[$key])) {
 
-            $mongo = new \MongoClient();
-            $cache = new MongoCache($mongo->selectDB('gw2tool'), 'cache');
-
-            if ($withDecorator) {
-                $cache = new MemoryCacheDecorator($cache);
-            }
+            $cache = MongoCache::getInstance($withDecorator);
 
             $client = self::create($lang, $cache);
 
@@ -57,6 +51,27 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
             self::$instances[$key] = $client;
         }
         return self::$instances[$key];
+    }
+
+    /**
+     * 
+     * @param int $colorid
+     * @return Item
+     */
+    public function getDyeItem($colorid) {
+        $cache = MongoCache::getInstance();
+        $lang  = Translator::getInstance()->getLang();
+        $key   = 'dyeitem/' . $lang . '/' . $colorid;
+        $obj   = $cache->get($key);
+        if (empty($obj)) {
+            $collection = $cache->getCache()->getMongoCollection($lang . '_items');
+            $obj        = $collection->findOne(['value.details.color_id' => (int) $colorid]);
+            $cache->set($key, $obj, 86400);
+        }
+        if ($obj && isset($obj['value'], $obj['value']['id'])) {
+            return new Item(self::getInstance($lang), $obj['value']['id']);
+        }
+        return null;
     }
 
 }
