@@ -129,7 +129,7 @@
     {% if item.price.buy %}
         <div class="gwvendor">
             {{ 'global.trading_post_buy'|trans }}: {{ macro.amount(item.price.buy) }}
-            {% if item.price.buy_total %}
+            {% if item.price.buy_total and item.count > 1 %}
                 <div class="gwvendorcount">
                     {{ macro.amount(item.price.buy_total) }} {{ 'global.for'|trans }} {{ item.count }}
                 </div>
@@ -137,7 +137,7 @@
         </div>
         <div class="gwvendor">
             {{ 'global.trading_post_sell'|trans }}: {{ macro.amount(item.price.sell) }}
-            {% if item.price.sell_total %}
+            {% if item.price.sell_total and item.count > 1 %}
                 <div class="gwvendorcount">
                     {{ macro.amount(item.price.sell_total) }} {{ 'global.for'|trans }} {{ item.count }}
                 </div>
