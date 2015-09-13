@@ -160,15 +160,17 @@ $(function () {
         });
 
         $(document).on('mouseenter', '.gwitemlink', function (e) {
+            var self = this;
             if (!$gwitemdetail.data('locked')) {
-                var url = '/' + LANG + '/item/' + $(this).data('url');
+                var url = '/' + LANG + '/item/' + $(self).data('url');
                 if (typeof (cachedHtml[url]) == 'undefined') {
-                    forceTooltipMove(this, e);
+                    forceTooltipMove(self, e);
                     $gwitemdetail.data('locked', false).html('<div class="spinner-loader-white"></div>').show();
                     $.get(url)
                             .done(function (html) {
                                 cachedHtml[url] = html;
                                 $gwitemdetail.html(html);
+                                forceTooltipMove(self, e);
                             })
                             .fail(function () {
                                 $gwitemdetail.html('Error');
