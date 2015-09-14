@@ -150,7 +150,7 @@ return [
         "Celestial"     => "Céleste",
     ],
     'tooltip'    => [
-        'click_info' => "Cliquez sur l'objet pour verrouiller la fenêtre de détail.",
+        'click_info' => "Cliquez sur l'objet pour verrouiller la fenêtre.",
     ],
     'weight'     => [
         'Light'    => 'Léger',
@@ -185,6 +185,7 @@ return [
         'guilds'                 => 'Guildes',
         'inventory'              => 'Inventaire',
         'inventories'            => 'Inventaires',
+        'item'                   => 'Objet',
         'level'                  => 'Niveau',
         'loading'                => "Merci de patienter quelques secondes ...",
         'name'                   => 'Nom',

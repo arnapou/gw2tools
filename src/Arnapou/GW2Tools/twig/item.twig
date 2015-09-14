@@ -216,11 +216,11 @@
             <a href="{{ 'https://www.gw2tp.com/item/'~item.id }}" target="_blank">
                 <i class="glyphicon glyphicon-link"></i>GW2 TP
             </a>
-            <br />
-            <a href="{{ 'https://www.gw2spidy.com/item/'~item.id }}" target="_blank">
-                <i class="glyphicon glyphicon-link"></i>GW2 Spidy
-            </a>
         {% endif %}
+        <br />
+        <a href="{{ 'https://www.gw2spidy.com/item/'~item.id }}" target="_blank">
+            <i class="glyphicon glyphicon-link"></i>GW2 Spidy ({{ 'global.item'|trans }})
+        </a>
         {% if recipeId %}
             <br />
             <a href="{{ 'https://www.gw2spidy.com/recipe/'~recipeId }}" target="_blank">

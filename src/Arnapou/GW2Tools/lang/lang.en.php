@@ -185,6 +185,7 @@ return [
         'guilds'                 => 'Guilds',
         'inventory'              => 'Inventory',
         'inventories'            => 'Inventories',
+        'item'                   => 'Item',
         'level'                  => 'Level',
         'loading'                => 'Please wait a few seconds ...',
         'name'                   => 'Name',
