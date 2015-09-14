@@ -177,7 +177,7 @@ $(function () {
                                 forceTooltipMove(self, e);
                             })
                             .fail(function () {
-                                $gwitemdetail.html('Error');
+                                $gwitemdetail.html('<div class="gwitemerror">Error</div>');
                             })
                 }
                 else {

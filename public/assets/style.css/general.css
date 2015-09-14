@@ -417,6 +417,11 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 .page-dyes table {
     table-layout: fixed;
 }
+.page-dyes table td img {
+    height: 2em;
+    width: 2em;
+    margin-right: .5em;
+}
 .page-dyes table td span {
     line-height: 2em;
 }

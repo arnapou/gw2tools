@@ -9,6 +9,8 @@
 
 <div class="panel-body">
 
+    {% set map = account.client.dyeitems %}
+
     {% set columns = account.dyes.colors|columns(3) %}
     <div class="row">
         {% for colors in columns %}
@@ -22,6 +24,7 @@
                     </thead>
                     <tbody>
                         {% for color in colors %}
+                            {% set item = map[color.id] %}
                             <tr class="{{ color.unlocked ? 'unlocked' : 'locked' }}">
                                 <td>
                                     {% if color.unlocked %}
@@ -29,9 +32,12 @@
                                     {% else %}
                                         <i class="glyphicon glyphicon-remove"></i>
                                     {% endif %}
-                                    <span>{{ color.name }}</span>
+                                    <span class="rarity-{{ item.rarity }}">
+                                        <img src="{{ item|image }}" {{ item|dataitem|raw }} />
+                                        {{ color.name }}
+                                    </span>
                                 </td>
-                                <td {{ color.client.dyeitem(color.id)|dataitem|raw }}>
+                                <td>
                                     {% set hex = color.categoryrgbhex('cloth') %}
                                     <span class="dye" style="background: {{ hex }}">{{ hex }}</span>
                                 </td>

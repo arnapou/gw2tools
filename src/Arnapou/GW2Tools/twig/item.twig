@@ -33,7 +33,7 @@
                 <em>{{ ('stats.'~item.attributes.stats_name)|trans }}</em>
             {% endif %}
         </div>
-        
+
         {{ _self.upgrades(item.upgrades) }}
         {{ _self.upgrades(item.infusions) }}
         {{ _self.infusion_empty(item) }}
@@ -74,48 +74,48 @@
         {{ _self.upgrades(item.upgrades) }}
         {{ _self.upgrades(item.infusions) }}
         {{ _self.infusion_empty(item) }}
-        
+
     {% elseif item.type == 'UpgradeComponent' %}
 
         {% if item.subtype != 'Default' %}
-        <div>
-            {{ ('itemtype.'~item.subtype)|trans }}
-        </div>
+            <div>
+                {{ ('itemtype.'~item.subtype)|trans }}
+            </div>
         {% endif %}
         <div class="gwupgrade">
             {{ item|buffdescription|nl2br }}
         </div>
-        
+
     {% elseif item.type == 'Bag' %}
 
         {% if item.bagsize %}
-        <div class="gwupgrade">
-            {{ 'global.bagsize'|trans }}: {{ item.bagsize }}
-        </div>
+            <div class="gwupgrade">
+                {{ 'global.bagsize'|trans }}: {{ item.bagsize }}
+            </div>
         {% endif %}
-        
+
     {% elseif item.type == 'Tool' %}
 
         {% if item.salvagecharges > 1 %}
-        <div class="gwupgrade">
-            {{ 'global.charges'|trans }}: {{ item.salvagecharges }}
-        </div>
+            <div class="gwupgrade">
+                {{ 'global.charges'|trans }}: {{ item.salvagecharges }}
+            </div>
         {% endif %}
-        
+
     {% elseif item.type == 'Gizmo' %}
 
         {% if item.subtype == 'UnlimitedConsumable' %}
-        <div>
-            {{ 'global.unlimited_usage'|trans }}
-        </div>
+            <div>
+                {{ 'global.unlimited_usage'|trans }}
+            </div>
         {% endif %}
-        
+
     {% elseif item.type == 'CraftingMaterial' %}
 
         <div>
             {{ 'global.crafting_material'|trans }}
         </div>
-        
+
     {% elseif item.type == 'Trophy' %}
 
         <div>
@@ -196,20 +196,18 @@
         <a href="{{ ('gwdblink'|trans)~item.id }}" target="_blank">
             <i class="glyphicon glyphicon-link"></i>GW2 DB
         </a>
-    </div>
-
-    {% if item.price.buy %}
-        <div class="gwlink">
+        {% if item.price.buy %}
+            <br />
             <a href="{{ 'https://www.gw2spidy.com/item/'~item.id }}" target="_blank">
                 <i class="glyphicon glyphicon-link"></i>GW2 Spidy
             </a>
-        </div>
-        <div class="gwlink">
+            <br />
             <a href="{{ 'https://www.gw2tp.com/item/'~item.id }}" target="_blank">
                 <i class="glyphicon glyphicon-link"></i>GW2 TP
             </a>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
+
 
     <div class="gwclickinfo">
         {{ 'tooltip.click_info'|trans }}

@@ -3,6 +3,8 @@
     display: none;
     position: absolute;
     z-index: 1;
+    font-size: 80%;
+    line-height: 1.2;
 }
 
 #gwitemdetail {
@@ -13,7 +15,7 @@
 
 #gwitemdetail > .gwitem {
     position: relative;
-    width: 500px;
+    width: 400px;
 }
 
 #gwitemdetail > .gwitem > div {
@@ -83,4 +85,10 @@
     right: 0;
     bottom: 0;
     margin-bottom: 0 !important;
+}
+
+#gwitemdetail .gwitemerror {
+    padding: 1em 2em;
+    font-size: 125%;
+    color: red;
 }

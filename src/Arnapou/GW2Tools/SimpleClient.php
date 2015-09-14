@@ -55,21 +55,28 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
 
     /**
      * 
-     * @param int $colorid
-     * @return Item
+     * @return array
      */
-    public function getDyeItem($colorid) {
-        $cache = MongoCache::getInstance();
-        $lang  = Translator::getInstance()->getLang();
-        $key   = 'dyeitem/' . $lang . '/' . $colorid;
-        $obj   = $cache->get($key);
-        if (empty($obj)) {
+    public function getDyeItems() {
+        $cache   = MongoCache::getInstance();
+        $lang    = Translator::getInstance()->getLang();
+        $key     = 'map/dye-item/' . $lang;
+        $objects = $cache->get($key);
+        if (empty($objects)) {
             $collection = $cache->getCache()->getMongoCollection($lang . '_items');
-            $obj        = $collection->findOne(['value.details.color_id' => (int) $colorid]);
-            $cache->set($key, $obj, 86400);
+            $objects    = [];
+            foreach ($collection->find(['value.details.color_id' => ['$gt' => 0]]) as $doc) {
+                $objects[$doc['value']['details']['color_id']] = $doc['value']['id'];
+            }
+            $cache->set($key, $objects, 86400);
         }
-        if ($obj && isset($obj['value'], $obj['value']['id'])) {
-            return new Item(self::getInstance($lang), $obj['value']['id']);
+        if ($objects) {
+            $client = self::getInstance($lang);
+            $client->v2_items(array_values($objects));
+            foreach ($objects as $color_id => $item_id) {
+                $objects[$color_id] = new Item($client, $item_id);
+            }
+            return $objects;
         }
         return null;
     }
