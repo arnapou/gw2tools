@@ -1,3 +1,8 @@
+## 1.0.8 (2015-09-14)
+
+  - adding tooltips for pure skins (wardrobe)
+  - little js tooltip bugfix
+
 ## 1.0.7 (2015-09-14)
 
   - improve dye performance

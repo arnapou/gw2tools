@@ -28,7 +28,7 @@
             <div class="bag">
                 <div class="slot">
                     {% if bag.id %}
-                        <span {{ bag|dataitem|raw }}>
+                        <span {{ bag|gwlink|raw }}>
                             <img src="{{ bag|image }}" />
                         </span>
                     {% else %}
@@ -50,7 +50,7 @@
 {% macro inventory_slot(item, context) %}
     <div class="slot rarity-{{ item.rarity }}">
         {% if item.id %}
-            <span {{ item|dataitem|raw }}>
+            <span {{ item|gwlink|raw }}>
                 <img src="{{ item|image }}" />
                 {% if item.count > 1 %}
                     <span class="count">{{ item.count }}</span>

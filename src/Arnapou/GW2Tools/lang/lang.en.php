@@ -119,6 +119,8 @@ return [
         'Gem'            => 'Gem',
         'Rune'           => 'Rune',
         'Sigil'          => 'Sigil',
+        'Armor'          => 'Armor',
+        'Weapon'         => 'Weapon',
     ],
     'stats'      => [
         "Berserker's"   => "Berserker's",
@@ -149,6 +151,12 @@ return [
     ],
     'tooltip'    => [
         'click_info' => 'Click on the item to lock the tooltip.',
+    ],
+    'weight'     => [
+        'Light'    => 'Light',
+        'Medium'   => 'Medium',
+        'Heavy'    => 'Heavy',
+        'Clothing' => 'Clothing',
     ],
     'global'     => [
         'account_bound'          => 'Account bound',

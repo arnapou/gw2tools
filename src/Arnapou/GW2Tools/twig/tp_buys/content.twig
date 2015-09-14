@@ -49,7 +49,7 @@
                             {% for trade in list %}
                                 <tr>
                                     <td class="column-icon">
-                                        <span {{ trade.item|dataitem|raw }}>
+                                        <span {{ trade.item|gwlink|raw }}>
                                             <img src="{{ trade.item|image }}" class="rarity-{{ trade.item.rarity }}" />
                                         </span>
                                     </td>

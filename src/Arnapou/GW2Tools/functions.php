@@ -15,6 +15,7 @@ use Arnapou\GW2Api\Model\AbstractObject;
 use Arnapou\GW2Api\Model\Guild;
 use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Api\Model\Item;
+use Arnapou\GW2Api\Model\Skin;
 
 /**
  * 
@@ -61,11 +62,21 @@ function buffdescription(Item $item) {
 
 /**
  * 
+ * @param Skin $item
+ * @return string
+ */
+function gwlink_skin(Skin $item) {
+    $url = 'skin/' . $item->getId() . '.html';
+    return ' class="gwitemlink" data-url="' . $url . '"';
+}
+
+/**
+ * 
  * @param Item $item
  * @return string
  */
-function data_item(Item $item) {
-    $url = $item->getId() . '.html';
+function gwlink_item(Item $item) {
+    $url = 'item/' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
 
@@ -74,8 +85,8 @@ function data_item(Item $item) {
  * @param InventorySlot $item
  * @return string
  */
-function data_inventory_item(InventorySlot $item) {
-    $url = $item->getId();
+function gwlink_inventoryslot(InventorySlot $item) {
+    $url = 'item/' . $item->getId();
     if (count($item->getInfusions())) {
         $url .= '/inf';
         foreach ($item->getInfusions() as $infusion) {

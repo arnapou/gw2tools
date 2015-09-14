@@ -85,12 +85,15 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
             $factory->addFilter(new \Twig_SimpleFilter('datediff', function($date) {
                 return datediff($date);
             }));
-            $factory->addFilter(new \Twig_SimpleFilter('dataitem', function($item) {
+            $factory->addFilter(new \Twig_SimpleFilter('gwlink', function($item) {
                 if ($item instanceof \Arnapou\GW2Api\Model\InventorySlot) {
-                    return data_inventory_item($item);
+                    return gwlink_inventoryslot($item);
                 }
                 elseif ($item instanceof \Arnapou\GW2Api\Model\Item) {
-                    return data_item($item);
+                    return gwlink_item($item);
+                }
+                elseif ($item instanceof \Arnapou\GW2Api\Model\Skin) {
+                    return gwlink_skin($item);
                 }
                 return '';
             }));

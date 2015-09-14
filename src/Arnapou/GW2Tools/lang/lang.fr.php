@@ -119,6 +119,8 @@ return [
         'Gem'            => 'Gemme',
         'Rune'           => 'Rune',
         'Sigil'          => 'Cachet',
+        'Armor'          => 'Armure',
+        'Weapon'         => 'Arme',
     ],
     'stats'      => [
         "Berserker's"   => "Berserker",
@@ -149,6 +151,12 @@ return [
     ],
     'tooltip'    => [
         'click_info' => "Cliquez sur l'objet pour verrouiller la fenêtre de détail.",
+    ],
+    'weight'     => [
+        'Light'    => 'Léger',
+        'Medium'   => 'Intermédiaire',
+        'Heavy'    => 'Lourd',
+        'Clothing' => 'Tenue',
     ],
     'global'     => [
         'account_bound'          => 'Lié au compte',

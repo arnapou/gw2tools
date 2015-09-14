@@ -17,6 +17,7 @@ use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Arnapou\GW2Api\Model\Guild;
 use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\InventorySlot;
+use Arnapou\GW2Api\Model\Skin;
 use Arnapou\GW2Tools\Exception\AccessNotAllowedException;
 use Arnapou\GW2Tools\Service;
 use Arnapou\Toolbox\Http\Response;
@@ -83,6 +84,8 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             ->assert('upgrades', '(/upg(-[0-9]+)+)?')
             ->assert('skin', '(/ski-[0-9]+)?')
             ->assert('count', '(/cnt-[0-9]+)?');
+        $this->addRoute('skin/{id}.html', [$this, 'routeSkin'])
+            ->assert('id', '[0-9]+');
 
         // user space
         $regexpCode = '[A-Za-z0-9]{10}';
@@ -94,6 +97,31 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('{code}/account/delete-token', [$this, 'routeDeleteToken'], 'POST')->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}', [$this, 'routeCharacter'])->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('code', $regexpCode);
+    }
+
+    /**
+     * 
+     * @param integer $id
+     * @return string
+     */
+    public function routeSkin($id) {
+        try {
+            $client = SimpleClient::getInstance($this->lang);
+            $skin   = new Skin($client, $id);
+            if ($skin->getName()) {
+                $html     = $this->renderPage('skin.twig', [
+                    'skin' => $skin,
+                ]);
+                $response = new Response($html);
+                $response->setMaxAge(600);
+                $response->setExpires(new \DateTime('@' . (time() + 600)));
+                $response->setPublic();
+                return $response;
+            }
+        }
+        catch (\Exception $e) {
+            
+        }
     }
 
     /**

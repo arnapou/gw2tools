@@ -52,9 +52,9 @@
                         <div class="panel-body slots">
                             {% for skin in data.skins %}
                                 {% set item = map[skin.id] %}
-                                <div class="slot {{ skin.unlocked ? '' : 'empty' }}"{% if not item %} title="{{ skin.name }}"{% endif %}>
+                                <div class="slot {{ skin.unlocked ? '' : 'empty' }}">
                                     {% if skin.id %}
-                                        <img src="{{ skin|image }}" {{ item|dataitem|raw }}/>
+                                        <img src="{{ skin|image }}" {{ (item ? item : skin)|gwlink|raw }}/>
                                     {% else %}
                                         <img src="{{ ""|image }}" class="nothing" />
                                     {% endif %}

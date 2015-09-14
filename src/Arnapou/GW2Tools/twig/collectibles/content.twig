@@ -18,7 +18,7 @@
                     {% for item in category.items %}
                         <div class="slot {{ item.count ? '' : 'empty' }}">
                             {% if item.id %}
-                                <span {{ item|dataitem|raw }}>
+                                <span {{ item|gwlink|raw }}>
                                     <img src="{{ item|image }}" />
                                     <span class="count">{{ item.count }}</span>
                                 </span>

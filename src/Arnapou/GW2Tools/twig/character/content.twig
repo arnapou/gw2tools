@@ -348,19 +348,19 @@
     {% if obj.id %}
         <tr class="object" data-id="{{ obj.id }}">
             <td>
-                <span {{ obj|dataitem|raw }}>
+                <span {{ obj|gwlink|raw }}>
                     <img src="{{ obj|image }}" class="item rarity-{{ obj.rarity }}" />
                 </span>
             </td>
             {% if not istool %}
                 <td>
                     {% for upgrade in obj.upgrades %}
-                        <span {{ upgrade|dataitem|raw }}>
+                        <span {{ upgrade|gwlink|raw }}>
                             <img src="{{ upgrade|image }}" class="infusion rarity-{{ upgrade.rarity }}" />
                         </span>
                     {% endfor %}
                     {% for infusion in obj.infusions %}
-                        <span {{ infusion|dataitem|raw }}>
+                        <span {{ infusion|gwlink|raw }}>
                             <img src="{{ infusion|image }}" class="upgrade rarity-{{ infusion.rarity }}" />
                         </span>
                     {% endfor %}
