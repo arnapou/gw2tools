@@ -9,12 +9,12 @@
 
 {% for group, types in groups %}
 
-    {{ _self.group(group, types,wardrobe) }}
+    {{ _self.group(group, types, wardrobe, _context) }}
 
 {% endfor %}
 
 
-{% macro group(name, types, wardrobe) %}
+{% macro group(name, types, wardrobe, context) %}
     {% set count = 0 %}
     {% set total = 0 %}
     {% for type in types %}
@@ -41,6 +41,7 @@
             {% for type in types %}
                 {% set data = wardrobe[type] %}
                 {% if data.total %}
+                    {% set map = context.account.client.getskinitems(data.skins|keys)%}
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="pull-right" title="{{ (100 * data.count / data.total)|round }}">
@@ -50,9 +51,10 @@
                         </div>
                         <div class="panel-body slots">
                             {% for skin in data.skins %}
-                                <div class="slot {{ skin.unlocked ? '' : 'empty' }}" title="{{ skin.name }}">
+                                {% set item = map[skin.id] %}
+                                <div class="slot {{ skin.unlocked ? '' : 'empty' }}"{% if not item %} title="{{ skin.name }}"{% endif %}>
                                     {% if skin.id %}
-                                        <img src="{{ skin|image }}" />
+                                        <img src="{{ skin|image }}" {{ item|dataitem|raw }}/>
                                     {% else %}
                                         <img src="{{ ""|image }}" class="nothing" />
                                     {% endif %}

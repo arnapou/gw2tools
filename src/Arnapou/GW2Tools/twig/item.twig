@@ -131,6 +131,16 @@
                     {{ item.consumabledescription|nl2br }}
                 </div>
             </div>
+        {% else %}
+            <div class="gwstats">
+                {{ 'global.consumable'|trans }}
+            </div>
+        {% endif %}
+        
+        {% if item.subtype == 'AppearanceChange' %}
+            <div>
+                {{ 'global.appearance'|trans }}
+            </div>
         {% endif %}
 
     {% endif %}
@@ -138,6 +148,9 @@
     <div class="gwinfos">
         {% if item.rarity %}
             <div>{{ ('rarity.'~item.rarity)|trans }}</div>
+        {% endif %}
+        {% if item.defaultskin %}
+            <div>{{ 'global.appearance'|trans }}: {{ item.defaultskin.name }}</div>
         {% endif %}
         {% if item.type in ['Armor', 'Weapon'] and item.subtype %}
             <div>{{ ('itemtype.'~item.subtype)|trans }}</div>

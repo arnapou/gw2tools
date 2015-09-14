@@ -81,4 +81,31 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
         return null;
     }
 
+    /**
+     * 
+     * @return array
+     */
+    public function getSkinItems($skin_ids) {
+        if (empty($skin_ids)) {
+            return [];
+        }
+
+        $cache      = MongoCache::getInstance();
+        $lang       = Translator::getInstance()->getLang();
+        $collection = $cache->getCache()->getMongoCollection($lang . '_items');
+        $objects    = [];
+        foreach ($collection->find(['value.default_skin' => ['$in' => $skin_ids]]) as $doc) {
+            if (!isset($objects[$doc['value']['default_skin']])) {
+                $objects[$doc['value']['default_skin']] = $doc['value']['id'];
+            }
+        }
+
+        $client = self::getInstance($lang);
+        $client->v2_items(array_values($objects));
+        foreach ($objects as $skin_id => $item_id) {
+            $objects[$skin_id] = new Item($client, $item_id);
+        }
+        return $objects;
+    }
+
 }

@@ -154,6 +154,7 @@ return [
         'account_bound'          => 'Lié au compte',
         'age'                    => 'Age',
         'api_key'                => "Clé d'application",
+        'appearance'             => 'Apparance',
         'attack_power'           => "Puissance d'attaque",
         'armor'                  => 'Armure',
         'bagsize'                => 'Taille de sac',

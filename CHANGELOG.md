@@ -1,3 +1,10 @@
+## 1.0.7 (2015-09-14)
+
+  - improve dye performance
+  - adding dyes related item as tooltip
+  - adding wardrobe skins related item as tooltip
+  - small tooltip css bugfixes
+
 ## 1.0.6 (2015-09-13)
 
   - small js bugfix

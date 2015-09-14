@@ -154,6 +154,7 @@ return [
         'account_bound'          => 'Account bound',
         'age'                    => 'Age',
         'api_key'                => 'Api key',
+        'appearance'             => 'Appearance',
         'attack_power'           => 'Attack power',
         'armor'                  => 'Armor',
         'bagsize'                => 'Bag size',
