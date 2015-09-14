@@ -254,11 +254,14 @@
         {% for i in 1..nb %}
             <div class="gwupgrade">
                 <img src="/assets/images/infusion_slot.png" />
+                    {{ 'global.unused_infusion_slot'|trans }}
+                {#
                 {% if item.rarity in ['Ascended', 'Legendary'] %}
                     {{ 'global.unused_infusion_slot'|trans }}
                 {% else %}
                     {{ 'global.unused_upgrade_slot'|trans }}
                 {% endif %}
+                #}
             </div>
         {% endfor %}
     {% endif %}
