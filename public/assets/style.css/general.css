@@ -420,6 +420,11 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 .page-dyes table td img {
     height: 2em;
     width: 2em;
+}
+.page-dyes table td .icon {
+    height: 2em;
+    width: 2em;
+    display: inline-block;
     margin-right: .5em;
 }
 .page-dyes table td span {
@@ -434,8 +439,18 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
     text-align: center;
     color: rgba(255,255,255,0.4);
 }
-.page-dyes .locked {
-    color: #a00;
+.page-dyes .unlocked i {
+    color: #ddd;
+}
+.page-dyes .locked,
+.page-dyes .locked td:first-child span {
+    color: #a00 !important;
+}
+.page-dyes .locked .icon {
+    background: rgba(170, 0, 0, .5);
+}
+.page-dyes .locked img {
+    opacity: .5;
 }
 .page-dyes td .glyphicon {
     margin-right: .5em;

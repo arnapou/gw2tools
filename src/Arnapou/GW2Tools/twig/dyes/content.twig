@@ -33,7 +33,9 @@
                                         <i class="glyphicon glyphicon-remove"></i>
                                     {% endif %}
                                     <span class="rarity-{{ item.rarity }}">
-                                        <img src="{{ item|image }}" {{ item|gwlink|raw }} />
+                                        <span class="icon">
+                                            <img src="{{ item|image }}" {{ item|gwlink|raw }} />
+                                        </span>
                                         {{ color.name }}
                                     </span>
                                 </td>

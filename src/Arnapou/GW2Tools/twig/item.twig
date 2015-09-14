@@ -128,7 +128,7 @@
 
         {% if item.consumabledescription %}
             <div class="gwstats {{ item.subtype in ['Food', 'Utility'] ? item.subtype|lower : '' }}">
-                {{ 'global.consumable'|trans }} ({{ item|consumableduration }}):
+                {{ 'global.consumable'|trans }} {% if item.consumabledurationms > 30000 %}({{ item|consumableduration }}){% endif %}:
                 <div>
                     {{ item.consumabledescription|nl2br }}
                 </div>
