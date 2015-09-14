@@ -227,6 +227,7 @@ return [
         'unlock_armor_clothing'  => 'Clothing',
         'unregister_api_key'     => 'Unregister the api key',
         'unused_infusion_slot'   => "Unused infusion slot",
+        'unused_upgrade_slot'    => "Unused upgrade slot",
         'vendor_price'           => 'Vendor price',
         'weapons_set1'           => 'Weapons set 1',
         'weapons_set2'           => 'Weapons set 2',
