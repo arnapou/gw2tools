@@ -112,6 +112,10 @@ $(function () {
             $(obj).trigger(ev);
         }
 
+        $gwitemdetail.on('click', function (e) {
+            e.stopPropagation();
+        });
+
         $(document).on('click', 'body', function (e) {
             $gwitemdetail.data('locked', false);
             $gwitemdetail.hide();

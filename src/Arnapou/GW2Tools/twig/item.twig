@@ -33,12 +33,13 @@
                 <em>{{ ('stats.'~item.attributes.stats_name)|trans }}</em>
             {% endif %}
         </div>
-
+        
         {{ _self.upgrades(item.upgrades) }}
         {{ _self.upgrades(item.infusions) }}
+        {{ _self.infusion_empty(item) }}
         {{ _self.transmuted(item) }}
 
-    {% elseif item.type == 'Armor' %}
+    {% elseif item.type in ['Armor', 'Back'] %}
 
         {% if item.armordefense %}
             <div class="gwdefense">
@@ -56,6 +57,7 @@
 
         {{ _self.upgrades(item.upgrades) }}
         {{ _self.upgrades(item.infusions) }}
+        {{ _self.infusion_empty(item) }}
         {{ _self.transmuted(item) }}
 
     {% elseif item.type == 'Trinket' %}
@@ -71,11 +73,53 @@
 
         {{ _self.upgrades(item.upgrades) }}
         {{ _self.upgrades(item.infusions) }}
+        {{ _self.infusion_empty(item) }}
         
     {% elseif item.type == 'UpgradeComponent' %}
 
+        {% if item.subtype != 'Default' %}
+        <div>
+            {{ ('itemtype.'~item.subtype)|trans }}
+        </div>
+        {% endif %}
         <div class="gwupgrade">
             {{ item|buffdescription|nl2br }}
+        </div>
+        
+    {% elseif item.type == 'Bag' %}
+
+        {% if item.bagsize %}
+        <div class="gwupgrade">
+            {{ 'global.bagsize'|trans }}: {{ item.bagsize }}
+        </div>
+        {% endif %}
+        
+    {% elseif item.type == 'Tool' %}
+
+        {% if item.salvagecharges > 1 %}
+        <div class="gwupgrade">
+            {{ 'global.charges'|trans }}: {{ item.salvagecharges }}
+        </div>
+        {% endif %}
+        
+    {% elseif item.type == 'Gizmo' %}
+
+        {% if item.subtype == 'UnlimitedConsumable' %}
+        <div>
+            {{ 'global.unlimited_usage'|trans }}
+        </div>
+        {% endif %}
+        
+    {% elseif item.type == 'CraftingMaterial' %}
+
+        <div>
+            {{ 'global.crafting_material'|trans }}
+        </div>
+        
+    {% elseif item.type == 'Trophy' %}
+
+        <div>
+            {{ 'global.trophy'|trans }}
         </div>
 
     {% elseif item.type == 'Consumable' %}
@@ -88,8 +132,6 @@
                 </div>
             </div>
         {% endif %}
-
-    {% else %}
 
     {% endif %}
 
@@ -123,6 +165,11 @@
     {% if item.vendorvalue %}
         <div class="gwvendor">
             {{ 'global.vendor_price'|trans }}: {{ macro.amount(item.vendorvalue) }}
+            {% if item.count > 1 %}
+                <div class="gwvendorcount">
+                    {{ macro.amount(item.vendorvalue * item.count) }} {{ 'global.for'|trans }} {{ item.count }}
+                </div>
+            {% endif %}
         </div>
     {% endif %}
 
@@ -185,6 +232,18 @@
                 <img title="{{ item.name }}" src="{{ item|image }}" />
                 <span class="rarity-{{ item.rarity }}">{{ item.name }}</span><br />
                 {{ item|buffdescription|nl2br }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro infusion_empty(item) %}
+    {% set nb = item.infusionslots|length - item.infusions|length %}
+    {% if nb > 0 %}
+        {% for i in 1..nb %}
+            <div class="gwupgrade">
+                <img src="/assets/images/infusion_slot.png" />
+                {{ 'global.unused_infusion_slot'|trans }}
             </div>
         {% endfor %}
     {% endif %}
