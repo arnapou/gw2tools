@@ -1,6 +1,8 @@
 
 {% import "macro.twig" as macro %}
 
+{% set recipeId = item.client.recipeid(item.id) %}
+
 <div class="gwitem">
 
     <div class="gwitemheader">
@@ -211,16 +213,21 @@
         </a>
         {% if item.price.buy %}
             <br />
-            <a href="{{ 'https://www.gw2spidy.com/item/'~item.id }}" target="_blank">
-                <i class="glyphicon glyphicon-link"></i>GW2 Spidy
-            </a>
-            <br />
             <a href="{{ 'https://www.gw2tp.com/item/'~item.id }}" target="_blank">
                 <i class="glyphicon glyphicon-link"></i>GW2 TP
             </a>
+            <br />
+            <a href="{{ 'https://www.gw2spidy.com/item/'~item.id }}" target="_blank">
+                <i class="glyphicon glyphicon-link"></i>GW2 Spidy
+            </a>
+        {% endif %}
+        {% if recipeId %}
+            <br />
+            <a href="{{ 'https://www.gw2spidy.com/recipe/'~recipeId }}" target="_blank">
+                <i class="glyphicon glyphicon-link"></i>GW2 Spidy ({{ 'global.recipe'|trans }})
+            </a>
         {% endif %}
     </div>
-
 
     <div class="gwclickinfo">
         {{ 'tooltip.click_info'|trans }}
@@ -254,7 +261,7 @@
         {% for i in 1..nb %}
             <div class="gwupgrade">
                 <img src="/assets/images/infusion_slot.png" />
-                    {{ 'global.unused_infusion_slot'|trans }}
+                {{ 'global.unused_infusion_slot'|trans }}
                 {#
                 {% if item.rarity in ['Ascended', 'Legendary'] %}
                     {{ 'global.unused_infusion_slot'|trans }}

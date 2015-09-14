@@ -194,6 +194,7 @@ return [
         'public_access'          => 'Accès public',
         'quantity'               => 'Quantité',
         'race'                   => 'Race',
+        'recipe'                 => 'Recette',
         'required_level'         => 'Niveau requis',
         'save_preferences'       => 'Sauvegarder les accès',
         'sell'                   => 'Vente',

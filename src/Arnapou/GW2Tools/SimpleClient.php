@@ -55,6 +55,22 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
 
     /**
      * 
+     * @param integer $item_id
+     * @return integer
+     */
+    public function getRecipeId($item_id) {
+        $cache      = MongoCache::getInstance();
+        $lang       = Translator::getInstance()->getLang();
+        $collection = $cache->getCache()->getMongoCollection($lang . '_recipes');
+        $object     = $collection->findOne(['value.output_item_id' => $item_id]);
+        if ($object && isset($object['value'], $object['value']['id'])) {
+            return $object['value']['id'];
+        }
+        return null;
+    }
+
+    /**
+     * 
      * @return array
      */
     public function getDyeItems() {
