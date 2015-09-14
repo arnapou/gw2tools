@@ -337,13 +337,13 @@ img.rarity-Ascended   { border: 1px solid #fb3e8d; }
 img.rarity-Legendary  { border: 1px solid #4C139D; }
 
 .slots .slot.rarity-Junk       { box-shadow: 0 0 0 1px #aaaaaa inset, 0 0 15px #3a2d1d inset; }
-.slots .slot.rarity-Basic      { box-shadow: 0 0 0 1px #000000 inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Basic      { box-shadow: 0 0 0 1px #ffffff inset, 0 0 15px #3a2d1d inset; }
 .slots .slot.rarity-Fine       { box-shadow: 0 0 0 1px #1a9306 inset, 0 0 15px #3a2d1d inset; }
 .slots .slot.rarity-Masterwork { box-shadow: 0 0 0 1px #62A4DA inset, 0 0 15px #3a2d1d inset; }
 .slots .slot.rarity-Rare       { box-shadow: 0 0 0 1px #fcd00b inset, 0 0 15px #3a2d1d inset; }
 .slots .slot.rarity-Exotic     { box-shadow: 0 0 0 1px #ffa405 inset, 0 0 15px #3a2d1d inset; }
 .slots .slot.rarity-Ascended   { box-shadow: 0 0 0 1px #fb3e8d inset, 0 0 15px #3a2d1d inset; }
-.slots .slot.rarity-Legendary  { box-shadow: 0 0 0 1px #4C139D inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Legendary  { box-shadow: 0 0 0 1px #7744bb inset, 0 0 15px #3a2d1d inset; }
 
 .gwitem .rarity-Basic      { color: #ffffff; }
 .gwitem .rarity-Legendary  { color: #7744bb; }
