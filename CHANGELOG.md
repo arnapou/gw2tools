@@ -1,3 +1,8 @@
+## 1.0.9 (2015-09-16)
+
+  - bugfix on special trinkets for 4 stats
+  - adding gw2skills links on characters
+
 ## 1.0.8 (2015-09-14)
 
   - adding tooltips for pure skins (wardrobe)

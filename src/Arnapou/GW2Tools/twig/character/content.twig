@@ -91,8 +91,14 @@
     </div>
     <div class="col-xs-4 stats">
         <div class="panel panel-default">
+            {% set gw2skillslink = char.gw2skillslink %}
             <div class="panel-heading">
                 {{ 'menu.characters.attributes'|trans }}
+                {% if gw2skillslink %}
+                    <a href="{{ gw2skillslink }}" target="_blank">
+                        <i class="glyphicon glyphicon-link" style="margin: 0 .5em 0 2em"></i>Gw2Skills
+                    </a>
+                {% endif %}
                 {% if attributes.unknown|length %}
                     <span class="pull-right text-danger" title="{{ 'global.unknown_attributes_for'|trans({
                             'attributes': attributes.unknown|transarray({}, 'itemtype.')|join(', ')
