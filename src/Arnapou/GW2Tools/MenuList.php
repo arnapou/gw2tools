@@ -33,7 +33,7 @@ class MenuList implements \IteratorAggregate {
 
         // menu 1
         $menu = Menu::create($trans['menu.general']);
-        foreach (['account', 'wallet', 'golds'] as $name) {
+        foreach (['account', 'wallet', 'golds', 'search'] as $name) {
             $menu->addItem($name, $trans['menu.general.' . $name]);
         }
         $this->addMenu($menu);

@@ -29,7 +29,12 @@
             <tr>
                 <td>
                     <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
-                    <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a><br /><br />
+                    {% if module.isowner or module.user.hasright('character') %}
+                        <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+                    {% else %}
+                        <b>{{ char.name }}</b>
+                    {% endif %}
+                    <br /><br />
                     {% set gw2skillslink = char.gw2skillslink %}
                     {% if gw2skillslink %}
                         <div class="text-right">

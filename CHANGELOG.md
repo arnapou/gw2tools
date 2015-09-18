@@ -1,3 +1,8 @@
+## 1.0.10 (2015-09-18)
+
+  - adding item search page
+  - small link bugfixes
+
 ## 1.0.9 (2015-09-16)
 
   - bugfix on special trinkets for 4 stats

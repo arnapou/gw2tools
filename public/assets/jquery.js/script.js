@@ -9,8 +9,8 @@ $(function () {
 
 //		$('#owner-legend').show();
     }
-
-    $('[data-content="ajax"]').each(function () {
+    
+    $('[data-content="ajax"]').on('loadContent', function () {
         var $this = $(this);
         var url = $this.data('src');
         if (url) {
@@ -24,6 +24,8 @@ $(function () {
                     });
         }
     });
+
+    $('[data-content="ajax"]').trigger('loadContent');
 
     $('#access-token-form button').click(function () {
         var token = String($('#access-token-form input[name=access_token]').val());

@@ -27,7 +27,11 @@
             <tr>
                 <td>
                     <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
-                    <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+                    {% if module.isowner or module.user.hasright('character') %}
+                        <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+                    {% else %}
+                        <b>{{ char.name }}</b>
+                    {% endif %}
                 </td>
                 <td>{{ char.level }}</td>
                 <td>{{ ('gender.'~char.gender)|trans }}</td>
