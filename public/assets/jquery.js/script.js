@@ -230,7 +230,7 @@ $(function () {
                                 cachedHtml[url] = html;
                                 if ($gwitemdetail.data('url') === url) {
                                     $gwitemdetail.html(html);
-                                    forceTooltipMove(self, e);
+//                                    forceTooltipMove(self, e);
                                 }
                             })
                             .fail(function () {
