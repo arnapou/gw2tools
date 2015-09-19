@@ -14,13 +14,16 @@ namespace Arnapou\GW2Tools;
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
+use Arnapou\GW2Api\Model\Character;
 use Arnapou\GW2Api\Model\Guild;
 use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Api\Model\Skin;
+use Arnapou\GW2Api\Model\Specialization;
 use Arnapou\GW2Api\Model\SpecializationTrait;
 use Arnapou\GW2Tools\Exception\AccessNotAllowedException;
 use Arnapou\GW2Tools\Service;
+use Arnapou\Toolbox\Exception\Exception;
 use Arnapou\Toolbox\Http\Response;
 use Arnapou\Toolbox\Http\ResponseJson;
 
@@ -49,12 +52,6 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      * @var boolean
      */
     protected $isOwner;
-
-    /**
-     *
-     * @var integer
-     */
-    protected $tooltipExpiration = 900;
 
     public function __construct(\Arnapou\Toolbox\Http\Service\Service $service, $lang) {
         parent::__construct($service);
@@ -85,16 +82,15 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('', [$this, 'routeIndex']);
         $this->addRoute('technical-infos', [$this, 'routeTechnicalInfos']);
         $this->addRoute('token-check', [$this, 'routeTokenCheck']);
-        $this->addRoute('item/{id}{infusions}{upgrades}{skin}{count}.html', [$this, 'routeItem'])
+        $this->addRoute('item/{id}{infusions}{upgrades}{skin}{count}.html', [$this, 'routeTooltipItem'])
             ->assert('id', '[0-9]+')
             ->assert('infusions', '(/inf(-[0-9]+)+)?')
             ->assert('upgrades', '(/upg(-[0-9]+)+)?')
             ->assert('skin', '(/ski-[0-9]+)?')
             ->assert('count', '(/cnt-[0-9]+)?');
-        $this->addRoute('skin/{id}.html', [$this, 'routeSkin'])
-            ->assert('id', '[0-9]+');
-        $this->addRoute('trait/{id}.html', [$this, 'routeTrait'])
-            ->assert('id', '[0-9]+');
+        $this->addRoute('skin/{id}.html', [$this, 'routeTooltipSkin'])->assert('id', '[0-9]+');
+        $this->addRoute('trait/{id}.html', [$this, 'routeTooltipTrait'])->assert('id', '[0-9]+');
+        $this->addRoute('specialization/{id}.html', [$this, 'routeTooltipSpecialization'])->assert('id', '[0-9]+');
 
         // user space
         $regexpCode = '[A-Za-z0-9]{10}';
@@ -106,6 +102,33 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('{code}/account/delete-token', [$this, 'routeDeleteToken'], 'POST')->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}', [$this, 'routeCharacter'])->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('code', $regexpCode);
+        $this->addRoute('{code}/character/{name}.build-{mode}', [$this, 'routeCharacterBuild'])->assert('code', $regexpCode)->assert('mode', 'pve|pvp|wvw');
+    }
+
+    /**
+     * 
+     * @param string $page
+     * @param callable $context
+     * @return Response
+     */
+    protected function routeTooltip($page, $context) {
+        try {
+            $html     = $this->renderPage('tooltip-' . $page . '.twig', $context());
+            $response = new Response($html);
+            $response->setMaxAge(900);
+            $response->setExpires(new \DateTime('@' . (time() + 900)));
+            $response->setPublic();
+            return $response;
+        }
+        catch (\Exception $e) {
+            $html = '<div class="gwitemerror">Error</div>'
+                . '<script type="text/javascript">'
+                . 'if(typeof(console) != "undefined") {'
+                . 'console.error(' . json_encode($e->getMessage()) . ');'
+                . '}'
+                . '</script>';
+            return $html;
+        }
     }
 
     /**
@@ -113,24 +136,13 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      * @param integer $id
      * @return string
      */
-    public function routeTrait($id) {
-        try {
-            $client = SimpleClient::getInstance($this->lang);
-            $trait  = new SpecializationTrait($client, $id);
-            if ($trait->getIcon()) {
-                $html     = $this->renderPage('trait.twig', [
-                    'trait' => $trait,
-                ]);
-                $response = new Response($html);
-                $response->setMaxAge($this->tooltipExpiration);
-                $response->setExpires(new \DateTime('@' . (time() + $this->tooltipExpiration)));
-                $response->setPublic();
-                return $response;
-            }
-        }
-        catch (\Exception $e) {
-            echo $e->getMessage();
-        }
+    public function routeTooltipSpecialization($id) {
+        return $this->routeTooltip('specialization', function() use($id) {
+                $client = SimpleClient::getInstance($this->lang);
+                return [
+                    'specialization' => new Specialization($client, $id),
+                ];
+            });
     }
 
     /**
@@ -138,24 +150,27 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      * @param integer $id
      * @return string
      */
-    public function routeSkin($id) {
-        try {
-            $client = SimpleClient::getInstance($this->lang);
-            $skin   = new Skin($client, $id);
-            if ($skin->getName()) {
-                $html     = $this->renderPage('skin.twig', [
-                    'skin' => $skin,
-                ]);
-                $response = new Response($html);
-                $response->setMaxAge($this->tooltipExpiration);
-                $response->setExpires(new \DateTime('@' . (time() + $this->tooltipExpiration)));
-                $response->setPublic();
-                return $response;
-            }
-        }
-        catch (\Exception $e) {
-            
-        }
+    public function routeTooltipTrait($id) {
+        return $this->routeTooltip('trait', function() use($id) {
+                $client = SimpleClient::getInstance($this->lang);
+                return [
+                    'trait' => new SpecializationTrait($client, $id),
+                ];
+            });
+    }
+
+    /**
+     * 
+     * @param integer $id
+     * @return string
+     */
+    public function routeTooltipSkin($id) {
+        return $this->routeTooltip('skin', function() use($id) {
+                $client = SimpleClient::getInstance($this->lang);
+                return [
+                    'skin' => new Skin($client, $id),
+                ];
+            });
     }
 
     /**
@@ -167,39 +182,29 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      * @param string $count
      * @return string
      */
-    public function routeItem($id, $infusions, $upgrades, $skin, $count) {
-        try {
-            $client = SimpleClient::getInstance($this->lang);
-            $data   = [
-                'id' => $id,
-            ];
-            if ($infusions) {
-                $data['infusions'] = explode('-', substr($infusions, 5));
-            }
-            if ($upgrades) {
-                $data['upgrades'] = explode('-', substr($upgrades, 5));
-            }
-            if ($skin) {
-                $data['skin'] = substr($skin, 5);
-            }
-            if ($count) {
-                $data['count'] = substr($count, 5);
-            }
-            $item = new InventorySlot($client, $data);
-            if ($item->getName()) {
-                $html     = $this->renderPage('item.twig', [
+    public function routeTooltipItem($id, $infusions, $upgrades, $skin, $count) {
+        return $this->routeTooltip('skin', function() use($id, $infusions, $upgrades, $skin, $count) {
+                $client = SimpleClient::getInstance($this->lang);
+                $data   = [
+                    'id' => $id,
+                ];
+                if ($infusions) {
+                    $data['infusions'] = explode('-', substr($infusions, 5));
+                }
+                if ($upgrades) {
+                    $data['upgrades'] = explode('-', substr($upgrades, 5));
+                }
+                if ($skin) {
+                    $data['skin'] = substr($skin, 5);
+                }
+                if ($count) {
+                    $data['count'] = substr($count, 5);
+                }
+                $item = new InventorySlot($client, $data);
+                return [
                     'item' => $item,
-                ]);
-                $response = new Response($html);
-                $response->setMaxAge($this->tooltipExpiration);
-                $response->setExpires(new \DateTime('@' . (time() + $this->tooltipExpiration)));
-                $response->setPublic();
-                return $response;
-            }
-        }
-        catch (\Exception $e) {
-            
-        }
+                ];
+            });
     }
 
     /**
@@ -486,6 +491,42 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         catch (AccessNotAllowedException $e) {
             return $this->renderPage('error-access-not-allowed.twig');
         }
+    }
+
+    /**
+     * 
+     * @param string $code
+     * @param string $name
+     * @return string
+     */
+    public function routeCharacterBuild($code, $name, $mode) {
+        $redirect = 'http://' . $this->lang . '.gw2skills.net/editor/';
+        try {
+            $this->checkUserRights('character');
+            $context = $this->getContext('character');
+            if ($context) {
+                $name = rawurldecode($name);
+                if (in_array($name, $context['account']->getCharacterNames())) {
+                    $character = $context['account']->getCharacter($name); /* @var $character Character */
+                    if ($mode == 'pvp') {
+                        $uri = $character->getGw2SkillsLinkPvp();
+                    }
+                    elseif ($mode == 'pve') {
+                        $uri = $character->getGw2SkillsLinkPve();
+                    }
+                    elseif ($mode == 'wvw') {
+                        $uri = $character->getGw2SkillsLinkWvw();
+                    }
+                    if (isset($uri) && !empty($uri)) {
+                        $redirect = $uri;
+                    }
+                }
+            }
+        }
+        catch (\Exception $e) {
+            
+        }
+        return $this->getService()->returnResponseRedirect($redirect);
     }
 
     /**

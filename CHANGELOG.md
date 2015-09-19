@@ -1,3 +1,8 @@
+## 1.0.11 (2015-09-19)
+
+  - adding pvp stats
+  - adding character builds + gw2skills links
+
 ## 1.0.10 (2015-09-18)
 
   - adding item search page

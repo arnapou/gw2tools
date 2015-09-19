@@ -40,7 +40,7 @@ class MenuList implements \IteratorAggregate {
 
         // menu 2
         $menu = Menu::create($trans['menu.characters']);
-        foreach (['characters', 'equipments', 'inventories', 'attributes'] as $name) {
+        foreach (['characters', 'equipments', 'inventories', 'attributes', 'builds'] as $name) {
             $menu->addItem($name, $trans['menu.characters.' . $name]);
         }
         if ($account) {

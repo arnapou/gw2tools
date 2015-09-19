@@ -146,16 +146,17 @@
     </div>
 
 </div>
+                    
+{% set access_tab_inv = (module.owner or user.hasright('inventories')) %}
+{% set access_tab_build = (module.owner or user.hasright('builds')) and account.haspermission('pvp') %}
 
-{% if (module.owner or user.hasright('inventories')) or
-      ((module.owner or user.hasright('inventories')) and account.haspermission('pvp'))
-%}
+{% if access_tab_inv or access_tab_build %}
 <ul class="nav nav-tabs">
     <li class="active"><a href="#" data-tab="tab-stuff">{{ 'global.equipment'|trans }}</a></li>
-    {% if module.owner or user.hasright('inventories') %}
+    {% if access_tab_inv %}
         <li><a href="#" data-tab="tab-inventory">{{ 'global.inventory'|trans }}</a></li>
     {% endif %}
-    {% if (module.owner or user.hasright('inventories')) and account.haspermission('pvp') %}
+    {% if access_tab_build %}
         <li><a href="#" data-tab="tab-build-pve">{{ 'traits.pve'|trans }}</a></li>
         <li><a href="#" data-tab="tab-build-pvp">{{ 'traits.pvp'|trans }}</a></li>
         <li><a href="#" data-tab="tab-build-wvw">{{ 'traits.wvw'|trans }}</a></li>
@@ -338,7 +339,7 @@
     </table>
 </div>
 
-{% if module.owner or user.hasright('inventories') %}
+{% if access_tab_inv %}
     <div class="panel panel-default tab tab-inventory" style="display: none;">
         <div class="panel-heading">
             <div class="pull-right">
@@ -352,15 +353,13 @@
     </div>
 {% endif %}
 
-{% if module.owner and account.haspermission('pvp') %}
+{% if access_tab_build %}
     <div class="panel panel-default tab tab-build-pve" style="display: none;">
         <div class="panel-heading">
             {{ 'traits.pve'|trans }}
-            {% if char.gw2skillslinkpve %}
-                <a href="{{ char.gw2skillslinkpve }}" class="gw2skillslink" target="_blank">
-                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
-                </a>
-            {% endif %}
+            <a href="{{ char.name }}.build-pve" class="gw2skillslink" target="_blank">
+                <i class="glyphicon glyphicon-link"></i>Gw2Skills
+            </a>
         </div>
         <div class="panel-body">
             {{ macro.specializations(char.buildpve) }}
@@ -369,11 +368,9 @@
     <div class="panel panel-default tab tab-build-pvp" style="display: none;">
         <div class="panel-heading">
             {{ 'traits.pvp'|trans }}
-            {% if char.gw2skillslinkpvp %}
-                <a href="{{ char.gw2skillslinkpvp }}" class="gw2skillslink" target="_blank">
-                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
-                </a>
-            {% endif %}
+            <a href="{{ char.name }}.build-pvp" class="gw2skillslink" target="_blank">
+                <i class="glyphicon glyphicon-link"></i>Gw2Skills
+            </a>
         </div>
         <div class="panel-body">
             {{ macro.specializations(char.buildpvp) }}
@@ -382,11 +379,9 @@
     <div class="panel panel-default tab tab-build-wvw" style="display: none;">
         <div class="panel-heading">
             {{ 'traits.wvw'|trans }}
-            {% if char.gw2skillslinkwvw %}
-                <a href="{{ char.gw2skillslinkwvw }}" class="gw2skillslink" target="_blank">
-                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
-                </a>
-            {% endif %}
+            <a href="{{ char.name }}.build-wvw" class="gw2skillslink" target="_blank">
+                <i class="glyphicon glyphicon-link"></i>Gw2Skills
+            </a>
         </div>
         <div class="panel-body">
             {{ macro.specializations(char.buildwvw) }}

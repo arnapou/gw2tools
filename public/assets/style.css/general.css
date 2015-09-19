@@ -206,7 +206,7 @@ img.item {
 .page-character .gw2skillslink {
     margin-left: 2em;
 }
-.page-character .gw2skillslink i {
+.gw2skillslink i {
     margin-right: .5em;
 }
 
@@ -503,6 +503,12 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 
 /************************************************/
 
+.page-builds td:first-child {
+    width: 20%;
+}
+
+/************************************************/
+
 .page-pvp .rank {
     overflow: visible;
     margin-bottom: 1em;
@@ -588,4 +594,23 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 .page-pvp .glyphicon-remove {
     color: #d9534f;
     margin-right: .5em;
+}
+
+/************************************************/
+
+.page-builds .build .spe,
+.page-builds .build .trait {
+    display: inline-block;
+    vertical-align: middle;
+    width: 2.5em;
+    height: 2.5em;
+    margin: 3px 1px;
+}
+.page-builds .build img {
+    width: 100%;
+    height: 100%;
+}
+.page-builds .gw2skillslink {
+    display: inline-block;
+    margin-top: .8em;
 }

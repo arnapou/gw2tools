@@ -17,6 +17,7 @@ use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\PvpGame;
 use Arnapou\GW2Api\Model\Skin;
+use Arnapou\GW2Api\Model\Specialization;
 use Arnapou\GW2Api\Model\SpecializationTrait;
 
 /**
@@ -82,6 +83,16 @@ function buffdescription(Item $item) {
  */
 function gwlink_trait(SpecializationTrait $item) {
     $url = 'trait/' . $item->getId() . '.html';
+    return ' class="gwitemlink" data-url="' . $url . '"';
+}
+
+/**
+ * 
+ * @param Specialization $item
+ * @return string
+ */
+function gwlink_specialization(Specialization $item) {
+    $url = 'specialization/' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
 

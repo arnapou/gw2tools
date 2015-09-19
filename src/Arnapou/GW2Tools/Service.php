@@ -98,6 +98,9 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
                 elseif ($item instanceof \Arnapou\GW2Api\Model\Item) {
                     return gwlink_item($item);
                 }
+                elseif ($item instanceof \Arnapou\GW2Api\Model\Specialization) {
+                    return gwlink_specialization($item);
+                }
                 elseif ($item instanceof \Arnapou\GW2Api\Model\SpecializationTrait) {
                     return gwlink_trait($item);
                 }

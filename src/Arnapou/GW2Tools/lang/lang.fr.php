@@ -260,6 +260,7 @@ return [
         'characters.equipments'    => 'Equipements',
         'characters.inventories'   => 'Inventaires',
         'characters.attributes'    => 'Attributs (BETA)',
+        'characters.builds'        => 'Builds',
         'characters.character'     => 'Détails de personnage',
         'vaults'                   => 'Coffres',
         'vaults.bank'              => 'Banque',
