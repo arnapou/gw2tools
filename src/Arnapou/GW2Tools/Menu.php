@@ -101,7 +101,7 @@ class Menu implements \IteratorAggregate {
 
         $offsetStart = 0;
         for ($i = 0; $i < $n; $i++) {
-            if (!$items[$i]['separator']) {
+            if (!$items[$i]->getSeparator()) {
                 break;
             }
             $offsetStart++;
@@ -109,7 +109,7 @@ class Menu implements \IteratorAggregate {
 
         $offsetEnd = $n - 1;
         for ($i = $n - 1; $i >= 0; $i--) {
-            if (!$items[$i]['separator']) {
+            if (!$items[$i]->getSeparator()) {
                 break;
             }
             $offsetEnd--;
