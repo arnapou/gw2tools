@@ -15,7 +15,7 @@ use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\Toolbox\Exception\Exception;
 use Arnapou\Toolbox\Functions\Directory;
 
-class Menu {
+class Menu implements \IteratorAggregate {
 
     /**
      *
@@ -42,28 +42,20 @@ class Menu {
      * @param string $page
      * @param string $label
      * @param string $uri
-     * @return Menu
+     * @return MenuItem
      */
     public function addItem($page, $label, $uri = null) {
-        $this->items[] = [
-            'separator' => false,
-            'page'      => $page,
-            'uri'       => empty($uri) ? $page . '/' : $uri,
-            'label'     => $label,
-            'right'     => $page,
-        ];
-        return $this;
+        $item          = new MenuItem($page, $label, $uri);
+        $this->items[] = $item;
+        return $item;
     }
 
     /**
      * 
-     * @return Menu
+     * @return MenuItem
      */
     public function addSeparator() {
-        $this->items[] = [
-            'separator' => true,
-        ];
-        return $this;
+        return $this->addItem(null, null)->setSeparator(true);
     }
 
     /**
@@ -84,12 +76,16 @@ class Menu {
             return $this->items;
         }
         $items = [];
-        foreach ($this->items as $item) {
-            if (empty($item['right']) || $user->hasRight($item['right'])) {
+        foreach ($this->items as /* @var $item MenuItem */ $item) {
+            if ($item->getRight() == '' || $user->hasRight($item->getRight())) {
                 $items[] = $item;
             }
         }
         return $this->trimSeparators($items);
+    }
+
+    public function getIterator() {
+        return new \ArrayIterator($this->getItems());
     }
 
     /**

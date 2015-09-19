@@ -47,7 +47,17 @@
                                                 {% if item.separator %}
                                                     <li role="separator" class="divider"></li>
                                                 {% else %}
-                                                    <li><a href="../{{ item.uri }}">{{ item.label }}</a></li>
+                                                    <li>
+                                                        {% if item.permission is none or item.permission and account.haspermission(item.permission) %}
+                                                            <a href="../{{ item.uri }}">
+                                                                {{ item.label }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="../{{ item.uri }}" class="locked">
+                                                                <i class="glyphicon glyphicon-lock"></i>{{ item.label }}
+                                                            </a>
+                                                        {% endif %}
+                                                    </li>
                                                 {% endif %}
                                             {% endfor %}
                                         </ul>
@@ -66,8 +76,11 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         {% for usr in users %}
-                                            <li title="{{ usr.account.permissions|join(', ') }}">
-                                                <a href="/{{ lang }}/{{ usr.code }}/">{{ usr.account.name }}</a>
+                                            <li title="{{ usr.account.permissions|join("\n") }}">
+                                                <a href="/{{ lang }}/{{ usr.code }}/">
+                                                    <small> ... {{ usr.token|slice(-6) }}</small>
+                                                    {{ usr.account.name }}
+                                                </a>
                                             </li>
                                         {% endfor %}
                                     </ul>

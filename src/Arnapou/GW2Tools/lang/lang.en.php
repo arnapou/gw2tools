@@ -205,6 +205,7 @@ return [
         'race'                   => 'Race',
         'rarity'                 => 'Rarity',
         'recipe'                 => 'Recipe',
+        'replace_api_key'        => 'Replace the api key',
         'required_level'         => 'Required level',
         'results'                => 'Results',
         'save_preferences'       => 'Save preferences',
@@ -322,5 +323,12 @@ return [
         'pvp'             => 'Build Pvp',
         'wvw'             => 'Build Wvw',
         'buff_conversion' => 'Gain %dst based on a percentage of %src%: %pct%%',
+    ],
+    'error'      => [
+        'not-owner'            => "You are not the owner of this account.",
+        'token-already-exists' => "This api key is already mapped to another account.<br />You must delete it before doing this action.",
+        'token-is-same'        => "This api key is identical as current.",
+        'invalid-token'        => "This api key is invalid.",
+        'mismatch-account'     => "The account of the api key does not match the current.",
     ],
 ];

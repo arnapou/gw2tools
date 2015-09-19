@@ -1,3 +1,10 @@
+## 1.0.12 (2015-09-20)
+
+  - change behaviour of tooltips as suggered (click again on the object unlocks it)
+  - refactor of rights : character by character and not anymore for all
+  - being able to replace the api key (to avoid changing the tied code)
+  - better menu looking for missing api key permissions 
+
 ## 1.0.11 (2015-09-19)
 
   - adding pvp stats

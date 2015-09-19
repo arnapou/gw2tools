@@ -1,15 +1,32 @@
 $(function () {
 
+    var messages = {
+        'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
+        'action-delete-token': "Do you really want to delete the api key ?<br />It cannot be cancelled.",
+        'action-replace-token': "Paste your api key:",
+        'bad-token': 'The provided api key is not valid.',
+    };
+    if (LANG == 'fr') {
+        messages = {
+            'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
+            'action-delete-token': "Etes-vous sûr(e) de vouloir supprimer la clé d'application ?<br />Cette action ne peut pas être annulée.",
+            'action-replace-token': "Collez votre clé d'application :",
+            'bad-token': "La clé d'application n'est pas valide.",
+        };
+    }
+
     var cookieRetention = 90;
 
-    function onPageLoaded($element) {
-//		$element.find('[data-toggle="tooltip"]')
-//				.data('placement', 'bottom')
-//				.tooltip();
-
-//		$('#owner-legend').show();
+    function isValidToken(token) {
+        token = String(token);
+        if (token.match(/^[A-F0-9-]{70,80}$/)) {
+            $('.alert.token-error').fadeOut(400);
+            return true;
+        }
+        bootbox.alert(messages['bad-token']);
+        return false;
     }
-    
+
     $('[data-content="ajax"]').on('loadContent', function () {
         var $this = $(this);
         var url = $this.data('src');
@@ -17,10 +34,9 @@ $(function () {
             $.get(url)
                     .done(function (html) {
                         $this.html(html);
-                        onPageLoaded($this);
                     })
                     .fail(function () {
-                        $this.html('<div class="alert alert-danger" role="alert">Loading of content failed for some reason, please retry or contact the administrator.</div>');
+                        $this.html('<div class="alert alert-danger" role="alert">' + messages['alert-ajax'] + '</div>');
                     });
         }
     });
@@ -29,11 +45,7 @@ $(function () {
 
     $('#access-token-form button').click(function () {
         var token = String($('#access-token-form input[name=access_token]').val());
-        if (!token.match(/^[A-F0-9-]{70,80}$/)) {
-            bootbox.alert('The provided token is not valid.');
-        }
-        else {
-            $('.alert.token-error').fadeOut(400);
+        if (isValidToken(token)) {
             $.getJSON('./token-check', {token: token})
                     .done(function (json) {
                         if (json && json.code) {
@@ -62,7 +74,7 @@ $(function () {
         if (!$btn.hasClass('disabled')) {
             var rights = [];
             $btn.addClass('disabled');
-            $btn.parent().find('input[type=checkbox]').each(function () {
+            $('.rights input[type=checkbox]').each(function () {
                 if ($(this).is(':checked')) {
                     rights.push($(this).prop('value'));
                 }
@@ -75,17 +87,42 @@ $(function () {
     });
 
     $(document).on('click', '.page-account .action-delete-token', function () {
-        if (window.confirm("Do you really want to delete the token ?\nIt cannot be cancelled.")) {
-            $.post('./delete-token').always(function () {
-                if (LANG) {
-                    window.location = '/' + LANG + '/';
-                }
-                else {
-                    window.location = '/';
-                }
-            });
-        }
+        bootbox.confirm(messages['action-delete-token'], function (result) {
+            if (result) {
+                $.post('./delete-token').always(function () {
+                    if (LANG) {
+                        window.location = '/' + LANG + '/';
+                    }
+                    else {
+                        window.location = '/';
+                    }
+                });
+            }
+        });
+    });
 
+    $(document).on('click', '.page-account .action-replace-token', function () {
+        bootbox.prompt(messages['action-replace-token'], function (result) {
+            if (result && isValidToken(result)) {
+                $.post('./replace-token', {token: result})
+                        .done(function (json) {
+                            if (json) {
+                                if (json.ok) {
+                                    window.location.reload();
+                                }
+                                if (json.error) {
+                                    bootbox.alert(json.error);
+                                }
+                            }
+                        })
+                        .fail(function (json) {
+                            if (json && json.error) {
+                                bootbox.alert(json.error);
+                            }
+                        });
+
+            }
+        });
     });
 
     $(document).on('click', '.page-character .nav a', function (e) {
@@ -132,10 +169,17 @@ $(function () {
         });
 
         $(document).on('click', '.gwitemlink', function (e) {
+            var locked = $gwitemdetail.data('locked');
+            var url = '/' + LANG + '/' + $(this).data('url');
             $gwitemdetail.data('locked', false);
             $(this).trigger('mouseenter');
             forceTooltipMove(this, e);
-            $gwitemdetail.data('locked', true);
+            if (!locked || locked !== url) {
+                $gwitemdetail.data('locked', url);
+            }
+            else {
+                $gwitemdetail.data('locked', locked ? false : url);
+            }
             e.stopPropagation();
         });
 

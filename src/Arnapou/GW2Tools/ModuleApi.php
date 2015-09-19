@@ -100,6 +100,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('{code}/{page}/content.html', [$this, 'routePageContent'])->assert('code', $regexpCode)->assert('page', '[a-z0-9_]+');
         $this->addRoute('{code}/account/save-rights', [$this, 'routeSaveRights'], 'POST')->assert('code', $regexpCode);
         $this->addRoute('{code}/account/delete-token', [$this, 'routeDeleteToken'], 'POST')->assert('code', $regexpCode);
+        $this->addRoute('{code}/account/replace-token', [$this, 'routeReplaceToken'], 'POST')->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}', [$this, 'routeCharacter'])->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}.build-{mode}', [$this, 'routeCharacterBuild'])->assert('code', $regexpCode)->assert('mode', 'pve|pvp|wvw');
@@ -234,11 +235,10 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             $code = $this->user->getCode();
             $path = rawurldecode($this->getService()->getRequest()->getPathInfo());
             foreach ($this->getMenu() as /* @var $menu Menu */ $menu) {
-                foreach ($menu->getItems() as $item) {
-                    if (isset($item['uri']))
-                        if (isset($item['uri']) && '/' . $this->lang . '/' . $code . '/' . $item['uri'] === $path) {
-                            return [$menu->getLabel(), $item['label']];
-                        }
+                foreach ($menu->getItems() as /* @var $item MenuItem */ $item) {
+                    if ($item->getUri() && '/' . $this->lang . '/' . $code . '/' . $item->getUri() === $path) {
+                        return [$menu->getLabel(), $item->getLabel()];
+                    }
                 }
             }
         }
@@ -281,6 +281,41 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             $this->user->save();
         }
         return new ResponseJson(['ok' => true]);
+    }
+
+    /**
+     * 
+     */
+    public function routeReplaceToken() {
+        $trans = Translator::getInstance();
+        if ($this->user && $this->isOwner) {
+            $token = $this->getService()->getRequest()->get('token');
+            $user  = User::findByToken($token);
+            if ($user) {
+                if ($user->getCode() == $this->user->getCode()) {
+                    return new ResponseJson(['error' => $trans->trans('error.token-is-same')]);
+                }
+                else {
+                    return new ResponseJson(['error' => $trans->trans('error.token-already-exists')]);
+                }
+            }
+            try {
+                $account = Gw2Account::getInstance($token);
+                if (empty($account->getName())) {
+                    throw new InvalidTokenException();
+                }
+                if ($this->user->getAccount()->getName() !== $account->getName()) {
+                    return new ResponseJson(['error' => $trans->trans('error.mismatch-account')]);
+                }
+                $this->user->setToken($token);
+                $this->user->save();
+                return new ResponseJson(['ok' => true]);
+            }
+            catch (InvalidTokenException $e) {
+                return new ResponseJson(['error' => $trans->trans('error.invalid-token')]);
+            }
+        }
+        return new ResponseJson(['error' => $trans->trans('error.not-owner')]);
     }
 
     /**
@@ -447,9 +482,9 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      */
     public function routeCharacter($code, $name) {
         try {
-            $context = $this->getContext('character');
+            $name    = rawurldecode($name);
+            $context = $this->getContext('character/' . $name);
             if ($context) {
-                $name = rawurldecode($name);
                 if (in_array($name, $context['account']->getCharacterNames())) {
                     $context['character_name'] = $name;
                     return $this->renderPage('character/page.twig', $context);
@@ -472,10 +507,10 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      */
     public function routeCharacterContent($code, $name) {
         try {
-            $this->checkUserRights('character');
-            $context = $this->getContext('character');
+            $name    = rawurldecode($name);
+            $this->checkUserRights('character/' . $name);
+            $context = $this->getContext('character/' . $name);
             if ($context) {
-                $name = rawurldecode($name);
                 if (in_array($name, $context['account']->getCharacterNames())) {
                     $context['character_name'] = $name;
                     return $this->renderPage('character/content.twig', $context);
@@ -502,10 +537,10 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
     public function routeCharacterBuild($code, $name, $mode) {
         $redirect = 'http://' . $this->lang . '.gw2skills.net/editor/';
         try {
-            $this->checkUserRights('character');
-            $context = $this->getContext('character');
+            $name    = rawurldecode($name);
+            $this->checkUserRights('character/' . $name);
+            $context = $this->getContext('character/' . $name);
             if ($context) {
-                $name = rawurldecode($name);
                 if (in_array($name, $context['account']->getCharacterNames())) {
                     $character = $context['account']->getCharacter($name); /* @var $character Character */
                     if ($mode == 'pvp') {

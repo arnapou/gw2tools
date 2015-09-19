@@ -33,43 +33,45 @@ class MenuList implements \IteratorAggregate {
 
         // menu 1
         $menu = Menu::create($trans['menu.general']);
-        foreach (['account', 'wallet', 'golds', 'search', 'pvp'] as $name) {
-            $menu->addItem($name, $trans['menu.general.' . $name]);
-        }
+        $menu->addItem('account', $trans['menu.general.account']);
+        $menu->addItem('wallet', $trans['menu.general.wallet'])->setPermission(Gw2Account::PERMISSION_WALLET);
+        $menu->addItem('golds', $trans['menu.general.golds']);
+        $menu->addItem('search', $trans['menu.general.search']);
+        $menu->addItem('pvp', $trans['menu.general.pvp'])->setPermission(Gw2Account::PERMISSION_PVP);
         $this->addMenu($menu);
 
         // menu 2
         $menu = Menu::create($trans['menu.characters']);
-        foreach (['characters', 'equipments', 'inventories', 'attributes', 'builds'] as $name) {
-            $menu->addItem($name, $trans['menu.characters.' . $name]);
-        }
+        $menu->addItem('characters', $trans['menu.characters.characters']);
+        $menu->addItem('equipments', $trans['menu.characters.equipments']);
+        $menu->addItem('inventories', $trans['menu.characters.inventories'])->setPermission(Gw2Account::PERMISSION_INVENTORIES);
+        $menu->addItem('attributes', $trans['menu.characters.attributes']);
+        $menu->addItem('builds', $trans['menu.characters.builds'])->setPermission(Gw2Account::PERMISSION_BUILDS);
         if ($account) {
             $menu->addSeparator();
             foreach ($account->getCharacterNames() as $name) {
-                $menu->addItem('character', $name, 'character/' . $name);
+                $menu->addItem('character/' . $name, $name, 'character/' . $name);
             }
         }
         $this->addMenu($menu);
 
         // menu 3
         $menu = Menu::create($trans['menu.vaults']);
-        foreach (['bank', 'collectibles'] as $name) {
-            $menu->addItem($name, $trans['menu.vaults.' . $name]);
-        }
+        $menu->addItem('bank', $trans['menu.vaults.bank'])->setPermission(Gw2Account::PERMISSION_INVENTORIES);
+        $menu->addItem('collectibles', $trans['menu.vaults.collectibles'])->setPermission(Gw2Account::PERMISSION_INVENTORIES);
         $this->addMenu($menu);
 
         // menu 4
         $menu = Menu::create($trans['menu.unlocks']);
-        foreach (['wardrobe_armors', 'wardrobe_weapons', 'dyes'] as $name) {
-            $menu->addItem($name, $trans['menu.unlocks.' . $name]);
-        }
+        $menu->addItem('wardrobe_armors', $trans['menu.unlocks.wardrobe_armors'])->setPermission(Gw2Account::PERMISSION_UNLOCKS);
+        $menu->addItem('wardrobe_weapons', $trans['menu.unlocks.wardrobe_weapons'])->setPermission(Gw2Account::PERMISSION_UNLOCKS);
+        $menu->addItem('dyes', $trans['menu.unlocks.dyes'])->setPermission(Gw2Account::PERMISSION_UNLOCKS);
         $this->addMenu($menu);
 
         // menu 5
         $menu = Menu::create($trans['menu.tp']);
-        foreach (['tp_buys', 'tp_sells'] as $name) {
-            $menu->addItem($name, $trans['menu.tp.' . $name]);
-        }
+        $menu->addItem('tp_buys', $trans['menu.tp.tp_buys'])->setPermission(Gw2Account::PERMISSION_TRADINGPOST);
+        $menu->addItem('tp_sells', $trans['menu.tp.tp_sells'])->setPermission(Gw2Account::PERMISSION_TRADINGPOST);
         $this->addMenu($menu);
     }
 
@@ -89,9 +91,9 @@ class MenuList implements \IteratorAggregate {
      */
     public function pageName($page) {
         foreach ($this->menus as /* @var $menu Menu */ $menu) {
-            foreach ($menu->getItems() as $item) {
-                if (isset($item['page']) && $item['page'] === $page) {
-                    return $item['label'];
+            foreach ($menu->getItems() as /* @var $item MenuItem */ $item) {
+                if ($item->getPage() && $item->getPage() === $page) {
+                    return $item->getLabel();
                 }
             }
         }
@@ -105,14 +107,9 @@ class MenuList implements \IteratorAggregate {
     public function getRights() {
         $list = [];
         foreach ($this->menus as /* @var $menu Menu */ $menu) {
-            foreach ($menu->getItems() as $item) {
-                if (isset($item['right'])) {
-                    if ($item['right'] === 'character') {
-                        $list[$item['right']] = $menu->getLabel() . ' / ' . Translator::getInstance()['menu.characters.character'];
-                    }
-                    else {
-                        $list[$item['right']] = $menu->getLabel() . ' / ' . $item['label'];
-                    }
+            foreach ($menu->getItems() as /* @var $item MenuItem */ $item) {
+                if ($item->getRight()) {
+                    $list[$item->getRight()] = $menu->getLabel() . ' / ' . $item->getLabel();
                 }
             }
         }

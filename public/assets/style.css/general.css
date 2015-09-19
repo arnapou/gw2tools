@@ -15,6 +15,20 @@ body {
     cursor: pointer;
 }
 
+.dropdown-menu small {
+    text-align: right;
+    float: right;
+    margin-left: 9em;
+    color: #aaa;
+    font-size: 100%;
+}
+.dropdown-menu .locked {
+    color: #d9534f;
+}
+.dropdown-menu .locked i {
+    margin-right: .5em;
+}
+
 /************************************************/
 
 .gold, .silver, .copper {
@@ -74,11 +88,19 @@ img.item {
 
 /************************************************/
 
+
 .page-account td .label {
     margin-right: .5em;
 }
 .page-account td .rights {
-    display: inline-block;
+    width: 100%;
+    table-layout: fixed;
+}
+.page-account td .rights th {
+    text-decoration: underline;
+    padding-bottom: .5em;
+}
+.page-account td .rights td {
     vertical-align: top;
 }
 .page-account td .rights .form-group {
@@ -86,14 +108,26 @@ img.item {
 }
 .page-account td .rights .checkbox {
     margin: 0;
+    padding-right: 1em;
 }
-.page-account td .action-save-rights {
-    margin-left : 5em;
-    display: inline-block;
-    vertical-align: bottom;
+.page-account td:nth-child(3),
+.page-account td .btn {
+    width: 18em;
+    margin-top: .3em;
+    text-align: left;
 }
-.page-account td .action-delete-token {
-    margin-left : 5em;
+.page-account td .btn:first-child {
+    margin-top: 0;
+}
+.page-account td .btn i {
+    margin-right: .5em;
+}
+.page-account td.text-owner {
+    width: 15%;
+}
+.page-account hr {
+    margin-top: .5em;
+    margin-bottom: .5em;
 }
 
 /************************************************/

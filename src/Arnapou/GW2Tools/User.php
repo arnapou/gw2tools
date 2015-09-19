@@ -151,6 +151,16 @@ class User {
 
     /**
      * 
+     * @param string $token
+     * @return mixed
+     */
+    public function setToken($token) {
+        $this->token = $token;
+        return $this;
+    }
+
+    /**
+     * 
      * @param string $key
      * @param mixed $value
      * @return mixed

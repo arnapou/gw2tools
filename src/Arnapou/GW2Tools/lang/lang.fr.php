@@ -205,6 +205,7 @@ return [
         'race'                   => 'Race',
         'rarity'                 => 'Rareté',
         'recipe'                 => 'Recette',
+        'replace_api_key'        => "Remplacer la clé d'application",
         'required_level'         => 'Niveau requis',
         'results'                => 'Résultats',
         'save_preferences'       => 'Sauvegarder les accès',
@@ -321,5 +322,12 @@ return [
         'pvp'             => 'Build Pvp',
         'wvw'             => 'Build McM',
         'buff_conversion' => 'Gain de %dst% basé sur un pourcentage de %src%: %pct%%',
+    ],
+    'error'      => [
+        'not-owner'            => "Vous n'êtes pas le propriétaire de ce compte.",
+        'token-already-exists' => "Cette clé d'application existe déjà liée à un autre compte.<br />Vous devez la supprimer avant de continuer.",
+        'token-is-same'        => "Cette clé d'application est identique à la courante.",
+        'invalid-token'        => "Cette clé d'application est invalide.",
+        'mismatch-account'     => "Le compte de cette clé d'application ne correspond pas au courant.",
     ],
 ];

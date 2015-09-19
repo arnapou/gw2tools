@@ -5,19 +5,19 @@
     <tbody>
         <tr>
             <td>{{ 'global.name'|trans }}</td>
-            <td><b>{{ account.name }}</b></td>
+            <td colspan="2"><b>{{ account.name }}</b></td>
         </tr>
         <tr>
             <td>{{ 'global.creation_date'|trans }}</td>
-            <td>{{ account.created }} <small>(UTC)</small></td>
+            <td colspan="2">{{ account.created }} <small>(UTC)</small></td>
         </tr>
         <tr>
             <td>{{ 'global.world'|trans }}</td>
-            <td>{{ account.world.name }}</td>
+            <td colspan="2">{{ account.world.name }}</td>
         </tr>
         <tr>
             <td>{{ 'global.guilds'|trans }}</td>
-            <td>
+            <td colspan="2">
                 {% for guild in account.guilds %}
                     <div>
                         <img src="{{ guild|image }}" class="emblem" />
@@ -28,15 +28,22 @@
         </tr>
         {% if module.owner %}
             <tr>
-                <td>{{ 'global.api_key'|trans }}</td>
-                <td class="text-owner">
-                    <span>{{ account.accesstoken }}</span>
-                    <span class="btn btn-default action-delete-token">{{ 'global.unregister_api_key'|trans }}</span>
+                <td class="text-owner">{{ 'global.api_key'|trans }}</td>
+                <td>
+                    <div>{{ account.accesstoken }}</div>
+                </td>
+                <td>
+                    <span class="btn btn-danger action-delete-token">
+                        <i class="glyphicon glyphicon-remove"></i>{{ 'global.unregister_api_key'|trans }}
+                    </span>
+                    <span class="btn btn-primary action-replace-token">
+                        <i class="glyphicon glyphicon-refresh"></i>{{ 'global.replace_api_key'|trans }}
+                    </span>
                 </td>
             </tr>
             <tr>
-                <td>{{ 'global.permissions'|trans }}</td>
-                <td class="text-owner">
+                <td class="text-owner">{{ 'global.permissions'|trans }}</td>
+                <td colspan="2">
                     {% for permission in module.permissionslist %}
                         {% if account.haspermission(permission) %}
                             <span class="label label-success">{{ permission }}</span>
@@ -47,21 +54,46 @@
                 </td>
             </tr>
             <tr>
-                <td>{{ 'global.public_access'|trans }}</td>
-                <td class="text-owner">
-                    <div class="rights">
-                        {% for right, txt in module.menu.rights %}
-                            {% set checked = user.hasRight(right) %}
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" {{ checked ? 'checked="checked"' : '' }} value="{{ right }}" />  {{ txt }}
-                                    </label>
-                                </div>
-                            </div>
-                        {% endfor %}
+                <td class="text-owner">{{ 'global.public_access'|trans }}</td>
+                <td colspan="2">
+                    <table class="rights">
+                        <thead>
+                            <tr>
+                                {% for menu in module.menu %}
+                                    <th>
+                                        {{ menu.label }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for menu in module.menu %}
+                                    <td>
+                                        {% for item in menu %}
+                                            {% if item.separator %}
+                                                <hr />
+                                            {% else %}
+                                                {% set checked = user.hasRight(item.right) %}
+                                                <div class="form-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" {{ checked ? 'checked="checked"' : '' }} value="{{ item.right }}" />  {{ item.label }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-right">
+                        <span class="btn btn-primary action-save-rights">
+                            <i class="glyphicon glyphicon-save"></i>{{ 'global.save_preferences'|trans }}
+                        </span>
                     </div>
-                    <span class="btn btn-default action-save-rights">{{ 'global.save_preferences'|trans }}</span>
                 </td>
             </tr>
         {% endif %}
