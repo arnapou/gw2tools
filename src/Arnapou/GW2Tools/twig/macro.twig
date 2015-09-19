@@ -59,3 +59,25 @@
         {% endif %}
     </div>
 {% endmacro %}
+
+
+
+{% macro specializations(build) %}
+    {% for spe in build.specializations %}
+        <b>{{ spe.name}}</b>
+        <div class="specialization">
+            <img src="{{ spe.background|image }}" class="background" />
+            <img src="/assets/images/specialization-mask.png" class="mask" />
+            {% for i, trait in spe.minortraits %}
+                <div class="trait minor-{{ i+1 }}">
+                    <img src="{{ trait.icon|image }}" {{ trait|gwlink|raw }} />
+                </div>
+            {% endfor %}
+            {% for i, trait in spe.majortraits %}
+                <div class="trait major-{{ i+1 }} {{ trait.selected ? '' : 'not-selected' }}">
+                    <img src="{{ trait.icon|image }}" {{ trait|gwlink|raw }} />
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endmacro %}

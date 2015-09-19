@@ -1,0 +1,80 @@
+
+.specialization {
+    position: relative;
+    overflow: hidden;
+    width: 650px;
+    height: 140px;
+    margin: .2em 0 1.5em 0;
+}
+
+.specialization .background {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.specialization .mask {
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    margin-top: -150px;
+}
+
+.specialization .trait {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+}
+
+.specialization .trait img {
+    width: 100%;
+    height: 100%;
+}
+
+.specialization .not-selected img {
+    opacity: .3;
+}
+
+.specialization .minor-1,
+.specialization .minor-2,
+.specialization .minor-3,
+.specialization .major-2,
+.specialization .major-5,
+.specialization .major-8 {
+    margin-top: -20px;
+}
+.specialization .major-1,
+.specialization .major-4,
+.specialization .major-7 {
+    margin-top: -65px;
+}
+.specialization .major-3,
+.specialization .major-6,
+.specialization .major-9 {
+    margin-top: 25px;
+}
+.specialization .major-1,
+.specialization .major-2,
+.specialization .major-3 {
+    left: 290px;
+}
+.specialization .major-4,
+.specialization .major-5,
+.specialization .major-6 {
+    left: 430px;
+}
+.specialization .major-7,
+.specialization .major-8,
+.specialization .major-9 {
+    left: 570px;
+}
+.specialization .minor-1 {
+    left: 220px;
+}
+.specialization .minor-2 {
+    left: 360px;
+}
+.specialization .minor-3 {
+    left: 500px;
+}

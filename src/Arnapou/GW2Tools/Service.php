@@ -82,8 +82,14 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
             $factory->addFilter(new \Twig_SimpleFilter('consumableduration', function($item) {
                 return consumableduration($item);
             }));
+            $factory->addFilter(new \Twig_SimpleFilter('gameduration', function($item) {
+                return gameduration($item);
+            }));
             $factory->addFilter(new \Twig_SimpleFilter('datediff', function($date) {
                 return datediff($date);
+            }));
+            $factory->addFilter(new \Twig_SimpleFilter('br2nl', function($string) {
+                return preg_replace('!<br(\s*/)?>!si', "\n", $string);
             }));
             $factory->addFilter(new \Twig_SimpleFilter('gwlink', function($item) {
                 if ($item instanceof \Arnapou\GW2Api\Model\InventorySlot) {
@@ -91,6 +97,9 @@ class Service extends \Arnapou\Toolbox\Http\Service\Service {
                 }
                 elseif ($item instanceof \Arnapou\GW2Api\Model\Item) {
                     return gwlink_item($item);
+                }
+                elseif ($item instanceof \Arnapou\GW2Api\Model\SpecializationTrait) {
+                    return gwlink_trait($item);
                 }
                 elseif ($item instanceof \Arnapou\GW2Api\Model\Skin) {
                     return gwlink_skin($item);

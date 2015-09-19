@@ -88,6 +88,14 @@ $(function () {
 
     });
 
+    $(document).on('click', '.page-character .nav a', function (e) {
+        $(this).parents('.nav').find('.active').removeClass('active');
+        $(this).parent().addClass('active');
+        $('.page-character .tab').hide();
+        $('.page-character .tab.' + $(this).data('tab')).show();
+        e.preventDefault();
+    });
+
     $(document).on('click', '.panel-inverse', function () {
         var $panel = $(this);
         if ($panel.hasClass('collapsed')) {

@@ -38,8 +38,8 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
 
             $manager = $client->getClientV2()->getRequestManager();
             $manager->setDefautCacheRetention(1800);
-            $manager->addCacheRetentionPolicy('/v2/commerce/listings', 3600);
-            $manager->addCacheRetentionPolicy('/v2/commerce/prices', 3600);
+//            $manager->addCacheRetentionPolicy('/v2/commerce/listings', 1800);
+//            $manager->addCacheRetentionPolicy('/v2/commerce/prices', 1800);
 
 //            $manager
 //                ->getEventListener()

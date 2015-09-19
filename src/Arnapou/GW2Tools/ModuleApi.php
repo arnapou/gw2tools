@@ -18,6 +18,7 @@ use Arnapou\GW2Api\Model\Guild;
 use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Api\Model\Skin;
+use Arnapou\GW2Api\Model\SpecializationTrait;
 use Arnapou\GW2Tools\Exception\AccessNotAllowedException;
 use Arnapou\GW2Tools\Service;
 use Arnapou\Toolbox\Http\Response;
@@ -48,6 +49,12 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      * @var boolean
      */
     protected $isOwner;
+
+    /**
+     *
+     * @var integer
+     */
+    protected $tooltipExpiration = 900;
 
     public function __construct(\Arnapou\Toolbox\Http\Service\Service $service, $lang) {
         parent::__construct($service);
@@ -86,6 +93,8 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             ->assert('count', '(/cnt-[0-9]+)?');
         $this->addRoute('skin/{id}.html', [$this, 'routeSkin'])
             ->assert('id', '[0-9]+');
+        $this->addRoute('trait/{id}.html', [$this, 'routeTrait'])
+            ->assert('id', '[0-9]+');
 
         // user space
         $regexpCode = '[A-Za-z0-9]{10}';
@@ -104,6 +113,31 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      * @param integer $id
      * @return string
      */
+    public function routeTrait($id) {
+        try {
+            $client = SimpleClient::getInstance($this->lang);
+            $trait  = new SpecializationTrait($client, $id);
+            if ($trait->getIcon()) {
+                $html     = $this->renderPage('trait.twig', [
+                    'trait' => $trait,
+                ]);
+                $response = new Response($html);
+                $response->setMaxAge($this->tooltipExpiration);
+                $response->setExpires(new \DateTime('@' . (time() + $this->tooltipExpiration)));
+                $response->setPublic();
+                return $response;
+            }
+        }
+        catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * 
+     * @param integer $id
+     * @return string
+     */
     public function routeSkin($id) {
         try {
             $client = SimpleClient::getInstance($this->lang);
@@ -113,8 +147,8 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
                     'skin' => $skin,
                 ]);
                 $response = new Response($html);
-                $response->setMaxAge(600);
-                $response->setExpires(new \DateTime('@' . (time() + 600)));
+                $response->setMaxAge($this->tooltipExpiration);
+                $response->setExpires(new \DateTime('@' . (time() + $this->tooltipExpiration)));
                 $response->setPublic();
                 return $response;
             }
@@ -157,8 +191,8 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
                     'item' => $item,
                 ]);
                 $response = new Response($html);
-                $response->setMaxAge(600);
-                $response->setExpires(new \DateTime('@' . (time() + 600)));
+                $response->setMaxAge($this->tooltipExpiration);
+                $response->setExpires(new \DateTime('@' . (time() + $this->tooltipExpiration)));
                 $response->setPublic();
                 return $response;
             }

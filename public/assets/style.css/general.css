@@ -197,6 +197,18 @@ img.item {
     display: inline-block;
     vertical-align: middle;
 }
+.page-character .nav {
+    margin-bottom: 1em;
+}
+.page-character .nav a {
+    outline: 0 !important;
+}
+.page-character .gw2skillslink {
+    margin-left: 2em;
+}
+.page-character .gw2skillslink i {
+    margin-right: .5em;
+}
 
 /************************************************/
 
@@ -487,4 +499,93 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 .page-golds .column-amount {
     text-align: right;
     width: 30%;
+}
+
+/************************************************/
+
+.page-pvp .rank {
+    overflow: visible;
+    margin-bottom: 1em;
+}
+.page-pvp .rank img {
+    height: 100px;
+    margin-right: 1em;
+}
+.page-pvp .rank div span {
+    display: block;
+    text-align: center;
+    font-size: 150%;
+}
+.page-pvp .rank .level {
+    font-size: 300%;
+    font-weight: bold;
+}
+.page-pvp td.column-profession {
+    width: 10em;
+    text-align: right;
+}
+.page-pvp td.column-profession img {
+    margin-left: .5em;
+}
+.page-pvp td.column-winrate {
+    width: 20%;
+    text-align: right;
+}
+.page-pvp td.column-scorebar {
+    width: 20%;
+}
+.page-pvp .progress {
+    margin-bottom: 0;
+}
+.page-pvp .progress-bar {
+    text-align: left;
+}
+.page-pvp .global td:first-child {
+    width: 65%;
+}
+.page-pvp .progress {
+    position: relative;
+}
+.page-pvp .progress-bar {
+    overflow: hidden;
+    position: relative;
+}
+.page-pvp .progress span {
+    position: absolute;
+    left: 0;
+    top: 1px;
+    font-size: 12px;
+    padding-left: 1em;
+    margin-top: 0;
+}
+.page-pvp .progress-bar span {
+    color: white !important;
+    top: 0;
+}
+.page-pvp .progress-scores {
+    background: #d9534f;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+}
+.page-pvp .progress-scores span {
+    color: #5bc0de;
+}
+.page-pvp .progress-warning span {
+    color: #f0ad4e;
+}
+.page-pvp .progress-success span {
+    color: #5cb85c;
+}
+.page-pvp .red {
+    color: #d9534f;
+}
+.page-pvp .blue {
+    color: #32a7c9;
+}
+.page-pvp .glyphicon-ok {
+    color: #5cb85c;
+    margin-right: .5em;
+}
+.page-pvp .glyphicon-remove {
+    color: #d9534f;
+    margin-right: .5em;
 }

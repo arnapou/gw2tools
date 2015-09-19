@@ -34,15 +34,6 @@
                     {% else %}
                         <b>{{ char.name }}</b>
                     {% endif %}
-                    <br /><br />
-                    {% set gw2skillslink = char.gw2skillslink %}
-                    {% if gw2skillslink %}
-                        <div class="text-right">
-                            <a href="{{ gw2skillslink }}" target="_blank">
-                                <i class="glyphicon glyphicon-link" style="margin-right: .5em"></i>Gw2Skills
-                            </a>
-                        </div>
-                    {% endif %}
                 </td>
                 <td class="text-center" style="width: 2em">
                     {% if attributes.unknown|length %}

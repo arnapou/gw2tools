@@ -5,17 +5,24 @@
     z-index: 1;
     font-size: 80%;
     line-height: 1.2;
-}
-
-#gwitemdetail {
+    cursor: default;
     background: #131717;
+    background: rgba(19, 23, 23, .9);
     color: white;
-    box-shadow: 0 0 5px #222;
+    box-shadow: 0 0 5px #131717;
+    border: 1px solid #4c7092;
 }
 
 #gwitemdetail > .gwitem {
     position: relative;
     width: 400px;
+    border-top: 1px solid #4c7092;
+    margin-top: 1em;
+}
+
+#gwitemdetail > .gwitem:first-child {
+    border-top: 0;
+    margin-top: 0;
 }
 
 #gwitemdetail > .gwitem > div {
@@ -91,4 +98,30 @@
     padding: 1em 2em;
     font-size: 125%;
     color: red;
+}
+
+#gwitemdetail .gwfact {
+    display: flex;
+    align-items: center;
+    margin-top: .3em !important;
+    margin-bottom: .3em !important;
+}
+
+#gwitemdetail .gwfact img {
+    height: 2.5em;
+    width: 2.5em;
+    margin-right: .5em;
+    vertical-align: middle;
+}
+
+#gwitemdetail .gwfact-recharge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 120%;
+}
+
+#gwitemdetail .gwfact-recharge i {
+    font-size: 100%;
+    margin-left: .5em;
 }

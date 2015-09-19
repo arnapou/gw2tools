@@ -91,14 +91,8 @@
     </div>
     <div class="col-xs-4 stats">
         <div class="panel panel-default">
-            {% set gw2skillslink = char.gw2skillslink %}
             <div class="panel-heading">
                 {{ 'menu.characters.attributes'|trans }}
-                {% if gw2skillslink %}
-                    <a href="{{ gw2skillslink }}" target="_blank">
-                        <i class="glyphicon glyphicon-link" style="margin: 0 .5em 0 2em"></i>Gw2Skills
-                    </a>
-                {% endif %}
                 {% if attributes.unknown|length %}
                     <span class="pull-right text-danger" title="{{ 'global.unknown_attributes_for'|trans({
                             'attributes': attributes.unknown|transarray({}, 'itemtype.')|join(', ')
@@ -153,200 +147,252 @@
 
 </div>
 
-<table class="stuff">
-    {% set equipment = char.equipments %}
-    {% set tools     = char.tools %}
-    <tbody>
-        <tr>
-            <td class="block">
-                <div class="panel panel-default">
+{% if (module.owner or user.hasright('inventories')) or
+      ((module.owner or user.hasright('inventories')) and account.haspermission('pvp'))
+%}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#" data-tab="tab-stuff">{{ 'global.equipment'|trans }}</a></li>
+    {% if module.owner or user.hasright('inventories') %}
+        <li><a href="#" data-tab="tab-inventory">{{ 'global.inventory'|trans }}</a></li>
+    {% endif %}
+    {% if (module.owner or user.hasright('inventories')) and account.haspermission('pvp') %}
+        <li><a href="#" data-tab="tab-build-pve">{{ 'traits.pve'|trans }}</a></li>
+        <li><a href="#" data-tab="tab-build-pvp">{{ 'traits.pvp'|trans }}</a></li>
+        <li><a href="#" data-tab="tab-build-wvw">{{ 'traits.wvw'|trans }}</a></li>
+    {% endif %}
+</ul>
+{% endif %}
 
-                    <div class="panel-heading">{{ 'global.weapons_set1'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {{ _self.object(equipment['WeaponA1']) }}
-                                {{ _self.object(equipment['WeaponA2']) }}
-                            </tbody>
-                        </table>
+<div class="tab tab-stuff">
+    <table class="stuff">
+        {% set equipment = char.equipments %}
+        {% set tools     = char.tools %}
+        <tbody>
+            <tr>
+                <td class="block">
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading">{{ 'global.weapons_set1'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {{ _self.object(equipment['WeaponA1']) }}
+                                    {{ _self.object(equipment['WeaponA2']) }}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="panel-heading">{{ 'global.weapons_set2'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {{ _self.object(equipment['WeaponB1']) }}
+                                    {{ _self.object(equipment['WeaponB2']) }}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="panel-heading">{{ 'global.weapons_aquatic'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {{ _self.object(equipment['WeaponAquaticA']) }}
+                                    {{ _self.object(equipment['WeaponAquaticB']) }}
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
+                </td>
+                <td class="separator"></td>
+                <td class="block">
+                    <div class="panel panel-default">
 
-                    <div class="panel-heading">{{ 'global.weapons_set2'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {{ _self.object(equipment['WeaponB1']) }}
-                                {{ _self.object(equipment['WeaponB2']) }}
-                            </tbody>
-                        </table>
+                        <div class="panel-heading">{{ 'global.armor'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {{ _self.object(equipment['Helm']) }}
+                                    {{ _self.object(equipment['Shoulders']) }}
+                                    {{ _self.object(equipment['Coat']) }}
+                                    {{ _self.object(equipment['Gloves']) }}
+                                    {{ _self.object(equipment['Leggings']) }}
+                                    {{ _self.object(equipment['Boots']) }}
+                                    {{ _self.object(equipment['HelmAquatic']) }}
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
+                </td>
+                <td class="separator"></td>
+                <td class="block">
+                    <div class="panel panel-default">
 
-                    <div class="panel-heading">{{ 'global.weapons_aquatic'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {{ _self.object(equipment['WeaponAquaticA']) }}
-                                {{ _self.object(equipment['WeaponAquaticB']) }}
-                            </tbody>
-                        </table>
+                        <div class="panel-heading">{{ 'global.trinkets'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {{ _self.object(equipment['Amulet']) }}
+                                    {{ _self.object(equipment['Ring1']) }}
+                                    {{ _self.object(equipment['Ring2']) }}
+                                    {{ _self.object(equipment['Accessory1']) }}
+                                    {{ _self.object(equipment['Accessory2']) }}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="panel-heading">{{ 'itemtype.Backpack'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {{ _self.object(equipment['Backpack']) }}
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
+                </td>
 
-                </div>
-            </td>
-            <td class="separator"></td>
-            <td class="block">
-                <div class="panel panel-default">
+            </tr>
+            <tr>
+                <td class="block">
+                    <div class="panel panel-default">
 
-                    <div class="panel-heading">{{ 'global.armor'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {{ _self.object(equipment['Helm']) }}
-                                {{ _self.object(equipment['Shoulders']) }}
-                                {{ _self.object(equipment['Coat']) }}
-                                {{ _self.object(equipment['Gloves']) }}
-                                {{ _self.object(equipment['Leggings']) }}
-                                {{ _self.object(equipment['Boots']) }}
-                                {{ _self.object(equipment['HelmAquatic']) }}
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </td>
-            <td class="separator"></td>
-            <td class="block">
-                <div class="panel panel-default">
-
-                    <div class="panel-heading">{{ 'global.trinkets'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {{ _self.object(equipment['Amulet']) }}
-                                {{ _self.object(equipment['Ring1']) }}
-                                {{ _self.object(equipment['Ring2']) }}
-                                {{ _self.object(equipment['Accessory1']) }}
-                                {{ _self.object(equipment['Accessory2']) }}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="panel-heading">{{ 'itemtype.Backpack'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {{ _self.object(equipment['Backpack']) }}
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </td>
-
-        </tr>
-        <tr>
-            <td class="block">
-                <div class="panel panel-default">
-
-                    <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {% for bag in char.bags %}
-                                    {% for subtype in [	
-                                        'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
-                                        'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
-                                        'Speargun', 'Harpoon', 'Trident'
-                                    ] %}
-                                        {% for obj in bag.inventorystuff[subtype] %}
-                                            {{ _self.object(obj) }}
+                        <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {% for bag in char.bags %}
+                                        {% for subtype in [	
+                                            'Greatsword', 'Hammer', 'LongBow', 'ShortBow', 'Rifle', 'Staff',
+                                            'Axe', 'Mace', 'Sword', 'Warhorn', 'Shield', 'Scepter', 'Focus', 'Torch', 'Pistol', 'Dagger',
+                                            'Speargun', 'Harpoon', 'Trident'
+                                        ] %}
+                                            {% for obj in bag.inventorystuff[subtype] %}
+                                                {{ _self.object(obj) }}
+                                            {% endfor %}
                                         {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
+                </td>
+                <td class="separator"></td>
+                <td class="block">
+                    <div class="panel panel-default">
 
-                </div>
-            </td>
-            <td class="separator"></td>
-            <td class="block">
-                <div class="panel panel-default">
-
-                    <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {% for bag in char.bags %}
-                                    {% for subtype in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
-                                        {% for obj in bag.inventorystuff[subtype] %}
-                                            {{ _self.object(obj) }}
+                        <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {% for bag in char.bags %}
+                                        {% for subtype in ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'] %}
+                                            {% for obj in bag.inventorystuff[subtype] %}
+                                                {{ _self.object(obj) }}
+                                            {% endfor %}
                                         {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
+                </td>
+                <td class="separator"></td>
+                <td class="block">
+                    <div class="panel panel-default">
 
-                </div>
-            </td>
-            <td class="separator"></td>
-            <td class="block">
-                <div class="panel panel-default">
-
-                    <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {% for bag in char.bags %}
-                                    {% for subtype in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
-                                        {% for obj in bag.inventorystuff[subtype] %}
-                                            {{ _self.object(obj) }}
+                        <div class="panel-heading">{{ 'global.inventory'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {% for bag in char.bags %}
+                                        {% for subtype in ['Ring', 'Amulet', 'Backpack', 'Accessory'] %}
+                                            {% for obj in bag.inventorystuff[subtype] %}
+                                                {{ _self.object(obj) }}
+                                            {% endfor %}
                                         {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div class="panel-heading">{{ 'global.tools'|trans }}</div>
-                    <div class="panel-body">
-                        <table class="table table-condensed equipment">
-                            <tbody>
-                                {{ _self.object(equipment['Sickle'], true) }}
-                                {{ _self.object(equipment['Axe'], true) }}
-                                {{ _self.object(equipment['Pick'], true) }}
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="panel-heading">{{ 'global.tools'|trans }}</div>
+                        <div class="panel-body">
+                            <table class="table table-condensed equipment">
+                                <tbody>
+                                    {{ _self.object(equipment['Sickle'], true) }}
+                                    {{ _self.object(equipment['Axe'], true) }}
+                                    {{ _self.object(equipment['Pick'], true) }}
+                                </tbody>
+                            </table>
+                        </div>
 
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 {% if module.owner or user.hasright('inventories') %}
-    <div class="row">
-
-        <div class="col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="pull-right">
-                        {{ macro.amount(char.bagsprice) }}
-                    </div>
-                    Inventory
-                </div>
-                <div class="panel-body">
-                    {{ macro.character_bags(char) }}
-                </div>
+    <div class="panel panel-default tab tab-inventory" style="display: none;">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {{ macro.amount(char.bagsprice) }}
             </div>
+            {{ 'global.inventory'|trans }}
         </div>
-
+        <div class="panel-body">
+            {{ macro.character_bags(char) }}
+        </div>
     </div>
 {% endif %}
 
-
+{% if module.owner and account.haspermission('pvp') %}
+    <div class="panel panel-default tab tab-build-pve" style="display: none;">
+        <div class="panel-heading">
+            {{ 'traits.pve'|trans }}
+            {% if char.gw2skillslinkpve %}
+                <a href="{{ char.gw2skillslinkpve }}" class="gw2skillslink" target="_blank">
+                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                </a>
+            {% endif %}
+        </div>
+        <div class="panel-body">
+            {{ macro.specializations(char.buildpve) }}
+        </div>
+    </div>
+    <div class="panel panel-default tab tab-build-pvp" style="display: none;">
+        <div class="panel-heading">
+            {{ 'traits.pvp'|trans }}
+            {% if char.gw2skillslinkpvp %}
+                <a href="{{ char.gw2skillslinkpvp }}" class="gw2skillslink" target="_blank">
+                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                </a>
+            {% endif %}
+        </div>
+        <div class="panel-body">
+            {{ macro.specializations(char.buildpvp) }}
+        </div>
+    </div>
+    <div class="panel panel-default tab tab-build-wvw" style="display: none;">
+        <div class="panel-heading">
+            {{ 'traits.wvw'|trans }}
+            {% if char.gw2skillslinkwvw %}
+                <a href="{{ char.gw2skillslinkwvw }}" class="gw2skillslink" target="_blank">
+                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                </a>
+            {% endif %}
+        </div>
+        <div class="panel-body">
+            {{ macro.specializations(char.buildwvw) }}
+        </div>
+    </div>
+{% endif %}
 
 
 

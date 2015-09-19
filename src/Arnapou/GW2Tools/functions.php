@@ -15,7 +15,9 @@ use Arnapou\GW2Api\Model\AbstractObject;
 use Arnapou\GW2Api\Model\Guild;
 use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Api\Model\Item;
+use Arnapou\GW2Api\Model\PvpGame;
 use Arnapou\GW2Api\Model\Skin;
+use Arnapou\GW2Api\Model\SpecializationTrait;
 
 /**
  * 
@@ -42,6 +44,19 @@ function consumableduration(Item $item) {
 
 /**
  * 
+ * @param PvpGame $item
+ * @return string
+ */
+function gameduration(PvpGame $item) {
+    $s = $item->getDuration();
+    if ($s) {
+        return sprintf('%0d:%02d', floor($s / 60), $s % 60);
+    }
+    return '';
+}
+
+/**
+ * 
  * @param Item $item
  * @return string
  */
@@ -58,6 +73,16 @@ function buffdescription(Item $item) {
         }
     }
     return strip_tags($desc);
+}
+
+/**
+ * 
+ * @param SpecializationTrait $item
+ * @return string
+ */
+function gwlink_trait(SpecializationTrait $item) {
+    $url = 'trait/' . $item->getId() . '.html';
+    return ' class="gwitemlink" data-url="' . $url . '"';
 }
 
 /**
