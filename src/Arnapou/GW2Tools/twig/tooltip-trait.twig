@@ -14,7 +14,7 @@
     </div>
 
     <div>
-        {{ trait.description }}
+        {{ trait.description|striptags|nl2br }}
     </div>
     {{ _self.facts(trait.facts) }}
 
@@ -35,7 +35,7 @@
         </div>
 
         <div>
-            {{ skill.description }}
+            {{ skill.description|striptags|nl2br }}
         </div>
 
         {{ _self.facts(skill.facts) }}
