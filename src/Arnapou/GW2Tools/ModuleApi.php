@@ -183,7 +183,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      * @return string
      */
     public function routeTooltipItem($id, $infusions, $upgrades, $skin, $count) {
-        return $this->routeTooltip('skin', function() use($id, $infusions, $upgrades, $skin, $count) {
+        return $this->routeTooltip('item', function() use($id, $infusions, $upgrades, $skin, $count) {
                 $client = SimpleClient::getInstance($this->lang);
                 $data   = [
                     'id' => $id,
