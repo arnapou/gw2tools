@@ -22,7 +22,7 @@
     </thead>
     <tbody>
         {% for char in account.characters %}
-            {% if module.isowner or module.user.hasright('character/'~char.name) %}
+            {% if module.isAllowed('character/'~char.name) %}
                 {% set totalage = totalage + char.age/3600 %}
                 {% set totaldeaths = totaldeaths + char.deaths %}
                 <tr>

@@ -5,7 +5,7 @@
 {% set flvlmin = service.request.get('lvlmin') %}
 {% set flvlmax = service.request.get('lvlmax') %}
 
-{% if (module.isowner or module.user.hasright('inventories')) and account.haspermission('characters') %}
+{% if module.isAllowed('inventories', 'characters') %}
     {% for char in account.characters %}
         {% if module.isowner or module.user.hasright('character/'~char.name) %}
             {% set found = '' %}
@@ -35,7 +35,7 @@
     {% endfor %}
 {% endif %}
 
-{% if (module.isowner or module.user.hasright('bank')) and account.haspermission('inventories') %}
+{% if module.isAllowed('bank', 'inventories') %}
     {% for vault in account.bankvaults %}
         {% set found = '' %}
         
@@ -56,7 +56,7 @@
     {% endfor %}
 {% endif %}
 
-{% if (module.isowner or module.user.hasright('collectibles')) and account.haspermission('inventories') %}
+{% if module.isAllowed('collectibles', 'inventories') %}
     {% for category in account.collectibles %}
         {% set found = '' %}
         

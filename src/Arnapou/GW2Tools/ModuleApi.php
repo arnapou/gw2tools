@@ -108,6 +108,24 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
 
     /**
      * 
+     * @param string $right
+     * @param string $permission
+     * @return boolean
+     */
+    public function isAllowed($right, $permission = null) {
+        if ($permission) {
+            if (empty($this->user) || !$this->user->getAccount()->hasPermission($permission)) {
+                return false;
+            }
+        }
+        if ($this->isOwner || $this->user && $this->user->hasRight($right)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 
      * @param string $page
      * @param callable $context
      * @return Response

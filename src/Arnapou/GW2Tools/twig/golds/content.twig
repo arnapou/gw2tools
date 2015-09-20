@@ -14,7 +14,7 @@
     </thead>
     <tbody>
         {% for item in account.characters %}
-            {% if module.isowner or module.user.hasright('character/'~item.name) %}
+            {% if module.isAllowed('character/'~item.name) %}
                 <tr>
                     <td class="column-name">
                         <img src="{{ item.professionicon|image }}" title="{{ ('profession.'~item.profession)|trans }}" class="profession pull-left" />
@@ -30,7 +30,7 @@
     </tbody>
 </table>
 
-{% if (module.owner or user.hasright('bank')) and account.haspermission('inventories') %}
+{% if module.isAllowed('bank', 'inventories') %}
 
     <table class="table table-condensed">
         <thead>
@@ -55,7 +55,7 @@
 
 {% endif %}
 
-{% if (module.owner or user.hasright('collectibles')) and account.haspermission('inventories') %}
+{% if module.isAllowed('collectibles', 'inventories') %}
     <table class="table table-condensed">
         <thead>
             <tr>
@@ -96,7 +96,7 @@
     </tbody>
 </table>
 
-{% if (module.owner or user.hasright('wallet')) and account.haspermission('wallet') %}
+{% if module.isAllowed('wallet', 'wallet') %}
     <table class="table table-condensed">
         <thead>
             <tr>
