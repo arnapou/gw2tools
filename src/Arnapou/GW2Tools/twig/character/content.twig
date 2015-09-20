@@ -163,8 +163,8 @@
         {% endif %}
         {% if tab_build %}
             <li><a href="#" data-tab="tab-build-pve">{{ 'traits.pve'|trans }}</a></li>
-            <li><a href="#" data-tab="tab-build-pvp">{{ 'traits.pvp'|trans }}</a></li>
             <li><a href="#" data-tab="tab-build-wvw">{{ 'traits.wvw'|trans }}</a></li>
+            <li><a href="#" data-tab="tab-build-pvp">{{ 'traits.pvp'|trans }}</a></li>
         {% endif %}
     </ul>
 {% endif %}
@@ -365,7 +365,7 @@
         <div class="panel panel-default tab tab-build-pve" style="display: none;">
             <div class="panel-heading">
                 {{ 'traits.pve'|trans }}
-                <a href="{{ char.name }}.build-pve" class="gw2skillslink" target="_blank">
+                <a href="../gw2skills-pve/{{ char.name }}" class="gw2skillslink" target="_blank">
                     <i class="glyphicon glyphicon-link"></i>Gw2Skills
                 </a>
             </div>
@@ -373,26 +373,26 @@
                 {{ macro.specializations(char.buildpve) }}
             </div>
         </div>
-        <div class="panel panel-default tab tab-build-pvp" style="display: none;">
-            <div class="panel-heading">
-                {{ 'traits.pvp'|trans }}
-                <a href="{{ char.name }}.build-pvp" class="gw2skillslink" target="_blank">
-                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
-                </a>
-            </div>
-            <div class="panel-body">
-                {{ macro.specializations(char.buildpvp) }}
-            </div>
-        </div>
         <div class="panel panel-default tab tab-build-wvw" style="display: none;">
             <div class="panel-heading">
                 {{ 'traits.wvw'|trans }}
-                <a href="{{ char.name }}.build-wvw" class="gw2skillslink" target="_blank">
+                <a href="../gw2skills-wvw/{{ char.name }}" class="gw2skillslink" target="_blank">
                     <i class="glyphicon glyphicon-link"></i>Gw2Skills
                 </a>
             </div>
             <div class="panel-body">
                 {{ macro.specializations(char.buildwvw) }}
+            </div>
+        </div>
+        <div class="panel panel-default tab tab-build-pvp" style="display: none;">
+            <div class="panel-heading">
+                {{ 'traits.pvp'|trans }}
+                <a href="../gw2skills-pvp/{{ char.name }}" class="gw2skillslink" target="_blank">
+                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                </a>
+            </div>
+            <div class="panel-body">
+                {{ macro.specializations(char.buildpvp) }}
             </div>
         </div>
     {% endif %}

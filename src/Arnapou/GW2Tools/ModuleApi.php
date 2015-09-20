@@ -103,7 +103,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('{code}/account/replace-token', [$this, 'routeReplaceToken'], 'POST')->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}', [$this, 'routeCharacter'])->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('code', $regexpCode);
-        $this->addRoute('{code}/character/{name}.build-{mode}', [$this, 'routeCharacterBuild'])->assert('code', $regexpCode)->assert('mode', 'pve|pvp|wvw');
+        $this->addRoute('{code}/gw2skills-{mode}/{name}', [$this, 'routeCharacterBuild'])->assert('code', $regexpCode)->assert('mode', 'pve|pvp|wvw');
     }
 
     /**
