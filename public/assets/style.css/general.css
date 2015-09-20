@@ -15,10 +15,12 @@ body {
     cursor: pointer;
 }
 
-.dropdown-menu small {
-    text-align: right;
-    float: right;
-    margin-left: 9em;
+.dropdown-menu .account-link {
+    padding-right: 7em;
+}
+.dropdown-menu .account-link small {
+    position: absolute;
+    right: 1em;
     color: #aaa;
     font-size: 100%;
 }

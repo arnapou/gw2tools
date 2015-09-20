@@ -77,7 +77,7 @@
                                     <ul class="dropdown-menu">
                                         {% for usr in users %}
                                             <li title="{{ usr.account.permissions|join("\n") }}">
-                                                <a href="/{{ lang }}/{{ usr.code }}/">
+                                                <a href="/{{ lang }}/{{ usr.code }}/" class="account-link">
                                                     <small> ... {{ usr.token|slice(-6) }}</small>
                                                     {{ usr.account.name }}
                                                 </a>

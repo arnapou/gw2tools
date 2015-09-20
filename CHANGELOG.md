@@ -1,5 +1,9 @@
 ## 1.0.12 (2015-09-20)
 
+  - small css / js bugfixes
+
+## 1.0.12 (2015-09-20)
+
   - change behaviour of tooltips as suggered (click again on the object unlocks it)
   - refactor of rights : character by character and not anymore for all
   - being able to replace the api key (to avoid changing the tied code)

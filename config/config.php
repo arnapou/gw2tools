@@ -15,6 +15,7 @@ return array(
     'path.log'      => __DIR__ . '/../log',
     'date.timezone' => 'UTC',
     'version'       => '1.0.12',
+    'version'       => '1.0.13',
     'table'         => [
         'tokens' => 'tokens',
     ],
