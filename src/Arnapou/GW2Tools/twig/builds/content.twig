@@ -14,35 +14,33 @@
         </thead>
         <tbody>
             {% for char in account.characters %}
-                {% set attributes = char.attributes %}
-                <tr>
-                    <td>
-                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
-                        {% if module.isowner or module.user.hasright('character') %}
+                {% if module.isowner or module.user.hasright('character/'~char.name) %}
+                    {% set attributes = char.attributes %}
+                    <tr>
+                        <td>
+                            <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
                             <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
-                                {% else %}
-                            <b>{{ char.name }}</b>
-                        {% endif %}
-                    </td>
-                    <td class="build">
-                        {{ _self.build(char.buildpve) }}
-                        <a href="../character/{{ char.name }}.build-pve" class="gw2skillslink" target="_blank">
-                            <i class="glyphicon glyphicon-link"></i>Gw2Skills
-                        </a>
-                    </td>
-                    <td class="build">
-                        {{ _self.build(char.buildwvw) }}
-                        <a href="../character/{{ char.name }}.build-wvw" class="gw2skillslink" target="_blank">
-                            <i class="glyphicon glyphicon-link"></i>Gw2Skills
-                        </a>
-                    </td>
-                    <td class="build">
-                        {{ _self.build(char.buildpvp) }}
-                        <a href="../character/{{ char.name }}.build-pvp" class="gw2skillslink" target="_blank">
-                            <i class="glyphicon glyphicon-link"></i>Gw2Skills
-                        </a>
-                    </td>
-                </tr>
+                        </td>
+                        <td class="build">
+                            {{ _self.build(char.buildpve) }}
+                            <a href="../character/{{ char.name }}.build-pve" class="gw2skillslink" target="_blank">
+                                <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                            </a>
+                        </td>
+                        <td class="build">
+                            {{ _self.build(char.buildwvw) }}
+                            <a href="../character/{{ char.name }}.build-wvw" class="gw2skillslink" target="_blank">
+                                <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                            </a>
+                        </td>
+                        <td class="build">
+                            {{ _self.build(char.buildpvp) }}
+                            <a href="../character/{{ char.name }}.build-pvp" class="gw2skillslink" target="_blank">
+                                <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                            </a>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>

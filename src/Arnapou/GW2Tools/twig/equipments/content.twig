@@ -26,21 +26,19 @@
             <tr>
                 {% set index = 0 %}
                 {% for char in characters %}
-                    {% if index % 5 == 0 %}
-                        <th>
-                        </th>
-                    {% endif %}
-                    <th>
-                        {% if char %}
-                            <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
-                            {% if module.isowner or module.user.hasright('character') %}
-                                <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
-                            {% else %}
-                                <b>{{ char.name }}</b>
-                            {% endif %}
+                    {% if module.isowner or module.user.hasright('character/'~char.name) %}
+                        {% if index % 5 == 0 %}
+                            <th>
+                            </th>
                         {% endif %}
-                    </th>
-                    {% set index = index + 1 %}
+                        <th>
+                            {% if char %}
+                                <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
+                                <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+                            {% endif %}
+                        </th>
+                        {% set index = index + 1 %}
+                    {% endif %}
                 {% endfor %}
             </tr>
         {% endblock %}
@@ -55,21 +53,23 @@
                 <tr>
                     {% set index = 0 %}
                     {% for char in characters %}
-                        {% if index % 5 == 0 %}
-                            <td class="type">
-                                {{ ('itemtype.'~type)|trans }}
+                        {% if module.isowner or module.user.hasright('character/'~char.name) %}
+                            {% if index % 5 == 0 %}
+                                <td class="type">
+                                    {{ ('itemtype.'~type)|trans }}
+                                </td>
+                            {% endif %}
+                            <td>
+                                <div class="cell">
+                                    {% if char %}
+                                        {% for obj in char.inventorystuff[(type == 'Backpack' ? '' : type)] %}
+                                            {{ _self.object(obj) }}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
                             </td>
+                            {% set index = index + 1 %}
                         {% endif %}
-                        <td>
-                            <div class="cell">
-                                {% if char %}
-                                    {% for obj in char.inventorystuff[(type == 'Backpack' ? '' : type)] %}
-                                        {{ _self.object(obj) }}
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                        </td>
-                        {% set index = index + 1 %}
                     {% endfor %}
                 </tr>
             {% endfor %}
@@ -113,9 +113,9 @@
                     <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}">{{ ('stats.'~attrs.stats_name)|trans }}</span>
                 {% elseif attrs.stats %}
                     <span title="{{ stats }}" class="stats rarity-{{ obj.rarity }}"><em>{{ 'global.unknown'|trans }}</em></span>
-                {% else %}
+                        {% else %}
                     <span title="{{ obj.name }}" class="stats rarity-{{ obj.rarity }}"><em>{{ 'global.unknown'|trans }}</em></span>
-                {% endif %}
+                        {% endif %}
             </span>
         </div>
     {% endif %}

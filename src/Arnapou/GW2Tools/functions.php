@@ -151,7 +151,8 @@ function gwlink_inventoryslot(InventorySlot $item) {
  * @return string
  */
 function datediff($date) {
-    $diff = (new \DateTime('now'))->getTimestamp() - (new \DateTime($date))->getTimestamp();
+    $utc  = new \DateTimeZone('UTC');
+    $diff = (new \DateTime('now', $utc))->getTimestamp() - (new \DateTime($date, $utc))->getTimestamp();
     if ($diff < 60) {
         return '< 1 min.';
     }

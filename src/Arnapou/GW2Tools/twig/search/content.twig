@@ -7,28 +7,30 @@
 
 {% if (module.isowner or module.user.hasright('inventories')) and account.haspermission('characters') %}
     {% for char in account.characters %}
-        {% set found = '' %}
-        
-        {% for item in char.equipments %}
-            {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
-        {% endfor %}
-        
-        {% for bag in char.bags %}
-            {% for item in bag.inventory %}
+        {% if module.isowner or module.user.hasright('character/'~char.name) %}
+            {% set found = '' %}
+
+            {% for item in char.equipments %}
                 {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
             {% endfor %}
-        {% endfor %}
-        
-        {% if found %}
-            <div class="row">
-                <div class="col-xs-2">
-                    <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
-                    <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+
+            {% for bag in char.bags %}
+                {% for item in bag.inventory %}
+                    {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                {% endfor %}
+            {% endfor %}
+
+            {% if found %}
+                <div class="row">
+                    <div class="col-xs-2">
+                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
+                        <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
+                    </div>
+                    <div class="col-xs-10 slots">
+                        {{ found|raw }}
+                    </div>
                 </div>
-                <div class="col-xs-10 slots">
-                    {{ found|raw }}
-                </div>
-            </div>
+            {% endif %}
         {% endif %}
     {% endfor %}
 {% endif %}

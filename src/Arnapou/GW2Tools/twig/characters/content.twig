@@ -22,34 +22,32 @@
     </thead>
     <tbody>
         {% for char in account.characters %}
-            {% set totalage = totalage + char.age/3600 %}
-            {% set totaldeaths = totaldeaths + char.deaths %}
-            <tr>
-                <td>
-                    <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
-                    {% if module.isowner or module.user.hasright('character') %}
+            {% if module.isowner or module.user.hasright('character/'~char.name) %}
+                {% set totalage = totalage + char.age/3600 %}
+                {% set totaldeaths = totaldeaths + char.deaths %}
+                <tr>
+                    <td>
+                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
                         <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
-                    {% else %}
-                        <b>{{ char.name }}</b>
-                    {% endif %}
-                </td>
-                <td>{{ char.level }}</td>
-                <td>{{ ('gender.'~char.gender)|trans }}</td>
-                <td>{{ ('race.'~char.race)|trans }}</td>
-                <td>{{ ('profession.'~char.profession)|trans }}</td>
-                <td>{{ char.guild.name }}</td>
-                <td>
-                    {% for craft in char.crafting %}
-                        <span title="{{ ('crafting.'~craft.name)|trans }}">
-                            <img class="craft" src="{{ craft|image }}" /> {{ craft.rating }}
-                        </span> 
-                    {% endfor %}
-                </td>
-                <td>{{ char.created }}</td>
-                <td class="text-right">{{ char.days }}</td>
-                <td class="text-right">{{ (char.age/3600)|round }}</td>
-                <td class="text-right">{{ char.deaths }}</td>
-            </tr>
+                    </td>
+                    <td>{{ char.level }}</td>
+                    <td>{{ ('gender.'~char.gender)|trans }}</td>
+                    <td>{{ ('race.'~char.race)|trans }}</td>
+                    <td>{{ ('profession.'~char.profession)|trans }}</td>
+                    <td>{{ char.guild.name }}</td>
+                    <td>
+                        {% for craft in char.crafting %}
+                            <span title="{{ ('crafting.'~craft.name)|trans }}">
+                                <img class="craft" src="{{ craft|image }}" /> {{ craft.rating }}
+                            </span> 
+                        {% endfor %}
+                    </td>
+                    <td>{{ char.created }}</td>
+                    <td class="text-right">{{ char.days }}</td>
+                    <td class="text-right">{{ (char.age/3600)|round }}</td>
+                    <td class="text-right">{{ char.deaths }}</td>
+                </tr>
+            {% endif %}
         {% endfor %}
     </tbody>
     <tfoot>
