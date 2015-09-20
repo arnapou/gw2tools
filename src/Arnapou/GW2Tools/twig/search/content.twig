@@ -79,7 +79,7 @@
 
 
 {% macro match(item, fname, frarity, flvlmin, flvlmax) %}
-    {% if item.id and item.count > 0 %}
+    {% if item.id and (item.count > 0 or item.slot) %}
         {% import "macro.twig" as macro %}
 
         {% set show = 1 %}
