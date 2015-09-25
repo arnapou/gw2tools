@@ -126,6 +126,24 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
 
     /**
      * 
+     * @param string $name
+     * @return boolean
+     */
+    public function isAllowedCharacter($name) {
+        if ($this->isOwner) {
+            return true;
+        }
+        if (empty($this->user)) {
+            return false;
+        }
+        if (!$this->user->hasRight('other.limit_characters')) {
+            return true;
+        }
+        return $this->user->hasRight('character/' . $name);
+    }
+
+    /**
+     * 
      * @param string $page
      * @param callable $context
      * @return Response
@@ -289,6 +307,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
                 $rights = [];
             }
             $allowedRights   = array_keys($this->getMenu()->getRights());
+            $allowedRights[] = 'other.limit_characters';
             $sanitizedRights = [];
             foreach ($rights as $right) {
                 if (in_array($right, $allowedRights)) {

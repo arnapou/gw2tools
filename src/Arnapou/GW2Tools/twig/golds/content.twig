@@ -14,7 +14,7 @@
     </thead>
     <tbody>
         {% for item in account.characters %}
-            {% if module.isAllowed('character/'~item.name) %}
+            {% if module.isAllowedCharacter(item.name) %}
                 <tr>
                     <td class="column-name">
                         <img src="{{ item.professionicon|image }}" title="{{ ('profession.'~item.profession)|trans }}" class="profession pull-left" />

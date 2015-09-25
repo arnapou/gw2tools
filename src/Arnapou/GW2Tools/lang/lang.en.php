@@ -10,8 +10,8 @@
  */
 
 return [
-    'gwdblink'   => 'http://db.dulfy.net/item/',
-    'rarity'     => [
+    'gwdblink'     => 'http://db.dulfy.net/item/',
+    'rarity'       => [
         'Junk'       => 'Junk',
         'Basic'      => 'Basic',
         'Fine'       => 'Fine',
@@ -21,7 +21,7 @@ return [
         'Ascended'   => 'Ascended',
         'Legendary'  => 'Legendary',
     ],
-    'attribute'  => [
+    'attribute'    => [
         'Power'     => 'Power',
         'Precision' => 'Precision',
         'Toughness' => 'Toughness',
@@ -32,7 +32,7 @@ return [
         'AR'        => 'AR',
         "Celestial" => "Celestial",
     ],
-    'crafting'   => [
+    'crafting'     => [
         'Armorsmith'    => 'Armorsmith',
         'Artificer'     => 'Artificer',
         'Chef'          => 'Chef',
@@ -42,18 +42,18 @@ return [
         'Tailor'        => 'Tailor',
         'Weaponsmith'   => 'Weaponsmith',
     ],
-    'gender'     => [
+    'gender'       => [
         'Male'   => 'Male',
         'Female' => 'Female',
     ],
-    'race'       => [
+    'race'         => [
         'Asura'   => 'Asura',
         'Charr'   => 'Charr',
         'Human'   => 'Human',
         'Norn'    => 'Norn',
         'Sylvari' => 'Sylvari',
     ],
-    'profession' => [
+    'profession'   => [
         'Elementalist' => 'Elementalist',
         'Engineer'     => 'Engineer',
         'Guardian'     => 'Guardian',
@@ -64,7 +64,7 @@ return [
         'Warrior'      => 'Warrior',
         'Revenant'     => 'Revenant',
     ],
-    'itemtype'   => [
+    'itemtype'     => [
         'All'            => 'All',
         ''               => 'Backpack',
         'Back'           => 'Backpack',
@@ -122,7 +122,7 @@ return [
         'Armor'          => 'Armor',
         'Weapon'         => 'Weapon',
     ],
-    'stats'      => [
+    'stats'        => [
         "Berserker's"            => "Berserker's",
         "Zealot's"               => "Zealot's",
         "Soldier's"              => "Soldier's",
@@ -152,16 +152,16 @@ return [
         "Rabid + Apothecary's"   => "Rabid + Apothecary's",
         "Dire + Rabid"           => "Dire + Rabid",
     ],
-    'tooltip'    => [
+    'tooltip'      => [
         'click_info' => 'Click on the item to lock the tooltip.',
     ],
-    'weight'     => [
+    'weight'       => [
         'Light'    => 'Light',
         'Medium'   => 'Medium',
         'Heavy'    => 'Heavy',
         'Clothing' => 'Clothing',
     ],
-    'global'     => [
+    'global'       => [
         'account_bound'          => 'Account bound',
         'age'                    => 'Age',
         'all'                    => 'All',
@@ -201,6 +201,7 @@ return [
         'permissions'            => 'Permissions',
         'profession'             => 'Profession',
         'public_access'          => 'Public access',
+        'public_other'           => 'Other rights',
         'quantity'               => 'Quantity',
         'race'                   => 'Race',
         'rarity'                 => 'Rarity',
@@ -248,7 +249,7 @@ return [
         'weapons_aquatic'        => 'Weapons aquatic',
         'world'                  => 'World',
     ],
-    'menu'       => [
+    'menu'         => [
         'accounts'                 => 'Accounts',
         'general'                  => 'General',
         'general.account'          => 'Account',
@@ -274,7 +275,7 @@ return [
         'tp.tp_buys'               => 'Buys',
         'tp.tp_sells'              => 'Sells',
     ],
-    'footer'     => [
+    'footer'       => [
         'changelog'         => 'Changelog',
         'for_developers'    => 'For developers',
         'gw2tools_project'  => 'GW2Tools Project',
@@ -284,7 +285,7 @@ return [
         'technical'         => 'Technical',
         'anet_copyright'    => '2010-2015 ArenaNet, Inc. and NC Interactive, Inc. All rights reserved. Guild Wars, Guild Wars 2, ArenaNet, NCsoft, the Interlocking NC Logo, and all associated logos and designs are trademarks or registered trademarks of NCsoft Corporation. All other trademarks are the property of their respective owners.',
     ],
-    'ranks'      => [
+    'ranks'        => [
         'Rabbit'  => 'Rabbit',
         'Deer'    => 'Deer',
         'Dolyak'  => 'Dolyak',
@@ -295,7 +296,7 @@ return [
         'Phoenix' => 'Phoenix',
         'Dragon'  => 'Dragon',
     ],
-    'pvp'        => [
+    'pvp'          => [
         'classes'        => 'Classes',
         'nb_matches'     => 'Matches',
         'winrate'        => 'Winrate',
@@ -318,17 +319,20 @@ return [
         'duration'       => 'Duration',
         'score'          => 'Score',
     ],
-    'traits'     => [
+    'traits'       => [
         'pve'             => 'Build Pve',
         'pvp'             => 'Build Pvp',
         'wvw'             => 'Build Wvw',
         'buff_conversion' => 'Gain %dst based on a percentage of %src%: %pct%%',
     ],
-    'error'      => [
+    'error'        => [
         'not-owner'            => "You are not the owner of this account.",
         'token-already-exists' => "This api key is already mapped to another account.<br />You must delete it before doing this action.",
         'token-is-same'        => "This api key is identical as current.",
         'invalid-token'        => "This api key is invalid.",
         'mismatch-account'     => "The account of the api key does not match the current.",
+    ],
+    'rights.other' => [
+        'limit_characters' => "Show only selected characters in generic tables",
     ],
 ];

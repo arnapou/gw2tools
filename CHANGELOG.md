@@ -1,3 +1,11 @@
+## 1.0.14 (2015-09-25)
+
+  - adding a new right to manage better the characters views
+
+## 1.0.13
+
+  - version dropped
+
 ## 1.0.12 (2015-09-20)
 
   - small css / js bugfixes

@@ -89,11 +89,26 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="text-right">
-                        <span class="btn btn-primary action-save-rights">
-                            <i class="glyphicon glyphicon-save"></i>{{ 'global.save_preferences'|trans }}
-                        </span>
-                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-owner">{{ 'global.public_other'|trans }}</td>
+                <td class="rights">
+                    {% for other in ['limit_characters'] %}
+                        {% set checked = user.hasRight('other.'~other) %}
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" {{ checked ? 'checked="checked"' : '' }} value="{{ 'other.'~other }}" />  {{ ('rights.other.'~other)|trans }}
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </td>
+                <td>
+                    <span class="btn btn-primary action-save-rights">
+                        <i class="glyphicon glyphicon-save"></i>{{ 'global.save_preferences'|trans }}
+                    </span>
                 </td>
             </tr>
         {% endif %}

@@ -26,7 +26,7 @@
             <tr>
                 {% set index = 0 %}
                 {% for char in characters %}
-                    {% if module.isAllowed('character/'~char.name) %}
+                    {% if module.isAllowedCharacter(char.name) %}
                         {% if index % 5 == 0 %}
                             <th>
                             </th>
@@ -53,7 +53,7 @@
                 <tr>
                     {% set index = 0 %}
                     {% for char in characters %}
-                        {% if module.isAllowed('character/'~char.name) %}
+                        {% if module.isAllowedCharacter(char.name) %}
                             {% if index % 5 == 0 %}
                                 <td class="type">
                                     {{ ('itemtype.'~type)|trans }}

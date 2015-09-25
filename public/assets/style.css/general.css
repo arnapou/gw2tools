@@ -94,21 +94,21 @@ img.item {
 .page-account td .label {
     margin-right: .5em;
 }
-.page-account td .rights {
+.page-account td table.rights {
     width: 100%;
     table-layout: fixed;
 }
-.page-account td .rights th {
+.page-account td table.rights th {
     text-decoration: underline;
     padding-bottom: .5em;
 }
-.page-account td .rights td {
+.page-account td table.rights td {
     vertical-align: top;
 }
-.page-account td .rights .form-group {
+.page-account td .form-group {
     margin-bottom: .5em;
 }
-.page-account td .rights .checkbox {
+.page-account td .checkbox {
     margin: 0;
     padding-right: 1em;
 }

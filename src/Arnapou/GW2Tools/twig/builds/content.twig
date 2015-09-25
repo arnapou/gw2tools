@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             {% for char in account.characters %}
-                {% if module.isAllowed('character/'~char.name) %}
+                {% if module.isAllowedCharacter(char.name) %}
                     {% set attributes = char.attributes %}
                     <tr>
                         <td>
