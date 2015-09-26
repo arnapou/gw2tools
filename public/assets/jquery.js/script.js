@@ -271,6 +271,9 @@ function renderPieChart() {
                     plotShadow: false,
                     type: 'pie'
                 },
+                credits: {
+                    enabled: false
+                },
                 title: {
                     text: ''
                 },
