@@ -100,7 +100,7 @@ class Statistics {
      * @return array
      */
     protected function cacheGet($key, $callable) {
-        $cacheKey = 'statistics/' . $this->lang . '/' . $key . '/' . ($this->account ? $this->account->getName() : '');
+        $cacheKey = 'statistics/' . $this->lang . '/' . $key;
         $cache    = MongoCache::getInstance();
         $result   = $cache->get($cacheKey);
         if ($result) {
@@ -119,7 +119,8 @@ class Statistics {
      * @return array
      */
     protected function calcPercentiles($key, $subkey, $uservalue = null) {
-        return $this->cacheGet('percentile/' . $key . '/' . $subkey, function() use ($key, $subkey, $uservalue) {
+        $cacheKey = 'percentile/' . $key . '/' . $subkey . '/' . ($this->account ? $this->account->getName() : '');
+        return $this->cacheGet($cacheKey, function() use ($key, $subkey, $uservalue) {
                 $userindex = null;
                 $array     = [];
                 foreach ($this->collection->find() as $row) {
