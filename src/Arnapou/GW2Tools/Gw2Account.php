@@ -50,7 +50,7 @@ class Gw2Account extends \Arnapou\GW2Api\Model\Account {
         try {
             $collection = Statistics::getInstance()->getCollection();
 
-            $data = $collection->findOne(['name' => $this->getName()]);
+            $data = $collection->findOne(['account' => $this->getName()]);
             if (!empty($data) && time() - $data['last_update'] < 86400) {
                 return;
             }
