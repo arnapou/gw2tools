@@ -341,7 +341,7 @@ class Statistics {
                     }
                 }
                 return array_values($data);
-            });
+            }, 4 * 3600);
     }
 
     /**
@@ -362,7 +362,7 @@ class Statistics {
                     }
                 }
                 return array_values($data);
-            });
+            }, 4 * 3600);
     }
 
     /**
@@ -386,7 +386,7 @@ class Statistics {
                     }
                 }
                 return array_values($data);
-            });
+            }, 4 * 3600);
     }
 
 }
