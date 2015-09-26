@@ -130,6 +130,7 @@ class Statistics {
                         }
                     }
                     rsort($array);
+                    return $array;
                 }, 4 * 3600);
                 $n        = ceil(count($array) / 100);
                 $chunks   = array_chunk($array, $n);

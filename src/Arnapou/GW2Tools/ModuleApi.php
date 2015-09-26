@@ -594,7 +594,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             }
         }
         catch (\Exception $ex) {
-            
+            return new ResponseJson(['error' => $ex->getMessage()]);
         }
     }
 
