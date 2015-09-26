@@ -97,9 +97,10 @@ class Statistics {
      * 
      * @param string $key
      * @param callable $callable
+     * @param integer $expiration
      * @return array
      */
-    protected function cacheGet($key, $callable) {
+    protected function cacheGet($key, $callable, $expiration = 900) {
         $cacheKey = 'statistics/' . $this->lang . '/' . $key;
         $cache    = MongoCache::getInstance();
         $result   = $cache->get($cacheKey);
@@ -107,7 +108,7 @@ class Statistics {
             return $result;
         }
         $result = $callable();
-        $cache->set($cacheKey, $result, 900); // 15 min
+        $cache->set($cacheKey, $result, $expiration);
         return $result;
     }
 
@@ -122,13 +123,14 @@ class Statistics {
         $cacheKey = 'percentile/' . $key . '/' . $subkey . '/' . ($this->account ? $this->account->getName() : '');
         return $this->cacheGet($cacheKey, function() use ($key, $subkey, $uservalue) {
                 $userindex = null;
-                $array     = [];
-                foreach ($this->collection->find() as $row) {
-                    if (isset($row[$key], $row[$key][$subkey])) {
-                        $array[] = $row[$key][$subkey];
+                $array     = $this->cacheGet('rawpercentile/' . $key . '/' . $subkey, function() use ($key, $subkey) {
+                    foreach ($this->collection->find() as $row) {
+                        if (isset($row[$key], $row[$key][$subkey])) {
+                            $array[] = $row[$key][$subkey];
+                        }
                     }
-                }
-                rsort($array);
+                    rsort($array);
+                }, 4 * 3600);
                 $n        = ceil(count($array) / 100);
                 $chunks   = array_chunk($array, $n);
                 $nbchunks = count($chunks);
