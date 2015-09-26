@@ -10,9 +10,9 @@
  */
 
 foreach ([
-'users-clean.php',
- 'force-longterm-cache.php',
- 'users-statistics.php',
+    'users-clean.php',
+    'force-longterm-cache.php',
+//    'users-statistics.php',
 ] as $file) {
     try {
         include __DIR__ . '/' . $file;

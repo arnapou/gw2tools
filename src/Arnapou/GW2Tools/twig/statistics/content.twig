@@ -1,0 +1,275 @@
+
+
+<ul class="nav nav-tabs">
+    <li><a href="#" data-tab="tab-global">{{ 'statistics.global'|trans }}</a></li>
+    <li><a href="#" data-tab="tab-unlocks">{{ 'statistics.unlocks'|trans }}</a></li>
+    <li><a href="#" data-tab="tab-characters">{{ 'statistics.characters'|trans }}</a></li>
+    <li><a href="#" data-tab="tab-pvp">{{ 'statistics.pvp'|trans }}</a></li>
+    <li><a href="#" data-tab="tab-items">{{ 'statistics.items'|trans }}</a></li>
+</ul>
+
+<div class="tab tab-global" style="display: none;">
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.races'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Pie" data-source="races.json" data-color="#7F2AFF,#A22E2E,#FFD93E,#61A0FF,#008000"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.professions'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Pie" data-source="professions.json" data-color="#EA6666,#C87137,#5FBCD3,#A859B7,#6B9C90,#98C552,#942929,#A98A8D,#D4B365"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.genders'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Pie" data-source="genders.json" data-color="#61A0FF,#FF6666"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.golds'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="golds.json" data-unit="golds" data-divisor="10000" data-legend="" data-color="#c9a900"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.karma'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="karma.json" data-unit="karma" data-legend="" data-color="#9F339F"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab tab-unlocks" style="display: none;">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.unlocked_skins'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="skins.json" data-unit="skins" data-legend="" data-color="#999EFF"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.unlocked_dyes'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="dyes.json" data-unit="dyes" data-legend="" data-color="#F15C80"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab tab-characters" style="display: none;">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.characters'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="characters.json" data-unit="characters" data-legend="" data-color="#A9FF96"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.level80'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="level80.json" data-unit="level 80" data-legend="" data-color="#838388"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.age'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="age.json" data-unit="hours" data-divisor="3600" data-legend="" data-color="#FDEC6D"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.deaths'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="deaths.json" data-unit="deaths" data-legend="" data-color="#44A9A8"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab tab-pvp" style="display: none;">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.pvp_ranks'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="pvpranks.json" data-unit="rank" data-legend="" data-color="#F8E970"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.pvp_winrate'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="pvpwinrates.json" data-unit="% winrate" data-legend="" data-color="#5BC0DE"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.pvp_total'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="pvptotals.json" data-unit="total games" data-legend="" data-color="#F0AD4E"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.pvp_wins'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="pvpwins.json" data-unit="won games" data-legend="" data-color="#5CB85C"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab tab-items" style="display: none;">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.ascended'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="itemsascended.json" data-unit="ascended items" data-legend="" data-color="#fb3e8d"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.legendaries'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="itemslegendary.json" data-unit="legendary items" data-legend="" data-color="#4C139D"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.ascended_weapons'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="itemsascendedweapons.json" data-unit="ascended weapons" data-legend="" data-color="#c93271"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.ascended_armors'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="itemsascendedarmors.json" data-unit="ascended armors" data-legend="" data-color="#992656"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.ascended_backs'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="itemsascendedbacks.json" data-unit="ascended backs" data-legend="" data-color="#fb0f72"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'statistics.ascended_trinkets'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-chart="Percentile" data-source="itemsascendedtrinkets.json" data-unit="ascended trinkets" data-legend="" data-color="#fb74ac"><div class="spinner-loader"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.nav-tabs a').eq(0).trigger('click');
+
+        renderPieChart();
+        renderPercentileChart();
+
+        $(document).on('click', '.nav.nav-tabs a', function (e) {
+            renderPieChart();
+            renderPercentileChart();
+        });
+    });
+
+
+</script>

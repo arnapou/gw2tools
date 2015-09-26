@@ -15,12 +15,6 @@ class MenuList implements \IteratorAggregate {
 
     /**
      *
-     * @var MenuList 
-     */
-    static protected $instance;
-
-    /**
-     *
      * @var array
      */
     protected $menus;
@@ -38,6 +32,7 @@ class MenuList implements \IteratorAggregate {
         $menu->addItem('golds', $trans['menu.general.golds']);
         $menu->addItem('search', $trans['menu.general.search']);
         $menu->addItem('pvp', $trans['menu.general.pvp'])->setPermission(Gw2Account::PERMISSION_PVP);
+        $menu->addItem('statistics', $trans['menu.general.statistics']);
         $this->addMenu($menu);
 
         // menu 2

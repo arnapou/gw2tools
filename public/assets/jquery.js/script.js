@@ -125,11 +125,11 @@ $(function () {
         });
     });
 
-    $(document).on('click', '.page-character .nav a', function (e) {
+    $(document).on('click', '.nav.nav-tabs a', function (e) {
         $(this).parents('.nav').find('.active').removeClass('active');
         $(this).parent().addClass('active');
-        $('.page-character .tab').hide();
-        $('.page-character .tab.' + $(this).data('tab')).show();
+        $('#container .tab').hide();
+        $('#container .tab.' + $(this).data('tab')).show();
         e.preventDefault();
     });
 
@@ -230,7 +230,6 @@ $(function () {
                                 cachedHtml[url] = html;
                                 if ($gwitemdetail.data('url') === url) {
                                     $gwitemdetail.html(html);
-//                                    forceTooltipMove(self, e);
                                 }
                             })
                             .fail(function () {
@@ -252,3 +251,151 @@ $(function () {
         }
     })(Cookies.get('accesstoken'));
 })
+
+function renderPieChart() {
+    $('[data-chart="Pie"]').each(function () {
+        var $chart = $(this);
+        if ($chart.data('rendered')) {
+            return;
+        }
+        $chart.data('rendered', true);
+        $.getJSON($(this).data('source'), function (data) {
+            $chart.highcharts({
+                exporting: {
+                    enabled: false
+                },
+                colors: $chart.data('color') ? $chart.data('color').split(',') : Highcharts.getOptions().colors,
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage, 1) + ' %';
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                        colorByPoint: true,
+                        data: data
+                    }]
+            });
+        });
+    });
+}
+
+function renderPercentileChart() {
+    $('[data-chart="Percentile"]:visible').each(function () {
+        var $chart = $(this);
+        if ($chart.data('rendered')) {
+            return;
+        }
+        $chart.data('rendered', true);
+        var unit = $chart.data('unit');
+        var divisor = $chart.data('divisor') ? parseInt($chart.data('divisor')) : 1;
+        $.getJSON($(this).data('source'), function (data) {
+            var series = [{
+                    type: 'area',
+                    zIndex: 0,
+                    data: data[0]
+                }];
+            if (data.length > 1) {
+                series.push({
+                    type: 'line',
+                    zIndex: 1,
+                    data: data[1]
+                });
+            }
+            $chart.highcharts({
+                exporting: {
+                    enabled: false
+                },
+                colors: $chart.data('color') ? $chart.data('color').split(',') : Highcharts.getOptions().colors,
+                chart: {
+                    height: 250
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    allowDecimals: false,
+                    labels: {
+                        formatter: function () {
+                            return this.value + '%';
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: $chart.data('legend')
+                    },
+                    labels: {
+                        formatter: function () {
+                            var val = Math.floor(this.value / divisor);
+                            return formatNumber(val);
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        var val = Math.floor(this.point.y / divisor);
+                        return '<b>' + this.point.x + '%</b> of players have <b>' + formatNumber(val) + '</b> ' + unit;
+                    }
+                },
+                plotOptions: {
+                    area: {
+                        pointStart: 1,
+                        marker: {
+                            enabled: false,
+                            symbol: 'circle',
+                            radius: 2,
+                            states: {
+                                hover: {
+                                    enabled: true
+                                }
+                            }
+                        },
+                        showInLegend: false
+                    },
+                    line: {
+                        pointStart: 1,
+                        marker: {
+                            enabled: true,
+                            fillColor: 'black',
+                            lineWidth: 2,
+                            lineColor: 'black'
+                        },
+                        showInLegend: false
+                    },
+                    series: {
+                        connectNulls: true
+                    }
+                },
+                series: series
+            });
+        });
+    });
+}
+
+function formatNumber(n) {
+    return String(n).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, function ($1) {
+        return $1 + "."
+    });
+}

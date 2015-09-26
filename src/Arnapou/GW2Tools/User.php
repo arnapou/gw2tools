@@ -250,9 +250,7 @@ class User {
             'data'       => [
                 'rights' => [
                     'account',
-                    'character',
                     'characters',
-                    'equipments',
                 ],
             ],
         ]);

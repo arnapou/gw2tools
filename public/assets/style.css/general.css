@@ -31,6 +31,13 @@ body {
     margin-right: .5em;
 }
 
+.nav.nav-tabs {
+    margin-bottom: 1em;
+}
+.nav.nav-tabs a {
+    outline: 0 !important;
+}
+
 /************************************************/
 
 .gold, .silver, .copper {
@@ -232,12 +239,6 @@ img.item {
     padding-right: 5px;
     display: inline-block;
     vertical-align: middle;
-}
-.page-character .nav {
-    margin-bottom: 1em;
-}
-.page-character .nav a {
-    outline: 0 !important;
 }
 .page-character .gw2skillslink {
     margin-left: 2em;

@@ -10,8 +10,8 @@
  */
 
 return [
-    'gwdblink'    => 'http://db.gw2.fr/item/',
-    'rarity'      => [
+    'gwdblink'     => 'http://db.gw2.fr/item/',
+    'rarity'       => [
         'Junk'       => 'Inutile',
         'Basic'      => 'Simple',
         'Fine'       => 'Rafiné',
@@ -21,7 +21,7 @@ return [
         'Ascended'   => 'Élevé',
         'Legendary'  => 'Légendaire',
     ],
-    'attribute'   => [
+    'attribute'    => [
         'Power'     => 'Puissance',
         'Precision' => 'Précision',
         'Toughness' => 'Robustesse',
@@ -32,7 +32,7 @@ return [
         'AR'        => 'RA',
         "Celestial" => "Céleste",
     ],
-    'crafting'    => [
+    'crafting'     => [
         'Armorsmith'    => "Forgeron d'armures",
         'Artificer'     => 'Artificier',
         'Chef'          => 'Maître-queue',
@@ -42,18 +42,18 @@ return [
         'Tailor'        => 'Tailleur',
         'Weaponsmith'   => "Forgeron d'armes",
     ],
-    'gender'      => [
+    'gender'       => [
         'Male'   => 'Homme',
         'Female' => 'Femme',
     ],
-    'race'        => [
+    'race'         => [
         'Asura'   => 'Asura',
         'Charr'   => 'Charr',
         'Human'   => 'Humain',
         'Norn'    => 'Norn',
         'Sylvari' => 'Sylvari',
     ],
-    'profession'  => [
+    'profession'   => [
         'Elementalist' => 'Elémentaliste',
         'Engineer'     => 'Ingénieur',
         'Guardian'     => 'Gardien',
@@ -64,7 +64,7 @@ return [
         'Warrior'      => 'Guerrier',
         'Revenant'     => 'Revenant',
     ],
-    'itemtype'    => [
+    'itemtype'     => [
         'All'            => 'Tout',
         ''               => 'Dorsale',
         'Back'           => 'Dorsale',
@@ -122,7 +122,7 @@ return [
         'Armor'          => 'Armure',
         'Weapon'         => 'Arme',
     ],
-    'stats'       => [
+    'stats'        => [
         "Berserker's"            => "Berserker",
         "Zealot's"               => "Zélote",
         "Soldier's"              => "Militaire",
@@ -152,16 +152,43 @@ return [
         "Rabid + Apothecary's"   => "Enragé + Apothicaire",
         "Dire + Rabid"           => "Sanguinaire + Enragé",
     ],
-    'tooltip'     => [
+    'tooltip'      => [
         'click_info' => "Cliquez sur l'objet pour verrouiller la fenêtre.",
     ],
-    'weight'      => [
+    'weight'       => [
         'Light'    => 'Léger',
         'Medium'   => 'Intermédiaire',
         'Heavy'    => 'Lourd',
         'Clothing' => 'Tenue',
     ],
-    'global'      => [
+    'statistics'   => [
+        'characters'        => 'Personnages',
+        'genders'           => 'Genres',
+        'professions'       => 'Professions',
+        'races'             => 'Races',
+        'golds'             => "Pièces d'or",
+        'karma'             => 'Karma',
+        'unlocked_skins'    => 'Apparences débloquées',
+        'unlocked_dyes'     => 'Teintures débloquées',
+        'level80'           => 'Personnages de niveau 80',
+        'age'               => 'Age (heures)',
+        'deaths'            => 'Morts',
+        'pvp_ranks'         => 'Rang de pvp',
+        'pvp_winrate'       => 'Taux de victoire en pvp',
+        'pvp_total'         => 'Nombre de parties totales en pvp',
+        'pvp_wins'          => 'Nombre de parties gagnées en pvp',
+        'ascended'          => "Nombre d'objets élevés",
+        'ascended_weapons'  => "Nombre d'armes élevées",
+        'ascended_armors'   => "Nombre d'armures élevées",
+        'ascended_trinkets' => "Nombre de bijoux élevés",
+        'ascended_backs'    => "Nombre de sac à dos élevés",
+        'legendaries'       => "Nombre d'objets légendaires",
+        'global'            => 'Global',
+        'unlocks'           => 'Déblocages',
+        'pvp'               => 'Pvp',
+        'items'             => 'Objets',
+    ],
+    'global'       => [
         'account_bound'          => 'Lié au compte',
         'age'                    => 'Age',
         'all'                    => 'Tout',
@@ -249,7 +276,7 @@ return [
         'weapons_aquatic'        => 'Armes aquatiques',
         'world'                  => 'Monde',
     ],
-    'menu'        => [
+    'menu'         => [
         'accounts'                 => 'Comptes',
         'general'                  => 'Général',
         'general.account'          => 'Compte',
@@ -257,6 +284,7 @@ return [
         'general.golds'            => "Pièces d'or",
         'general.pvp'              => "Pvp",
         'general.search'           => "Recherche",
+        'general.statistics'       => "Statistiques",
         'characters'               => 'Personnages',
         'characters.characters'    => 'Résumé',
         'characters.equipments'    => 'Equipements',
@@ -275,7 +303,7 @@ return [
         'tp.tp_buys'               => 'Achats',
         'tp.tp_sells'              => 'Ventes',
     ],
-    'footer'      => [
+    'footer'       => [
         'changelog'         => 'Changelog',
         'for_developers'    => 'Pour développeurs',
         'gw2tools_project'  => 'Projet GW2Tools',
@@ -284,7 +312,7 @@ return [
         'site_development'  => 'Développement du site',
         'technical'         => 'Techniquement',
     ],
-    'ranks'       => [
+    'ranks'        => [
         'Rabbit'  => 'Lapin',
         'Deer'    => 'Daim',
         'Dolyak'  => 'Dolyak',
@@ -295,7 +323,7 @@ return [
         'Phoenix' => 'Phoenix',
         'Dragon'  => 'Dragon',
     ],
-    'pvp'         => [
+    'pvp'          => [
         'classes'        => 'Professions',
         'nb_matches'     => 'Matchs',
         'winrate'        => '% Victoires',
@@ -318,13 +346,13 @@ return [
         'duration'       => 'Durée',
         'score'          => 'Score',
     ],
-    'traits'      => [
+    'traits'       => [
         'pve'             => 'Build Pve',
         'pvp'             => 'Build Pvp',
         'wvw'             => 'Build McM',
         'buff_conversion' => 'Gain de %dst% basé sur un pourcentage de %src%: %pct%%',
     ],
-    'error'       => [
+    'error'        => [
         'not-owner'            => "Vous n'êtes pas le propriétaire de ce compte.",
         'token-already-exists' => "Cette clé d'application existe déjà liée à un autre compte.<br />Vous devez la supprimer avant de continuer.",
         'token-is-same'        => "Cette clé d'application est identique à la courante.",
@@ -332,6 +360,7 @@ return [
         'mismatch-account'     => "Le compte de cette clé d'application ne correspond pas au courant.",
     ],
     'rights.other' => [
-        'limit_characters' => "N'afficher que les personnages sélectionnés dans les tableaux génériques",
+        'limit_characters'   => "N'afficher que les personnages sélectionnés dans les tableaux génériques pour l'accès public.",
+        'disable_statistics' => "Désactiver l'usage de mon compte pour les statistiques globales.",
     ],
 ];

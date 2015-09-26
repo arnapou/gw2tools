@@ -1,3 +1,7 @@
+## 1.0.15 (2015-09-26)
+
+  - adding statistics tab
+
 ## 1.0.14 (2015-09-25)
 
   - adding a new right to manage better the characters views

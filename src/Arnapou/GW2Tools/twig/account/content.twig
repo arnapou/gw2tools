@@ -94,7 +94,7 @@
             <tr>
                 <td class="text-owner">{{ 'global.public_other'|trans }}</td>
                 <td class="rights">
-                    {% for other in ['limit_characters'] %}
+                    {% for other in ['limit_characters', 'disable_statistics'] %}
                         {% set checked = user.hasRight('other.'~other) %}
                         <div class="form-group">
                             <div class="checkbox">

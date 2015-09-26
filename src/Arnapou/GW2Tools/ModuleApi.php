@@ -98,12 +98,13 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('{code}/{any}', [$this, 'routeHome'])->assert('code', $regexpCode)->assert('any', '.*');
         $this->addRoute('{code}/{page}/', [$this, 'routePage'])->assert('code', $regexpCode)->assert('page', '[a-z0-9_]+');
         $this->addRoute('{code}/{page}/content.html', [$this, 'routePageContent'])->assert('code', $regexpCode)->assert('page', '[a-z0-9_]+');
-        $this->addRoute('{code}/account/save-rights', [$this, 'routeSaveRights'], 'POST')->assert('code', $regexpCode);
-        $this->addRoute('{code}/account/delete-token', [$this, 'routeDeleteToken'], 'POST')->assert('code', $regexpCode);
-        $this->addRoute('{code}/account/replace-token', [$this, 'routeReplaceToken'], 'POST')->assert('code', $regexpCode);
+        $this->addRoute('{code}/account/save-rights', [$this, 'routeAccountSaveRights'], 'POST')->assert('code', $regexpCode);
+        $this->addRoute('{code}/account/delete-token', [$this, 'routeAccountDeleteToken'], 'POST')->assert('code', $regexpCode);
+        $this->addRoute('{code}/account/replace-token', [$this, 'routeAccountReplaceToken'], 'POST')->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}', [$this, 'routeCharacter'])->assert('code', $regexpCode);
         $this->addRoute('{code}/character/{name}.html', [$this, 'routeCharacterContent'])->assert('code', $regexpCode);
         $this->addRoute('{code}/gw2skills-{mode}/{name}', [$this, 'routeCharacterBuild'])->assert('code', $regexpCode)->assert('mode', 'pve|pvp|wvw');
+        $this->addRoute('{code}/statistics/{dataset}.json', [$this, 'routeStatisticsJson']);
     }
 
     /**
@@ -300,7 +301,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
     /**
      * 
      */
-    public function routeSaveRights() {
+    public function routeAccountSaveRights() {
         if ($this->user && $this->isOwner) {
             $rights = $this->getService()->getRequest()->get('rights');
             if (!is_array($rights) || empty($rights)) {
@@ -308,6 +309,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             }
             $allowedRights   = array_keys($this->getMenu()->getRights());
             $allowedRights[] = 'other.limit_characters';
+            $allowedRights[] = 'other.disable_statistics';
             $sanitizedRights = [];
             foreach ($rights as $right) {
                 if (in_array($right, $allowedRights)) {
@@ -316,6 +318,9 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
             }
             $this->user->set('rights', $sanitizedRights);
             $this->user->save();
+            if ($this->user->hasRight('other.disable_statistics')) {
+                $this->user->getAccount()->removeStatistics();
+            }
         }
         return new ResponseJson(['ok' => true]);
     }
@@ -323,7 +328,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
     /**
      * 
      */
-    public function routeReplaceToken() {
+    public function routeAccountReplaceToken() {
         $trans = Translator::getInstance();
         if ($this->user && $this->isOwner) {
             $token = $this->getService()->getRequest()->get('token');
@@ -358,7 +363,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
     /**
      * 
      */
-    public function routeDeleteToken() {
+    public function routeAccountDeleteToken() {
         if ($this->user && $this->isOwner) {
             $this->user->delete();
         }
@@ -490,6 +495,9 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
      */
     protected function getContext($page) {
         if ($this->user && $this->getMenu()->pageExists($page)) {
+            if (!$this->user->hasRight('other.disable_statistics')) {
+                $this->user->getAccount()->calculateStatistics();
+            }
             return [
                 'page'      => $page,
                 'page_name' => $this->getMenu()->pageName($page),
@@ -562,6 +570,31 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         }
         catch (AccessNotAllowedException $e) {
             return $this->renderPage('error-access-not-allowed.twig');
+        }
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function routeStatisticsJson($code, $dataset) {
+        try {
+            $context = $this->getContext('statistics');
+            if ($context) {
+                $stats  = Statistics::getInstance();
+                $stats->setAccount($this->user->getAccount());
+                $method = 'getDataset' . $dataset;
+                if (method_exists($stats, $method)) {
+                    $response = new ResponseJson($stats->$method());
+                    $response->setMaxAge(900);
+                    $response->setExpires(new \DateTime('@' . (time() + 900)));
+                    $response->setPublic();
+                    return $response;
+                }
+            }
+        }
+        catch (\Exception $ex) {
+            
         }
     }
 
