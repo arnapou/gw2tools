@@ -188,6 +188,7 @@ return [
         'unlocks'           => 'Unlocks',
         'pvp'               => 'Pvp',
         'items'             => 'Items',
+        'calculated'        => 'calculated over %count% accounts',
     ],
     'global'       => [
         'account_bound'          => 'Account bound',

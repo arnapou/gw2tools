@@ -575,6 +575,14 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
 
     /**
      * 
+     * @return Statistics
+     */
+    public function getStatistics() {
+        return Statistics::getInstance();
+    }
+
+    /**
+     * 
      * @return string
      */
     public function routeStatisticsJson($code, $dataset) {

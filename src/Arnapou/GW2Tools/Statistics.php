@@ -62,6 +62,16 @@ class Statistics {
 
     /**
      * 
+     * @return int
+     */
+    public function getCount() {
+        return $this->cacheGet('statistics/count', function() {
+                return $this->collection->count();
+            });
+    }
+
+    /**
+     * 
      * @return \MongoCollection
      */
     public function getCollection() {

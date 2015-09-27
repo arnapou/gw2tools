@@ -1,5 +1,9 @@
 
 
+<div class="pull-right text-muted" style="padding-top: 10px">
+    {{ 'statistics.calculated'|trans({'count' : module.statistics.count }) }}
+</div>
+
 <ul class="nav nav-tabs">
     <li><a href="#" data-tab="tab-global">{{ 'statistics.global'|trans }}</a></li>
     <li><a href="#" data-tab="tab-unlocks">{{ 'statistics.unlocks'|trans }}</a></li>
