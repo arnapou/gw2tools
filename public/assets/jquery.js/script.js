@@ -165,6 +165,7 @@ $(function () {
 
         $(document).on('click', 'body', function (e) {
             $gwitemdetail.data('locked', false);
+            $gwitemdetail.removeClass('locked');
             $gwitemdetail.hide();
         });
 
@@ -179,6 +180,12 @@ $(function () {
             }
             else {
                 $gwitemdetail.data('locked', locked ? false : url);
+            }
+            if ($gwitemdetail.data('locked')) {
+                $gwitemdetail.addClass('locked');
+            }
+            else {
+                $gwitemdetail.removeClass('locked');
             }
             e.stopPropagation();
         });
@@ -224,6 +231,7 @@ $(function () {
                 $gwitemdetail.data('url', url);
                 if (typeof (cachedHtml[url]) == 'undefined') {
                     forceTooltipMove(self, e);
+                    $gwitemdetail.removeClass('locked');
                     $gwitemdetail.data('locked', false).html('<div class="spinner-loader-white"></div>').show();
                     $.get(url)
                             .done(function (html) {

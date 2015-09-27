@@ -153,7 +153,8 @@ return [
         "Dire + Rabid"           => "Sanguinaire + Enragé",
     ],
     'tooltip'      => [
-        'click_info' => "Cliquez sur l'objet pour verrouiller la fenêtre.",
+        'click_lock'   => "Cliquez sur l'objet pour verrouiller la fenêtre.",
+        'click_unlock' => "Cliquez à nouveau pour déverrouiller la fenêtre.",
     ],
     'weight'       => [
         'Light'    => 'Léger',

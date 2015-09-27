@@ -1,3 +1,9 @@
+## 1.0.16 (2015-09-27)
+
+  - adding chat link in tooltips
+  - better message for locking/unlocking tooltips
+  - new version of gw2 api client for gw2skills links (with integration of food/utility)
+
 ## 1.0.15 (2015-09-26)
 
   - adding statistics tab

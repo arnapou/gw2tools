@@ -14,6 +14,12 @@
             {{ item.count > 1 ? item.count~' ' : '' }}{{ item.skin ? item.skin.name : item.name }}
         </div>
     </div>
+    
+    {% if item.chatlink %}
+        <div class="gwchatlink">
+            <input type="text" readonly="readonly" value="{{ item.chatlink }}" onclick="this.setSelectionRange(0, this.value.length)" />
+        </div>
+    {% endif %}
 
     {% if item.type == 'Weapon' %}
 
@@ -230,7 +236,8 @@
     </div>
 
     <div class="gwclickinfo">
-        {{ 'tooltip.click_info'|trans }}
+        <span class="lock">{{ 'tooltip.click_lock'|trans }}</span>
+        <span class="unlock">{{ 'tooltip.click_unlock'|trans }}</span>
     </div>
 </div>
 

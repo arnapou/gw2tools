@@ -153,7 +153,8 @@ return [
         "Dire + Rabid"           => "Dire + Rabid",
     ],
     'tooltip'      => [
-        'click_info' => 'Click on the item to lock the tooltip.',
+        'click_lock'   => 'Click on the item to lock the tooltip.',
+        'click_unlock' => "Click again to unlock the tooltip.",
     ],
     'weight'       => [
         'Light'    => 'Light',
