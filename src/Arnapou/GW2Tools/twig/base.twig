@@ -42,7 +42,7 @@
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             {{ list.label }} <span class="caret"></span>
                                         </a>
-                                        <ul class="dropdown-menu">
+                                        <ul class="dropdown-menu scrollable-menu">
                                             {% for item in items %}
                                                 {% if item.separator %}
                                                     <li role="separator" class="divider"></li>
@@ -74,7 +74,7 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         {{ account.name ? account.name : ('menu.accounts'|trans) }} <span class="caret"></span>
                                     </a>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu scrollable-menu">
                                         {% for usr in users %}
                                             <li title="{{ usr.account.permissions|join("\n") }}">
                                                 <a href="/{{ lang }}/{{ usr.code }}/" class="account-link">

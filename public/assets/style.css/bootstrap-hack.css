@@ -48,3 +48,9 @@ table.table > tbody tr:first-child td {
 .panel-inverse .expandcollapse {
     margin-left: 1em;
 }
+
+.scrollable-menu {
+    height: auto;
+    max-height: 33.5em;
+    overflow-x: hidden;
+}
