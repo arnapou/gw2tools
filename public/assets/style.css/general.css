@@ -189,6 +189,9 @@ img.item {
 .page-character .equipment a {
     outline: 0;
 }
+.page-character .crafting span {
+    white-space: nowrap;
+}
 .page-character .equipment-type {
     display: block;
     color: #999;

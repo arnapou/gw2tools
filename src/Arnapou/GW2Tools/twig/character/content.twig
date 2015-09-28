@@ -54,7 +54,7 @@
                             <tbody>
                                 <tr>
                                     <td>{{ 'global.crafting'|trans }}</td>
-                                    <td>
+                                    <td class="crafting">
                                         {% if char.crafting|length %}
                                             {% for craft in char.crafting %}
                                                 <span title="{{ ('crafting.'~craft.name)|trans }}">
