@@ -1,3 +1,8 @@
+## 1.0.17 (2015-09-29)
+
+  - scrollbar in menu if too much characters
+  - adding empty infusion slot in character and equipments
+
 ## 1.0.16 (2015-09-27)
 
   - adding chat link in tooltips

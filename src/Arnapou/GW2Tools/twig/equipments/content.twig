@@ -103,6 +103,14 @@
                         <img src="{{ infusion|image }}" class="upgrade" />
                     </span>
                 {% endfor %}
+                {% set nb = obj.infusionslots|length - obj.infusions|length %}
+                {% if nb > 0 %}
+                    {% for i in 1..nb %}
+                        <span>
+                            <img src="/assets/images/infusion_slot_inverted.png" class="infusion empty" />
+                        </span>
+                    {% endfor %}
+                {% endif %}
             </span>
             <span class="name">
                 {% set attrs = obj.attributes %}

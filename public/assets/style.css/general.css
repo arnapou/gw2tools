@@ -80,7 +80,13 @@ img.infusion {
     height: 2em;
     width: 2em;
     vertical-align: middle;
-    margin-right: 4px;
+    margin-right: .3em;
+}
+img.infusion.empty {
+    height: 1.8em;
+    width: 1.8em;
+    vertical-align: middle;
+    margin: .1em .4em .1em .1em;
 }
 
 img.currency {
@@ -287,9 +293,9 @@ img.item {
 }
 .page-equipments .object img.infusion,
 .page-equipments .object img.upgrade {
-    width: 1em;
-    height: 1em;
-    margin-right: 1px;
+    width: 1em !important;
+    height: 1em !important;
+    margin: 0 1px 0 0 !important;
 }
 .page-equipments thead .profession {
     margin-right: .3em;
