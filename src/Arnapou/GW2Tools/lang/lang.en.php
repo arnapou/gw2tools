@@ -165,6 +165,7 @@ return [
     'statistics'   => [
         'characters'        => 'Characters',
         'genders'           => 'Genders',
+        'wallet'            => 'Wallet',
         'professions'       => 'Professions',
         'races'             => 'Races',
         'golds'             => 'Golds',

@@ -1,3 +1,9 @@
+## 1.0.18 (2015-10-03)
+
+  - statistics : adding all currencies
+  - dyes : grouped dyes by rarity
+  - cache : decrease the retention time to 10 min for characters
+
 ## 1.0.17 (2015-09-29)
 
   - scrollbar in menu if too much characters

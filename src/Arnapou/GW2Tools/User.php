@@ -177,13 +177,16 @@ class User {
     public function save() {
         $conn = self::getConnection();
         $this->setLastaccess();
-        $conn->executeReplace(self::table(), [
-            'name'       => $this->getAccount()->getName(),
-            'code'       => $this->code,
-            'token'      => $this->token,
-            'lastaccess' => $this->lastaccess,
-            'data'       => serialize($this->data),
-        ]);
+        $name = $this->getAccount()->getName();
+        if (!empty($name)) {
+            $conn->executeReplace(self::table(), [
+                'name'       => $name,
+                'code'       => $this->code,
+                'token'      => $this->token,
+                'lastaccess' => $this->lastaccess,
+                'data'       => serialize($this->data),
+            ]);
+        }
         return $this;
     }
 

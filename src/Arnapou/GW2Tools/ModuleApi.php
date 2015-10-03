@@ -78,7 +78,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
     public function configure() {
         parent::configure();
 
-        // generic
+// generic
         $this->addRoute('', [$this, 'routeIndex']);
         $this->addRoute('technical-infos', [$this, 'routeTechnicalInfos']);
         $this->addRoute('token-check', [$this, 'routeTokenCheck']);
@@ -92,7 +92,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         $this->addRoute('trait/{id}.html', [$this, 'routeTooltipTrait'])->assert('id', '[0-9]+');
         $this->addRoute('specialization/{id}.html', [$this, 'routeTooltipSpecialization'])->assert('id', '[0-9]+');
 
-        // user space
+// user space
         $regexpCode = '[A-Za-z0-9]{10}';
 
         $this->addRoute('{code}/{any}', [$this, 'routeHome'])->assert('code', $regexpCode)->assert('any', '.*');
@@ -589,11 +589,24 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
         try {
             $context = $this->getContext('statistics');
             if ($context) {
-                $stats  = Statistics::getInstance();
+                $stats = Statistics::getInstance();
                 $stats->setAccount($this->user->getAccount());
-                $method = 'getDataset' . $dataset;
-                if (method_exists($stats, $method)) {
-                    $response = new ResponseJson($stats->$method());
+                if (preg_match('!^wallet-([0-9]+)$!', $dataset, $m)) {
+                    $method = 'getDatasetWallet';
+                    if (method_exists($stats, $method)) {
+                        $data = $stats->$method($m[1]);
+                        if (!empty($data)) {
+                            $response = new ResponseJson($data);
+                        }
+                    }
+                }
+                else {
+                    $method = 'getDataset' . $dataset;
+                    if (method_exists($stats, $method)) {
+                        $response = new ResponseJson($stats->$method());
+                    }
+                }
+                if (isset($response)) {
                     $response->setMaxAge(900);
                     $response->setExpires(new \DateTime('@' . (time() + 900)));
                     $response->setPublic();

@@ -312,18 +312,9 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetGolds() {
-        $value = $this->account ? $this->account->getStatsWallet()[1] : null;
-        return $this->calcPercentiles('wallet', 1, $value);
-    }
-
-    /**
-     * 
-     * @return array
-     */
-    public function getDatasetKarma() {
-        $value = $this->account ? $this->account->getStatsWallet()[2] : null;
-        return $this->calcPercentiles('wallet', 2, $value);
+    public function getDatasetWallet($id) {
+        $value = $this->account ? $this->account->getStatsWallet()[$id] : null;
+        return $this->calcPercentiles('wallet', $id, $value);
     }
 
     /**

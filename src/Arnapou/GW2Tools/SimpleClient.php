@@ -12,6 +12,8 @@
 namespace Arnapou\GW2Tools;
 
 use Arnapou\GW2Api\Core\AbstractClient;
+use Arnapou\GW2Api\Model\Color;
+use Arnapou\GW2Api\Model\Dyes;
 use Arnapou\GW2Api\Model\Item;
 
 class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
@@ -38,8 +40,22 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
 
             $manager = $client->getClientV2()->getRequestManager();
             $manager->setDefautCacheRetention(1800);
-//            $manager->addCacheRetentionPolicy('/v2/commerce/listings', 1800);
-//            $manager->addCacheRetentionPolicy('/v2/commerce/prices', 1800);
+            $manager->addCacheRetentionPolicy('/v1/guild_details', 86400);
+            $manager->addCacheRetentionPolicy('/v2/colors', 604000);
+            $manager->addCacheRetentionPolicy('/v2/commerce/listings', 600);
+            $manager->addCacheRetentionPolicy('/v2/commerce/prices', 600);
+            $manager->addCacheRetentionPolicy('/v2/characters', 600);
+            $manager->addCacheRetentionPolicy('/v2/currencies', 86400);
+            $manager->addCacheRetentionPolicy('/v2/files', 604000);
+            $manager->addCacheRetentionPolicy('/v2/items', 604000);
+            $manager->addCacheRetentionPolicy('/v2/maps', 604000);
+            $manager->addCacheRetentionPolicy('/v2/materials', 604000);
+            $manager->addCacheRetentionPolicy('/v2/quaggans', 604000);
+            $manager->addCacheRetentionPolicy('/v2/recipes', 604000);
+            $manager->addCacheRetentionPolicy('/v2/skins', 604000);
+            $manager->addCacheRetentionPolicy('/v2/specializations', 604000);
+            $manager->addCacheRetentionPolicy('/v2/traits', 604000);
+            $manager->addCacheRetentionPolicy('/v2/worlds', 604000);
 
 //            $manager
 //                ->getEventListener()
@@ -67,6 +83,38 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
             return $object['value']['id'];
         }
         return null;
+    }
+
+    /**
+     * 
+     * @param Dyes $dyes
+     * @return array
+     */
+    public function getDyesByRarity(Dyes $dyes = null) {
+        $colors  = $dyes->getColors();
+        $map     = $this->getDyeItems();
+        $grouped = [];
+        foreach ($colors as /* @var $color Color */ $color) {
+            if (isset($map[$color->getId()])) {
+                $item   = $map[$color->getId()];
+                $rarity = $item->getRarity();
+            }
+            else {
+                $item   = null;
+                $rarity = '';
+            }
+            if (empty($grouped[$rarity])) {
+                $grouped[$rarity] = [
+                    'count' => 0,
+                    'total' => 0,
+                    'items' => [],
+                ];
+            }
+            $grouped[$rarity]['items'][] = [$color, $item];
+            $grouped[$rarity]['count'] += $color->isUnlocked() ? 1 : 0;
+            $grouped[$rarity]['total'] ++;
+        }
+        return $grouped;
     }
 
     /**

@@ -13,6 +13,7 @@ namespace Arnapou\GW2Tools;
 
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
+use Arnapou\GW2Api\Model\BankVault;
 use Arnapou\GW2Api\Model\Character;
 use Arnapou\GW2Api\Model\Item;
 
@@ -78,6 +79,21 @@ class Gw2Account extends \Arnapou\GW2Api\Model\Account {
         catch (\Exception $ex) {
             
         }
+    }
+
+    /**
+     * 
+     * @return array
+     */
+    public function getCurrencies() {
+        $currencies = $this->client->v2_currencies($this->client->v2_currencies());
+        usort($currencies, function($a, $b) {
+            if ($a['order'] == $b['order']) {
+                return 0;
+            }
+            return $a['order'] > $b['order'] ? 1 : -1;
+        });
+        return $currencies;
     }
 
     /**
@@ -182,7 +198,7 @@ class Gw2Account extends \Arnapou\GW2Api\Model\Account {
      * 
      * @return array
      */
-    public function getAscendedCount() {
+    protected function getItemsRarityCount($rarity) {
         $data = [
             Item::TYPE_ARMOR   => 0,
             Item::TYPE_WEAPON  => 0,
@@ -193,7 +209,19 @@ class Gw2Account extends \Arnapou\GW2Api\Model\Account {
         foreach ($this->getCharacters() as /* @var $character Character */ $character) {
             foreach ($character->getInventoryStuff() as $items) {
                 foreach ($items as /* @var $item Item */ $item) {
-                    if ($item->getRarity() == Item::RARITY_ASCENDED) {
+                    if ($item->getRarity() == $rarity) {
+                        $data['Total'] ++;
+                        if (in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
+                            $data[$item->getType()] ++;
+                        }
+                    }
+                }
+            }
+        }
+        if ($this->hasPermission(self::PERMISSION_INVENTORIES)) {
+            foreach ($this->getBankVaults() as /* @var $vault BankVault */ $vault) {
+                foreach ($vault->getItems() as /* @var $item Item */ $item) {
+                    if (!empty($item) && $item->getRarity() == $rarity) {
                         $data['Total'] ++;
                         if (in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
                             $data[$item->getType()] ++;
@@ -209,27 +237,16 @@ class Gw2Account extends \Arnapou\GW2Api\Model\Account {
      * 
      * @return array
      */
+    public function getAscendedCount() {
+        return $this->getItemsRarityCount(Item::RARITY_ASCENDED);
+    }
+
+    /**
+     * 
+     * @return array
+     */
     public function getLegendariesCount() {
-        $data = [
-            Item::TYPE_ARMOR   => 0,
-            Item::TYPE_WEAPON  => 0,
-            Item::TYPE_TRINKET => 0,
-            Item::TYPE_BACK    => 0,
-            'Total'            => 0,
-        ];
-        foreach ($this->getCharacters() as /* @var $character Character */ $character) {
-            foreach ($character->getInventoryStuff() as $items) {
-                foreach ($items as /* @var $item Item */ $item) {
-                    if ($item->getRarity() == Item::RARITY_LEGENDARY) {
-                        $data['Total'] ++;
-                        if (in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
-                            $data[$item->getType()] ++;
-                        }
-                    }
-                }
-            }
-        }
-        return $data;
+        return $this->getItemsRarityCount(Item::RARITY_LEGENDARY);
     }
 
     /**

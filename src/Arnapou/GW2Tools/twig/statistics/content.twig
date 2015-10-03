@@ -6,6 +6,7 @@
 
 <ul class="nav nav-tabs">
     <li><a href="#" data-tab="tab-global">{{ 'statistics.global'|trans }}</a></li>
+    <li><a href="#" data-tab="tab-wallet">{{ 'statistics.wallet'|trans }}</a></li>
     <li><a href="#" data-tab="tab-unlocks">{{ 'statistics.unlocks'|trans }}</a></li>
     <li><a href="#" data-tab="tab-characters">{{ 'statistics.characters'|trans }}</a></li>
     <li><a href="#" data-tab="tab-pvp">{{ 'statistics.pvp'|trans }}</a></li>
@@ -45,30 +46,59 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-xs-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'statistics.golds'|trans }}</h3>
-                </div>
-                <div class="panel-body">
-                    <div data-chart="Percentile" data-source="golds.json" data-unit="golds" data-divisor="10000" data-legend="" data-color="#c9a900"><div class="spinner-loader"></div></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'statistics.karma'|trans }}</h3>
-                </div>
-                <div class="panel-body">
-                    <div data-chart="Percentile" data-source="karma.json" data-unit="karma" data-legend="" data-color="#9F339F"><div class="spinner-loader"></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+
+<div class="tab tab-wallet" style="display: none;">
+    <div class="row">
+        {% set colors = {
+            '1' : '#c9a900',
+            '2' : '#843E84',
+            '3' : '#486128',
+            '4' : '#22439A',
+            '5' : '#86D3F5',
+            '6' : '#83836B',
+            '7' : '#42BE9C',
+            '9' : '#BFBFB1',
+            '10': '#8F674F',
+            '11': '#6C3541',
+            '12': '#83A7BF',
+            '13': '#861A0B',
+            '14': '#BC3C75',
+            '15': '#727266',
+            '16': '#D8CAAD',
+            '18': '#9D6D17',
+            '23': '#9BA1C4',
+            '24': '#129B8B',
+            '25': '#AEAF86',
+            '26': '#E1A971',
+            '27': '#A89A73',
+        } %}
+        {% for column in account.currencies|columns(2, false) %}
+            <div class="col-xs-6">
+                {% for item in column %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <img src="{{ item.icon|image }}" class="currency" /> &nbsp; {{ item.name }}
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            {% if item.id == 1 %}
+                                <div data-chart="Percentile" data-source="wallet-{{ item.id }}.json" data-unit="golds" data-divisor="10000" data-legend="" data-color="{{ colors[item.id] ? colors[item.id] : '#888888'}}">
+                                    <div class="spinner-loader"></div>
+                                </div>
+                            {% else %}
+                                <div data-chart="Percentile" data-source="wallet-{{ item.id }}.json" data-unit="{{ item.name|lower }}" data-legend="" data-color="{{ colors[item.id] ? colors[item.id] : '#888888'}}">
+                                    <div class="spinner-loader"></div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</diV>
 
 <div class="tab tab-unlocks" style="display: none;">
     <div class="row">
@@ -261,6 +291,13 @@
         </div>
     </div>
 </div>
+
+<style>
+    img.currency {
+        height: 1.5em;
+        width: 1.5em;
+    }
+</style>
 
 <script>
     $(function () {
