@@ -78,7 +78,7 @@
                                         {% for usr in users %}
                                             <li title="{{ usr.account.permissions|join("\n") }}">
                                                 <a href="/{{ lang }}/{{ usr.code }}/" class="account-link">
-                                                    <small> ... {{ usr.token|slice(-6) }}</small>
+                                                    <small> ... {{ usr.token|slice(-4) }}</small>
                                                     {{ usr.account.name }}
                                                 </a>
                                             </li>
