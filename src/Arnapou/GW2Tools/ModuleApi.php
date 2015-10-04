@@ -477,7 +477,7 @@ class ModuleApi extends \Arnapou\GW2Tools\AbstractModule {
                     }
                 }
             }
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 
             }
         }

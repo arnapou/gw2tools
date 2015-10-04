@@ -206,7 +206,7 @@ class User {
         try {
             $account = $this->getAccount();
             if (empty($account->getName())) {
-                throw new InvalidTokenException();
+                throw new EmptyAccountNameException();
             }
             return $account;
         }
