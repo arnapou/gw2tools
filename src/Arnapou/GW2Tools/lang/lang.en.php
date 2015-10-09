@@ -75,6 +75,7 @@ return [
         'WeaponB'        => 'WeaponB',
         'WeaponB1'       => 'WeaponB1',
         'WeaponB2'       => 'WeaponB2',
+        'WeaponAquatic'  => 'WeaponAquatic',
         'WeaponAquaticA' => 'WeaponAquaticA',
         'WeaponAquaticB' => 'WeaponAquaticB',
         'Ring'           => 'Ring',
@@ -232,6 +233,8 @@ return [
         'profession'             => 'Profession',
         'public_access'          => 'Public access',
         'public_other'           => 'Other rights',
+        'pve'                    => 'Pve',
+        'pvp'                    => 'Pvp',
         'quantity'               => 'Quantity',
         'race'                   => 'Race',
         'rarity'                 => 'Rarity',
@@ -278,6 +281,7 @@ return [
         'weapons_set2'           => 'Weapons set 2',
         'weapons_aquatic'        => 'Weapons aquatic',
         'world'                  => 'World',
+        'wvw'                    => 'Wvw',
     ],
     'menu'         => [
         'accounts'                 => 'Accounts',
@@ -305,6 +309,8 @@ return [
         'tp'                       => 'Trading post',
         'tp.tp_buys'               => 'Buys',
         'tp.tp_sells'              => 'Sells',
+        'achievements'             => 'Achievements',
+        'achievements.daily'       => 'Daily',
     ],
     'footer'       => [
         'changelog'         => 'Changelog',

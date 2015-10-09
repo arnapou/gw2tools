@@ -68,6 +68,11 @@ class MenuList implements \IteratorAggregate {
         $menu->addItem('tp_buys', $trans['menu.tp.tp_buys'])->setPermission(Gw2Account::PERMISSION_TRADINGPOST);
         $menu->addItem('tp_sells', $trans['menu.tp.tp_sells'])->setPermission(Gw2Account::PERMISSION_TRADINGPOST);
         $this->addMenu($menu);
+
+        // menu 5
+        $menu = Menu::create($trans['menu.achievements']);
+        $menu->addItem('achievements_daily', $trans['menu.achievements.daily']);
+        $this->addMenu($menu);
     }
 
     /**

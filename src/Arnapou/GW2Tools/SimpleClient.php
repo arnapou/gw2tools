@@ -71,6 +71,27 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
 
     /**
      * 
+     * @return array
+     */
+    public function getAchievementsDaily() {
+        $daily = $this->v2_achievements_daily();
+        $ids   = [];
+        foreach ($daily as $type => $items) {
+            foreach ($items as $item) {
+                $ids[] = $item['id'];
+            }
+        }
+        $objects = $this->v2_achievements($ids);
+        foreach ($daily as $type => &$items) {
+            foreach ($items as &$item) {
+                $item['object'] = isset($objects[$item['id']]) ? $objects[$item['id']] : null;
+            }
+        }
+        return $daily;
+    }
+
+    /**
+     * 
      * @param integer $item_id
      * @return integer
      */

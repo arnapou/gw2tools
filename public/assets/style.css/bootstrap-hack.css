@@ -51,6 +51,6 @@ table.table > tbody tr:first-child td {
 
 .scrollable-menu {
     height: auto;
-    max-height: 33.5em;
+    max-height: 34em;
     overflow-x: hidden;
 }

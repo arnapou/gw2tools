@@ -1,0 +1,20 @@
+{% extends "base.twig" %}
+
+{% block content %}
+
+    <div class="page-{{ page}}" data-content="ajax" data-src="./content.html">
+        <div class="row">
+            {% for env in ['pve', 'wvw', 'pvp'] %}
+                <div class="col-xs-4 summary">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ page_name }} - {{ ('global.'~env)|trans }}</div>
+                        <div class="panel-body">
+                            <div class="spinner-loader"></div> <em>{{ "global.loading"|trans }}</em>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,3 +1,10 @@
+## 1.0.19 (2015-10-09)
+
+  - add daily achievements generic informations
+  - fix AR calculation
+  - fix armor weight class in tooltips
+  - fix translations
+
 ## 1.0.18 (2015-10-03)
 
   - statistics : adding all currencies

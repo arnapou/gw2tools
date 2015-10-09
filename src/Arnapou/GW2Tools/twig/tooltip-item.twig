@@ -160,7 +160,10 @@
         {% if item.defaultskin %}
             <div>{{ 'global.appearance'|trans }}: {{ item.defaultskin.name }}</div>
         {% endif %}
-        {% if item.type in ['Armor', 'Weapon'] and item.subtype %}
+        {% if item.type == 'Armor' and item.subtype %}
+            <div>{{ ('itemtype.'~item.subtype)|trans }} - {{ item.armorweightclass }}</div>
+        {% endif %}
+        {% if item.type == 'Weapon' and item.subtype %}
             <div>{{ ('itemtype.'~item.subtype)|trans }}</div>
         {% endif %}
         {% if item.type == 'Consumable' %}
