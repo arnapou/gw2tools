@@ -23,7 +23,7 @@
             {% if found %}
                 <div class="row">
                     <div class="col-xs-2">
-                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
+                        <img src="{{ char|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
                         <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
                     </div>
                     <div class="col-xs-10 slots">

@@ -56,14 +56,18 @@
     color: #02f102;
 }
 
-#gwitemdetail .gwstats.food {
-    padding-left: 44px;
-    background: url(/assets/images/food.png) no-repeat 0 0;
-}
-
+#gwitemdetail .gwstats.food,
 #gwitemdetail .gwstats.utility {
-    padding-left: 44px;
-    background: url(/assets/images/utility.png) no-repeat 0 0;
+    padding-left: 4em;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 3em 3em;
+}
+#gwitemdetail .gwstats.food {
+    background-image: url(/assets/images/food.png);
+}
+#gwitemdetail .gwstats.utility {
+    background-image: url(/assets/images/utility.png);
 }
 
 #gwitemdetail .gwupgrade {

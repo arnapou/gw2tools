@@ -1,3 +1,8 @@
+## 1.0.20 (2015-10-09)
+
+  - adding icons 
+  - css fixes
+
 ## 1.0.19 (2015-10-09)
 
   - add daily achievements generic informations

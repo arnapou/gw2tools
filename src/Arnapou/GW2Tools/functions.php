@@ -12,10 +12,13 @@
 namespace Arnapou\GW2Tools;
 
 use Arnapou\GW2Api\Model\AbstractObject;
+use Arnapou\GW2Api\Model\Character;
+use Arnapou\GW2Api\Model\CraftingDiscipline;
 use Arnapou\GW2Api\Model\Guild;
 use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\PvpGame;
+use Arnapou\GW2Api\Model\PvpStatsProfession;
 use Arnapou\GW2Api\Model\Skin;
 use Arnapou\GW2Api\Model\Specialization;
 use Arnapou\GW2Api\Model\SpecializationTrait;
@@ -184,6 +187,12 @@ function image($url) {
     }
     elseif ($url instanceof InventorySlot) {
         return image($url->getSkin() ? $url->getSkin()->getIcon() : $url->getIcon());
+    }
+    elseif ($url instanceof Character || $url instanceof PvpStatsProfession || $url instanceof PvpGame) {
+        return '/assets/images/professions_color/' . $url->getProfession() . '.png';
+    }
+    elseif ($url instanceof CraftingDiscipline) {
+        return '/assets/images/disciplines/' . $url->getName() . '.png';
     }
     elseif ($url instanceof Guild) {
         return image($url->hasEmblem() ? '/guild/' . $url->getId() . '.png' : '');

@@ -17,10 +17,14 @@
     <thead>
         <tr>
             <th>{{ 'global.name'|trans }}</th>
-            <th></th>
-                {% for k, v in attrs %}
-                <th>{{ ('attribute.'~v)|trans }}</th>
-                {% endfor %}
+            <th>
+            </th>
+            {% for k, v in attrs %}
+                <th style="white-space: nowrap">
+                    <img src="/assets/images/attributes/{{ v }}.png" class="attribute" />
+                    {{ ('attribute.'~v)|trans }}
+                </th>
+            {% endfor %}
         </tr>
     </thead>
     <tbody>
@@ -29,7 +33,7 @@
                 {% set attributes = char.attributes %}
                 <tr>
                     <td>
-                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
+                        <img src="{{ char|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
                         <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
                     </td>
                     <td class="text-center" style="width: 2em">

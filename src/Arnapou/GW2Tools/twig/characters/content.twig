@@ -27,7 +27,7 @@
                 {% set totaldeaths = totaldeaths + char.deaths %}
                 <tr>
                     <td>
-                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
+                        <img src="{{ char|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession pull-right" />
                         <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
                     </td>
                     <td>{{ char.level }}</td>

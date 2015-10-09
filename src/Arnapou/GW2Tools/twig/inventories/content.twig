@@ -8,7 +8,7 @@
                 <div class="pull-right">
                     {{ macro.amount(char.bagsprice) }}
                 </div>
-                <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
+                <img src="{{ char|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
                 <a href="../character/{{ char.name }}"><b>{{ char.name }}</b></a>
             </div>
             <div class="panel-body">

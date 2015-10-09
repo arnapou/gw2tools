@@ -46,6 +46,7 @@ body {
     display: inline-block;
     background-position: right center;
     background-repeat: no-repeat;
+    background-size: auto 1em;
 }
 .gold {
     color: #c9a900;
@@ -71,6 +72,12 @@ img.profession {
 img.emblem {
     width: 3em;
     height: 3em;
+    margin-right: .5em;
+    vertical-align: middle;
+}
+img.attribute {
+    width: 1.42857em;
+    height: 1.42857em;
     margin-right: .5em;
     vertical-align: middle;
 }
@@ -190,7 +197,7 @@ img.item {
     margin-right: .1em;
 }
 .page-character .stats tr td.attr {
-    width: 24%;
+    width: 29%;
 }
 .page-character .equipment a {
     outline: 0;

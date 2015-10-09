@@ -31,7 +31,7 @@
                                 <tr>
                                     <td>{{ 'global.profession'|trans }}</td>
                                     <td>
-                                        <img src="{{ char.professionicon|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
+                                        <img src="{{ char|image }}" title="{{ ('profession.'~char.profession)|trans }}" class="profession" />
                                         {{ ('profession.'~char.profession)|trans }}
                                     </td>
                                 </tr>
@@ -116,7 +116,9 @@
                                     'AR',
                                 ] %}
                             <tr>
-                                <td>{{ ('attribute.'~attr)|trans }}</td>
+                                <td title="{{ ('attribute.'~attr)|trans }}">
+                                    <img src="/assets/images/attributes/{{ attr }}.png" class="attribute" />
+                                </td>
                                 {% for k, v in attributes.list[attr] %}
                                     {% if attributes.list[attr]|length == 1 %}
                                         {{ block('single_attributes') }}

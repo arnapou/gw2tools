@@ -26,7 +26,7 @@
                             {% endif %}
                             <tr>
                                 <td class="column-profession">
-                                    <img src="{{ stat.professionicon|image }}" class="profession pull-right" />
+                                    <img src="{{ stat|image }}" class="profession pull-right" />
                                     {{ ('profession.'~stat.profession)|trans }}
                                 </td>
                                 <td>
@@ -118,7 +118,7 @@
                     {% endif %}
                     <tr>
                         <td class="column-profession">
-                            <img src="{{ game.professionicon|image }}" class="profession pull-right" />
+                            <img src="{{ game|image }}" class="profession pull-right" />
                             {{ ('profession.'~game.profession)|trans }}
                         </td>
                         <td class="column-map">{{ game.map.name }}</td>
