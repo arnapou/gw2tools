@@ -124,6 +124,35 @@ class Statistics {
 
     /**
      * 
+     * @param string $array
+     * @param mixed $uservalue
+     * @return array
+     */
+    protected function doCalcPercentiles($array, $uservalue = null) {
+        $userindex = null;
+        $n         = ceil(count($array) / 100);
+        $chunks    = array_chunk($array, $n);
+        $nbchunks  = count($chunks);
+        $data      = array_fill(0, 100, null);
+        foreach ($chunks as $i => $chunk) {
+            $value = $chunk[0];
+            $index = floor(($i + 1) * 100 / $nbchunks) - 1;
+            if ($uservalue !== null && $uservalue <= $value) {
+                $userindex = $index;
+            }
+            $data[$index] = $value;
+        }
+        $result = [$data];
+        if ($userindex !== null) {
+            $userdata             = array_fill(0, 100, null);
+            $userdata[$userindex] = $uservalue;
+            $result[]             = $userdata;
+        }
+        return $result;
+    }
+
+    /**
+     * 
      * @param string $key
      * @param string $subkey
      * @param mixed $uservalue
@@ -132,8 +161,7 @@ class Statistics {
     protected function calcPercentiles($key, $subkey, $uservalue = null) {
         $cacheKey = 'percentile/' . $key . '/' . $subkey . '/' . ($this->account ? $this->account->getName() : '');
         return $this->cacheGet($cacheKey, function() use ($key, $subkey, $uservalue) {
-                $userindex = null;
-                $array     = $this->cacheGet('rawpercentile/' . $key . '/' . $subkey, function() use ($key, $subkey) {
+                $array = $this->cacheGet('rawpercentile/' . $key . '/' . $subkey, function() use ($key, $subkey) {
                     foreach ($this->collection->find() as $row) {
                         if (isset($row[$key], $row[$key][$subkey])) {
                             $array[] = $row[$key][$subkey];
@@ -142,26 +170,28 @@ class Statistics {
                     rsort($array);
                     return $array;
                 }, 4 * 3600);
-                $n        = ceil(count($array) / 100);
-                $chunks   = array_chunk($array, $n);
-                $nbchunks = count($chunks);
-                $data     = array_fill(0, 100, null);
-                foreach ($chunks as $i => $chunk) {
-                    $value = $chunk[0];
-                    $index = floor(($i + 1) * 100 / $nbchunks) - 1;
-                    if ($uservalue !== null && $uservalue <= $value) {
-                        $userindex = $index;
+                return $this->doCalcPercentiles($array, $uservalue);
+            }, 900);
+    }
+
+    /**
+     * 
+     * @return array
+     */
+    public function getDatasetUsers() {
+        $cacheKey = 'percentile/users_connections/' . ($this->account ? $this->account->getName() : '');
+        return $this->cacheGet($cacheKey, function() {
+                $array = $this->cacheGet('rawpercentile/users_connections', function() {
+                    $conn  = User::getConnection();
+                    $sql   = "SELECT " . time() . " - `lastaccess` as n FROM `tokens` ORDER BY n";
+                    $array = [];
+                    foreach ($conn->query($sql) as $row) {
+                        $array[] = floor($row['n'] / 86400);
                     }
-                    $data[$index] = $value;
-                }
-                $result = [$data];
-                if ($userindex !== null) {
-                    $userdata             = array_fill(0, 100, null);
-                    $userdata[$userindex] = $uservalue;
-                    $result[]             = $userdata;
-                }
-                return $result;
-            });
+                    return $array;
+                }, 3600);
+                return $this->doCalcPercentiles($array);
+            }, 900);
     }
 
     /**

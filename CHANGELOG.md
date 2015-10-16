@@ -1,3 +1,7 @@
+## 1.0.22 (2015-10-16)
+
+  - adding a statistic tab for users
+
 ## 1.0.21 (2015-10-16)
 
   - updating profession icons 

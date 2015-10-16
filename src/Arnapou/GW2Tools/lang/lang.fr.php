@@ -191,6 +191,7 @@ return [
         'pvp'               => 'Pvp',
         'items'             => 'Objets',
         'calculated'        => 'calculé sur %count% comptes',
+        'users'             => 'Utilisateurs',
     ],
     'global'       => [
         'account_bound'          => 'Lié au compte',

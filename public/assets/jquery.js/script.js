@@ -317,6 +317,7 @@ function renderPercentileChart() {
         }
         $chart.data('rendered', true);
         var unit = $chart.data('unit');
+        var tooltip = $chart.data('tooltip') || '<b>{point}%</b> of players have <b>{val}</b> {unit}';
         var divisor = $chart.data('divisor') ? parseInt($chart.data('divisor')) : 1;
         $.getJSON($(this).data('source'), function (data) {
             var series = [{
@@ -366,8 +367,10 @@ function renderPercentileChart() {
                 },
                 tooltip: {
                     formatter: function () {
-                        var val = Math.floor(this.point.y / divisor);
-                        return '<b>' + this.point.x + '%</b> of players have <b>' + formatNumber(val) + '</b> ' + unit;
+                        return tooltip
+                                .replace('{point}', this.point.x)
+                                .replace('{val}', formatNumber(Math.floor(this.point.y / divisor)))
+                                .replace('{unit}', unit);
                     }
                 },
                 plotOptions: {
