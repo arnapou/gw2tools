@@ -189,7 +189,7 @@ function image($url) {
         return image($url->getSkin() ? $url->getSkin()->getIcon() : $url->getIcon());
     }
     elseif ($url instanceof Character || $url instanceof PvpStatsProfession || $url instanceof PvpGame) {
-        return '/assets/images/professions_wiki/' . $url->getProfession() . '.png';
+        return '/assets/images/professions_colored/' . $url->getProfession() . '.png';
     }
     elseif ($url instanceof CraftingDiscipline) {
         return '/assets/images/disciplines/' . $url->getName() . '.png';
