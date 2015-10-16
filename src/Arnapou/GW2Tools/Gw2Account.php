@@ -210,9 +210,9 @@ class Gw2Account extends \Arnapou\GW2Api\Model\Account {
             foreach ($character->getInventoryStuff() as $items) {
                 foreach ($items as /* @var $item Item */ $item) {
                     if ($item->getRarity() == $rarity) {
-                        $data['Total'] ++;
                         if (in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
                             $data[$item->getType()] ++;
+                            $data['Total'] ++;
                         }
                     }
                 }
@@ -222,9 +222,9 @@ class Gw2Account extends \Arnapou\GW2Api\Model\Account {
             foreach ($this->getBankVaults() as /* @var $vault BankVault */ $vault) {
                 foreach ($vault->getItems() as /* @var $item Item */ $item) {
                     if (!empty($item) && $item->getRarity() == $rarity) {
-                        $data['Total'] ++;
                         if (in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
                             $data[$item->getType()] ++;
+                            $data['Total'] ++;
                         }
                     }
                 }
