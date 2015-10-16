@@ -48,7 +48,7 @@
                     {% for attr in attrs %}
                         <td>
                             {% for k, v in attributes.list[attr] %}
-                                <div style="{{ (attributes.list[attr]|length) == 1 ? 'line-height: 4.5em' : '' }}">
+                                <div>
                                     <span class="attr" title="{{ ('itemtype.'~k)|trans }}">
                                         {{ v }}
                                         {% if attributes.list[attr~'Pct'] %}

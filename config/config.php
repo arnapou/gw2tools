@@ -14,7 +14,7 @@ return array(
     'path.data'     => __DIR__ . '/../data',
     'path.log'      => __DIR__ . '/../log',
     'date.timezone' => 'UTC',
-    'version'       => '1.0.20',
+    'version'       => '1.0.21',
     'table'         => [
         'tokens' => 'tokens',
     ],

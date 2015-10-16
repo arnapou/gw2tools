@@ -1,3 +1,9 @@
+## 1.0.21 (2015-10-16)
+
+  - updating profession icons 
+  - fix statistics
+  - fix attributes
+
 ## 1.0.20 (2015-10-09)
 
   - adding icons 

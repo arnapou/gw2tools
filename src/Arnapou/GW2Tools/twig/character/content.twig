@@ -120,26 +120,23 @@
                                     <img src="/assets/images/attributes/{{ attr }}.png" class="attribute" />
                                 </td>
                                 {% for k, v in attributes.list[attr] %}
-                                    {% if attributes.list[attr]|length == 1 %}
-                                        {{ block('single_attributes') }}
-                                        {{ block('single_attributes') }}
-                                        {{ block('single_attributes') }}
-                                    {% else %}
-                                        {% block single_attributes %}
-                                            <td class="attr" colspan="3">
-                                                <span class="attr" title="{{ ('itemtype.'~k)|trans }}">
-                                                    {{ v }}
-                                                    {% if attributes.list[attr~'Pct'] %}
-                                                        &nbsp;&nbsp;
-                                                        <small class="text-muted">
-                                                            {{ attributes.list[attr~'Pct'][k] }}%
-                                                        </small>
-                                                    {% endif %}
-                                                </span>
-                                            </td>
-                                        {% endblock %}
-                                    {% endif %}
+                                    {% block single_attributes %}
+                                        <td class="attr">
+                                            <span class="attr" title="{{ ('itemtype.'~k)|trans }}">
+                                                {{ v }}
+                                                {% if attributes.list[attr~'Pct'] %}
+                                                    &nbsp;&nbsp;
+                                                    <small class="text-muted">
+                                                        {{ attributes.list[attr~'Pct'][k] }}%
+                                                    </small>
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                    {% endblock %}
                                 {% endfor %}
+                                {% if attributes.list[attr]|length == 2 %}
+                                    <td class="attr"></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
