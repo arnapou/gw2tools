@@ -14,6 +14,8 @@ namespace Arnapou\GW2Tools;
 use Arnapou\GW2Api\Core\AbstractClient;
 use Arnapou\GW2Api\Model\Color;
 use Arnapou\GW2Api\Model\Dyes;
+use Arnapou\GW2Api\Model\Mini;
+use Arnapou\GW2Api\Model\Minis;
 use Arnapou\GW2Api\Model\Item;
 
 class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
@@ -104,6 +106,66 @@ class SimpleClient extends \Arnapou\GW2Api\SimpleClient {
             return $object['value']['id'];
         }
         return null;
+    }
+
+    /**
+     * 
+     * @param integer $item_id
+     * @return integer
+     */
+    public function getMiniId($item_id) {
+        $cache      = MongoCache::getInstance();
+        $lang       = Translator::getInstance()->getLang();
+        $collection = $cache->getCache()->getMongoCollection($lang . '_minis');
+        $object     = $collection->findOne(['value.item_id' => $item_id]);
+        if ($object && isset($object['value'], $object['value']['id'])) {
+            return $object['value']['id'];
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @param integer $item_id
+     * @return Mini
+     */
+    public function getMini($item_id) {
+        $id = $this->getMiniId($item_id);
+        if($id){
+            return new Mini($this, $id);
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @param Minis $minis
+     * @return array
+     */
+    public function getMinisByRarity(Minis $minis = null) {
+        $minis   = $minis->getMinis();
+        $grouped = [];
+        foreach ($minis as /* @var $mini Mini */ $mini) {
+            $item = $mini->getItem();
+            if ($item) {
+                $rarity = $item->getRarity();
+            }
+            else {
+                $item   = null;
+                $rarity = '';
+            }
+            if (empty($grouped[$rarity])) {
+                $grouped[$rarity] = [
+                    'count' => 0,
+                    'total' => 0,
+                    'items' => [],
+                ];
+            }
+            $grouped[$rarity]['items'][] = [$mini, $item];
+            $grouped[$rarity]['count'] += $mini->isUnlocked() ? 1 : 0;
+            $grouped[$rarity]['total'] ++;
+        }
+        return $grouped;
     }
 
     /**

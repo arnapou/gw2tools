@@ -43,6 +43,7 @@ return [
         'Leatherworker' => 'Travailleur du cuir',
         'Tailor'        => 'Tailleur',
         'Weaponsmith'   => "Forgeron d'armes",
+        'Scribe'        => "Illustrateur",
     ],
     'gender'       => [
         'Male'   => 'Homme',
@@ -268,6 +269,7 @@ return [
         'unknown'                => 'inconnu',
         'unknown_attributes_for' => 'Attributs inconnus pour %attributes%',
         'unlimited_usage'        => 'Usage illimité',
+        'unlock'                 => 'Déverrouillage',
         'unlock_weapon_twohands' => 'Armes à deux mains',
         'unlock_weapon_onehand'  => 'Armes à une main',
         'unlock_weapon_aquatic'  => 'Armes aquatiques',
@@ -309,6 +311,7 @@ return [
         'unlocks.wardrobe_armors'  => 'Armures de la garde-robe',
         'unlocks.wardrobe_weapons' => 'Armes de la garde-robe',
         'unlocks.dyes'             => 'Teintures',
+        'unlocks.minis'            => 'Miniatures',
         'tp'                       => 'Comptoir',
         'tp.tp_buys'               => 'Achats',
         'tp.tp_sells'              => 'Ventes',

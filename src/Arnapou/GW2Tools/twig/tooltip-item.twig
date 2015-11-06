@@ -151,6 +151,15 @@
             </div>
         {% endif %}
 
+    {% elseif item.type == 'MiniPet' %}
+
+        {% set mini = item.client.mini(item.id) %}
+        {% if mini.unlock %}
+            <div class="gwmini">
+                {{ 'global.unlock'|trans }}: {{ mini.unlock }}
+            </div>
+        {% endif %}
+
     {% endif %}
 
     <div class="gwinfos">

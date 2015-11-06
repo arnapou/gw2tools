@@ -1,3 +1,12 @@
+## 1.0.23 (2015-11-06)
+
+  - adding mini unlocks
+  - adding HoT new stats (Commander, Wanderer, Marauder, Crusader, Trailblazer, Minstrel, Vigilant, Viper's)
+  - adding HoT new attributes (Concentration, Expertise)
+  - adding HoT new crafting discipline (Scribe)
+  - fix AR calculation for attributes
+  - update profession icons (elementalist, engineer, ...)
+
 ## 1.0.22 (2015-10-16)
 
   - adding a statistic tab for users

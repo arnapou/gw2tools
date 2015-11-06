@@ -25,7 +25,7 @@ class MenuList implements \IteratorAggregate {
     public function __construct(Gw2Account $account = null) {
         $trans = Translator::getInstance();
 
-        // menu 1
+        // GENERAL
         $menu = Menu::create($trans['menu.general']);
         $menu->addItem('account', $trans['menu.general.account']);
         $menu->addItem('wallet', $trans['menu.general.wallet'])->setPermission(Gw2Account::PERMISSION_WALLET);
@@ -35,7 +35,7 @@ class MenuList implements \IteratorAggregate {
         $menu->addItem('statistics', $trans['menu.general.statistics']);
         $this->addMenu($menu);
 
-        // menu 2
+        // CHARACTERS
         $menu = Menu::create($trans['menu.characters']);
         $menu->addItem('characters', $trans['menu.characters.characters']);
         $menu->addItem('equipments', $trans['menu.characters.equipments']);
@@ -50,26 +50,27 @@ class MenuList implements \IteratorAggregate {
         }
         $this->addMenu($menu);
 
-        // menu 3
+        // VAULTS
         $menu = Menu::create($trans['menu.vaults']);
         $menu->addItem('bank', $trans['menu.vaults.bank'])->setPermission(Gw2Account::PERMISSION_INVENTORIES);
         $menu->addItem('collectibles', $trans['menu.vaults.collectibles'])->setPermission(Gw2Account::PERMISSION_INVENTORIES);
         $this->addMenu($menu);
 
-        // menu 4
+        // UNLOCKS
         $menu = Menu::create($trans['menu.unlocks']);
         $menu->addItem('wardrobe_armors', $trans['menu.unlocks.wardrobe_armors'])->setPermission(Gw2Account::PERMISSION_UNLOCKS);
         $menu->addItem('wardrobe_weapons', $trans['menu.unlocks.wardrobe_weapons'])->setPermission(Gw2Account::PERMISSION_UNLOCKS);
         $menu->addItem('dyes', $trans['menu.unlocks.dyes'])->setPermission(Gw2Account::PERMISSION_UNLOCKS);
+        $menu->addItem('minis', $trans['menu.unlocks.minis'])->setPermission(Gw2Account::PERMISSION_UNLOCKS);
         $this->addMenu($menu);
 
-        // menu 5
+        // TRADING POST
         $menu = Menu::create($trans['menu.tp']);
         $menu->addItem('tp_buys', $trans['menu.tp.tp_buys'])->setPermission(Gw2Account::PERMISSION_TRADINGPOST);
         $menu->addItem('tp_sells', $trans['menu.tp.tp_sells'])->setPermission(Gw2Account::PERMISSION_TRADINGPOST);
         $this->addMenu($menu);
 
-        // menu 5
+        // ACHIEVMENTS
         $menu = Menu::create($trans['menu.achievements']);
         $menu->addItem('achievements_daily', $trans['menu.achievements.daily']);
         $this->addMenu($menu);

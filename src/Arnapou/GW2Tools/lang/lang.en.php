@@ -43,6 +43,7 @@ return [
         'Leatherworker' => 'Leatherworker',
         'Tailor'        => 'Tailor',
         'Weaponsmith'   => 'Weaponsmith',
+        'Scribe'        => 'Scribe',
     ],
     'gender'       => [
         'Male'   => 'Male',
@@ -268,6 +269,7 @@ return [
         'unknown'                => 'Unknown',
         'unknown_attributes_for' => 'Unknown attributes for %attributes%',
         'unlimited_usage'        => 'Unlimited usage',
+        'unlock'                 => 'Unlock',
         'unlock_weapon_twohands' => 'Weapons two hands',
         'unlock_weapon_onehand'  => 'Weapons one hand',
         'unlock_weapon_aquatic'  => 'Weapons aquatic',
@@ -309,6 +311,7 @@ return [
         'unlocks.wardrobe_armors'  => 'Wardrobe Armors',
         'unlocks.wardrobe_weapons' => 'Wardrobe Weapons',
         'unlocks.dyes'             => 'Dyes',
+        'unlocks.minis'            => 'Minis',
         'tp'                       => 'Trading post',
         'tp.tp_buys'               => 'Buys',
         'tp.tp_sells'              => 'Sells',

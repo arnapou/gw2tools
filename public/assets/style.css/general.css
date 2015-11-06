@@ -523,6 +523,41 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 
 /************************************************/
 
+.page-minis table {
+    table-layout: fixed;
+}
+.page-minis table td img {
+    height: 2em;
+    width: 2em;
+}
+.page-minis table td .icon {
+    height: 2em;
+    width: 2em;
+    display: inline-block;
+    margin-right: .5em;
+}
+.page-minis table td span {
+    line-height: 2em;
+}
+.page-minis .unlocked i {
+    color: #ddd;
+}
+.page-minis .locked,
+.page-minis .locked td:first-child span {
+    color: #a00 !important;
+}
+.page-minis .locked .icon {
+    background: rgba(170, 0, 0, .5);
+}
+.page-minis .locked img {
+    opacity: .5;
+}
+.page-minis td .glyphicon {
+    margin-right: .5em;
+}
+
+/************************************************/
+
 .page-trading-post td span {
     line-height: 3em;
 }
