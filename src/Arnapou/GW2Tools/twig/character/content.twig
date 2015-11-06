@@ -112,7 +112,9 @@
                                     'Vitality',
                                     'Ferocity',
                                     'Condition',
+                                    'ConditionDuration',
                                     'Healing',
+                                    'BoonDuration',
                                     'AR',
                                 ] %}
                             <tr>
@@ -127,7 +129,7 @@
                                                 {% if attributes.list[attr~'Pct'] %}
                                                     &nbsp;&nbsp;
                                                     <small class="text-muted">
-                                                        {{ attributes.list[attr~'Pct'][k] }}%
+                                                        {{ attributes.list[attr~'Pct'][k]|round }}%
                                                     </small>
                                                 {% endif %}
                                             </span>

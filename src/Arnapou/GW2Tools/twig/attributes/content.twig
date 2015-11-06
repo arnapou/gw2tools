@@ -9,7 +9,9 @@
     'Vitality',
     'Ferocity',
     'Condition',
+    'ConditionDuration',
     'Healing',
+    'BoonDuration',
     'AR',
 ] %}
 
@@ -20,9 +22,8 @@
             <th>
             </th>
             {% for k, v in attrs %}
-                <th style="white-space: nowrap">
+                <th style="white-space: nowrap" title="{{ ('attribute.'~v)|trans }}">
                     <img src="/assets/images/attributes/{{ v }}.png" class="attribute" />
-                    {{ ('attribute.'~v)|trans }}
                 </th>
             {% endfor %}
         </tr>
@@ -54,7 +55,7 @@
                                         {% if attributes.list[attr~'Pct'] %}
                                             &nbsp;&nbsp;
                                             <small class="text-muted">
-                                                {{ attributes.list[attr~'Pct'][k] }}%
+                                                {{ attributes.list[attr~'Pct'][k]|round }}%
                                             </small>
                                         {% endif %}
                                     </span>
