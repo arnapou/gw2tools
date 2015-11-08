@@ -155,6 +155,15 @@ return [
         "Berserker's + Valkyrie" => "Berserker + Valkyrie",
         "Rabid + Apothecary's"   => "Enragé + Apothicaire",
         "Dire + Rabid"           => "Sanguinaire + Enragé",
+        // HoT stats
+        "Commander"              => "Commandant",
+        "Wanderer"               => "Voyageur",
+        "Marauder"               => "Maraudeur",
+        "Crusader"               => "Croisé",
+        "Trailblazer"            => "de pionnier",
+        "Minstrel"               => "Ménestrel",
+        "Vigilant"               => "Vigilant",
+        "Viper's"                => "Vipérin",
     ],
     'tooltip'      => [
         'click_lock'   => "Cliquez sur l'objet pour verrouiller la fenêtre.",

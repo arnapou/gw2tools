@@ -155,6 +155,15 @@ return [
         "Berserker's + Valkyrie" => "Berserker's + Valkyrie",
         "Rabid + Apothecary's"   => "Rabid + Apothecary's",
         "Dire + Rabid"           => "Dire + Rabid",
+        // HoT stats
+        "Commander"              => "Commander",
+        "Wanderer"               => "Wanderer",
+        "Marauder"               => "Marauder",
+        "Crusader"               => "Crusader",
+        "Trailblazer"            => "Trailblazer",
+        "Minstrel"               => "Minstrel",
+        "Vigilant"               => "Vigilant",
+        "Viper's"                => "Viper's",
     ],
     'tooltip'      => [
         'click_lock'   => 'Click on the item to lock the tooltip.',
