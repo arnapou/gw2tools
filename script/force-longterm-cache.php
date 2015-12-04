@@ -28,14 +28,15 @@ foreach (Translator::getInstance()->getLangs() as $lang) {
 
     $simpleClient = SimpleClient::getInstance($lang, false);
 
-    $simpleClient->getClientV2()
-        ->getRequestManager()
-        ->getEventListener()
+    $requestManager = $simpleClient->getClientV2()->getRequestManager();
+    $requestManager->setCurlRequestTimeout(30);
+    $requestManager->getEventListener()
         ->bind(RequestManager::onRequest, function($event) {
             echo date('Y-m-d H:i:s') . ' ' . round($event['time'], 3) . "s " . $event['uri'] . " \n";
         });
 
     foreach ([
+    'v2_achievements',
     'v2_colors',
     'v2_currencies',
     'v2_files',
