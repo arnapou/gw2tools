@@ -1,3 +1,7 @@
+## 1.0.24 (2015-12-21)
+
+  - css bugfix
+
 ## 1.0.23 (2015-11-06)
 
   - adding mini unlocks
