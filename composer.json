@@ -21,7 +21,7 @@
 	"require": {
 		"php": ">=5.5",
 		"arnapou/toolbox": "dev-master",
-		"arnapou/gw2apiclient": "dev-master"
+		"arnapou/gw2apiclient": "v1.*"
 	},
 	"autoload": {
 		"psr-0": {
