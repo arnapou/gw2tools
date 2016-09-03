@@ -1,0 +1,24 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set attributes = pvpamulet.getattributes %}
+
+<div class="gwitem">
+
+    <div class="gwitemheader">
+        <div class="gwicon">
+            <img title="{{ pvpamulet.getname }}" src="{{ pvpamulet.geticon|image }}" />
+        </div>
+
+        <div class="gwname">
+            {{ pvpamulet.getname }}
+        </div>
+    </div>
+
+    <div>
+        {% for attr, val in attributes %}
+            <div class="gwstats">+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
+        {% endfor %}
+    </div>
+
+</div>

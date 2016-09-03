@@ -1,0 +1,73 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set totalage = 0 %}
+{% set totaldeaths = 0 %}
+
+{% spaceless %}
+    <table class="table table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>{{ 'global.name'|trans }}</th>
+                <th>{{ 'global.level'|trans }}</th>
+                <th>{{ 'global.gender'|trans }}</th>
+                <th>{{ 'global.race'|trans }}</th>
+                <th>{{ 'global.profession'|trans }}</th>
+                <th>{{ 'global.guild'|trans }}</th>
+                <th>{{ 'global.crafting'|trans }}</th>
+                <th>{{ 'global.created'|trans }} <small>(UTC)</small></th>
+                <th class="text-right">{{ 'global.days'|trans }}</th>
+                <th class="text-right">{{ 'global.age'|trans }}</th>
+                <th class="text-right">{{ 'global.deaths'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for char in characters %}
+                {% if module.isAllowedCharacter(char) %}
+                    {% set totalage = totalage + char.getAge()/3600 %}
+                    {% set totaldeaths = totaldeaths + char.getDeaths() %}
+                    <tr>
+                        <td>{{ macro.charname(_context, char) }}</td>
+                        <td>{{ char.getLevel() }}</td>
+                        <td>{{ ('gender.'~char.getGender())|trans }}</td>
+                        <td>{{ ('race.'~char.getRace())|trans }}</td>
+                        <td>{{ ('profession.'~char.getProfession())|trans }}</td>
+                        <td>
+                            {% if char.guild %}
+                                <span title="{{ char.guild.getName() }}">[{{ char.guild.getTag() }}]</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for craft in char.crafting %}
+                                {% if craft.isActive() %}
+                                    <span title="{{ ('crafting.'~craft)|trans }}">
+                                        <i class="ic-crafting-{{ craft|lower }}"></i> {{ craft.getRating() }}
+                                    </span> 
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ char.created }}</td>
+                        <td class="text-right">{{ (char.getCreatedEllapsedTime()/86400)|round }}</td>
+                        <td class="text-right">{{ (char.getAge()/3600)|round }}</td>
+                        <td class="text-right">{{ char.getDeaths() }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-right"></td>
+                <td class="text-right">{{ totalage|round }}</td>
+                <td class="text-right">{{ totaldeaths }}</td>
+            </tr>
+        </tfoot>
+    </table>
+{% endspaceless %}

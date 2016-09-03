@@ -1,0 +1,16 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <div class="page-{{ page }}" data-content="ajax" data-src="./content.html">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="ic-ui-dye"></i> {{ page_name }}
+            </div>
+            <div class="panel-body">
+                <div class="spinner-loader"></div> <em>{{ "global.loading"|trans }}</em>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

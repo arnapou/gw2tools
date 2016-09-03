@@ -1,0 +1,283 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set statname = item.statname %}
+{% set attributes = item.attributes %}
+{% set count = item.getCount %}
+
+<div class="gwitem">
+
+    <div class="gwitemheader">
+        <div class="gwicon">
+            <img title="{{ item.getname }}" src="{{ item|image }}" />
+        </div>
+
+        <div class="gwname rarity-{{ item.getrarity }}">
+            {{ count > 1 ? count~' ' : '' }}{{ item.getskin ? item.getskin.getname : item.getname }}
+        </div>
+    </div>
+    
+    {% if item.getchatlink %}
+        <div class="gwchatlink">
+            <input type="text" readonly="readonly" value="{{ item.getchatlink }}" onclick="this.setSelectionRange(0, this.value.length)" />
+        </div>
+    {% endif %}
+
+    {% if item.gettype == 'Weapon' %}
+
+        {% if item.getweaponminpower %}
+            <div class="gwattack">
+                {{ 'global.attack_power'|trans }}: <span class="gwstats">{{ item.getweaponminpower~' - '~item.getweaponmaxpower }}</span>
+            </div>
+        {% endif %}
+        {% if item.getweapondefense %}
+            <div class="gwdefense">
+                {{ 'global.defense'|trans }}: <span class="gwstats">{{ item.getweapondefense }}</span>
+            </div>
+        {% endif %}
+        <div>
+            {% for attr, val in attributes %}
+                <div class="gwstats">+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
+            {% endfor %}
+            {% if statname %}
+                <em>{{ ('stats.'~statname)|trans }}</em>
+            {% endif %}
+        </div>
+
+        {{ _self.upgrades(item.getupgrades) }}
+        {{ _self.upgrades(item.getinfusions) }}
+        {{ _self.infusion_empty(item) }}
+        {{ _self.transmuted(item) }}
+
+    {% elseif item.gettype in ['Armor', 'Back'] %}
+
+        {% if item.getarmordefense %}
+            <div class="gwdefense">
+                {{ 'global.defense'|trans }}: <span class="gwstats">{{ item.getarmordefense }}</span>
+            </div>
+        {% endif %}
+        <div>
+            {% for attr, val in attributes %}
+                <div class="gwstats">+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
+            {% endfor %}
+            {% if statname %}
+                <em>{{ ('stats.'~statname)|trans }}</em>
+            {% endif %}
+        </div>
+
+        {{ _self.upgrades(item.getupgrades) }}
+        {{ _self.upgrades(item.getinfusions) }}
+        {{ _self.infusion_empty(item) }}
+        {{ _self.transmuted(item) }}
+
+    {% elseif item.gettype == 'Trinket' %}
+
+        <div>
+            {% for attr, val in attributes %}
+                <div class="gwstats">+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
+            {% endfor %}
+            {% if statname %}
+                <em>{{ ('stats.'~statname)|trans }}</em>
+            {% endif %}
+        </div>
+
+        {{ _self.upgrades(item.getupgrades) }}
+        {{ _self.upgrades(item.getinfusions) }}
+        {{ _self.infusion_empty(item) }}
+
+    {% elseif item.gettype == 'UpgradeComponent' %}
+
+        {% if item.getsubtype != 'Default' %}
+            <div>
+                {{ ('itemtype.'~item.getsubtype)|trans }}
+            </div>
+        {% endif %}
+        <div class="gwupgrade">
+            {{ item|buffdescription|nl2br }}
+        </div>
+
+    {% elseif item.gettype == 'Bag' %}
+
+        {% if item.getbagsize %}
+            <div class="gwupgrade">
+                {{ 'global.bagsize'|trans }}: {{ item.getbagsize }}
+            </div>
+        {% endif %}
+
+    {% elseif item.gettype == 'Tool' %}
+
+        {% if item.getsalvagecharges > 1 %}
+            <div class="gwupgrade">
+                {{ 'global.charges'|trans }}: {{ item.getsalvagecharges }}
+            </div>
+        {% endif %}
+
+    {% elseif item.gettype == 'Gizmo' %}
+
+        {% if item.getsubtype == 'UnlimitedConsumable' %}
+            <div>
+                {{ 'global.unlimited_usage'|trans }}
+            </div>
+        {% endif %}
+
+    {% elseif item.gettype == 'CraftingMaterial' %}
+
+        <div>
+            {{ 'global.crafting_material'|trans }}
+        </div>
+
+    {% elseif item.gettype == 'Trophy' %}
+
+        <div>
+            {{ 'global.trophy'|trans }}
+        </div>
+
+    {% elseif item.gettype == 'Consumable' %}
+
+        {% if item.getconsumabledescription %}
+            <div class="gwstats {{ item.getsubtype in ['Food', 'Utility'] ? item.getsubtype|lower : '' }}">
+                {{ 'global.consumable'|trans }} {% if item.getconsumabledurationms > 30000 %}({{ item|consumableduration }}){% endif %}:
+                <div>
+                    {{ item.getconsumabledescription|nl2br }}
+                </div>
+            </div>
+        {% else %}
+            <div class="gwstats">
+                {{ 'global.consumable'|trans }}
+            </div>
+        {% endif %}
+
+        {% if item.getsubtype == 'AppearanceChange' %}
+            <div>
+                {{ 'global.appearance'|trans }}
+            </div>
+        {% endif %}
+
+    {% elseif item.gettype == 'MiniPet' %}
+
+        {% set mini = item.getclient.mini(item.getid) %}
+        {% if mini.unlock %}
+            <div class="gwmini">
+                {{ 'global.unlock'|trans }}: {{ mini.unlock }}
+            </div>
+        {% endif %}
+
+    {% endif %}
+
+    <div class="gwinfos">
+        {% if item.getrarity %}
+            <div>{{ ('rarity.'~item.getrarity)|trans }}</div>
+        {% endif %}
+        {% if item.getdefaultskin %}
+            <div>{{ 'global.appearance'|trans }}: {{ item.getdefaultskin.getname }}</div>
+        {% endif %}
+        {% if item.gettype == 'Armor' and item.getsubtype %}
+            <div>{{ ('itemtype.'~item.getsubtype)|trans }} - {{ item.getarmorweightclass }}</div>
+        {% endif %}
+        {% if item.gettype == 'Weapon' and item.getsubtype %}
+            <div>{{ ('itemtype.'~item.getsubtype)|trans }}</div>
+        {% endif %}
+        {% if item.gettype == 'Consumable' %}
+            <div>{{ ('itemtype.'~item.gettype)|trans }}</div>
+        {% endif %}
+        {% if item.getlevel %}
+            <div>{{ 'global.required_level'|trans }}: {{ item.getlevel }}</div>
+        {% endif %}
+        {% if item.getbinding == 'Account' %}
+            <div>{{ 'global.account_bound'|trans }}</div>
+        {% endif %}
+        {% if item.getBoundTo %}
+            <div>{{ 'global.character_bound'|trans }} {{ item.getBoundTo }}</div>
+        {% endif %}
+        {% if item.gethasflag('Unique') %}
+            <div>{{ 'global.unique'|trans }}</div>
+        {% endif %}
+    </div>
+
+    {% if item.getdescription %}
+        <div class="gwdescription">
+            {{ item.getdescription|striptags|nl2br }}
+        </div>
+    {% endif %}
+
+    {% if item.getvendorvalue %}
+        <div class="gwvendor">
+            {{ 'global.vendor_price'|trans }}: {{ macro.amount(item.getvendorvalue) }}
+            {% if count > 1 %}
+                <div class="gwvendorcount">
+                    {{ macro.amount(item.getvendorvalue * count) }} {{ 'global.for'|trans }} {{ count }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if item.getprice.buy %}
+        <div class="gwvendor">
+            {{ 'global.trading_post_buy'|trans }}: {{ macro.amount(item.getprice.buy) }}
+            {% if item.getprice.buy_total and count > 1 %}
+                <div class="gwvendorcount">
+                    {{ macro.amount(item.getprice.buy_total) }} {{ 'global.for'|trans }} {{ count }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="gwvendor">
+            {{ 'global.trading_post_sell'|trans }}: {{ macro.amount(item.getprice.sell) }}
+            {% if item.getprice.sell_total and count > 1 %}
+                <div class="gwvendorcount">
+                    {{ macro.amount(item.getprice.sell_total) }} {{ 'global.for'|trans }} {{ count }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="gwlink">
+        <a href="{{ ('gwdblink'|trans)~item.getid }}" target="_blank">
+            <i class="glyphicon glyphicon-link"></i>GW2 DB
+        </a>
+        {% if item.getprice.buy %}
+            <br />
+            <a href="{{ 'https://www.gw2tp.com/item/'~item.getid }}" target="_blank">
+                <i class="glyphicon glyphicon-link"></i>GW2 TP
+            </a>
+        {% endif %}
+        <br />
+    </div>
+
+    <div class="gwclickinfo">
+        <span class="lock">{{ 'tooltip.click_lock'|trans }}</span>
+        <span class="unlock">{{ 'tooltip.click_unlock'|trans }}</span>
+    </div>
+</div>
+
+{% macro transmuted(item) %}
+    {% if item.getskin %}
+        <div class="gwtransmuted">
+            {{ 'global.transmuted'|trans }}<br />
+            {{ item.getname }}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro upgrades(items) %}
+    {% if items|length %}
+        {% for item in items %}
+            <div class="gwupgrade">
+                <img title="{{ item.getname }}" src="{{ item|image }}" />
+                <span class="rarity-{{ item.getrarity }}">{{ item.getname }}</span><br />
+                {{ item|buffdescription|nl2br }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro infusion_empty(item) %}
+    {% set nb = item.getinfusionslots|length - item.getinfusions|length %}
+    {% if nb > 0 %}
+        {% for i in 1..nb %}
+            <div class="gwupgrade">
+                <img src="/assets/images/infusion_slot.png" />
+                {{ 'global.unused_infusion_slot'|trans }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}

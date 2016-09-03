@@ -1,0 +1,120 @@
+{% spaceless %}
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    {% set sum_min = 0 %}
+    {% set sum_max = 0 %}
+
+    <style>
+        .silver, .copper {
+            min-width: 3em;
+        }
+    </style>
+
+    <table class="table table-condensed table-hover">
+        <thead>
+            <tr>
+                <th class="column-icon"></th>
+                <th class="column-amount">{{ "global.buy"|trans }}</th>
+                <th class="column-amount">{{ "global.sell"|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in account.characters %}
+                {% if module.isAllowedCharacter(item) %}
+                    <tr>
+                        <td class="column-name">{{ macro.charname(_context, item) }}</td>
+                        <td class="column-amount">{{ macro.amount(item.bagsprice.buy) }}</td>
+                        <td class="column-amount">{{ macro.amount(item.bagsprice.sell) }}</td>
+                    </tr>
+                    {% set sum_min = sum_min + item.bagsprice.buy %}
+                    {% set sum_max = sum_max + item.bagsprice.sell %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if module.isAllowed('bank', 'inventories') %}
+
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th class="column-icon"></th>
+                    <th class="column-amount"></th>
+                    <th class="column-amount"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in account.bankvaults %}
+                    <tr>
+                        <td class="column-name"><i class="ic-ui-bank"></i> {{ "global.bank"|trans }} {{ item.id }}</td>
+                        <td class="column-amount">{{ macro.amount(item.price.buy) }}</td>
+                        <td class="column-amount">{{ macro.amount(item.price.sell) }}</td>
+                    </tr>
+                    {% set sum_min = sum_min + item.price.buy %}
+                    {% set sum_max = sum_max + item.price.sell %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+
+    {% if module.isAllowed('collectibles', 'inventories') %}
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th class="column-icon"></th>
+                    <th class="column-amount"></th>
+                    <th class="column-amount"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in account.collectibles %}
+                    <tr>
+                        <td class="column-name"><i class="ic-ui-collections"></i> {{ item.name }}</td>
+                        <td class="column-amount">{{ macro.amount(item.price.buy) }}</td>
+                        <td class="column-amount">{{ macro.amount(item.price.sell) }}</td>
+                    </tr>
+                    {% set sum_min = sum_min + item.price.buy %}
+                    {% set sum_max = sum_max + item.price.sell %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+
+    <table class="table table-condensed table-hover">
+        <thead>
+            <tr>
+                <th class="column-icon"></th>
+                <th class="column-amount"></th>
+                <th class="column-amount"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="column-name"><i class="ic-ui-wallet"></i> {{ "global.total"|trans }}</td>
+                <td class="column-amount">{{ macro.amount(sum_min) }}</td>
+                <td class="column-amount">{{ macro.amount(sum_max) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% if module.isAllowed('wallet', 'wallet') %}
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th class="column-icon"></th>
+                    <th class="column-amount"></th>
+                    <th class="column-amount"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="column-name"><i class="ic-ui-wallet"></i> {{ "menu.general.wallet"|trans }}</td>
+                    <td class="column-amount"></td>
+                    <td class="column-amount">{{ macro.amount(account.wallet.1.quantity) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+{% endspaceless %}

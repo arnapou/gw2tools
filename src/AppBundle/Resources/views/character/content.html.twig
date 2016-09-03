@@ -1,0 +1,326 @@
+{% spaceless %}
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    {% set char = character %}
+    {% set attributes = char.attributes %}
+    {% set equipment = char.equipments %}
+
+    <div class="row">
+        <div class="col-xs-9 summary">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {% if char.guild %}
+                        <div class="pull-right">
+                            {{ char.guild }}
+                            <img src="{{ char.guild|image }}" style="margin-left: .5em; height: 2em; margin-top: -.2em" />
+                        </div>
+                    {% endif %}
+                    <i class="ic-profession-{{ character.getProfession()|lower }}"></i> <b>{{ character }}</b>
+                    {% if char.getTitle %}
+                        <small style="margin-left: 1em"><em>({{ char.getTitle }})</em></small>
+                    {% endif %}
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <table class="table table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td>{{ 'global.level'|trans }} {{ char.getLevel() }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ ('race.'~char.getRace())|trans }} {{ ('profession.'~char.getProfession)|trans }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="crafting">
+                                            {% if char.crafting|length %}
+                                                {% for craft in char.crafting %}
+                                                    {% if craft.isActive() %}
+                                                        <span title="{{ ('crafting.'~craft)|trans }}">
+                                                            <i class="craft ic-crafting-{{ craft|lower }}"></i> {{ craft.getRating() }}
+                                                        </span> 
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ (char.getAge()/3600)|round }} {{ 'global.hours'|trans|lower }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ char.getDeaths() }} {{ 'global.deaths'|trans|lower }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-9" >
+                            <table class="equipment">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            {{ macro.object(equipment['WeaponA1'], true) }}
+                                            {{ macro.object(equipment['WeaponA2'], true) }}
+                                            {% if char.canSwapWeapons() %}
+                                                <div class="swap">
+                                                    <i class="ic-ui-swap"></i>
+                                                </div>
+                                                {{ macro.object(equipment['WeaponB1'], true) }}
+                                                {{ macro.object(equipment['WeaponB2'], true) }}
+                                            {% endif %}
+
+                                            <div style="position: absolute; bottom: 0; left: 0; width: 100%">
+                                                {{ macro.object(equipment['WeaponAquaticA'], true) }}
+                                                {% if char.canSwapWeapons() %}
+                                                    <div class="swap">
+                                                        <i class="ic-ui-swap"></i>
+                                                    </div>
+                                                    {{ macro.object(equipment['WeaponAquaticB'], true) }}
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ macro.object(equipment['Helm'], true) }}
+                                            {{ macro.object(equipment['Shoulders'], true) }}
+                                            {{ macro.object(equipment['Coat'], true) }}
+                                            {{ macro.object(equipment['Gloves'], true) }}
+                                            {{ macro.object(equipment['Leggings'], true) }}
+                                            {{ macro.object(equipment['Boots'], true) }}
+                                            <br />
+                                            {{ macro.object(equipment['HelmAquatic'], true) }}
+                                        </td>
+                                        <td>
+                                            {{ macro.object(equipment['Amulet'], true) }}
+                                            {{ macro.object(equipment['Accessory1'], true) }}
+                                            {{ macro.object(equipment['Accessory2'], true) }}
+                                            {{ macro.object(equipment['Ring1'], true) }}
+                                            {{ macro.object(equipment['Ring2'], true) }}
+                                            {{ macro.object(equipment['Backpack'], true) }}
+                                        </td>
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3 stats">
+            {% if module.isAllowed('attributes') %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="ic-ui-wrench"></i> {{ 'menu.characters.attributes'|trans }}
+                    </div>
+                    <div class="panel-body">
+                        <table>
+                            <tbody>
+                                {% set attrs = [
+                                    ['Power',              'Attack'                ],
+                                    ['Toughness',          'Armor'                 ],
+                                    ['Vitality',           'Health'                ],
+                                    ['Precision',          'PrecisionPct'          ],
+                                    ['CritDamage',         'CritDamagePct'         ],
+                                    ['ConditionDamage',    'Healing'               ],
+                                    ['ConditionDuration',  'ConditionDurationPct'  ],
+                                    ['BoonDuration',       'BoonDurationPct'       ],
+                                    ['AgonyResistance',    ''                      ],
+                                ] %}
+                                {% for attr in attrs %}
+                                    <tr>
+                                        {% if attributes[attr.0] is none %}
+                                            <td class="attrico">
+                                            </td>
+                                        {% else %}
+                                            <td class="attrico" title="{{ ('attribute.'~attr.0)|trans }}">
+                                                <i class="ic-attribute-{{ attr.0|lower }}"></i>
+                                            </td>
+                                        {% endif %}
+                                        <td class="attr">
+                                            {{ attributes[attr.0] }}
+                                        </td>
+                                        {% if attributes[attr.1] is none %}
+                                            <td class="attrico">
+                                            </td>
+                                        {% else %}
+                                            <td class="attrico" title="{{ ('attribute.'~attr.1)|trans }}">
+                                                <i class="ic-attribute-{{ attr.1|lower }}"></i>
+                                            </td>
+                                        {% endif %}
+                                        <td class="attr">
+                                            {{ attributes[attr.1] }}
+                                            {% if attr.1|slice(-3) == 'Pct' %}%{% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-body">
+                        {{ macro.object(equipment['Sickle']) }}
+                        {{ macro.object(equipment['Axe']) }}
+                        {{ macro.object(equipment['Pick']) }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    {% set tab_inven = module.isAllowed('inventories') ? 1 : 0 %}
+    {% set tab_build = module.isAllowed('builds', 'pvp') ? 3 : 0 %}
+    {% set tab_story = 1 %}
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading with-tabs">
+            {% if tab_inven + tab_build + tab_story > 0 %}
+                <ul class="nav nav-tabs">
+                    {% if tab_inven %}
+                        <li>
+                            <a href="#" data-tab="tab-inventory">
+                                <i class="ic-ui-bag"></i> {{ 'global.inventory'|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if tab_build %}
+                        {% for mode in ['pve', 'wvw', 'pvp'] %}
+                            <li>
+                                <a href="#" data-tab="tab-build-{{ mode }}">
+                                    <i class="ic-mode-{{ mode }}"></i> {{ ('traits.'~mode)|trans }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if tab_story %}
+                        <li>
+                            <a href="#" data-tab="tab-story">
+                                <i class="ic-ui-story"></i> {{ 'global.backstory'|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="panel-body char_tabs">
+
+            {% if tab_inven %}
+                <div class="tab tab-inventory" style="display: none; position: relative">
+                    <div style="position: absolute; top: -52px; right: 0;">
+                        {{ macro.amount(char.bagsprice) }}
+                    </div>
+                    <div style="margin-bottom: 8px">
+                        {{ macro.shared_slots(account, _context) }}
+                    </div>
+                    {{ macro.character_bags(char) }}
+                </div>
+            {% endif %}
+
+            {% if tab_build %}
+                {% for mode in ['pve', 'wvw', 'pvp'] %}
+                    {% set build = char.build(mode) %}
+                    <div class="tab tab-build-{{ mode }}" style="display: none;">
+                        <div class="build1">
+                            <b>{{ 'global.skills'|trans }}</b>
+                            <div>
+                                {% for i in [6, 7, 8, 9, 0] %}
+                                    <span {{ build.getSkill(i)|gwlink|raw }}>
+                                        <img src="{{ build.getSkill(i)|image }}" />
+                                    </span>
+                                {% endfor %}
+                            </div>
+                            <div>
+                                <a href="../gw2skills-{{ mode }}/{{ char.getname }}" class="gw2skillslink" target="_blank">
+                                    <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                                </a>
+                            </div>
+                            {% if build.getprofession == 'Revenant' and build.legends|length %}
+                                <div>
+                                    {% for legend in build.getlegends %}
+                                        {% set item = legend.getSkillSwap %}
+                                        <span {{ item|gwlink|raw }}>
+                                            <img src="{{ item|image }}" />
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% elseif build.getprofession == 'Ranger' %}
+                                {% set pets = build.getpets %}
+                                <div>
+                                    {% for i in 0..1 %}
+                                        {% set item = pets.terrestrial[i] %}
+                                        <span {{ item|gwlink|raw }}>
+                                            <span class="pet-icon-wrapper">
+                                                <img src="{{ item|image }}" />
+                                            </span>
+                                        </span>
+                                    {% endfor %}
+                                    <i class="ic-ui-swap"></i>
+                                    {% for i in 0..1 %}
+                                        {% set item = pets.aquatic[i] %}
+                                        <span {{ item|gwlink|raw }}>
+                                            <span class="pet-icon-wrapper">
+                                                <img src="{{ item|image }}" />
+                                            </span>
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if mode == 'pvp' %}
+                                {% set pvp = char.pvpequipment %}
+                                {% if pvp.getsigils|length %}
+                                    <div>
+                                        {% for k, item in pvp.getsigils %}
+                                            <span {{ item|gwlink|raw }}>
+                                                <img src="{{ item|image }}" />
+                                            </span>
+                                            {% if k == 1 %}
+                                                <i class="ic-ui-swap"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if pvp.getAmulet %}
+                                    <div>
+                                        <span {{ pvp.getAmulet|gwlink|raw }}>
+                                            <img src="{{ pvp.getAmulet|image }}" />
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="build2">
+                            {{ macro.specializations(build) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if tab_story %}
+                <div class="tab tab-story" style="display: none;">
+                    {% for answer in char.getBackstoryAnswers %}
+                        <div>
+                            {{ answer.question.getDescription }}
+                            <ul>
+                                {% for item in answer.question.answers %}
+                                    <li class="{{ answer.getId() == item.getId() ? 'text-info' : '' }}">
+                                        {{ item }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        if ($('.char_tabs .tab').length == 1) {
+            $('.char_tabs .tab').show();
+        }
+        else {
+            $('.nav-tabs a').eq(0).trigger('click');
+        }
+    </script>
+
+{% endspaceless %}

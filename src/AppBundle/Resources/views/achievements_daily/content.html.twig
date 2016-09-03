@@ -1,0 +1,63 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set daily = account.getAchievementsDaily() %}
+
+<style>
+    .daily td {
+        vertical-align: middle;
+    }
+    .daily td img {
+        width: 3em;
+        height: 3em;
+    }
+    .daily td:first-child {
+        width: 4em;
+        text-align: center;
+    }
+</style>
+
+{% for row in [['pvp', 'wvw'], ['pve', 'special']] %}
+    <div class="row">
+        {% for env in row %}
+            <div class="col-xs-6 summary">
+                {% set items = daily[env] %}
+                {% if items and items|length %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="ic-ui-arenanet"></i> {{ page_name }} - {{ ('global.'~env)|trans }}
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-condensed daily">
+                                <tbody>
+                                    {% for item in items %}
+                                        {% if item.getAchievement %}
+                                            <tr>
+                                                <td>
+                                                    <img src="{{ item.geticon|image }}" />
+                                                    <div>
+                                                        <small>
+                                                            {{ item.levelmin }} - {{ item.levelmax }}
+                                                        </small>
+                                                    </div>
+                                                </td>
+                                                <td title="{{ item.object.description }}">
+                                                    {{ item.getname }}
+                                                    <div class="text-muted">
+                                                        <small>
+                                                            {{ item.getrequirement }}<br />
+                                                        </small>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}

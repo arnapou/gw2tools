@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="280"
+   height="280"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="crafting-armorsmith.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5"
+     inkscape:cx="-225.69218"
+     inkscape:cy="-90.971788"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     borderlayer="true"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1000"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-772.36218)">
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       d="m 140.10896,793.36209 c -42.551635,0 -77.143915,34.59221 -77.143915,77.14357 0,42.55206 34.59228,76.92634 77.143915,76.92634 42.55165,0 76.92599,-34.37428 76.92599,-76.92634 0,-42.55136 -34.37435,-77.14357 -76.92599,-77.14357 z M 56.209505,906.46291 c -9.64318,0.74686 -24.62503,3.35982 -24.62503,12.6394 0,13.5599 14.83144,16.13868 22.22791,23.53543 7.39647,7.39675 61.453615,60.88116 61.453615,65.81206 0,4.931 -28.329675,1.3271 -28.329675,12.4212 0,8.6561 -1.44407,10.207 24.625025,10.4602 7.34417,0.07 15.94817,0 28.54761,0 12.50327,0 21.00699,0.07 28.32968,0 26.24902,-0.2511 24.62504,-1.7853 24.62504,-10.4602 0,-11.0941 -28.32969,-7.4902 -28.32969,-12.4212 0,-4.9309 54.27507,-58.41531 61.67155,-65.81206 7.39647,-7.39605 22.00998,-9.97553 22.00998,-23.53543 0,-9.18056 -14.94691,-11.88975 -24.62503,-12.6394 -13.95634,32.49703 -46.07247,55.13358 -83.68153,55.13358 -37.60905,0 -69.943115,-22.63655 -83.899455,-55.13358 z"
+       id="path3980"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

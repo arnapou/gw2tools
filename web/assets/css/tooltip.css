@@ -1,0 +1,168 @@
+
+#gwitemdetail {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    font-size: 80%;
+    line-height: 1.2;
+    cursor: default;
+    background: #131717;
+    background: rgba(19, 23, 23, .95);
+    color: white;
+    box-shadow: 0 0 5px #131717;
+    border: 1px solid #4c7092;
+}
+
+#gwitemdetail > .gwitem {
+    position: relative;
+    width: 400px;
+    border-top: 1px solid #4c7092;
+    margin-top: 1em;
+}
+
+#gwitemdetail > .gwitem:first-child {
+    border-top: 0;
+    margin-top: 0;
+}
+
+#gwitemdetail > .gwitem > div {
+    margin: .5em;
+}
+
+#gwitemdetail .gwicon {
+    display: inline-block;
+    width: 3.5em;
+    height: 3.5em;
+    margin-right: 1em;
+    vertical-align: middle;
+}
+
+#gwitemdetail .pet-icon-wrapper {
+    display: inline-block;
+    width: 3.5em;
+    height: 3.5em;
+    margin-right: 1em;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+}
+
+#gwitemdetail .gwicon img {
+    width: 100%;
+    height: 100%;
+}
+
+#gwitemdetail .gwname {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+#gwitemdetail .gwitemheader {
+    overflow: visible;
+}
+
+#gwitemdetail .gwstats {
+    color: #02f102;
+}
+
+#gwitemdetail .gwstats.food,
+#gwitemdetail .gwstats.utility {
+    padding-left: 4em;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 3em 3em;
+}
+#gwitemdetail .gwstats.food {
+    background-image: url(/assets/images/misc/buff-food.png);
+}
+#gwitemdetail .gwstats.utility {
+    background-image: url(/assets/images/misc/buff-utility.png);
+}
+
+#gwitemdetail .gwupgrade {
+    color: #5599ff;
+}
+
+#gwitemdetail .gwupgrade img {
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: .5em;
+}
+
+#gwitemdetail .gwlink .glyphicon {
+    margin-right: .5em;
+}
+
+#gwitemdetail .gwvendorcount {
+    float: right;
+}
+
+#gwitemdetail .gwclickinfo .unlock,
+#gwitemdetail.locked .gwclickinfo .lock {
+    display: none;
+}
+
+#gwitemdetail.locked .gwclickinfo .unlock {
+    display: inline;
+}
+
+#gwitemdetail .gwclickinfo {
+    text-align: right;
+    color: #888;
+    font-style: italic;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 0 !important;
+}
+
+#gwitemdetail .gwitemerror {
+    padding: 1em 2em;
+    font-size: 125%;
+    color: red;
+}
+
+#gwitemdetail .gwfact {
+    display: flex;
+    align-items: center;
+    margin-top: .3em !important;
+    margin-bottom: .3em !important;
+}
+
+#gwitemdetail .gwfact img {
+    height: 2.5em;
+    width: 2.5em;
+    margin-right: .5em;
+    vertical-align: middle;
+}
+
+#gwitemdetail .gwfact-recharge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 120%;
+}
+#gwitemdetail .gwfact-recharge img {
+    height: 1.5em;
+    width: 1.5em;
+    margin-right: 0;
+    margin-left: .5em;
+}
+
+#gwitemdetail .gwfact-recharge i {
+    font-size: 100%;
+    margin-left: .5em;
+}
+
+#gwitemdetail .gwchatlink {
+    float: right;
+}
+
+#gwitemdetail .gwchatlink input {
+    background: none;
+    border: 0;
+    width: 8em;
+    text-align: center;
+    color: #888;
+}

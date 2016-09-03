@@ -1,0 +1,43 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+<div class="gwitem">
+
+    <div class="gwitemheader">
+        <div class="gwicon">
+            <img title="{{ trait.getName }}" src="{{ trait|image }}" />
+        </div>
+
+        <div class="gwname">
+            {{ trait.getName }}
+        </div>
+    </div>
+
+    <div>
+        {{ trait.getdescription|striptags|nl2br }}
+    </div>
+    
+    {{ macro.facts(trait.getfacts) }}
+
+</div>
+
+{% for skill in trait.skills %}
+    <div class="gwitem">
+
+        <div class="gwitemheader">
+            <div class="gwicon">
+                <img title="{{ skill.name }}" src="{{ skill.icon|image }}" />
+            </div>
+
+            <div class="gwname">
+                {{ skill.name }}
+            </div>
+        </div>
+
+        <div>
+            {{ skill.description|striptags|nl2br }}
+        </div>
+
+        {{ macro.facts(skill.getfacts) }}
+    </div>
+{% endfor %}

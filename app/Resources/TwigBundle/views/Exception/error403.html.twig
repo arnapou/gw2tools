@@ -1,0 +1,10 @@
+{% extends "TwigBundle::Exception/error.html.twig" %}
+{% block message %}
+    <br />
+    Foo! Quaggan is protecting forbidden pages.<br />
+    <br />
+    Quaggan is sorry for you :(
+{% endblock %}
+{% block image %}
+    <img src="{{ asset('assets/images/error/quaggan-403.jpg') }}" />
+{% endblock %}

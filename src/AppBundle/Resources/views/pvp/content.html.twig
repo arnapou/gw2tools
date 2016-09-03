@@ -1,0 +1,222 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set pvp = account.pvp %}
+{% spaceless %}
+
+    <div class="row">
+        <div class="col-xs-8 summary">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="ic-mode-pvp"></i> {{ 'pvp.classes'|trans }}
+                </div>
+                <div class="panel-body professions">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{ 'pvp.nb_matches'|trans }}</th>
+                                <th>{{ 'pvp.winrate'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set max = 0 %}
+                            {% for stat in pvp.getprofessionsstats %}
+                                {% if loop.first %}
+                                    {% set max = stat.gettotal %}
+                                {% endif %}
+                                <tr>
+                                    <td class="column-profession">
+                                        <i class="ic-profession-{{ stat.getprofession|lower }}"></i>
+                                        {{ ('profession.'~stat.getprofession)|trans }}
+                                    </td>
+                                    <td>
+                                        {{ _self.progress_matches(100 * stat.gettotal / max, stat.gettotal) }}
+                                    </td>
+                                    <td class="column-winrate">
+                                        {{ _self.progress_winrate(stat.getwinrate) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-4 stats">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="ic-mode-pvp"></i> {{ 'pvp.global'|trans }}
+                </div>
+                <div class="panel-body">
+                    <div class="rank">
+                        <img src="/assets/images/rank/{{ pvp.rankname }}.png" class="pull-left" />
+                        <div>
+                            <span class="level">{{ pvp.rank }}</span>
+                            <span class="name">{{ ('ranks.'~pvp.rankname)|trans }}</span>
+                        </div>
+                    </div>
+                    <div class="global">
+                        <table class="table">
+                            {% set max = pvp.aggregatestats.total %}
+                            <tr>
+                                <td>
+                                    {{ 'pvp.total'|trans }}
+                                    {{ _self.progress_matches(100, max) }}
+                                </td>
+                                <td>
+                                    <br />
+                                    {{ _self.progress_winrate(pvp.aggregatestats.winrate) }}
+                                </td>
+                            </tr>
+                            {% for key in ['ranked', 'unranked', 'soloarenarated', 'teamarenarated'] %}
+                                {% set stat = pvp.ladderstats(key) %}
+                                {% if stat %}
+                                    <tr>
+                                        <td>
+                                            {{ ('pvp.'~key)|trans }}
+                                            {{ _self.progress_matches(max > 0 ? (100 * stat.total / max) : 0, stat.total) }}
+                                        </td>
+                                        <td>
+                                            <br />
+                                            {{ _self.progress_winrate(stat.winrate) }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="ic-mode-pvp"></i> {{ 'pvp.games'|trans }}
+        </div>
+        <div class="panel-body games">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ 'pvp.class'|trans }}</th>
+                        <th>{{ 'pvp.map'|trans }}</th>
+                        <th>{{ 'pvp.date'|trans }}</th>
+                        <th>{{ 'pvp.result'|trans }}</th>
+                        <th class="text-center">{{ 'pvp.team'|trans }}</th>
+                        <th class="text-center">{{ 'pvp.duration'|trans }}</th>
+                        <th class="text-center">{{ 'pvp.score'|trans }}</th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set max = 0 %}
+                    {% for game in pvp.games %}
+                        {% if loop.first %}
+                            {% set max = stat.total %}
+                        {% endif %}
+                        <tr>
+                            <td class="column-profession">
+                                <i class="ic-profession-{{ game.getprofession|lower }}"></i>
+                                {{ ('profession.'~game.getprofession)|trans }}
+                            </td>
+                            <td class="column-map">{{ game.map }}</td>
+                            <td class="column-delay">{{ game.dateended|datediff }}</td>
+                            <td class="column-result">
+                                {% if game.isvictory %}
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                {% else %}
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                {% endif %}
+                                {{ ('pvp.'~game.getresult)|trans }}
+                            </td>
+                            <td class="text-center">
+                                <span class="{{ game.getteam|lower }}">{{ ('pvp.'~game.getteam)|trans }}</span>
+                            </td>
+                            <td class="text-center">{{ game|gameduration }}</td>
+                            <td class="text-center">
+                                <span class="blue">{{ game.scoreblue }}</span> - <span class="red">{{ game.scorered }}</span>
+                            </td>
+                            <td class="column-scorebar">
+                                {{ _self.progress_score(game) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% set standings = pvp.getStandings %}
+    {% if standings|length %}
+        {% for standing in standings %}
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="ic-mode-pvp"></i> {{ standing.season.getName }}
+                    <span class="pull-right">
+                        {{ standing.season.datestart|slice(0, 10) }} &nbsp; <i class="glyphicon glyphicon-arrow-right"></i> &nbsp; {{ standing.season.dateend|slice(0, 10) }}
+                    </span>
+                </div>
+                <div class="panel-body season">
+                    {% set numdivision = standing.getCurrentDivision %}
+                    {% set numtier = standing.getCurrentTier %}
+                    {% set numpoints = standing.getCurrentPoints %}
+                    {% set division = standing.season.divisions[numdivision] %}
+                    {% if division %}
+                        <div class="season">
+                            <div class="image">
+                                <img src="{{ division.getLargeIcon|image }}"/>
+                            </div>
+                            <div class="division division-{{ numdivision + 1 }}">
+                                <div class="title">
+                                    {{ division.getName }}
+                                </div>
+                                {% for j, tier in division.tiers %}
+                                    <div class="tier">
+                                        {% for i in 1..tier.points %}
+                                            {% set disabled = (j > numtier or j == numtier and i > numpoints) ? 1 : 0 %}
+                                            <i class="ic-ui-pip {% if disabled %}disabled{% endif %}"></i>
+                                        {% endfor %}
+                                        <div>
+                                            <i class="ic-ui-pip-under-{{ j+1 }}"></i>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+{% endspaceless %}
+
+{% macro progress_score(game) %}
+    {% if game.scoreblue + game.scorered  > 0 %}
+        {% set pct = 100 * game.scoreblue/(game.scoreblue + game.scorered) %}
+        <div class="progress progress-scores">
+            <div class="progress-bar progress-bar-info" role="progressbar" style="width: {{ pct }}%">
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro progress_matches(pct, text) %}
+    <div class="progress progress-warning">
+        <span>{{ text }}</span>
+        <div class="progress-bar progress-bar-warning" role="progressbar" style="width: {{ pct }}%">
+            <span>{{ text }}</span>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro progress_winrate(pct) %}
+    <div class="progress progress-success">
+        <span>{{ pct|round(2) }}%</span>
+        <div class="progress-bar progress-bar-success" role="progressbar" style="width: {{ pct }}%">
+            <span>{{ pct|round(2) }}%</span>
+        </div>
+    </div>
+{% endmacro %}

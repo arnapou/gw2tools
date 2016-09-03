@@ -1,0 +1,29 @@
+{% if lang == 'fr' %}
+    
+    <div class="text-danger">
+        <p>
+            <i class="glyphicon glyphicon-exclamation-sign"></i> <b>Interdit</b> 
+        </p>
+        <p>
+            Circulez, il n'y a rien à voir. Vous n'êtes pas le propriétaire de ce compte.
+        </p>
+        <p>
+            Pour être le propriétaire, enregistrez votre clé d'application sur <a href="/">cette page</a>.
+        </p>
+    </div>
+
+{% else %}
+    
+    <div class="text-danger">
+        <p>
+            <i class="glyphicon glyphicon-exclamation-sign"></i> <b>Forbidden</b> 
+        </p>
+        <p>
+            There is nothing to see because you are not the account owner.
+        </p>
+        <p>
+            To be the account owner, you must register the correct GW2 api key on <a href="/">this page</a>.
+        </p>
+    </div>
+
+{% endif %}

@@ -1,0 +1,118 @@
+{% spaceless %}
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    {% set fname = app.request.get('name')|lower %}
+    {% set frarity = app.request.get('rarity') %}
+    {% set flvlmin = app.request.get('lvlmin') %}
+    {% set flvlmax = app.request.get('lvlmax') %}
+    {#    <p>fname = {{fname}}</p>
+        <p>frarity = {{frarity}}</p>
+        <p>flvlmin = {{flvlmin}}</p>
+        <p>flvlmax = {{flvlmax}}</p>#}
+
+    {% if module.isAllowed('inventories', 'characters') %}
+        {% for char in account.characters %}
+            {% if owner or token.hasright('character/'~char.name) %}
+
+                {% set found = '' %}
+
+                {% for item in char.getEquipments() %}
+                    {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                {% endfor %}
+
+                {% for bag in char.getbags() %}
+                    {% for item in bag.getInventorySlots() %}
+                        {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                    {% endfor %}
+                {% endfor %}
+
+                {% if found|trim %}
+                    <div class="row">
+                        <div class="col-xs-2">
+                            {{ macro.charname(_context, char) }}
+                        </div>
+                        <div class="col-xs-10 slots">
+                            {{ found|raw }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if module.isAllowed('bank', 'inventories') %}
+        {% for vault in account.getbankvaults() %}
+            {% set found = '' %}
+
+            {% for item in vault.getInventorySlots() %}
+                {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+            {% endfor %}
+
+            {% if found|trim %}
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a href="../bank/">
+                            <i class="ic-ui-bank"></i> {{ 'global.bank'|trans }} {{ vault.id }}
+                        </a>
+                    </div>
+                    <div class="col-xs-10 slots">
+                        {{ found|raw }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if module.isAllowed('collectibles', 'inventories') %}
+        {% for category in account.getcollectibles() %}
+            {% set found = '' %}
+
+            {% for item in category.getItems() %}
+                {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+            {% endfor %}
+
+            {% if found|trim %}
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a href="../collectibles/">
+                            <i class="ic-ui-collections"></i> {{ category.name }}
+                        </a>
+                    </div>
+                    <div class="col-xs-10 slots">
+                        {{ found|raw }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+    {% macro match(item, fname, frarity, flvlmin, flvlmax) %}
+        {% if item.getid() and (item.getcount() > 0 or item.getslot()) %}
+            {% import "AppBundle::macro.html.twig" as macro %}
+
+            {% set show = 1 %}
+
+            {% if fname and fname not in item.getname()|lower and fname not in item.getskin().getname()|lower %}
+                {% set show = 0 %}
+            {% endif %}
+
+            {% if frarity and frarity != item.getrarity() %}
+                {% set show = 0 %}
+            {% endif %}
+
+            {% if flvlmin and flvlmin > item.getlevel() %}
+                {% set show = 0 %}
+            {% endif %}
+
+            {% if flvlmax and flvlmax < item.getlevel() %}
+                {% set show = 0 %}
+            {% endif %}
+
+            {% if show %}
+                {{ macro.inventory_slot(item) }}
+            {% endif %}
+        {% endif %}
+    {% endmacro %}
+
+{% endspaceless %}

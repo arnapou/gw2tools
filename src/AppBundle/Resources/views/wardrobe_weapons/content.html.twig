@@ -1,0 +1,63 @@
+
+{% set wardrobe = account.wardrobe.weapons %}
+
+{{ _self.group('global.unlock_weapon_twohands'|trans, ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'], 'weapon', wardrobe, _context) }}
+{{ _self.group('global.unlock_weapon_onehand'|trans, ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'], 'weapon', wardrobe, _context) }}
+{{ _self.group('global.unlock_weapon_aquatic'|trans, ['Speargun', 'Harpoon', 'Trident'], 'weapon', wardrobe, _context) }}
+
+
+{% macro group(name, types, class, wardrobe, context) %}
+    {% spaceless %}
+        {% set count = 0 %}
+        {% set total = 0 %}
+        {% for type in types %}
+            {% set data = wardrobe[type] %}
+            {% set count = count + data.count %}
+            {% set total = total + data.total %}
+        {% endfor %}
+
+        {% if total %}
+            <div class="panel panel-toggle panel-primary collapsed">
+                <div class="panel-heading">
+                    <div class="pull-right expandcollapse">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <i class="glyphicon glyphicon-minus"></i>
+                    </div>
+                    <div class="pull-right" title="{{ (100 * count / total)|round }}%">
+                        {{ count }} / {{ total }}
+                    </div>
+                    <b>{{ name }}</b>
+                </div>
+            </div>
+
+            <div style="display: none">
+                {% for type in types %}
+                    {% set data = wardrobe[type] %}
+                    {% if data.total %}
+                        {% set map = context.account.getskinitems(data.skins|keys)%}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="pull-right" title="{{ (100 * data.count / data.total)|round }}">
+                                    {{ data.count }} / {{ data.total }}
+                                </div>
+                                <i class="ic-{{ class }}-{{ (type == 'Back' ? 'Backpack' : type)|lower }}"></i> {{ ('itemtype.'~type)|trans }}
+                            </div>
+                            <div class="panel-body slots">
+                                {% for skin in data.skins %}
+                                    {% set item = map[skin.id] %}
+                                    <div class="slot {{ skin.unlocked ? '' : 'empty' }}">
+                                        {% if skin.id %}
+                                            <img src="{{ skin|image }}" {{ (item ? item : skin)|gwlink|raw }}/>
+                                        {% else %}
+                                            <img src="{{ ""|image }}" class="nothing" />
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}

@@ -1,0 +1,22 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+<div class="gwitem">
+
+    <div class="gwitemheader">
+        <div class="pet-icon-wrapper">
+            <div class="gwicon">
+                <img title="{{ pet.getname }}" src="{{ pet.geticon|image }}" />
+            </div>
+        </div>
+
+        <div class="gwname">
+            {{ pet.getname }}
+        </div>
+    </div>
+
+    <div>
+        {{ pet.getdescription }}
+    </div>
+
+</div>

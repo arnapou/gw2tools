@@ -1,0 +1,20 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+	<div class="page-character" data-content="ajax" data-src="./{{ character }}.html">
+		<div class="row">
+			<div class="col-xs-9 summary">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+                        <i class="ic-profession-{{ character.getProfession()|lower }}"></i> <b>{{ character }}</b>
+                    </div>
+					<div class="panel-body">
+						<div class="spinner-loader"></div> <em>{{ "global.loading"|trans }}</em>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

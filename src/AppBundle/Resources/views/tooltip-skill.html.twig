@@ -1,0 +1,21 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+<div class="gwitem">
+
+    <div class="gwitemheader">
+        <div class="gwicon">
+            <img title="{{ skill.getname }}" src="{{ skill|image }}" />
+        </div>
+
+        <div class="gwname">
+            {{ skill.getname }}
+        </div>
+    </div>
+
+    <div>
+        {{ skill.getdescription|striptags|nl2br }}
+    </div>
+
+    {{ macro.facts(skill.getfacts) }}
+</div>

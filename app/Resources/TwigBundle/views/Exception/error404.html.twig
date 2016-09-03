@@ -1,0 +1,10 @@
+{% extends "TwigBundle::Exception/error.html.twig" %}
+{% block message %}
+    <br />
+    Foo! Quaggan does not think your page exists.<br />
+    <br />
+    Quaggan sad for you :(
+{% endblock %}
+{% block image %}
+    <img src="{{ asset('assets/images/error/quaggan-404.jpg') }}" />
+{% endblock %}

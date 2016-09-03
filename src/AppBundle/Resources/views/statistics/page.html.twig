@@ -1,0 +1,24 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <div data-content="ajax" data-src="./content.html">
+        <div class="panel panel-default page-{{ page }}">
+            <div class="panel-heading">
+                <i class="glyphicon glyphicon-stats"></i> {{ page_name }}
+            </div>
+            <div class="panel-body">
+                <div class="spinner-loader"></div> <em>{{ "global.loading"|trans }}</em>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script src="{{ asset('assets/js/highcharts.js') }}"></script>
+
+{% endblock %}

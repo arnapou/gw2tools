@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="280"
+   height="280"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="ui-archetype.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="-51.419577"
+     inkscape:cy="60.319225"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     borderlayer="true"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1028"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-772.36218)">
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       d="M 33.5 26.4375 L 33.5 193 L 71.5625 193 L 71.375 158.5 L 71.375 158.40625 L 71.375 158.34375 L 71.875 110.90625 L 71.9375 105.21875 L 76.84375 102.375 L 117.84375 78.4375 L 117.90625 78.375 L 117.96875 78.34375 L 159.34375 55.03125 L 164.28125 52.25 L 169.21875 55.0625 L 200 72.65625 L 200 26.4375 L 33.5 26.4375 z M 164.25 63.75 L 122.875 87.0625 L 81.875 111 L 81.375 158.4375 L 81.625 205.875 L 122.4375 230.0625 L 163.6875 253.5625 L 205 230.3125 L 246 206.375 L 246.5 158.9375 L 246.25 111.4375 L 205.4375 87.3125 L 164.25 63.75 z "
+       transform="translate(0,772.36218)"
+       id="rect3818" />
+  </g>
+</svg>

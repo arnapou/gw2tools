@@ -1,3 +1,9 @@
+## 2.0 (2016-09-03)
+
+  - complete project rewrite under symfony
+  - gw2skills links improvements
+  - lots of new apis added (pvp seasons, titles, finishers, ...)
+
 ## 1.0.24 (2015-12-21)
 
   - css bugfix

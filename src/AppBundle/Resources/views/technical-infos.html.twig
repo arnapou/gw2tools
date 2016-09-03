@@ -1,0 +1,55 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+    <h1>Development</h1>
+    <p>
+        The site is a "server" oriented development. Not a frontend javascript application.<br />
+        Technically, this is pure object oriented PHP 5.5+.
+    </p>
+    <p>
+        Images are cached by CloudFlare and by me on the server with a long time retention.
+    </p>
+    <p>
+        Gw2 api request are cached (5 min) in a MongoDB database and data are dynamically stored into Mongo collections. Almost all data is daily refreshed, prices are refresh more often.
+    </p>
+    <p>
+        The codes used to share pages (ie 'R2eZnmgC4B') are randomly generated (no hashing function used = no possibility to find a link between code and access token).<br />
+        Codes, Tokens and share preferences are stored locally in a MySql database.<br />
+        To be authentified and to allow the site to show your accounts, the site store tokens in a browser cookie (maximum 20 tokens stored).
+    </p>
+
+    <h1>Contribution</h1>
+    <p>
+        The project is 100% open source and shared on GitHub: <a href="https://github.com/arnapou/gw2tools" target="_blank">GW2Tools Project</a>.<br />
+        You are free to host your own clone of this site if you wish based on this project.
+    </p>
+    <p>
+        <a href="https://github.com/arnapou/gw2apiclient">GW2 Api Client</a> is a site agnostic project which allow you to request GW2 Api with caching (file, mysql, mongo, memcached, ...).<br />
+        This is the low level PHP code used on the site.<br />
+        You can use it for your own project (but I won't help, you must have the technical prerequisites).
+    </p>
+    <p>
+        If you want to contribute, forks the project and make pull requests.
+    </p>
+    <p>
+        Thanks to <a href="http://en.gw2skills.net/">gw2skills.net</a> developper who made an api I use to generate gw2skills build links.
+    </p>
+
+    <h1>Plateform</h1>
+    <p>
+        The site is hosted at <a href="https://www.ovh.com/">OVH</a> on a dedicated server. This is not a big server, be kind if you have lags sometimes.
+    </p>
+    <p>
+        The trafic is going through <a href="https://www.cloudflare.com/">CloudFlare</a> for better performances.
+    </p>
+
+    <h1>About me</h1>
+    <p>
+        Senior PHP developer (Zend PHP5.3 certified), I also worked in C# .Net for Microsoft surface<sup>TM</sup> (the 30" inch table if you remember).<br />
+        I worked also as a Delphi developper. I wrote my first lines of code when I was 6 years old on a Thomsom 70 computer (1986) in Basic.<br />
+        Well I did lots of things, also was a Ms sysadmin for a few years (ms Exchange, Active Directory and so on ...)<br />
+    </p>
+    <p>
+        All that to say that I aim to make a functional / efficient site, and not a beautiful GUI ! Even if I have graphical/ergonomy skills (thanks to Ms Surface development).
+    </p>
+{% endblock %}

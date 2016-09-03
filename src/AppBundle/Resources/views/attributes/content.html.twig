@@ -1,0 +1,51 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+
+{% set attrs = [
+    'Power',
+    'Toughness',
+    'Vitality',
+    'Precision',
+    'PrecisionPct',
+    'CritDamage',
+    'CritDamagePct',
+    'Healing',
+    'ConditionDamage',
+    'ConditionDuration',
+    'ConditionDurationPct',
+    'BoonDuration',
+    'BoonDurationPct',
+    'AgonyResistance',
+] %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'global.name'|trans }}</th>
+                {% for attr in attrs %}
+                <th title="{{ ('attribute.'~attr)|trans }}" class="text-center">
+                    <i class="ic-attribute-{{ attr|lower }}"></i>
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for char in account.characters %}
+            {% if module.isAllowedCharacter(char) %}
+                {% set attributes = char.attributes %}
+                <tr>
+                    <td>{{ macro.charname(_context, char) }}</td>
+                    {% for attr in attrs %}
+                        <td class="text-center">
+                            <span {% if attributes[attr] == 0 %}class="text-muted"{% endif %}>
+                                {{ attributes[attr] }}
+                                {% if attr|slice(-3) == 'Pct' %}%{% endif %}
+                            </span>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>

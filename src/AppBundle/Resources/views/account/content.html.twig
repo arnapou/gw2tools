@@ -1,0 +1,152 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+<table class="table table-condensed">
+    <tbody>
+        <tr>
+            <td>{{ 'global.name'|trans }}</td>
+            <td colspan="2"><b>{{ account.name }}</b></td>
+        </tr>
+        <tr>
+            <td>{{ 'global.creation_date'|trans }}</td>
+            <td colspan="2">{{ account.created }} <small>(UTC)</small></td>
+        </tr>
+        <tr>
+            <td>{{ 'global.world'|trans }}</td>
+            <td colspan="2">{{ account.world }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'global.fractal_level'|trans }}</td>
+            <td colspan="2">{{ account.getFractallevel }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'global.wvw_rank'|trans }}</td>
+            <td colspan="2">{{ account.getWvwRank() }}</td>
+        </tr>
+        {% if account.getWvwMatch.getAllWorlds %}
+            <tr>
+                <td>{{ 'global.wvw_worlds'|trans }}</td>
+                <td colspan="2">
+                    {% for color, worlds in account.getWvwMatch.getAllWorlds %}
+                        <span class="worlds">
+                            <i class="glyphicon glyphicon-stop" style="color: {{ color }}"></i>
+                            {% for world in worlds %}
+                                <span class="world{% if account.worldid == world.getid %} text-info{% endif %}">{{ world }}</span>
+                            {% endfor %}
+                        </span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td>{{ 'global.commander_tag'|trans }}</td>
+            <td colspan="2">{{ (account.hasCommanderTag ? 'global.yes' : 'global.no')|trans }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'global.achievement_points'|trans }}</td>
+            <td colspan="2">
+                {{ 'global.daily'|trans }} = {{ account.DailyAP }}
+                {% if account.MonthlyAP %}, {{ 'global.monthly'|trans }} = {{ account.MonthlyAP }} &nbsp; ({{ 'global.total'|trans }} = {{ account.DailyAP + account.MonthlyAP }}){% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>{{ 'global.guilds'|trans }}</td>
+            <td colspan="2">
+                {% for guild in account.guilds %}
+                    <div>
+                        <img src="{{ guild|image }}" class="emblem" />
+                        {{ guild }}
+                    </div>
+                {% endfor %}
+            </td>
+        </tr>
+        {% if owner %}
+            <tr>
+                <td class="text-owner">{{ 'global.api_key'|trans }}</td>
+                <td>
+                    <div>
+                        <input value="{{ account.accesstoken }}" style="border: 0; background: 0; display: block; width: 100%; padding: 0; margin: 0;" readonly="readonly" />
+                    </div>
+                </td>
+                <td>
+                    <span class="btn btn-sm btn-danger action-delete-token">
+                        <i class="glyphicon glyphicon-remove"></i>{{ 'global.unregister_api_key'|trans }}
+                    </span>
+                    <span class="btn btn-sm btn-primary action-replace-token">
+                        <i class="glyphicon glyphicon-refresh"></i>{{ 'global.replace_api_key'|trans }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-owner">{{ 'global.permissions'|trans }}</td>
+                <td colspan="2">
+                    {% for permission in module.permissionslist %}
+                        {% if account.haspermission(permission) %}
+                            <span class="label label-success">{{ permission }}</span>
+                        {% else %}
+                            <span class="label label-danger">{{ permission }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-owner">{{ 'global.public_access'|trans }}</td>
+                <td colspan="2">
+                    <table class="rights">
+                        <thead>
+                            <tr>
+                                {% for menu in module.menu %}
+                                    <th>
+                                        {{ menu.label }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for menu in module.menu %}
+                                    <td>
+                                        {% for item in menu %}
+                                            {% if item.separator %}
+                                                <hr />
+                                            {% else %}
+                                                {% set checked = user.hasRight(item.right) %}
+                                                <div class="form-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" {{ checked ? 'checked="checked"' : '' }} value="{{ item.right }}" />  {{ item.label }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-owner">{{ 'global.public_other'|trans }}</td>
+                <td class="rights">
+                    {% for other in ['limit_characters', 'disable_statistics'] %}
+                        {% set checked = user.hasRight('other.'~other) %}
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" {{ checked ? 'checked="checked"' : '' }} value="{{ 'other.'~other }}" />  {{ ('rights.other.'~other)|trans }}
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </td>
+                <td>
+                    <span class="btn btn-primary action-save-rights">
+                        <i class="glyphicon glyphicon-save"></i>{{ 'global.save_preferences'|trans }}
+                    </span>
+                </td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>

@@ -1,0 +1,75 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% spaceless %}
+    {% if account.haspermission('builds') %}
+
+        {% set modes = ['pve', 'wvw', 'pvp'] %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ 'global.name'|trans }}</th>
+                        {% for mode in modes %}
+                        <th>{{ ('traits.'~mode)|trans }}</th>
+                        {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for char in account.characters %}
+                    {% if module.isAllowedCharacter(char) %}
+                        {% set attributes = char.attributes %}
+                        <tr>
+                            <td>{{ macro.charname(_context, char) }}</td>
+                            {% for mode in modes %}
+                                <td class="build">
+                                    {{ _self.build(char.getBuild(mode)) }}
+                                    <a href="../gw2skills-{{ mode }}/{{ char.getname }}" class="gw2skillslink" target="_blank">
+                                        <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                                    </a>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+
+        {% set permission = 'builds' %}
+        {% include 'error-no-permission.twig' %}
+
+    {% endif %}
+{% endspaceless %}
+
+{% macro build(build) %}
+    <div>
+        <span class="skill"></span>
+        {% for i in [6,7,8,9,0] %}
+            <span class="skill">
+                {% set skill = build.getSkill(i) %}
+                <img src="{{ skill.geticon|image }}" {{ skill|gwlink|raw }} />
+            </span>
+        {% endfor %}
+    </div>
+    {% for spe in build.getSpecializations() %}
+        {% if spe.getname %}
+            {% set minors = spe.getMinorTraits %}
+            {% set majors = spe.getMajorTraitsSelected %}
+            <div>
+                <span class="spe">
+                    <img src="{{ spe.geticon|image }}" {{ spe|gwlink|raw }} />
+                </span>
+                {% for i in 0..2 %}
+                    <span class="trait minor">
+                        <img src="{{ minors[i].geticon|image }}" {{ minors[i]|gwlink|raw }} />
+                    </span>
+                    <span class="trait major">
+                        <img src="{{ majors[i].geticon|image }}" {{ majors[i]|gwlink|raw }} />
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

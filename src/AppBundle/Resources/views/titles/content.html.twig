@@ -1,0 +1,66 @@
+
+
+{% set titles = account.titles.getTitles %}
+{% set groups = account.getTitlesAchievementCategories %}
+{% for group in groups %}
+
+    {% spaceless %}
+        {% if group.obj %}
+
+            <div class="panel panel-toggle panel-primary collapsed">
+                <div class="panel-heading">
+                    <div class="pull-right expandcollapse">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <i class="glyphicon glyphicon-minus"></i>
+                    </div>
+                    <div class="pull-right" title="{{ (100 * group.count / group.total)|round }}%">
+                        {{ group.count }} / {{ group.total }}
+                    </div>
+                    <i class="ic-ui-arenanet"></i> {{ group.obj.getName }}
+                </div>
+            </div>
+
+            <div style="display: none">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table class="table table-condensed table-hover">
+                            {% for category in group.items %}
+                                {% for titleId in category.items %}
+                                    {% set title = titles[titleId] %}
+                                    {% if title %}
+                                        <tr class="{{ title.isUnlocked ? 'unlocked' : 'locked' }}">
+                                            <td class="icon">
+                                                {% if category.obj.getIcon %}
+                                                    <img src="{{ category.obj.getIcon|image }}" />
+                                                {% else %}
+                                                    <i class="ic-ui-arenanet"></i>
+                                                {% endif %}
+                                            </td>
+                                            <td class="category">
+                                                {{ category.obj.getName }}
+                                            </td>
+                                            <td class="title" title="{{ title.achievement.getDescription|striptags }}">
+                                                {% if title.isunlocked %}
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                {% else %}
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                {% endif %}
+                                                {{ title.getname }}
+                                            </td>
+                                            <td class="flags">
+                                                {% if title.achievement.hasFlag('Pvp') %}<span>{{ 'global.pvp'|trans }}</span>{% endif %}
+                                                {% if title.achievement.getType == 'ItemSet' %}<span>{{ 'global.collection'|trans }}</span>{% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endspaceless %}
+
+{% endfor %}
+

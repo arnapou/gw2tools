@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    {% spaceless %}
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta charset="UTF-8" />
+            <title>An Error Occurred: {{ status_text }}</title>
+            <style type="text/css">
+                /* http://meyerweb.com/eric/tools/css/reset/ 
+                   v2.0 | 20110126
+                   License: none (public domain)
+                */
+
+                html, body, div, span, applet, object, iframe,
+                h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+                a, abbr, acronym, address, big, cite, code,
+                del, dfn, em, img, ins, kbd, q, s, samp,
+                small, strike, strong, sub, sup, tt, var,
+                b, u, i, center,
+                dl, dt, dd, ol, ul, li,
+                fieldset, form, label, legend,
+                table, caption, tbody, tfoot, thead, tr, th, td,
+                article, aside, canvas, details, embed, 
+                figure, figcaption, footer, header, hgroup, 
+                menu, nav, output, ruby, section, summary,
+                time, mark, audio, video {
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                    font-size: 100%;
+                    font: inherit;
+                    vertical-align: baseline;
+                }
+                /* HTML5 display-role reset for older browsers */
+                article, aside, details, figcaption, figure, 
+                footer, header, hgroup, menu, nav, section {
+                    display: block;
+                }
+                body {
+                    line-height: 1;
+                }
+                ol, ul {
+                    list-style: none;
+                }
+                blockquote, q {
+                    quotes: none;
+                }
+                blockquote:before, blockquote:after,
+                q:before, q:after {
+                    content: '';
+                    content: none;
+                }
+                table {
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                }
+                body {
+                    background: #fff;
+                }
+                body * {
+                    font-family: Arial, Verdana;
+                }
+                div.error-wrapper {
+                    text-align: center;
+                    margin-top: 4em;
+                }
+                div.error,
+                div.error-image {
+                    margin: 2em;
+                    width: 600px;
+                    max-width: 40%;
+                    display: inline-block;
+                    vertical-align: top;
+                    text-align: left;
+                }
+
+                div.error {
+                    min-width: 400px;
+                }
+                div.error-image {
+                    min-width: 300px;
+                }
+                div.error-image img {
+                    max-width: 100%;
+                }
+                div.error-header {
+                    color: #bfbfbf;
+                    text-shadow: 1px 1px 0 #666;
+                    border-bottom: 1px solid #aaa;
+                    font-weight: bold;
+
+                }
+                span.error-code {
+                    font-size: 100px;
+                    text-shadow: 1px 1px 0 #666, 2px 2px 0 #666, 3px 3px 0 #666;
+                    margin-right: 20px;
+                }
+                span.error-code:after {
+                    content: " ";
+                    font-size: 1px;
+                }
+                span.error-title {
+                    font-size: 32px;
+                    white-space: nowrap;
+                }
+                div.error-message {
+                    margin-top: 0.5em;
+                    font-weight: normal;
+                    color: #888;
+                    font-size: 20px;
+                    line-height: 1.5;
+                }
+                div.error-message pre, div.error-message pre * {
+                    font-size: 12px;
+                    line-height: 1.2;
+                    font-family: consolas, “Courier New”, courier, monospace;
+                }
+                a {
+                    color: #33a;
+                    text-decoration: none;
+                }
+                a:hover {
+                    color: #33a;
+                    text-decoration: underline;
+                }
+            </style>
+        </head>
+
+        <body>
+
+            <div class="error-wrapper">
+                <div class="error">
+                    <div class="error-header">
+                        <span class="error-code">{{ status_code }}</span>
+                        <span class="error-title">{{ status_text }}</span>
+                    </div>
+                    <div class="error-message">
+                        {% block message %}
+                            <br />
+                            Oops! Quaggan found something broken.  <br />
+                            Quaggan think Guildwars 2 API probably down. <br />
+                            <br />
+                            Please try again later and <a href="mailto:arnaud@arnapou.net?subject=GW2Tool+Error">tell quaggan</a> if it lasts too long.
+                        {% endblock %}
+                    </div>
+                </div>
+                <div class="error-image">
+                    {% block image %}
+                        <img src="{{ asset('assets/images/error/quaggan-error.jpg') }}" />
+                    {% endblock %}
+                </div>
+            </div>
+        </body>
+    {% endspaceless %}
+</html>

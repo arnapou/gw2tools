@@ -1,0 +1,30 @@
+{% spaceless %}
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    {% set columns = account.bankvaults|columns(2) %}
+
+    <div class="row">
+        {% for vaults in columns %}
+            <div class="col-xs-6">
+                {% for vault in vaults %}
+                    {% if vault %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="pull-right">
+                                    {{ macro.amount(vault.price) }}
+                                </div>
+                                <i class="ic-ui-bank"></i> {{ 'global.bank'|trans }} {{ vault.id }}
+                            </div>
+                            <div class="panel-body slots">
+                                {% for item in vault.getinventoryslots %}
+                                    {{ macro.inventory_slot(item) }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endspaceless %}

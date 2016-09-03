@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+  <head><!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <meta charset="UTF-8"><style>/*
+ * Bootstrap v2.2.1
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ */
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+a:hover,
+a:active {
+  outline: 0;
+}
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font-size: 100%;
+  vertical-align: middle;
+}
+button,
+input {
+  *overflow: visible;
+  line-height: normal;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+  background-color: #fff;
+}
+a {
+  color: #08c;
+  text-decoration: none;
+}
+a:hover {
+  color: #005580;
+  text-decoration: underline;
+}
+.row {
+  margin-left: -20px;
+  *zoom: 1;
+}
+.row:before,
+.row:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.row:after {
+  clear: both;
+}
+[class*="span"] {
+  float: left;
+  min-height: 1px;
+  margin-left: 20px;
+}
+.container,
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+  width: 940px;
+}
+.span12 {
+  width: 940px;
+}
+.span11 {
+  width: 860px;
+}
+.span10 {
+  width: 780px;
+}
+.span9 {
+  width: 700px;
+}
+.span8 {
+  width: 620px;
+}
+.span7 {
+  width: 540px;
+}
+.span6 {
+  width: 460px;
+}
+.span5 {
+  width: 380px;
+}
+.span4 {
+  width: 300px;
+}
+.span3 {
+  width: 220px;
+}
+.span2 {
+  width: 140px;
+}
+.span1 {
+  width: 60px;
+}
+[class*="span"].pull-right,
+.row-fluid [class*="span"].pull-right {
+  float: right;
+}
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  *zoom: 1;
+}
+.container:before,
+.container:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.container:after {
+  clear: both;
+}
+p {
+  margin: 0 0 10px;
+}
+.lead {
+  margin-bottom: 20px;
+  font-size: 21px;
+  font-weight: 200;
+  line-height: 30px;
+}
+small {
+  font-size: 85%;
+}
+h1 {
+  margin: 10px 0;
+  font-family: inherit;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
+}
+h1 small {
+  font-weight: normal;
+  line-height: 1;
+  color: #999;
+}
+h1 {
+  line-height: 40px;
+}
+h1 {
+  font-size: 38.5px;
+}
+h1 small {
+  font-size: 24.5px;
+}
+body {
+  margin-top: 90px;
+}
+.header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  margin-left: -480px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding-top: 10px;
+  z-index: 10;
+}
+.footer {
+  color: #ddd;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 20px;
+}
+.footer a {
+  color: #ccc;
+  text-decoration: underline;
+}
+.the-icons {
+  font-size: 14px;
+  line-height: 24px;
+}
+.switch {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  color: #666;
+}
+.switch input {
+  margin-right: 0.3em;
+}
+.codesOn .i-name {
+  display: none;
+}
+.codesOn .i-code {
+  display: inline;
+}
+.i-code {
+  display: none;
+}
+@font-face {
+      font-family: 'gw2tool';
+      src: url('./font/gw2tool.eot?87518661');
+      src: url('./font/gw2tool.eot?87518661#iefix') format('embedded-opentype'),
+           url('./font/gw2tool.woff?87518661') format('woff'),
+           url('./font/gw2tool.ttf?87518661') format('truetype'),
+           url('./font/gw2tool.svg?87518661#gw2tool') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+     
+     
+    .demo-icon
+    {
+      font-family: "gw2tool";
+      font-style: normal;
+      font-weight: normal;
+      speak: none;
+     
+      display: inline-block;
+      text-decoration: inherit;
+      width: 1em;
+      margin-right: .2em;
+      text-align: center;
+      /* opacity: .8; */
+     
+      /* For safety - reset parent styles, that can break glyph codes*/
+      font-variant: normal;
+      text-transform: none;
+     
+      /* fix buttons height, for twitter bootstrap */
+      line-height: 1em;
+     
+      /* Animation center compensation - margins should be symmetric */
+      /* remove if not needed */
+      margin-left: .2em;
+     
+      /* You can be more comfortable with increased icons size */
+      /* font-size: 120%; */
+     
+      /* Font smoothing. That was taken from TWBS */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+     
+      /* Uncomment for 3D effect */
+      /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+    }
+     </style>
+    <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/gw2tool-ie7.css"><![endif]-->
+    <script>
+      function toggleCodes(on) {
+        var obj = document.getElementById('icons');
+      
+        if (on) {
+          obj.className += ' codesOn';
+        } else {
+          obj.className = obj.className.replace(' codesOn', '');
+        }
+      }
+      
+    </script>
+  </head>
+  <body>
+    <div class="container header">
+      <h1>
+        gw2tool
+         <small>font demo</small>
+      </h1>
+      <label class="switch">
+        <input type="checkbox" onclick="toggleCodes(this.checked)">show codes
+      </label>
+    </div>
+    <div id="icons" class="container">
+      <div class="row">
+        <div title="Code: 0xe800" class="the-icons span3"><i class="demo-icon ic-armor-accessory">&#xe800;</i> <span class="i-name">ic-armor-accessory</span><span class="i-code">0xe800</span></div>
+        <div title="Code: 0xe801" class="the-icons span3"><i class="demo-icon ic-armor-amulet">&#xe801;</i> <span class="i-name">ic-armor-amulet</span><span class="i-code">0xe801</span></div>
+        <div title="Code: 0xe802" class="the-icons span3"><i class="demo-icon ic-armor-backpack">&#xe802;</i> <span class="i-name">ic-armor-backpack</span><span class="i-code">0xe802</span></div>
+        <div title="Code: 0xe803" class="the-icons span3"><i class="demo-icon ic-armor-boots">&#xe803;</i> <span class="i-name">ic-armor-boots</span><span class="i-code">0xe803</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe804" class="the-icons span3"><i class="demo-icon ic-armor-coat">&#xe804;</i> <span class="i-name">ic-armor-coat</span><span class="i-code">0xe804</span></div>
+        <div title="Code: 0xe805" class="the-icons span3"><i class="demo-icon ic-armor-gloves">&#xe805;</i> <span class="i-name">ic-armor-gloves</span><span class="i-code">0xe805</span></div>
+        <div title="Code: 0xe806" class="the-icons span3"><i class="demo-icon ic-armor-helm">&#xe806;</i> <span class="i-name">ic-armor-helm</span><span class="i-code">0xe806</span></div>
+        <div title="Code: 0xe807" class="the-icons span3"><i class="demo-icon ic-armor-helmaquatic">&#xe807;</i> <span class="i-name">ic-armor-helmaquatic</span><span class="i-code">0xe807</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe808" class="the-icons span3"><i class="demo-icon ic-armor-leggings">&#xe808;</i> <span class="i-name">ic-armor-leggings</span><span class="i-code">0xe808</span></div>
+        <div title="Code: 0xe809" class="the-icons span3"><i class="demo-icon ic-armor-ring">&#xe809;</i> <span class="i-name">ic-armor-ring</span><span class="i-code">0xe809</span></div>
+        <div title="Code: 0xe80a" class="the-icons span3"><i class="demo-icon ic-armor-shoulders">&#xe80a;</i> <span class="i-name">ic-armor-shoulders</span><span class="i-code">0xe80a</span></div>
+        <div title="Code: 0xe80b" class="the-icons span3"><i class="demo-icon ic-attribute-agonyresistance">&#xe80b;</i> <span class="i-name">ic-attribute-agonyresistance</span><span class="i-code">0xe80b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe80c" class="the-icons span3"><i class="demo-icon ic-attribute-armor">&#xe80c;</i> <span class="i-name">ic-attribute-armor</span><span class="i-code">0xe80c</span></div>
+        <div title="Code: 0xe80d" class="the-icons span3"><i class="demo-icon ic-attribute-boonduration">&#xe80d;</i> <span class="i-name">ic-attribute-boonduration</span><span class="i-code">0xe80d</span></div>
+        <div title="Code: 0xe80e" class="the-icons span3"><i class="demo-icon ic-attribute-boondurationpct">&#xe80e;</i> <span class="i-name">ic-attribute-boondurationpct</span><span class="i-code">0xe80e</span></div>
+        <div title="Code: 0xe80f" class="the-icons span3"><i class="demo-icon ic-attribute-conditiondamage">&#xe80f;</i> <span class="i-name">ic-attribute-conditiondamage</span><span class="i-code">0xe80f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe810" class="the-icons span3"><i class="demo-icon ic-attribute-conditionduration">&#xe810;</i> <span class="i-name">ic-attribute-conditionduration</span><span class="i-code">0xe810</span></div>
+        <div title="Code: 0xe811" class="the-icons span3"><i class="demo-icon ic-attribute-conditiondurationpct">&#xe811;</i> <span class="i-name">ic-attribute-conditiondurationpct</span><span class="i-code">0xe811</span></div>
+        <div title="Code: 0xe812" class="the-icons span3"><i class="demo-icon ic-attribute-critdamage">&#xe812;</i> <span class="i-name">ic-attribute-critdamage</span><span class="i-code">0xe812</span></div>
+        <div title="Code: 0xe813" class="the-icons span3"><i class="demo-icon ic-attribute-critdamagepct">&#xe813;</i> <span class="i-name">ic-attribute-critdamagepct</span><span class="i-code">0xe813</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe814" class="the-icons span3"><i class="demo-icon ic-attribute-healing">&#xe814;</i> <span class="i-name">ic-attribute-healing</span><span class="i-code">0xe814</span></div>
+        <div title="Code: 0xe815" class="the-icons span3"><i class="demo-icon ic-attribute-health">&#xe815;</i> <span class="i-name">ic-attribute-health</span><span class="i-code">0xe815</span></div>
+        <div title="Code: 0xe816" class="the-icons span3"><i class="demo-icon ic-attribute-magicfind">&#xe816;</i> <span class="i-name">ic-attribute-magicfind</span><span class="i-code">0xe816</span></div>
+        <div title="Code: 0xe817" class="the-icons span3"><i class="demo-icon ic-attribute-power">&#xe817;</i> <span class="i-name">ic-attribute-power</span><span class="i-code">0xe817</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe818" class="the-icons span3"><i class="demo-icon ic-attribute-precision">&#xe818;</i> <span class="i-name">ic-attribute-precision</span><span class="i-code">0xe818</span></div>
+        <div title="Code: 0xe819" class="the-icons span3"><i class="demo-icon ic-attribute-precisionpct">&#xe819;</i> <span class="i-name">ic-attribute-precisionpct</span><span class="i-code">0xe819</span></div>
+        <div title="Code: 0xe81a" class="the-icons span3"><i class="demo-icon ic-attribute-toughness">&#xe81a;</i> <span class="i-name">ic-attribute-toughness</span><span class="i-code">0xe81a</span></div>
+        <div title="Code: 0xe81b" class="the-icons span3"><i class="demo-icon ic-attribute-vitality">&#xe81b;</i> <span class="i-name">ic-attribute-vitality</span><span class="i-code">0xe81b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe81c" class="the-icons span3"><i class="demo-icon ic-crafting-armorsmith">&#xe81c;</i> <span class="i-name">ic-crafting-armorsmith</span><span class="i-code">0xe81c</span></div>
+        <div title="Code: 0xe81d" class="the-icons span3"><i class="demo-icon ic-crafting-artificer">&#xe81d;</i> <span class="i-name">ic-crafting-artificer</span><span class="i-code">0xe81d</span></div>
+        <div title="Code: 0xe81e" class="the-icons span3"><i class="demo-icon ic-crafting-chef">&#xe81e;</i> <span class="i-name">ic-crafting-chef</span><span class="i-code">0xe81e</span></div>
+        <div title="Code: 0xe81f" class="the-icons span3"><i class="demo-icon ic-crafting-huntsman">&#xe81f;</i> <span class="i-name">ic-crafting-huntsman</span><span class="i-code">0xe81f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe820" class="the-icons span3"><i class="demo-icon ic-crafting-jeweler">&#xe820;</i> <span class="i-name">ic-crafting-jeweler</span><span class="i-code">0xe820</span></div>
+        <div title="Code: 0xe821" class="the-icons span3"><i class="demo-icon ic-crafting-leatherworker">&#xe821;</i> <span class="i-name">ic-crafting-leatherworker</span><span class="i-code">0xe821</span></div>
+        <div title="Code: 0xe822" class="the-icons span3"><i class="demo-icon ic-crafting-scribe">&#xe822;</i> <span class="i-name">ic-crafting-scribe</span><span class="i-code">0xe822</span></div>
+        <div title="Code: 0xe823" class="the-icons span3"><i class="demo-icon ic-crafting-tailor">&#xe823;</i> <span class="i-name">ic-crafting-tailor</span><span class="i-code">0xe823</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe824" class="the-icons span3"><i class="demo-icon ic-crafting-weaponsmith">&#xe824;</i> <span class="i-name">ic-crafting-weaponsmith</span><span class="i-code">0xe824</span></div>
+        <div title="Code: 0xe825" class="the-icons span3"><i class="demo-icon ic-mode-pve">&#xe825;</i> <span class="i-name">ic-mode-pve</span><span class="i-code">0xe825</span></div>
+        <div title="Code: 0xe826" class="the-icons span3"><i class="demo-icon ic-mode-pvp">&#xe826;</i> <span class="i-name">ic-mode-pvp</span><span class="i-code">0xe826</span></div>
+        <div title="Code: 0xe827" class="the-icons span3"><i class="demo-icon ic-mode-wvw">&#xe827;</i> <span class="i-name">ic-mode-wvw</span><span class="i-code">0xe827</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe828" class="the-icons span3"><i class="demo-icon ic-profession-berserker">&#xe828;</i> <span class="i-name">ic-profession-berserker</span><span class="i-code">0xe828</span></div>
+        <div title="Code: 0xe829" class="the-icons span3"><i class="demo-icon ic-profession-chronomancer">&#xe829;</i> <span class="i-name">ic-profession-chronomancer</span><span class="i-code">0xe829</span></div>
+        <div title="Code: 0xe82a" class="the-icons span3"><i class="demo-icon ic-profession-daredevil">&#xe82a;</i> <span class="i-name">ic-profession-daredevil</span><span class="i-code">0xe82a</span></div>
+        <div title="Code: 0xe82b" class="the-icons span3"><i class="demo-icon ic-profession-dragonhunter">&#xe82b;</i> <span class="i-name">ic-profession-dragonhunter</span><span class="i-code">0xe82b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe82c" class="the-icons span3"><i class="demo-icon ic-profession-druid">&#xe82c;</i> <span class="i-name">ic-profession-druid</span><span class="i-code">0xe82c</span></div>
+        <div title="Code: 0xe82d" class="the-icons span3"><i class="demo-icon ic-profession-elementalist">&#xe82d;</i> <span class="i-name">ic-profession-elementalist</span><span class="i-code">0xe82d</span></div>
+        <div title="Code: 0xe82e" class="the-icons span3"><i class="demo-icon ic-profession-engineer">&#xe82e;</i> <span class="i-name">ic-profession-engineer</span><span class="i-code">0xe82e</span></div>
+        <div title="Code: 0xe82f" class="the-icons span3"><i class="demo-icon ic-profession-guardian">&#xe82f;</i> <span class="i-name">ic-profession-guardian</span><span class="i-code">0xe82f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe830" class="the-icons span3"><i class="demo-icon ic-profession-herald">&#xe830;</i> <span class="i-name">ic-profession-herald</span><span class="i-code">0xe830</span></div>
+        <div title="Code: 0xe831" class="the-icons span3"><i class="demo-icon ic-profession-mesmer">&#xe831;</i> <span class="i-name">ic-profession-mesmer</span><span class="i-code">0xe831</span></div>
+        <div title="Code: 0xe832" class="the-icons span3"><i class="demo-icon ic-profession-necromancer">&#xe832;</i> <span class="i-name">ic-profession-necromancer</span><span class="i-code">0xe832</span></div>
+        <div title="Code: 0xe833" class="the-icons span3"><i class="demo-icon ic-profession-ranger">&#xe833;</i> <span class="i-name">ic-profession-ranger</span><span class="i-code">0xe833</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe834" class="the-icons span3"><i class="demo-icon ic-profession-reaper">&#xe834;</i> <span class="i-name">ic-profession-reaper</span><span class="i-code">0xe834</span></div>
+        <div title="Code: 0xe835" class="the-icons span3"><i class="demo-icon ic-profession-revenant">&#xe835;</i> <span class="i-name">ic-profession-revenant</span><span class="i-code">0xe835</span></div>
+        <div title="Code: 0xe836" class="the-icons span3"><i class="demo-icon ic-profession-scrapper">&#xe836;</i> <span class="i-name">ic-profession-scrapper</span><span class="i-code">0xe836</span></div>
+        <div title="Code: 0xe837" class="the-icons span3"><i class="demo-icon ic-profession-tempest">&#xe837;</i> <span class="i-name">ic-profession-tempest</span><span class="i-code">0xe837</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe838" class="the-icons span3"><i class="demo-icon ic-profession-thief">&#xe838;</i> <span class="i-name">ic-profession-thief</span><span class="i-code">0xe838</span></div>
+        <div title="Code: 0xe839" class="the-icons span3"><i class="demo-icon ic-profession-warrior">&#xe839;</i> <span class="i-name">ic-profession-warrior</span><span class="i-code">0xe839</span></div>
+        <div title="Code: 0xe83a" class="the-icons span3"><i class="demo-icon ic-ui-archetype">&#xe83a;</i> <span class="i-name">ic-ui-archetype</span><span class="i-code">0xe83a</span></div>
+        <div title="Code: 0xe83b" class="the-icons span3"><i class="demo-icon ic-ui-arenanet">&#xe83b;</i> <span class="i-name">ic-ui-arenanet</span><span class="i-code">0xe83b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe83c" class="the-icons span3"><i class="demo-icon ic-ui-arrow-bottom">&#xe83c;</i> <span class="i-name">ic-ui-arrow-bottom</span><span class="i-code">0xe83c</span></div>
+        <div title="Code: 0xe83d" class="the-icons span3"><i class="demo-icon ic-ui-arrow-left">&#xe83d;</i> <span class="i-name">ic-ui-arrow-left</span><span class="i-code">0xe83d</span></div>
+        <div title="Code: 0xe83e" class="the-icons span3"><i class="demo-icon ic-ui-arrow-right">&#xe83e;</i> <span class="i-name">ic-ui-arrow-right</span><span class="i-code">0xe83e</span></div>
+        <div title="Code: 0xe83f" class="the-icons span3"><i class="demo-icon ic-ui-arrow-top">&#xe83f;</i> <span class="i-name">ic-ui-arrow-top</span><span class="i-code">0xe83f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe840" class="the-icons span3"><i class="demo-icon ic-ui-bag">&#xe840;</i> <span class="i-name">ic-ui-bag</span><span class="i-code">0xe840</span></div>
+        <div title="Code: 0xe841" class="the-icons span3"><i class="demo-icon ic-ui-bank">&#xe841;</i> <span class="i-name">ic-ui-bank</span><span class="i-code">0xe841</span></div>
+        <div title="Code: 0xe842" class="the-icons span3"><i class="demo-icon ic-ui-blc-balance">&#xe842;</i> <span class="i-name">ic-ui-blc-balance</span><span class="i-code">0xe842</span></div>
+        <div title="Code: 0xe843" class="the-icons span3"><i class="demo-icon ic-ui-blc-gem">&#xe843;</i> <span class="i-name">ic-ui-blc-gem</span><span class="i-code">0xe843</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe844" class="the-icons span3"><i class="demo-icon ic-ui-blc-lion">&#xe844;</i> <span class="i-name">ic-ui-blc-lion</span><span class="i-code">0xe844</span></div>
+        <div title="Code: 0xe845" class="the-icons span3"><i class="demo-icon ic-ui-blc-lion-o">&#xe845;</i> <span class="i-name">ic-ui-blc-lion-o</span><span class="i-code">0xe845</span></div>
+        <div title="Code: 0xe846" class="the-icons span3"><i class="demo-icon ic-ui-blc-lion-small">&#xe846;</i> <span class="i-name">ic-ui-blc-lion-small</span><span class="i-code">0xe846</span></div>
+        <div title="Code: 0xe847" class="the-icons span3"><i class="demo-icon ic-ui-blc-trade">&#xe847;</i> <span class="i-name">ic-ui-blc-trade</span><span class="i-code">0xe847</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe848" class="the-icons span3"><i class="demo-icon ic-ui-chevron-bottom">&#xe848;</i> <span class="i-name">ic-ui-chevron-bottom</span><span class="i-code">0xe848</span></div>
+        <div title="Code: 0xe849" class="the-icons span3"><i class="demo-icon ic-ui-chevron-left">&#xe849;</i> <span class="i-name">ic-ui-chevron-left</span><span class="i-code">0xe849</span></div>
+        <div title="Code: 0xe84a" class="the-icons span3"><i class="demo-icon ic-ui-chevron-right">&#xe84a;</i> <span class="i-name">ic-ui-chevron-right</span><span class="i-code">0xe84a</span></div>
+        <div title="Code: 0xe84b" class="the-icons span3"><i class="demo-icon ic-ui-chevron-top">&#xe84b;</i> <span class="i-name">ic-ui-chevron-top</span><span class="i-code">0xe84b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe84c" class="the-icons span3"><i class="demo-icon ic-ui-collections">&#xe84c;</i> <span class="i-name">ic-ui-collections</span><span class="i-code">0xe84c</span></div>
+        <div title="Code: 0xe84d" class="the-icons span3"><i class="demo-icon ic-ui-contacts">&#xe84d;</i> <span class="i-name">ic-ui-contacts</span><span class="i-code">0xe84d</span></div>
+        <div title="Code: 0xe84e" class="the-icons span3"><i class="demo-icon ic-ui-crafting">&#xe84e;</i> <span class="i-name">ic-ui-crafting</span><span class="i-code">0xe84e</span></div>
+        <div title="Code: 0xe84f" class="the-icons span3"><i class="demo-icon ic-ui-custom-arena">&#xe84f;</i> <span class="i-name">ic-ui-custom-arena</span><span class="i-code">0xe84f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe850" class="the-icons span3"><i class="demo-icon ic-ui-dye">&#xe850;</i> <span class="i-name">ic-ui-dye</span><span class="i-code">0xe850</span></div>
+        <div title="Code: 0xe851" class="the-icons span3"><i class="demo-icon ic-ui-exit">&#xe851;</i> <span class="i-name">ic-ui-exit</span><span class="i-code">0xe851</span></div>
+        <div title="Code: 0xe852" class="the-icons span3"><i class="demo-icon ic-ui-exit-desktop">&#xe852;</i> <span class="i-name">ic-ui-exit-desktop</span><span class="i-code">0xe852</span></div>
+        <div title="Code: 0xe853" class="the-icons span3"><i class="demo-icon ic-ui-friends">&#xe853;</i> <span class="i-name">ic-ui-friends</span><span class="i-code">0xe853</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe854" class="the-icons span3"><i class="demo-icon ic-ui-friends-blocked">&#xe854;</i> <span class="i-name">ic-ui-friends-blocked</span><span class="i-code">0xe854</span></div>
+        <div title="Code: 0xe855" class="the-icons span3"><i class="demo-icon ic-ui-friends-fans">&#xe855;</i> <span class="i-name">ic-ui-friends-fans</span><span class="i-code">0xe855</span></div>
+        <div title="Code: 0xe856" class="the-icons span3"><i class="demo-icon ic-ui-friends-search">&#xe856;</i> <span class="i-name">ic-ui-friends-search</span><span class="i-code">0xe856</span></div>
+        <div title="Code: 0xe857" class="the-icons span3"><i class="demo-icon ic-ui-gear">&#xe857;</i> <span class="i-name">ic-ui-gear</span><span class="i-code">0xe857</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe858" class="the-icons span3"><i class="demo-icon ic-ui-golds">&#xe858;</i> <span class="i-name">ic-ui-golds</span><span class="i-code">0xe858</span></div>
+        <div title="Code: 0xe859" class="the-icons span3"><i class="demo-icon ic-ui-graphics">&#xe859;</i> <span class="i-name">ic-ui-graphics</span><span class="i-code">0xe859</span></div>
+        <div title="Code: 0xe85a" class="the-icons span3"><i class="demo-icon ic-ui-help">&#xe85a;</i> <span class="i-name">ic-ui-help</span><span class="i-code">0xe85a</span></div>
+        <div title="Code: 0xe85b" class="the-icons span3"><i class="demo-icon ic-ui-hero">&#xe85b;</i> <span class="i-name">ic-ui-hero</span><span class="i-code">0xe85b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe85c" class="the-icons span3"><i class="demo-icon ic-ui-key">&#xe85c;</i> <span class="i-name">ic-ui-key</span><span class="i-code">0xe85c</span></div>
+        <div title="Code: 0xe85d" class="the-icons span3"><i class="demo-icon ic-ui-list">&#xe85d;</i> <span class="i-name">ic-ui-list</span><span class="i-code">0xe85d</span></div>
+        <div title="Code: 0xe85e" class="the-icons span3"><i class="demo-icon ic-ui-logout">&#xe85e;</i> <span class="i-name">ic-ui-logout</span><span class="i-code">0xe85e</span></div>
+        <div title="Code: 0xe85f" class="the-icons span3"><i class="demo-icon ic-ui-magnifier">&#xe85f;</i> <span class="i-name">ic-ui-magnifier</span><span class="i-code">0xe85f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe860" class="the-icons span3"><i class="demo-icon ic-ui-mail">&#xe860;</i> <span class="i-name">ic-ui-mail</span><span class="i-code">0xe860</span></div>
+        <div title="Code: 0xe861" class="the-icons span3"><i class="demo-icon ic-ui-masteries">&#xe861;</i> <span class="i-name">ic-ui-masteries</span><span class="i-code">0xe861</span></div>
+        <div title="Code: 0xe862" class="the-icons span3"><i class="demo-icon ic-ui-minipets">&#xe862;</i> <span class="i-name">ic-ui-minipets</span><span class="i-code">0xe862</span></div>
+        <div title="Code: 0xe863" class="the-icons span3"><i class="demo-icon ic-ui-mouse">&#xe863;</i> <span class="i-name">ic-ui-mouse</span><span class="i-code">0xe863</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe864" class="the-icons span3"><i class="demo-icon ic-ui-options">&#xe864;</i> <span class="i-name">ic-ui-options</span><span class="i-code">0xe864</span></div>
+        <div title="Code: 0xe865" class="the-icons span3"><i class="demo-icon ic-ui-pip">&#xe865;</i> <span class="i-name">ic-ui-pip</span><span class="i-code">0xe865</span></div>
+        <div title="Code: 0xe866" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-1">&#xe866;</i> <span class="i-name">ic-ui-pip-under-1</span><span class="i-code">0xe866</span></div>
+        <div title="Code: 0xe867" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-2">&#xe867;</i> <span class="i-name">ic-ui-pip-under-2</span><span class="i-code">0xe867</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe868" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-3">&#xe868;</i> <span class="i-name">ic-ui-pip-under-3</span><span class="i-code">0xe868</span></div>
+        <div title="Code: 0xe869" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-4">&#xe869;</i> <span class="i-name">ic-ui-pip-under-4</span><span class="i-code">0xe869</span></div>
+        <div title="Code: 0xe86a" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-5">&#xe86a;</i> <span class="i-name">ic-ui-pip-under-5</span><span class="i-code">0xe86a</span></div>
+        <div title="Code: 0xe86b" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-6">&#xe86b;</i> <span class="i-name">ic-ui-pip-under-6</span><span class="i-code">0xe86b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe86c" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-7">&#xe86c;</i> <span class="i-name">ic-ui-pip-under-7</span><span class="i-code">0xe86c</span></div>
+        <div title="Code: 0xe86d" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-8">&#xe86d;</i> <span class="i-name">ic-ui-pip-under-8</span><span class="i-code">0xe86d</span></div>
+        <div title="Code: 0xe86e" class="the-icons span3"><i class="demo-icon ic-ui-pip-under-9">&#xe86e;</i> <span class="i-name">ic-ui-pip-under-9</span><span class="i-code">0xe86e</span></div>
+        <div title="Code: 0xe86f" class="the-icons span3"><i class="demo-icon ic-ui-pvp-chest">&#xe86f;</i> <span class="i-name">ic-ui-pvp-chest</span><span class="i-code">0xe86f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe870" class="the-icons span3"><i class="demo-icon ic-ui-pvp-tracks">&#xe870;</i> <span class="i-name">ic-ui-pvp-tracks</span><span class="i-code">0xe870</span></div>
+        <div title="Code: 0xe871" class="the-icons span3"><i class="demo-icon ic-ui-shield">&#xe871;</i> <span class="i-name">ic-ui-shield</span><span class="i-code">0xe871</span></div>
+        <div title="Code: 0xe872" class="the-icons span3"><i class="demo-icon ic-ui-sound">&#xe872;</i> <span class="i-name">ic-ui-sound</span><span class="i-code">0xe872</span></div>
+        <div title="Code: 0xe873" class="the-icons span3"><i class="demo-icon ic-ui-story">&#xe873;</i> <span class="i-name">ic-ui-story</span><span class="i-code">0xe873</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe874" class="the-icons span3"><i class="demo-icon ic-ui-swap">&#xe874;</i> <span class="i-name">ic-ui-swap</span><span class="i-code">0xe874</span></div>
+        <div title="Code: 0xe875" class="the-icons span3"><i class="demo-icon ic-ui-swords">&#xe875;</i> <span class="i-name">ic-ui-swords</span><span class="i-code">0xe875</span></div>
+        <div title="Code: 0xe876" class="the-icons span3"><i class="demo-icon ic-ui-traits">&#xe876;</i> <span class="i-name">ic-ui-traits</span><span class="i-code">0xe876</span></div>
+        <div title="Code: 0xe877" class="the-icons span3"><i class="demo-icon ic-ui-wallet">&#xe877;</i> <span class="i-name">ic-ui-wallet</span><span class="i-code">0xe877</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe878" class="the-icons span3"><i class="demo-icon ic-ui-wrench">&#xe878;</i> <span class="i-name">ic-ui-wrench</span><span class="i-code">0xe878</span></div>
+        <div title="Code: 0xe879" class="the-icons span3"><i class="demo-icon ic-weapon-axe">&#xe879;</i> <span class="i-name">ic-weapon-axe</span><span class="i-code">0xe879</span></div>
+        <div title="Code: 0xe87a" class="the-icons span3"><i class="demo-icon ic-weapon-dagger">&#xe87a;</i> <span class="i-name">ic-weapon-dagger</span><span class="i-code">0xe87a</span></div>
+        <div title="Code: 0xe87b" class="the-icons span3"><i class="demo-icon ic-weapon-focus">&#xe87b;</i> <span class="i-name">ic-weapon-focus</span><span class="i-code">0xe87b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe87c" class="the-icons span3"><i class="demo-icon ic-weapon-greatsword">&#xe87c;</i> <span class="i-name">ic-weapon-greatsword</span><span class="i-code">0xe87c</span></div>
+        <div title="Code: 0xe87d" class="the-icons span3"><i class="demo-icon ic-weapon-hammer">&#xe87d;</i> <span class="i-name">ic-weapon-hammer</span><span class="i-code">0xe87d</span></div>
+        <div title="Code: 0xe87e" class="the-icons span3"><i class="demo-icon ic-weapon-harpoon">&#xe87e;</i> <span class="i-name">ic-weapon-harpoon</span><span class="i-code">0xe87e</span></div>
+        <div title="Code: 0xe87f" class="the-icons span3"><i class="demo-icon ic-weapon-longbow">&#xe87f;</i> <span class="i-name">ic-weapon-longbow</span><span class="i-code">0xe87f</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe880" class="the-icons span3"><i class="demo-icon ic-weapon-mace">&#xe880;</i> <span class="i-name">ic-weapon-mace</span><span class="i-code">0xe880</span></div>
+        <div title="Code: 0xe881" class="the-icons span3"><i class="demo-icon ic-weapon-pistol">&#xe881;</i> <span class="i-name">ic-weapon-pistol</span><span class="i-code">0xe881</span></div>
+        <div title="Code: 0xe882" class="the-icons span3"><i class="demo-icon ic-weapon-rifle">&#xe882;</i> <span class="i-name">ic-weapon-rifle</span><span class="i-code">0xe882</span></div>
+        <div title="Code: 0xe883" class="the-icons span3"><i class="demo-icon ic-weapon-scepter">&#xe883;</i> <span class="i-name">ic-weapon-scepter</span><span class="i-code">0xe883</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe884" class="the-icons span3"><i class="demo-icon ic-weapon-shield">&#xe884;</i> <span class="i-name">ic-weapon-shield</span><span class="i-code">0xe884</span></div>
+        <div title="Code: 0xe885" class="the-icons span3"><i class="demo-icon ic-weapon-shortbow">&#xe885;</i> <span class="i-name">ic-weapon-shortbow</span><span class="i-code">0xe885</span></div>
+        <div title="Code: 0xe886" class="the-icons span3"><i class="demo-icon ic-weapon-speargun">&#xe886;</i> <span class="i-name">ic-weapon-speargun</span><span class="i-code">0xe886</span></div>
+        <div title="Code: 0xe887" class="the-icons span3"><i class="demo-icon ic-weapon-staff">&#xe887;</i> <span class="i-name">ic-weapon-staff</span><span class="i-code">0xe887</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe888" class="the-icons span3"><i class="demo-icon ic-weapon-sword">&#xe888;</i> <span class="i-name">ic-weapon-sword</span><span class="i-code">0xe888</span></div>
+        <div title="Code: 0xe889" class="the-icons span3"><i class="demo-icon ic-weapon-torch">&#xe889;</i> <span class="i-name">ic-weapon-torch</span><span class="i-code">0xe889</span></div>
+        <div title="Code: 0xe88a" class="the-icons span3"><i class="demo-icon ic-weapon-trident">&#xe88a;</i> <span class="i-name">ic-weapon-trident</span><span class="i-code">0xe88a</span></div>
+        <div title="Code: 0xe88b" class="the-icons span3"><i class="demo-icon ic-weapon-warhorn">&#xe88b;</i> <span class="i-name">ic-weapon-warhorn</span><span class="i-code">0xe88b</span></div>
+      </div>
+      <div class="row">
+        <div title="Code: 0xe88c" class="the-icons span3"><i class="demo-icon ic-ui-finisher">&#xe88c;</i> <span class="i-name">ic-ui-finisher</span><span class="i-code">0xe88c</span></div>
+      </div>
+    </div>
+    <div class="container footer">Generated by <a href="http://fontello.com">fontello.com</a></div>
+  </body>
+</html>

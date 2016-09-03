@@ -1,0 +1,247 @@
+
+{% macro object(obj, force, nopic) %}
+    {% if obj.getId() %}
+        <div class="inventory-slot">
+            {% if nopic %}
+                <div class="item">
+                    <span {{ obj|gwlink|raw }}>
+                        <img src="{{ obj.getStatname()|imagestat }}" class="rarity-{{ obj.getRarity() }}" />
+                    </span>
+                </div>
+            {% else %}
+                {% if obj.gettype != 'Gathering' %}
+                    <div class="stat">
+                        <img src="{{ obj.getStatname()|imagestat }}" title="{{ ('stats.'~obj.getStatname())|trans }}" />
+{#                        <span class="rarity border rarity-{{ obj.getRarity() }}"></span>#}
+                    </div>
+                {% endif %}
+                <div class="item">
+                    <span {{ obj|gwlink|raw }}>
+                        <img src="{{ obj|image }}" class="item rarity-{{ obj.getRarity() }}" />
+                    </span>
+                </div>
+            {% endif %}
+            {% if obj.gettype != 'Gathering' %}
+                <div class="addons">
+                    <div class="upgrades">
+                        {% for upgrade in obj.upgrades %}
+                            <span {{ upgrade|gwlink|raw }}>
+                                <img src="{{ upgrade|image }}" class="infusion" />
+                            </span>
+                        {% endfor %}
+                    </div>
+                    <div class="infusions">
+                        {% for infusion in obj.infusions %}
+                            <span {{ infusion|gwlink|raw }}>
+                                <img src="{{ infusion|image }}" class="upgrade" />
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% elseif force %}
+        <div class="inventory-slot empty">
+            <div class="stat">
+                <img src="/assets/images/empty.png" class="item" />
+            </div>
+            <div class="item">
+                <span>
+                    <img src="/assets/images/cross.svg" class="item rarity-Junk" />
+                </span>
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+
+
+{% macro charname(context, char) %}
+    <span class="character-name">
+        <i class="ic-profession-{{ char.getProfession()|lower }}"></i>
+        <a href="/{{ context.lang }}/{{ context.code }}/character/{{ char }}">
+            {{ char }}
+        </a>
+    </span>
+{% endmacro %}
+
+
+
+{% macro amount(value) %}
+    {% if value.buy is not none %}
+        {{ _self.amount(value.buy) }} &#8210; {{ _self.amount(value.sell) }}
+    {% else %}
+        {% set g = (value / 10000)|round(0, 'floor') %}
+        {% set s = (value / 100)|round(0, 'floor') % 100 %}
+        {% set c = value % 100 %}
+        {% if g %}
+            <span class="gold">{{ g }}</span>
+            <span class="silver">{{ s }}</span>
+            <span class="copper">{{ c }}</span>
+        {% elseif s %}
+            <span class="silver">{{ s }}</span>
+            <span class="copper">{{ c }}</span>
+        {% else %}
+            <span class="copper">{{ c }}</span>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+
+
+{% macro shared_slots(account, context) %}
+    {% set slots = account.inventory %}
+    {% if slots|length %}
+        <div class="slots">
+            <div class="bag">
+                <div class="slot">
+                    <img src="/assets/images/misc/shared-slot.png" />
+                </div>
+            </div>
+
+            {% for item in slots %}
+                {{ _self.inventory_slot(item) }}
+            {% endfor %}
+
+        </div>
+    {% endif %}
+{% endmacro %}
+
+
+
+{% macro character_bags(char, context) %}
+    {% for bag in char.bags %}
+        <div class="slots">
+            <div class="bag">
+                <div class="slot">
+                    {% if bag.getId() %}
+                        <span {{ bag|gwlink|raw }}>
+                            <img src="{{ bag|image }}" />
+                        </span>
+                    {% else %}
+                        <img src="{{ ""|image }}" class="nothing" />
+                    {% endif %}
+                </div>
+            </div>
+
+            {% for item in bag.InventorySlots %}
+                {{ _self.inventory_slot(item) }}
+            {% endfor %}
+
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+
+
+{% macro inventory_slot(item, context) %}
+    <div class="slot rarity-{{ item.getRarity() }}">
+        {% if item.getId() %}
+            <span {{ item|gwlink|raw }}>
+                <img src="{{ item|image }}" />
+                {% if item.getCount() > 1 %}
+                    <span class="count">{{ item.getCount() }}</span>
+                {% endif %}
+            </span>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+
+{% macro specializations(build) %}
+    {% for spe in build.getSpecializations() %}
+        {% if spe %}
+            <b class="{{ spe.isElite() ? 'text-danger' : '' }}">{{ spe.getName() }}</b>
+            <div class="specialization">
+                <img src="{{ spe.getbackground|image }}" class="background" />
+                <img src="/assets/images/specialization-mask.svg" class="mask" />
+                {% for i, trait in spe.getminortraits %}
+                    <div class="trait minor-{{ i+1 }}">
+                        <img src="{{ trait.geticon|image }}" {{ trait|gwlink|raw }} />
+                    </div>
+                {% endfor %}
+                {% for i, trait in spe.getmajortraits %}
+                    <div class="trait major-{{ i+1 }} {{ (trait.getId() in spe.traitsids) ? '' : 'not-selected' }}">
+                        <img src="{{ trait.geticon|image }}" {{ trait|gwlink|raw }} />
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+
+
+{% macro facts(facts) %}
+    {% for fact in facts %}
+        <div class="gwfact gwfact-{{ fact.type|lower }}">
+            {% if 'AttributeAdjust' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                +{{ fact.value }} {{ ('attribute.'~fact.target)|trans }}
+
+            {% elseif 'Buff' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.status }}{% if fact.duration %} ({{ fact.duration }}s){% endif %}{% if fact.description %}: {{ fact.description|br2nl|striptags|nl2br }}{% endif %}
+
+            {% elseif 'BuffConversion' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ 'traits.buff_conversion'|trans({'pct': fact.percent, 'src': ('attribute.'~fact.source)|trans, 'dst': ('attribute.'~fact.target)|trans}) }}
+
+            {% elseif 'ComboField' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.fieldtype }}
+
+            {% elseif 'ComboFinisher' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.fieldtype }}
+
+            {% elseif 'Damage' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.hitcount }}
+
+            {% elseif 'Distance' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.distance }}
+
+            {% elseif 'NoData' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}
+
+            {% elseif 'Number' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.value }}
+
+            {% elseif 'Percent' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.percent }}%
+
+            {% elseif 'PrefixedBuff' == fact.type %}
+                <img src="{{ fact.prefix.icon|image }}" />
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.status }}{% if fact.duration %} ({{ fact.duration }}s){% endif %}{% if fact.description %}: {{ fact.description|br2nl|striptags|nl2br }}{% endif %}
+
+            {% elseif 'Radius' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.distance }}
+
+            {% elseif 'Range' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.value }}
+
+            {% elseif 'Recharge' == fact.type %}
+                {{ fact.value }} {% if fact.icon %}<img src="{{ fact.icon|image }}" style="max-height: 1.5em" />{% else %}<i class="glyphicon glyphicon-repeat"></i>{% endif %}
+
+            {% elseif 'Time' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}: {{ fact.duration }}s
+
+            {% elseif 'Unblockable' == fact.type %}
+                {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+                {{ fact.text }}
+
+            {% endif %}
+
+        </div>
+    {% endfor %}
+{% endmacro %}

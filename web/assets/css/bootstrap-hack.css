@@ -1,0 +1,60 @@
+
+.container {
+    width: 1170px !important;
+}
+
+table.table {
+    margin: 0;
+}
+
+table.table > tbody tr:first-child td {
+    border-top: 0;
+}
+table.table > thead th {
+    border-bottom: 2px solid #ecf0f1;
+}
+table.table > tfoot td {
+    border-top: 2px solid #ecf0f1;
+}
+
+.panel-heading {
+    border-top: 1px solid transparent;
+}
+
+.panel-heading:first-child {
+    border-top-width: 0;
+}
+
+.navbar {
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+.panel-toggle,
+.panel-toggle > .panel-heading {
+    color: #fff;
+    cursor: pointer
+}
+.panel-toggle:hover,
+.panel-toggle:hover > .panel-heading {
+    background-color: #485f76;
+    border-color: #485f76;
+}
+
+.panel-toggle.collapsed .glyphicon-minus {
+    display: none;
+}
+
+.panel-toggle.expanded .glyphicon-plus {
+    display: none;
+}
+.panel-toggle .expandcollapse {
+    margin-left: 1em;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 34em;
+    overflow-x: hidden;
+}

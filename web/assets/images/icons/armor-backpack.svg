@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="280"
+   height="280"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="armor-amulet.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="175.68296"
+     inkscape:cy="-14.585194"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     borderlayer="true"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1000"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-772.36218)">
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       d="m 131.00829,787.36218 c -27.69533,0 -50.23165,22.53632 -50.23165,50.23165 l 0,0.12192 c -16.37955,7.6327 -27.67618,24.19949 -27.67618,43.52597 l 0,52.67008 -10.48524,0 c -10.80712,0 -19.50744,8.70032 -19.50744,19.50744 l 0,36.14972 c 0,10.80714 8.70032,19.50744 19.50744,19.50744 l 10.48524,0 0,28.2858 173.79908,0 0,-28.2858 10.48525,0 c 10.80712,0 19.50743,-8.7003 19.50743,-19.50744 l 0,-36.14972 c 0,-10.80712 -8.70031,-19.50744 -19.50743,-19.50744 l -10.48525,0 0,-52.67008 c 0,-19.3551 -11.31826,-35.96957 -27.73714,-43.58693 l 0,-0.0609 c 0,-27.69533 -22.53632,-50.23165 -50.23165,-50.23165 l -17.92246,0 z m 0,15.60595 17.92246,0 c 17.87823,0 32.32655,13.15353 34.38186,30.41941 -1.43979,-0.12914 -2.91459,-0.18279 -4.38918,-0.18279 l -77.84686,0 c -1.47459,0 -2.94939,0.0539 -4.38918,0.18279 2.05531,-17.26588 16.44267,-30.41941 34.3209,-30.41941 z m -14.02097,50.23165 46.02536,0 c 5.40356,0 9.75372,4.35016 9.75372,9.75372 l 0,23.287 c 0,5.40356 -4.35016,9.75372 -9.75372,9.75372 l -46.02536,0 c -5.40356,0 -9.75372,-4.35016 -9.75372,-9.75372 l 0,-23.287 c 0,-5.40356 4.35016,-9.75372 9.75372,-9.75372 z m -35.60107,65.22799 117.2275,0 0,74.98172 c 0,9.66691 -7.7679,17.49571 -17.43477,17.49571 l -82.297,0 c -9.66687,0 -17.49573,-7.8288 -17.49573,-17.49571 l 0,-74.98172 z"
+       id="rect4144"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

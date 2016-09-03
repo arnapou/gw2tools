@@ -1,0 +1,38 @@
+{% spaceless %}
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    {% set collectibles = account.collectibles %}
+    {% set columns = [collectibles|slice(0, 3), collectibles|slice(3)] %}
+
+    <div class="row">
+        {% for collectibles in columns %}
+            <div class="col-xs-6">
+                {% for category in collectibles %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="pull-right">
+                                {{ macro.amount(category.price) }}
+                            </div>
+                            <i class="ic-ui-collections"></i> {{ category.name }}
+                        </div>
+                        <div class="panel-body slots">
+                            {% for item in category.items %}
+                                <div class="slot {{ item.count ? '' : 'empty' }}">
+                                    {% if item.getId %}
+                                        <span {{ item|gwlink|raw }}>
+                                            <img src="{{ item|image }}" />
+                                            <span class="count">{{ item.count }}</span>
+                                        </span>
+                                    {% else %}
+                                        <img src="{{ ""|image }}" class="nothing" />
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endspaceless %}

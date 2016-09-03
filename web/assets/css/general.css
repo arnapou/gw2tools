@@ -1,0 +1,950 @@
+
+body {
+    padding-bottom: 5em;
+}
+
+.text-danger[data-toggle="tooltip"] {
+    cursor: default;
+}
+
+.tooltip {
+    white-space: normal !important;
+}
+
+.gwitemlink {
+    cursor: pointer;
+}
+
+.dropdown-menu .account-link {
+    padding-right: 7em;
+}
+.dropdown-menu .account-link small {
+    position: absolute;
+    right: 1em;
+    color: #aaa;
+    font-size: 100%;
+}
+.dropdown-menu .locked {
+    color: #d9534f;
+}
+.menuicon  {
+    margin-left: -.5em;
+    display: inline-block;
+    min-width: 1.5em;
+    text-align: center;
+}
+
+.nav.nav-tabs a {
+    outline: 0 !important;
+}
+
+.panel .with-tabs {
+    padding-bottom: 0;
+}
+.panel .with-tabs .nav-tabs > li {
+    margin-bottom: -2px;
+}
+.panel .with-tabs .nav-tabs > li > a:hover {
+    background: rgba(0,0,0,0.03);
+}
+.panel .with-tabs .nav-tabs > li.active > a:hover {
+    background: #ffffff;
+}
+
+.character-name a,
+.character-name a:hover {
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: inherit !important;
+}
+
+/************************************************/
+
+.ic-profession-warrior,      .ic-profession-berserker    { color: #FFD166; }
+.ic-profession-mesmer,       .ic-profession-chronomancer { color: #B679D5; }
+.ic-profession-elementalist, .ic-profession-tempest      { color: #F68A87; }
+.ic-profession-revenant,     .ic-profession-herald       { color: #D16E5A; }
+.ic-profession-necromancer,  .ic-profession-reaper       { color: #52A76F; }
+.ic-profession-ranger,       .ic-profession-druid        { color: #8CDC82; }
+.ic-profession-guardian,     .ic-profession-dragonhunter { color: #72C1D9; }
+.ic-profession-engineer,     .ic-profession-scrapper     { color: #D09C59; }
+.ic-profession-thief,        .ic-profession-daredevil    { color: #C08F95; }
+
+.ic-crafting-armorsmith    { color: #768083; }
+.ic-crafting-artificer     { color: #8e7f58; }
+.ic-crafting-chef          { color: #389ae7; }
+.ic-crafting-huntsman      { color: #6a7929; }
+.ic-crafting-jeweler       { color: #7f53b1; }
+.ic-crafting-leatherworker { color: #a86f36; }
+.ic-crafting-scribe        { color: #5566b4; }
+.ic-crafting-tailor        { color: #919496; }
+.ic-crafting-weaponsmith   { color: #5e4734; }
+
+
+td [class^="ic-weapon-"],
+th [class^="ic-weapon-"],
+td [class*=" ic-weapon-"],
+th [class*=" ic-weapon-"],
+td [class^="ic-armor-"],
+th [class^="ic-armor-"],
+td [class*=" ic-armor-"],
+th [class*=" ic-armor-"] {
+    font-size: 2em;
+}
+td [class^="ic-attribute-"],
+th [class^="ic-attribute-"],
+td [class*=" ic-attribute-"],
+th [class*=" ic-attribute-"] {
+    font-size: 1.5em;
+}
+
+/************************************************/
+
+.gold, .silver, .copper {
+    padding-right: 18px;
+    margin: 0 .2em;
+    display: inline-block;
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: auto 1em;
+}
+.gold {
+    color: #c9a900;
+    background-image: url(../images/coin/gold.png);
+}
+.silver {
+    color: #888;
+    background-image: url(../images/coin/silver.png);
+}
+.copper {
+    color: #b1672d;
+    background-image: url(../images/coin/copper.png);
+}
+
+/************************************************/
+
+img.emblem {
+    width: 3em;
+    height: 3em;
+    margin-right: .5em;
+    display: inline-block;
+    vertical-align: middle;
+}
+img.currency {
+    height: 2em;
+    width: 2em;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/*img.craft, i.craft,
+img.profession, i.profession {
+    height: 1.42857em;
+    width: 1.42857em;
+    display: inline-block;
+    vertical-align: middle;
+}
+img.attribute {
+    width: 1.42857em;
+    height: 1.42857em;
+    margin-right: .5em;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+img.upgrade,
+img.infusion {
+    height: 2em;
+    width: 2em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: .3em;
+}
+img.infusion.empty {
+    height: 1.8em;
+    width: 1.8em;
+    display: inline-block;
+    vertical-align: middle;
+    margin: .1em .4em .1em .1em;
+}
+
+
+img.item {
+    height: 3em;
+    width: 3em;
+    display: inline-block;
+    vertical-align: middle;
+}*/
+
+/************************************************/
+
+
+.page-account td .label {
+    margin-right: .5em;
+}
+.page-account td table.rights {
+    width: 100%;
+    table-layout: fixed;
+}
+.page-account td table.rights th {
+    text-decoration: underline;
+    padding-bottom: .5em;
+}
+.page-account td table.rights td {
+    vertical-align: top;
+}
+.page-account td .form-group {
+    margin-bottom: .5em;
+}
+.page-account td .checkbox {
+    margin: 0;
+    padding-right: 1em;
+}
+.page-account td:nth-child(3),
+.page-account td .btn {
+    width: 18em;
+    margin-top: .3em;
+    text-align: left;
+}
+.page-account td .btn:first-child {
+    margin-top: 0;
+}
+.page-account td .btn i {
+    margin-right: .5em;
+}
+.page-account td.text-owner {
+    width: 15%;
+}
+.page-account hr {
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+.page-account .worlds {
+    margin-right: 1em;
+}
+.page-account .world:after {
+    content: ', ';
+}
+.page-account .world:last-child:after {
+    content: '';
+}
+
+/************************************************/
+
+.page-attributes tr td {
+    width: 10%;
+    white-space: nowrap;
+}
+.page-attributes tr td:first-child {
+    width: auto;
+}
+
+/************************************************/
+
+.page-home .faq {
+    margin-top: 2em;
+}
+.page-home .faq:before {
+    content: "";
+    display: block;
+    height: 4px;
+    background: white;
+    border-radius: 3px;
+    margin-bottom: 2em;
+}
+
+/************************************************/
+
+.page-character tr.object td:first-child {
+    width: 3.5em;
+}
+.page-character tr.object td:nth-child(2) {
+    width: 10em;
+}
+.page-character .summary tr td:first-child {
+    width: 30%;
+}
+.page-character .stats table {
+    width: 100%;
+}
+.page-character .stats .attrico {
+    text-align: center;
+    width: 10%;
+}
+.page-character .stats .attr {
+    width: 40%;
+    padding-left: .5em;
+}
+.page-character .stats .panel-body:last-child {
+    border-top: 1px solid #ecf0f1;
+}
+.page-character .stats .inventory-slot {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: .1em;
+}
+.page-character table.equipment {
+    width: 100%;
+}
+.page-character table.equipment td {
+    vertical-align: top;
+    position: relative;
+    width: 33.33% !important;
+}
+.page-character .equipment a {
+    outline: 0;
+}
+.page-character .crafting span {
+    white-space: nowrap;
+}
+.page-character .equipment-type {
+    display: block;
+    color: #999;
+}
+.page-character .slots .bag {
+    background: #2c1b0b;
+    padding-right: 5px;
+    display: inline-block;
+    vertical-align: top;
+}
+.page-character .swap {
+    margin-bottom: .3em;
+    padding-left: 3em;
+}
+.page-character .swap i {
+    opacity: 0.35;
+}
+.page-character .build1 {
+    float: left; 
+    width: 400px
+}
+.page-character .build1 img {
+    width: 5em;
+    height: 5em;
+    margin: .5em 0;
+}
+.page-character .build1 .pet-icon-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    margin: .5em 0;
+    width: 5em;
+    height: 5em;
+    overflow: hidden;
+    position: relative;
+}
+.pet-icon-wrapper img {
+    position: absolute;
+    margin: 0 !important;
+    width: 150% !important;
+    height: 150% !important;
+    left: -25%;
+    top: -25%;
+}
+.page-character .build1 > div {
+    margin: 1em 0;
+}
+.page-character .build1 > div:nth-child(2) {
+    margin-top: 6px;
+}
+.page-character .build1 .ic-ui-swap {
+    font-size: 2em;
+    opacity: .5;
+}
+.page-character .build1 span:first-child img {
+    margin-left: 0;
+}
+.page-character .build2 {
+    margin-left: 430px;
+}
+.gw2skillslink i {
+    margin-right: .5em;
+}
+
+/************************************************/
+
+.page-pvp .season {
+    background: #2c3e50;
+    color: white;
+}
+.page-pvp .season .image {
+    float: left;
+    width: 20%;
+}
+.page-pvp .season .division {
+    text-align: center;
+    text-shadow: 0 0 3px rgba(0,0,0,.5);
+}
+.page-pvp .season .division .title {
+    padding: 1.5em 0;
+}
+.page-pvp .season .image img{
+    width: 90%;
+}
+.page-pvp .season .tier {
+    display: inline-block;
+    vertical-align: top;
+    margin: .5em;
+}
+.page-pvp .season .division .tier .ic-ui-pip {
+    font-size: 2.7em;
+}
+.page-pvp .season .division .tier div i {
+    font-size: 1.2em;
+}
+.page-pvp .season .division-1 .tier .ic-ui-pip { color: #eda826; }
+.page-pvp .season .division-2 .tier .ic-ui-pip { color: #47a350; }
+.page-pvp .season .division-3 .tier .ic-ui-pip { color: #2d6a99; }
+.page-pvp .season .division-4 .tier .ic-ui-pip { color: #b72536; }
+.page-pvp .season .division-5 .tier .ic-ui-pip { color: #d7dcdc; }
+.page-pvp .season .division-6 .tier .ic-ui-pip { color: #232521; }
+.page-pvp .season .division .tier .ic-ui-pip.disabled { color: #888 !important; opacity: .4; }
+.page-pvp .season .division .tier i:before {
+    width: auto !important;
+    margin: 0 .05em !important;
+}
+
+/************************************************/
+
+.page-equipments .equipments table {
+    table-layout: fixed;
+}
+.page-equipments .equipments th {
+    padding-left: 1.1em !important;
+}
+.page-equipments .equipments .inventory-slot {
+    font-size: 1.6em;
+    margin: 2px 0;
+}
+.page-equipments .equipments .inventory-slot .item img {
+    border-left-width: 0;
+    border-right-width: 4px;
+    padding-left: 0;
+    padding-right: 4px;
+}
+.page-equipments .equipments td {
+    border-bottom: 1px solid #ecf0f1 !important;
+}
+.page-equipments .equipments th,
+.page-equipments .equipments td {
+    width: 13%;
+}
+.page-equipments .equipments th:first-child,
+.page-equipments .equipments td:first-child {
+    width: auto;
+}
+.page-equipments .equipments .panel-heading {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/************************************************/
+
+.text-owner:before {
+    content: "\2605";
+    color: red;
+    margin-right: .5em;
+    display: inline-block;
+    vertical-align: top;
+}
+#owner-legend {
+    display: none;
+    width: 60em;
+    margin-top: 5em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+#owner-legend em {
+    color: red;
+}
+
+/************************************************/
+
+.slots .slot {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    width: 52px;
+    height: 52px;
+    position: relative;
+    border: 1px solid #2c1b0b;
+    background: #55452f;
+    box-shadow: 0 0 0 1px #5c4f3f inset, 0 0 15px #3a2d1d inset;
+    padding: 1px;
+}
+.slots .slot img {
+    width: 100%;
+    height: 100%;
+}
+.slots .slot .count {
+    position: absolute;
+    color: white;
+    right: 5px;
+    bottom: 0px;
+    text-shadow: 1px 1px 2px black, -1px 1px 2px black, 1px -1px 2px black, -1px -1px 2px black;
+}
+.slots .slot.empty img {
+    opacity: .2;
+}
+.slots .slot.empty img.nothing {
+    opacity: 1;
+}
+.slots .slot.empty .count {
+    display: none;
+}
+
+/************************************************/
+
+.inventory-slot {
+    font-size: 3em;
+    padding: 0;
+    height: 1.1em;
+}
+.inventory-slot span {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+.inventory-slot > div {
+    display: inline-block;
+    vertical-align: top;
+    height: 1em;
+}
+.inventory-slot .stat {
+    position: relative;
+}
+.inventory-slot .stat img {
+    height: .8em;
+    vertical-align: top;
+}
+.inventory-slot .item img {
+    height: 1em;
+    vertical-align: top;
+    margin: 0 .2em;
+    border-left-width: 5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    padding-left: 1px;
+}
+.inventory-slot .addons .upgrades {
+    height: .45em;
+}
+.inventory-slot .addons .infusions {
+    height: .45em;
+    margin-top: .1em;
+}
+.inventory-slot .addons img {
+    height: 100%;
+    vertical-align: top;
+    margin-right: .1em;
+}
+
+/************************************************/
+
+.rarity-Junk       { color: #aaaaaa; }
+.rarity-Basic      { color: #000000; }
+.rarity-Fine       { color: #1a9306; }
+.rarity-Masterwork { color: #62A4DA; }
+.rarity-Rare       { color: #fcd00b; }
+.rarity-Exotic     { color: #ffa405; }
+.rarity-Ascended   { color: #fb3e8d; }
+.rarity-Legendary  { color: #4C139D; }
+
+.background.rarity-Junk       { background-color: #aaaaaa; }
+.background.rarity-Basic      { background-color: #000000; }
+.background.rarity-Fine       { background-color: #1a9306; }
+.background.rarity-Masterwork { background-color: #62A4DA; }
+.background.rarity-Rare       { background-color: #fcd00b; }
+.background.rarity-Exotic     { background-color: #ffa405; }
+.background.rarity-Ascended   { background-color: #fb3e8d; }
+.background.rarity-Legendary  { background-color: #4C139D; }
+
+.border.rarity-None       { border: 1px solid transparent; }
+.border.rarity-Junk       { border: 1px solid #aaaaaa; }
+.border.rarity-Basic      { border: 1px solid #000000; }
+.border.rarity-Fine       { border: 1px solid #1a9306; }
+.border.rarity-Masterwork { border: 1px solid #62A4DA; }
+.border.rarity-Rare       { border: 1px solid #fcd00b; }
+.border.rarity-Exotic     { border: 1px solid #ffa405; }
+.border.rarity-Ascended   { border: 1px solid #fb3e8d; }
+.border.rarity-Legendary  { border: 1px solid #4C139D; }
+
+img.rarity-None       { border: 1px solid transparent; }
+img.rarity-Junk       { border: 1px solid #aaaaaa; }
+img.rarity-Basic      { border: 1px solid #000000; }
+img.rarity-Fine       { border: 1px solid #1a9306; }
+img.rarity-Masterwork { border: 1px solid #62A4DA; }
+img.rarity-Rare       { border: 1px solid #fcd00b; }
+img.rarity-Exotic     { border: 1px solid #ffa405; }
+img.rarity-Ascended   { border: 1px solid #fb3e8d; }
+img.rarity-Legendary  { border: 1px solid #4C139D; }
+
+.slots .slot.rarity-Junk       { box-shadow: 0 0 0 1px #aaaaaa inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Basic      { box-shadow: 0 0 0 1px #ffffff inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Fine       { box-shadow: 0 0 0 1px #1a9306 inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Masterwork { box-shadow: 0 0 0 1px #62A4DA inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Rare       { box-shadow: 0 0 0 1px #fcd00b inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Exotic     { box-shadow: 0 0 0 1px #ffa405 inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Ascended   { box-shadow: 0 0 0 1px #fb3e8d inset, 0 0 15px #3a2d1d inset; }
+.slots .slot.rarity-Legendary  { box-shadow: 0 0 0 1px #7744bb inset, 0 0 15px #3a2d1d inset; }
+
+.gwitem .rarity-Basic      { color: #ffffff; }
+.gwitem .rarity-Legendary  { color: #7744bb; }
+
+/************************************************/
+
+.page-bank .bank.slots {
+    margin: 1em 0;
+}
+
+/************************************************/
+
+.page-wallet .column-name {
+    line-height: 2em;
+    text-align: right;
+    width: 50%;
+}
+.page-wallet .column-icon {
+    text-align: center;
+    width: 4em;
+}
+.page-wallet .column-quantity {
+    line-height: 2em;
+}
+
+/************************************************/
+
+#footer {
+    border-top: 1px solid #ddd;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding-top : 2em;
+    font-size: 80%;
+}
+#footer ul{
+    padding-left: 0;
+}
+#footer ul li {
+    margin-bottom: 1em;
+    list-style-type: none;
+}
+#footer ul li i,
+#footer ul li img {
+    margin-right: .3em;
+    font-size: 2em;
+    height: 1em;
+    vertical-align: middle;
+    color:#333333;
+}
+#footer .logo {
+    text-align: center;
+}
+#footer .logo a {
+    margin: .5em 2.5em;
+}
+#footer .logo a:first-child {
+    margin-left: 0;
+}
+#footer .logo a:last-child {
+    margin-right: 0;
+}
+
+/************************************************/
+
+#container {
+    min-height : 600px;
+}
+
+/************************************************/
+
+.page-dyes table {
+    table-layout: fixed;
+}
+.page-dyes table td img {
+    height: 2em;
+    width: 2em;
+}
+.page-dyes table td .icon {
+    height: 2em;
+    width: 2em;
+    display: inline-block;
+    margin-right: .5em;
+}
+.page-dyes table td span {
+    line-height: 2em;
+}
+.page-dyes table tr th:last-child,
+.page-dyes table tr td:last-child {
+    width: 6em;
+}
+.page-dyes .dye {
+    display: block;
+    text-align: center;
+    color: rgba(255,255,255,0.4);
+}
+.page-dyes .unlocked i {
+    color: #ddd;
+}
+.page-dyes .locked,
+.page-dyes .locked td:first-child span {
+    color: #a00 !important;
+}
+.page-dyes .locked .icon {
+    background: rgba(170, 0, 0, .5);
+}
+.page-dyes .locked img {
+    opacity: .5;
+}
+.page-dyes td .glyphicon {
+    margin-right: .5em;
+}
+
+/************************************************/
+
+.page-minis table {
+    table-layout: fixed;
+}
+.page-minis table td img {
+    height: 2em;
+    width: 2em;
+}
+.page-minis table td .icon {
+    height: 2em;
+    width: 2em;
+    display: inline-block;
+    margin-right: .5em;
+}
+.page-minis table td span {
+    line-height: 2em;
+}
+.page-minis .unlocked i {
+    color: #ddd;
+}
+.page-minis .locked,
+.page-minis .locked td:first-child span {
+    color: #a00 !important;
+}
+.page-minis .locked .icon {
+    background: rgba(170, 0, 0, .5);
+}
+.page-minis .locked img {
+    opacity: .5;
+}
+.page-minis td .glyphicon {
+    margin-right: .5em;
+}
+
+/************************************************/
+
+.page-titles table td  {
+    line-height: 2em !important;
+}
+.page-titles td.icon {
+    width: 2em;
+}
+.page-titles td.icon img {
+    height: 2em;
+}
+.page-titles td.category {
+    width: 30%;
+}
+.page-titles td.flags {
+    width: 15%;
+}
+.page-titles td.flags span {
+    margin-right: .5em;
+}
+.page-titles td.flags span:after {
+    content: ',';
+}
+.page-titles td.flags span:last-child:after {
+    content: '';
+}
+.page-titles .unlocked i {
+    color: #ddd;
+}
+.page-titles .locked td.category,
+.page-titles .locked td.icon {
+    opacity: .3;
+}
+.page-titles .locked td.title {
+    color: #a00 !important;
+}
+.page-titles td.title .glyphicon {
+    margin-right: .5em;
+}
+
+/************************************************/
+
+.page-finishers table td  {
+    line-height: 2em !important;
+}
+.page-finishers td.icon {
+    width: 2em;
+}
+.page-finishers td.icon img {
+    height: 2em;
+}
+.page-finishers .unlocked i {
+    color: #ddd;
+}
+.page-finishers .locked td.category,
+.page-finishers .locked td.icon {
+    opacity: .3;
+}
+.page-finishers .locked td.finisher {
+    color: #a00 !important;
+}
+.page-finishers td.finisher .glyphicon {
+    margin-right: .5em;
+}
+
+/************************************************/
+
+.page-trading-post td span {
+    line-height: 3em;
+}
+.page-trading-post td img {
+    height: 3em;
+}
+.page-trading-post .column-amount {
+    text-align: right;
+    width: 20%;
+}
+.page-trading-post .column-icom {
+    width: 3em;
+    height: 3em;
+}
+.page-trading-post .column-date,
+.page-trading-post .column-quantity {
+    text-align: right;
+    width: 10%;
+}
+
+/************************************************/
+
+.page-golds img {
+    margin-right: .5em;
+}
+
+.page-golds .column-amount {
+    text-align: right;
+    width: 30%;
+}
+
+/************************************************/
+
+.page-builds td:first-child {
+    width: 20%;
+}
+
+/************************************************/
+
+.page-pvp .rank {
+    overflow: visible;
+    margin-bottom: 1em;
+}
+.page-pvp .rank img {
+    height: 100px;
+    margin-right: 1em;
+}
+.page-pvp .rank div span {
+    display: block;
+    text-align: center;
+    font-size: 150%;
+}
+.page-pvp .rank .level {
+    font-size: 300%;
+    font-weight: bold;
+}
+.page-pvp td.column-profession {
+    width: 10em;
+    text-align: right;
+}
+.page-pvp td.column-profession img {
+    margin-left: .5em;
+}
+.page-pvp td.column-winrate {
+    width: 20%;
+    text-align: right;
+}
+.page-pvp td.column-scorebar {
+    width: 20%;
+}
+.page-pvp .progress {
+    margin-bottom: 0;
+    height: 21px;
+}
+.page-pvp .progress-bar {
+    text-align: left;
+}
+.page-pvp .global td:first-child {
+    width: 65%;
+}
+.page-pvp .progress {
+    position: relative;
+}
+.page-pvp .progress-bar {
+    overflow: hidden;
+    position: relative;
+}
+.page-pvp .progress span {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    font-size: 12px;
+    padding-left: 1em;
+    margin-top: 0;
+}
+.page-pvp .progress-bar span {
+    color: white !important;
+    top: 5px;
+}
+.page-pvp .progress-scores {
+    background: #d9534f;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+}
+.page-pvp .progress-scores span {
+    color: #5bc0de;
+}
+.page-pvp .progress-warning span {
+    color: #f0ad4e;
+}
+.page-pvp .progress-success span {
+    color: #5cb85c;
+}
+.page-pvp .red {
+    color: #d9534f;
+}
+.page-pvp .blue {
+    color: #32a7c9;
+}
+.page-pvp .glyphicon-ok {
+    color: #5cb85c;
+    margin-right: .5em;
+}
+.page-pvp .glyphicon-remove {
+    color: #d9534f;
+    margin-right: .5em;
+}
+
+/************************************************/
+
+.page-builds .build .skill,
+.page-builds .build .spe,
+.page-builds .build .trait {
+    display: inline-block;
+    vertical-align: middle;
+    width: 2.5em;
+    height: 2.5em;
+    margin: 3px 1px;
+}
+.page-builds .build img {
+    width: 100%;
+    height: 100%;
+}
+.page-builds .gw2skillslink {
+    display: inline-block;
+    margin-top: .8em;
+}

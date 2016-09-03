@@ -1,0 +1,29 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% spaceless %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="ic-ui-bag"></i> {{ 'global.shared_inventory'|trans }}
+        </div>
+        <div class="panel-body">
+            {{ macro.shared_slots(account, _context) }}
+        </div>
+    </div>
+        
+    {% for char in account.characters %}
+        {% if module.isAllowedCharacter(char) %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        {{ macro.amount(char.bagsprice) }}
+                    </div>
+                    {{ macro.charname(_context, char, true) }}
+                </div>
+                <div class="panel-body">
+                    {{ macro.character_bags(char) }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endspaceless %}

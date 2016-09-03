@@ -1,0 +1,95 @@
+{% spaceless %}
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    {% set tables = [
+        {
+            'class': 'armor',
+            'types': ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots'],
+            'limit': 5
+        },
+        {
+            'class': 'armor',
+            'types': ['Amulet', 'Accessory', 'Ring', 'Backpack', 'HelmAquatic', ''],
+            'limit': 10
+        },
+        {
+            'class': 'weapon',
+            'types': ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
+            'limit': 5
+        },
+        {
+            'class': 'weapon',
+            'types': ['Focus', 'Warhorn', 'Shield', 'Torch', '', ''],
+            'limit': 5
+        },
+        {
+            'class': 'weapon',
+            'types': ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol'],
+            'limit': 5
+        },
+        {
+            'class': 'weapon',
+            'types': ['Speargun', 'Harpoon', 'Trident', '', '', ''],
+            'limit': 5
+        },
+    ] %}
+
+    {% set characters = account.characters %}
+
+    {% for i, table in tables %}
+        <div class="panel panel-default equipments">
+            <div class="panel-heading">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                    <th style="vertical-align: middle">
+                        {% if i == 0 %}
+                            {{ page_name }}
+                        {% endif %}
+                    </th>
+                    {% for type in table.types %}
+                        {% if type %}
+                            <th title="{{ ('itemtype.'~type)|trans }}">
+                                <i class="ic-{{ table.class }}-{{ type|lower }}"></i>
+                            </th>
+                        {% else %}
+                            <th>
+                            </th>
+                        {% endif %}
+                    {% endfor %}
+                    </thead>
+                </table>
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover equipments">
+                    <tbody>
+                        {% for char in characters %}
+                            {% if module.isAllowedCharacter(char) %}
+                                {% set equipments = char.getEquipmentsBySubtype() %}
+                                <tr>
+                                    <td>
+                                        {{ macro.charname(_context, char) }}
+                                    </td>
+                                    {% for type in table.types %}
+                                        {% if type %}
+                                            <td>
+                                                {% if equipments[type] %}
+                                                    {% for item in equipments[type]|slice(0, table.limit) %}
+                                                        {{ macro.object(item, 0, 1) }}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endspaceless %}

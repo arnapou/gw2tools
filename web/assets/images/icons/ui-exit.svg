@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="280"
+   height="280"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="ui-exit.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.90509668"
+     inkscape:cx="49.802003"
+     inkscape:cy="44.296204"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     borderlayer="true"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1000"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-772.36218)">
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       d="m 163.04687,795.40904 c -40.00342,0 -74.894575,21.87436 -93.874995,54.4375 l 18.0625,16.34375 c 1.54264,-3.01398 3.28772,-5.92423 5.15625,-8.71875 l 0,43.5 11.937505,0 0,-57.84375 c 15.29874,-14.71609 35.97414,-23.75 58.71874,-23.75 22.74459,0 43.45125,9.03391 58.75,23.75 l 0,180.15631 a 5.96875,5.96875 0 0 0 11.9375,0 l 0,-165.81256 c 1.86854,2.79452 3.61361,5.70477 5.15625,8.71875 l 18.0625,-16.34375 c -18.98041,-32.56314 -53.87157,-54.4375 -93.875,-54.4375 l -0.0312,0 z m -19.6875,90.53125 0,25.03125 -120.312495,0 0,41.03125 120.312495,0 0,25.03125 45.53125,-45.53125 -45.53125,-45.5625 z m -50.968745,76.0625 0,61.34381 a 5.9687525,5.9687525 0 0 0 11.937505,0 l 0,-61.34381 -11.937505,0 z"
+       id="path4667"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
