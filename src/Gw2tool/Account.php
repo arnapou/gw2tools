@@ -34,6 +34,56 @@ class Account extends \Arnapou\GW2Api\Model\Account {
      */
     private $characterEquipments = [];
 
+    public function getCharacterNames() {
+        $names = parent::getCharacterNames();
+        sort($names);
+        return $names;
+    }
+
+    public function getAchievementsCategory($id) {
+        return new AchievementCategory($this->getEnvironment(), $id);
+    }
+
+    /**
+     * 
+     * @return array
+     */
+    public function getAchievementsCalculation() {
+        $data = [];
+        $aps  = $this->getAccountAchievements();
+        foreach ($this->getAchievementsGroups() as /* @var $group AchievementGroup */ $group) {
+            $groupCalc = [
+                'count'     => 0,
+                'total'     => 0,
+                'completed' => 0,
+            ];
+            foreach ($group->getCategories() as /* @var $category AchievementCategory */ $category) {
+                $catCalc = [
+                    'count'     => 0,
+                    'total'     => 0,
+                    'completed' => 0,
+                ];
+                foreach ($category->getAchievements() as /* @var $item Achievement */ $item) {
+                    $done = false;
+                    if (isset($aps[$item->getId()]) && $aps[$item->getId()]->isDone()) {
+                        $done = true;
+                        $catCalc['count'] += 1;
+                    }
+                    $catCalc['total'] ++;
+                }
+                $catCalc['completed'] = $catCalc['count'] == $catCalc['total'];
+                $groupCalc['count'] += $catCalc['count'];
+                $groupCalc['total'] += $catCalc['total'];
+
+                $groupCalc[$category->getId()] = $catCalc;
+            }
+            $groupCalc['completed'] = $groupCalc['count'] == $groupCalc['total'];
+
+            $data[$group->getId()] = $groupCalc;
+        }
+        return $data;
+    }
+
     /**
      * 
      * @param MongoCollection $collection

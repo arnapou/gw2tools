@@ -16,7 +16,7 @@
                     <div class="pull-right" title="{{ (100 * group.count / group.total)|round }}%">
                         {{ group.count }} / {{ group.total }}
                     </div>
-                    <i class="ic-ui-arenanet"></i> {{ group.obj.getName }}
+                    <i class="ic-ui-title"></i> {{ group.obj.getName }}
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                                                 {% if category.obj.getIcon %}
                                                     <img src="{{ category.obj.getIcon|image }}" />
                                                 {% else %}
-                                                    <i class="ic-ui-arenanet"></i>
+                                                    <i class="ic-ui-title"></i>
                                                 {% endif %}
                                             </td>
                                             <td class="category">

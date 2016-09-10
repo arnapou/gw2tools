@@ -1,0 +1,196 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set catid = app.request.get('catid') %}
+
+{% set aps = account.getAccountAchievements() %}
+{% set groups = account.getAchievementsGroups() %}
+{% set calcs = account.getAchievementsCalculation() %}
+
+{% spaceless %}
+
+    {% if catid %}
+
+        {% set category = account.getAchievementsCategory(catid) %}
+        {% if category %}
+            {% if category.getAchievements|length %}
+                <table style="width: 100%;">
+                    {% for item in category.getAchievements %}
+                        {% set ap = aps[item.getId] %}
+                        {% set bits = item.bits %}
+                        {% set tiers = item.tiers %}
+                        <tr class="ap-achievement {{ item.isDone ? 'completed' : '' }} {{ ap.getTotalAP() == item.getTotalAP() and item.getTotalAP() > 0 ? 'completed' : '' }}" data-id="{{ item.getId }}">
+                            <td class="flex">
+                                <img src="{{ (item.getIcon ? item : category)|image }}">
+                            </td>
+                            <td class="flex">
+                                <div class="name">{{ item.getName() }}</div>
+                                {% if item.getRequirement() %}
+                                    <div class="requirement">{{ item.getRequirement()|striptags }}</div>
+                                {% endif %}
+                                {% if item.getDescription() %}
+                                    <div class="description">{{ item.getDescription()|striptags }}</div>
+                                {% endif %}
+                                {% if bits|length or tiers|length > 1 %}
+                                    <a href="#" class="see-detail"><i class="glyphicon glyphicon-plus"></i>  {{ 'global.details'|trans }}</a>
+                                    <div class="detail" style="display: none">
+                                        {% if bits|length %}
+                                            <div>
+                                                {{ (item.type == 'ItemSet' ? 'global.collections' : 'global.objectives')|trans }}
+                                                <div class="bits">
+                                                    {% for i, bit in bits %}
+                                                        {% if bit.type in ['Item', 'Skin', 'Minipet'] %}
+                                                            <span {{ bit.object|gwlink|raw }}>
+                                                                <img src="{{ bit.object|image }}" class="{{ i in ap.getbits ? 'ok' : '' }}" />
+                                                            </span>
+                                                        {% elseif bit.type == 'Text' %}
+                                                            <div>
+                                                                <span class="text {{ i in ap.getbits ? 'ok' : '' }}">- {{ bit.text }}</span>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if tiers|length > 1 %}
+                                            <div>
+                                                {{ ('global.levels')|trans }}
+                                                <div class="levels">
+                                                    <table>
+                                                        {% for i, tier in tiers %}
+                                                            <tr>
+                                                                <td>
+                                                                    {% if ap.isDone or ap.getcurrent >= tier.count %}
+                                                                        <i class="glyphicon glyphicon-ok"></i>
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {{ 'global.level'|trans }} {{ i + 1 }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ tier.points }} <i class="ic-ui-arenanet"></i>
+                                                                </td>
+                                                                <td>
+                                                                    {{ tier.count }} {{ ( 'global.objective'~(tier.count > 1 ? 's' : '') )|trans }}
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td class="flex rewards">
+                                {% set rewards = item.rewards %}
+                                {% if rewards|length %}
+                                    {% for reward in rewards %}
+                                        {% if reward.type == 'Coins' %}
+                                            <span>
+                                                {{ macro.amount(reward.count) }}
+                                            </span>
+                                        {% elseif reward.type == 'Item' %}
+                                            <span {{ reward.object|gwlink|raw }}>
+                                                <img src="{{ reward.object|image }}" />
+                                            </span>
+                                        {% elseif reward.type == 'Title' and reward.object.getName %}
+                                            <div>
+                                                <i class="ic-ui-title"></i> {{ reward.object.getName }}
+                                            </div>
+                                        {% elseif reward.type == 'Mastery' %}
+                                            <span>
+                                                <i class="ic-ui-mastery mastery {{ reward.region|lower }}" title="{{ reward.region }}"></i>
+                                            </span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td class="flex">
+                                <div>
+                                    {{ ap.getTotalAP() + 0 }} / {{ item.getTotalAP() }} <i class="ic-ui-arenanet"></i>
+                                </div>
+                                {% if ap.getRepeated %}
+                                    <div>{{ ap.getRepeated() }} <i class="glyphicon glyphicon-refresh"></i> </div>
+                                {% endif %}
+                                {% if tiers|length == 1 and tiers.0.count > 1 %}
+                                    <div style="font-size: .8em;">
+                                        {{ tiers.0.count }} {{ ( 'global.objective'~(tiers.0.count > 1 ? 's' : '') )|trans }}
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        {% endif %}
+
+    {% else %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="pull-right">
+                    {{ 'global.permanent'|trans }} = {{ account.OtherAP }}, 
+                    {{ 'global.daily'|trans }} = {{ account.DailyAP }}{% if account.MonthlyAP %}, {{ 'global.monthly'|trans }} = {{ account.MonthlyAP }} &nbsp; ({{ 'global.total'|trans }} = {{ account.TotalAP }}){% endif %}
+                </div>
+                <i class="ic-ui-arenanet"></i> {{ page_name }}
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4">
+
+                        {% for group in groups %}
+                            <div class="ap-group closed">
+                                <div class="ap-group-header {{ calcs[group.getId].completed ? 'completed' : '' }}">
+                                    <div class="flex">
+                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                        <i class="glyphicon glyphicon-chevron-up"></i>
+                                    </div>
+                                    <div class="flex">{{ group.getName() }}</div>
+                                    <div class="flex">{{ calcs[group.getId].count }} / {{ calcs[group.getId].total }}</div>
+                                </div>
+                                {% for category in group.getCategories %}
+                                    {% if category.getAchievements|length %}
+                                        <div class="ap-category {{ calcs[group.getId][category.getId].completed ? 'completed' : '' }}" data-catid="{{ category.getId }}">
+                                            <div class="flex"><img src="{{ category|image }}"></div>
+                                            <div class="flex">{{ category.getName() }}</div>
+                                            <div class="flex">{{ calcs[group.getId][category.getId].count }} / {{ calcs[group.getId][category.getId].total }}</div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                    <div class="col-xs-8 categories">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('.ap-group-header').click(function (e) {
+                    $(this).parent().toggleClass('closed');
+                }).eq(0).trigger('click');
+                $('.ap-category').click(function (e) {
+                    $('.ap-category.current').removeClass('current');
+                    $(this).addClass('current');
+                    $('.categories').html('<div class="spinner-loader"></div> <em>'+{{ "global.loading"|trans|json_encode|raw }}+'</em>');
+                            $.get('./content.html?catid=' + $(this).data('catid'), function (html) {
+                                $('.categories').html(html);
+                            })
+                            .fail(function () {
+                                $('.categories').html('<div class="text-danger">ERROR</div>');
+                            })
+                    e.stopPropagation();
+                }).eq(0).trigger('click');
+                $(document).on('click', '.see-detail', function (e) {
+                    $(this).next('.detail').toggle();
+                    $(this).find('i').toggleClass('glyphicon-plus glyphicon-minus');
+                    e.preventDefault();
+                });
+            });
+        </script>
+
+    {% endif %}
+{% endspaceless %}

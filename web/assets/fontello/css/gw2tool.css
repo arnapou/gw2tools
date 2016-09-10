@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'gw2tool';
-  src: url('../font/gw2tool.eot?69088197');
-  src: url('../font/gw2tool.eot?69088197#iefix') format('embedded-opentype'),
-       url('../font/gw2tool.woff2?69088197') format('woff2'),
-       url('../font/gw2tool.woff?69088197') format('woff'),
-       url('../font/gw2tool.ttf?69088197') format('truetype'),
-       url('../font/gw2tool.svg?69088197#gw2tool') format('svg');
+  src: url('../font/gw2tool.eot?35459276');
+  src: url('../font/gw2tool.eot?35459276#iefix') format('embedded-opentype'),
+       url('../font/gw2tool.woff2?35459276') format('woff2'),
+       url('../font/gw2tool.woff?35459276') format('woff'),
+       url('../font/gw2tool.ttf?35459276') format('truetype'),
+       url('../font/gw2tool.svg?35459276#gw2tool') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'gw2tool';
-    src: url('../font/gw2tool.svg?69088197#gw2tool') format('svg');
+    src: url('../font/gw2tool.svg?35459276#gw2tool') format('svg');
   }
 }
 */
@@ -196,3 +196,5 @@
 .ic-weapon-trident:before { content: '\e88a'; } /* '' */
 .ic-weapon-warhorn:before { content: '\e88b'; } /* '' */
 .ic-ui-finisher:before { content: '\e88c'; } /* '' */
+.ic-ui-title:before { content: '\e88d'; } /* '' */
+.ic-ui-mastery:before { content: '\e88e'; } /* '' */

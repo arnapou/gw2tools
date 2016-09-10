@@ -29,6 +29,15 @@ class PopulateCommand extends AbstractCommand {
         ;
     }
 
+    protected function getRandomizedTime($t) {
+        if ($t < 3600) {
+            return $t;
+        }
+        $delta = floor(0.1 * $t);
+        $t     = $t + mt_rand(0, $delta) - $delta / 2;
+        return round($t);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output) {
         $lang = $input->getArgument('lang');
         if (!in_array($lang, $this->getLocales())) {
@@ -43,7 +52,7 @@ class PopulateCommand extends AbstractCommand {
                 $apiName    = $class['name'];
                 $apiMethod  = $class['method'];
                 $collection = $storage->getCollection($class['lang'], $apiName);
-                $date       = new MongoDate(time() - $class['time']);
+                $date       = new MongoDate(time() - $this->getRandomizedTime($class['time']));
 
                 $output->writeln('<info>' . $apiName . '</info> ');
                 $ids       = array_map('strval', $client->$apiMethod());

@@ -46,7 +46,7 @@
             <tbody>
                 {% for item in account.bankvaults %}
                     <tr>
-                        <td class="column-name"><i class="ic-ui-bank"></i> {{ "global.bank"|trans }} {{ item.id }}</td>
+                        <td class="column-name"><i class="ic-ui-bank"></i> <a href="../bank/">{{ "global.bank"|trans }} {{ item.id }}</a></td>
                         <td class="column-amount">{{ macro.amount(item.price.buy) }}</td>
                         <td class="column-amount">{{ macro.amount(item.price.sell) }}</td>
                     </tr>
@@ -70,7 +70,7 @@
             <tbody>
                 {% for item in account.collectibles %}
                     <tr>
-                        <td class="column-name"><i class="ic-ui-collections"></i> {{ item.name }}</td>
+                        <td class="column-name"><i class="ic-ui-collections"></i> <a href="../collectibles/">{{ item.name }}</a></td>
                         <td class="column-amount">{{ macro.amount(item.price.buy) }}</td>
                         <td class="column-amount">{{ macro.amount(item.price.sell) }}</td>
                     </tr>
@@ -117,4 +117,13 @@
             </tbody>
         </table>
     {% endif %}
+
+    <style>
+        .column-name a,
+        .column-name a:hover {
+            font-weight: inherit;
+            color: inherit;
+            text-decoration: inherit !important;
+        }
+    </style>
 {% endspaceless %}

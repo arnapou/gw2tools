@@ -65,7 +65,7 @@ class MenuList implements \IteratorAggregate {
         $menu->addItem('wardrobe_weapons', $tr->trans('menu.unlocks.wardrobe_weapons'), null, 'ic-weapon-hammer')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('dyes', $tr->trans('menu.unlocks.dyes'), null, 'ic-ui-dye')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('minis', $tr->trans('menu.unlocks.minis'), null, 'ic-ui-minipets')->setPermission(Account::PERMISSION_UNLOCKS);
-        $menu->addItem('titles', $tr->trans('menu.unlocks.titles'), null, 'ic-ui-arenanet')->setPermission(Account::PERMISSION_UNLOCKS);
+        $menu->addItem('titles', $tr->trans('menu.unlocks.titles'), null, 'ic-ui-title')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('finishers', $tr->trans('menu.unlocks.finishers'), null, 'ic-ui-finisher')->setPermission(Account::PERMISSION_UNLOCKS);
         $this->addMenu($menu);
 
@@ -78,6 +78,7 @@ class MenuList implements \IteratorAggregate {
         // ACHIEVMENTS
         $menu = Menu::create($tr->trans('menu.achievements'));
         $menu->addItem('achievements_daily', $tr->trans('menu.achievements.daily'), null, 'ic-ui-arenanet');
+        $menu->addItem('achievements', $tr->trans('menu.achievements'), null, 'ic-ui-arenanet');
         $this->addMenu($menu);
     }
 

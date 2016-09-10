@@ -45,8 +45,8 @@
         <tr>
             <td>{{ 'global.achievement_points'|trans }}</td>
             <td colspan="2">
-                {{ 'global.daily'|trans }} = {{ account.DailyAP }}
-                {% if account.MonthlyAP %}, {{ 'global.monthly'|trans }} = {{ account.MonthlyAP }} &nbsp; ({{ 'global.total'|trans }} = {{ account.DailyAP + account.MonthlyAP }}){% endif %}
+                {{ 'global.permanent'|trans }} = {{ account.OtherAP }}, 
+                {{ 'global.daily'|trans }} = {{ account.DailyAP }}{% if account.MonthlyAP %}, {{ 'global.monthly'|trans }} = {{ account.MonthlyAP }} &nbsp; ({{ 'global.total'|trans }} = {{ account.TotalAP }}){% endif %}
             </td>
         </tr>
         <tr>

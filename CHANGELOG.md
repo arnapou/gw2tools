@@ -1,3 +1,8 @@
+## 2.0.1 (2016-09-10)
+
+  - small bugfix (character sort, ...)
+  - added achievements menu
+
 ## 2.0 (2016-09-03)
 
   - complete project rewrite under symfony

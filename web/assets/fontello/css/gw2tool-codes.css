@@ -140,3 +140,5 @@
 .ic-weapon-trident:before { content: '\e88a'; } /* '' */
 .ic-weapon-warhorn:before { content: '\e88b'; } /* '' */
 .ic-ui-finisher:before { content: '\e88c'; } /* '' */
+.ic-ui-title:before { content: '\e88d'; } /* '' */
+.ic-ui-mastery:before { content: '\e88e'; } /* '' */

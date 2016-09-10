@@ -80,6 +80,8 @@ body {
 .ic-crafting-tailor        { color: #919496; }
 .ic-crafting-weaponsmith   { color: #5e4734; }
 
+.ic-ui-masteries.maguuma, .ic-ui-mastery.maguuma { color: #309339; }
+.ic-ui-masteries.tyria,   .ic-ui-mastery.tyria   { color: #cc4d24; }
 
 td [class^="ic-weapon-"],
 th [class^="ic-weapon-"],
@@ -175,6 +177,177 @@ img.item {
     display: inline-block;
     vertical-align: middle;
 }*/
+
+/************************************************/
+
+
+.page-achievements .ap-group-header,
+.page-achievements .ap-category {
+    border-right: 1px solid #ecf0f1;
+    border-left: 1px solid #ecf0f1;
+    border-top: 1px solid #ecf0f1;
+    height: 3em;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: flex-start;
+}
+.page-achievements .ap-achievement {
+    border-right: 1px solid #ecf0f1;
+    border-left: 1px solid #ecf0f1;
+    border-top: 1px solid #ecf0f1;
+}
+.page-achievements .ap-achievement .ic-ui-arenanet {
+    color: #bd8d0d;
+}
+.page-achievements .ap-group:last-child,
+.page-achievements .ap-achievement:last-child {
+    border-bottom: 1px solid #ecf0f1;
+}
+.page-achievements .ap-achievement td.flex:first-child img {
+    max-height: 3em;
+}
+.page-achievements .ap-achievement .requirement,
+.page-achievements .ap-achievement .description {
+    margin-top: 0.3em;
+    font-size: .8em;
+}
+.page-achievements .ap-achievement .description {
+    color: #889;
+}
+.page-achievements .ap-achievement .rewards > div,
+.page-achievements .ap-achievement .rewards > span {
+    display: inline-block;
+    vertical-align: middle;
+    margin: .4em;
+}
+.page-achievements .ap-achievement .rewards img {
+    max-height: 2em;
+}
+.page-achievements .ap-achievement td.flex:nth-child(3) {
+    margin: 0 .5em;
+    min-width: 10em;
+}
+.page-achievements .ap-achievement td.flex:last-child {
+    min-width: 5em;
+}
+.page-achievements .ap-achievement .ic-ui-masteries,
+.page-achievements .ap-achievement .ic-ui-mastery {
+    font-size: 2em;
+    cursor: default;
+}
+.page-achievements .ap-achievement td.flex:last-child .glyphicon-refresh {
+    font-size: .9em; 
+    display: inline-block; 
+    text-align: center; 
+    min-width: 1.4em;
+}
+.page-achievements .ap-achievement .bits {
+    width: 22em;
+}
+.page-achievements .ap-achievement .bits .text,
+.page-achievements .ap-achievement .bits img {
+    max-height: 2em;
+    margin: 1px;
+    opacity: 0.3;
+}
+.page-achievements .ap-achievement .bits img.ok,
+.page-achievements .ap-achievement .bits .text.ok,
+.page-achievements .ap-achievement.completed .bits .text,
+.page-achievements .ap-achievement.completed .bits img {
+    opacity: 1;
+}
+.page-achievements .ap-achievement .detail > div {
+    padding-top: .5em;
+}
+.page-achievements .ap-achievement .detail > div > div {
+    margin-left: 1em;
+}
+.page-achievements .ap-achievement .detail .levels td {
+    padding: 0 .8em; 
+    border-left: 1px solid #ecf0f1;
+}
+.page-achievements .ap-achievement .detail .levels td:first-child {
+    padding-left: 0; 
+    border-left: 0;
+}
+.page-achievements .ap-achievement .detail .levels .glyphicon-ok {
+    color: #18bc9c;
+}
+.page-achievements .see-detail {
+    font-size: .8em;
+    text-decoration: none;
+}
+.page-achievements .see-detail i {
+    margin-right: .5em;
+}
+
+.page-achievements div.flex {
+    order: 0;
+    flex: 0 1 auto;
+    align-self: center;
+}
+.page-achievements div.flex:nth-child(2) {
+    flex: 1 1 auto;
+    margin: .2em 0;
+}
+.page-achievements td.flex:nth-child(2) {
+    padding: .2em 0;
+}
+.page-achievements td.flex:first-child,
+.page-achievements td.flex:last-child {
+    white-space: nowrap;
+    padding: 0 .5em;
+    text-align: right;
+}
+.page-achievements div.flex:first-child,
+.page-achievements div.flex:last-child {
+    white-space: nowrap;
+    margin: 0 .5em;
+    text-align: right;
+}
+
+
+.page-achievements .ap-category div.flex:first-child {
+    padding-left: 1.5em;
+}
+
+.page-achievements .ap-group-header:hover,
+.page-achievements .ap-category:hover,
+.page-achievements .ap-achievement:hover,
+.page-achievements .ap-category.current {
+    background: #ecf0f1;
+}
+.page-achievements .ap-category img {
+    max-height: 2em;
+}
+
+.page-achievements .closed .ap-category {
+    display: none;
+}
+.page-achievements .completed td.flex:last-child,
+.page-achievements .completed div.flex:last-child {
+    color: #18bc9c;
+}
+.page-achievements .completed {
+    box-shadow: -8px 0 0 -5px #18bc9c inset;
+    background: rgba(24, 188, 156, 0.05);
+}
+.page-achievements .ap-group-header i.glyphicon-chevron-down {
+    display: none;
+}
+.page-achievements .ap-group-header i.glyphicon-chevron-up {
+    display: inline-block;
+}
+.page-achievements .closed .ap-group-header i.glyphicon-chevron-down {
+    display: inline-block;
+}
+.page-achievements .closed .ap-group-header i.glyphicon-chevron-up {
+    display: none;
+}
 
 /************************************************/
 
