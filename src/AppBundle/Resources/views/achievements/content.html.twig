@@ -17,8 +17,6 @@
                 <table style="width: 100%;">
                     {% for item in category.getAchievements %}
                         {% set ap = aps[item.getId] %}
-                        {% set bits = item.bits %}
-                        {% set tiers = item.tiers %}
                         <tr class="ap-achievement {{ item.isDone ? 'completed' : '' }} {{ ap.getTotalAP() == item.getTotalAP() and item.getTotalAP() > 0 ? 'completed' : '' }}" data-id="{{ item.getId }}">
                             <td class="flex">
                                 <img src="{{ (item.getIcon ? item : category)|image }}">
@@ -31,6 +29,8 @@
                                 {% if item.getDescription() %}
                                     <div class="description">{{ item.getDescription()|striptags }}</div>
                                 {% endif %}
+                                {% set bits = item.bits %}
+                                {% set tiers = item.tiers %}
                                 {% if bits|length or tiers|length > 1 %}
                                     <a href="#" class="see-detail"><i class="glyphicon glyphicon-plus"></i>  {{ 'global.details'|trans }}</a>
                                     <div class="detail" style="display: none">
