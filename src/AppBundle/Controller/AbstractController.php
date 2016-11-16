@@ -169,10 +169,10 @@ abstract class AbstractController extends Controller {
      */
     public function getGwEnvironment() {
         if (empty($this->gwEnvironment)) {
-            $mongo   = new MongoClient(); // connexion
-            $mongoDB = $mongo->selectDB($this->getParameter('mongo.collection'));
-            $cache   = new MongoCache($mongoDB);
-            $env     = new Environment($this->getTranslator()->getLocale());
+            $mongoService = $this->get('app.mongo'); /* @var $mongoService MongoService */
+            $mongoDB      = $mongoService->getCacheDatabase();
+            $cache        = new MongoCache($mongoDB);
+            $env          = new Environment($this->getTranslator()->getLocale());
             $env->setCache($cache);
             $env->setStorage(new MongoStorage($mongoDB));
 

@@ -11,6 +11,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Twig\MongoService;
 use Arnapou\GW2Api\Cache\MongoCache;
 use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Model\AbstractStoredObject;
@@ -32,10 +33,10 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
      * @return Environment
      */
     public function getGwEnvironment($lang) {
-        $mongo   = new MongoClient(); // connexion
-        $mongoDB = $mongo->selectDB($this->getContainer()->getParameter('mongo.collection'));
-        $cache   = new MongoCache($mongoDB);
-        $env     = new Environment($lang);
+        $mongoService = $this->getContainer()->get('app.mongo'); /* @var $mongoService MongoService */
+        $mongoDB      = $mongoService->getCacheDatabase();
+        $cache        = new MongoCache($mongoDB);
+        $env          = new Environment($lang);
         $env->setCache($cache);
         $env->setStorage(new MongoStorage($mongoDB));
 

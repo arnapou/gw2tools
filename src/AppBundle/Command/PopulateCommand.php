@@ -13,7 +13,7 @@ namespace AppBundle\Command;
 
 use Arnapou\GW2Api\Model\AbstractStoredObject;
 use Arnapou\GW2Api\Storage\MongoStorage;
-use MongoDate;
+use MongoDB\BSON\UTCDateTime as MongoDate;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,7 +52,7 @@ class PopulateCommand extends AbstractCommand {
                 $apiName    = $class['name'];
                 $apiMethod  = $class['method'];
                 $collection = $storage->getCollection($class['lang'], $apiName);
-                $date       = new MongoDate(time() - $this->getRandomizedTime($class['time']));
+                $date       = new MongoDate((time() - $this->getRandomizedTime($class['time'])) * 1000);
 
                 $output->writeln('<info>' . $apiName . '</info> ');
                 $ids       = array_map('strval', $client->$apiMethod());

@@ -12,3 +12,8 @@ services:
         class: AppBundle\Twig\TwigExtension
         tags:
             - { name: twig.extension }
+
+    app.mongo:
+        class: AppBundle\Service\MongoService
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+        

@@ -17,6 +17,7 @@ use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Model\Character;
 use Arnapou\GW2Api\Model\Item;
 use Gw2tool\Account;
+use MongoDB\Collection as MongoCollection;
 
 class Statistics {
 
@@ -28,7 +29,7 @@ class Statistics {
 
     /**
      *
-     * @var \MongoCollection
+     * @var MongoCollection
      */
     protected $collection;
 
@@ -59,7 +60,7 @@ class Statistics {
         $this->lang       = $this->env->getLang();
         $cache            = $this->env->getCache(); /* @var $cache MongoCache */
         $this->collection = $cache->getMongoDB()->selectCollection('statistics');
-        $this->collection->ensureIndex('account');
+        $this->collection->createIndex(['account' => 1]);
         $this->account    = $account;
     }
 
@@ -83,7 +84,7 @@ class Statistics {
 
     /**
      * 
-     * @return \MongoCollection
+     * @return MongoCollection
      */
     public function getCollection() {
         return $this->collection;
@@ -357,15 +358,15 @@ class Statistics {
     public function getDatasetProfessions() {
         return $this->cacheGet('pie/professions/', function() {
                 $data = [
-                    Character::PROFESSION_ELEMENTALIST => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_ELEMENTALIST)],
-                    Character::PROFESSION_ENGINEER     => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_ENGINEER)],
-                    Character::PROFESSION_GUARDIAN     => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_GUARDIAN)],
-                    Character::PROFESSION_MESMER       => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_MESMER)],
-                    Character::PROFESSION_NECROMANCER  => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_NECROMANCER)],
-                    Character::PROFESSION_RANGER       => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_RANGER)],
-                    Character::PROFESSION_REVENANT     => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_REVENANT)],
-                    Character::PROFESSION_THIEF        => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_THIEF)],
-                    Character::PROFESSION_WARRIOR      => [ 'y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_WARRIOR)],
+                    Character::PROFESSION_ELEMENTALIST => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_ELEMENTALIST)],
+                    Character::PROFESSION_ENGINEER     => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_ENGINEER)],
+                    Character::PROFESSION_GUARDIAN     => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_GUARDIAN)],
+                    Character::PROFESSION_MESMER       => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_MESMER)],
+                    Character::PROFESSION_NECROMANCER  => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_NECROMANCER)],
+                    Character::PROFESSION_RANGER       => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_RANGER)],
+                    Character::PROFESSION_REVENANT     => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_REVENANT)],
+                    Character::PROFESSION_THIEF        => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_THIEF)],
+                    Character::PROFESSION_WARRIOR      => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_WARRIOR)],
                 ];
                 foreach ($this->collection->find() as $row) {
                     if (isset($row['profession'])) {
@@ -385,8 +386,8 @@ class Statistics {
     public function getDatasetGenders() {
         return $this->cacheGet('pie/genders/', function() {
                 $data = [
-                    Character::GENDER_MALE   => [ 'y' => 0, 'name' => $this->trans('gender.' . Character::GENDER_MALE)],
-                    Character::GENDER_FEMALE => [ 'y' => 0, 'name' => $this->trans('gender.' . Character::GENDER_FEMALE)],
+                    Character::GENDER_MALE   => ['y' => 0, 'name' => $this->trans('gender.' . Character::GENDER_MALE)],
+                    Character::GENDER_FEMALE => ['y' => 0, 'name' => $this->trans('gender.' . Character::GENDER_FEMALE)],
                 ];
                 foreach ($this->collection->find() as $row) {
                     if (isset($row['gender'])) {
@@ -406,11 +407,11 @@ class Statistics {
     public function getDatasetRaces() {
         return $this->cacheGet('pie/races/', function() {
                 $data = [
-                    Character::RACE_ASURA   => [ 'y' => 0, 'name' => $this->trans('race.' . Character::RACE_ASURA)],
-                    Character::RACE_CHARR   => [ 'y' => 0, 'name' => $this->trans('race.' . Character::RACE_CHARR)],
-                    Character::RACE_HUMAN   => [ 'y' => 0, 'name' => $this->trans('race.' . Character::RACE_HUMAN)],
-                    Character::RACE_NORN    => [ 'y' => 0, 'name' => $this->trans('race.' . Character::RACE_NORN)],
-                    Character::RACE_SYLVARI => [ 'y' => 0, 'name' => $this->trans('race.' . Character::RACE_SYLVARI)],
+                    Character::RACE_ASURA   => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_ASURA)],
+                    Character::RACE_CHARR   => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_CHARR)],
+                    Character::RACE_HUMAN   => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_HUMAN)],
+                    Character::RACE_NORN    => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_NORN)],
+                    Character::RACE_SYLVARI => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_SYLVARI)],
                 ];
                 foreach ($this->collection->find() as $row) {
                     if (isset($row['race'])) {

@@ -24,7 +24,7 @@ use Arnapou\GW2Api\Model\InventorySlot;
 use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\Minis;
 use Arnapou\GW2Api\Model\Title;
-use MongoCollection;
+use MongoDB\Collection as MongoCollection;
 
 class Account extends \Arnapou\GW2Api\Model\Account {
 
@@ -128,7 +128,7 @@ class Account extends \Arnapou\GW2Api\Model\Account {
                 Item::RARITY_ASCENDED  => $this->getAscendedCount(),
                 Item::RARITY_LEGENDARY => $this->getLegendariesCount(),
             ];
-            $collection->update([ 'account' => $this->getName()], $data, [ 'upsert' => true]);
+            $collection->updateOne([ 'account' => $this->getName()], $data, [ 'upsert' => true]);
         }
         catch (\Exception $ex) {
             if (!$quiet) {
