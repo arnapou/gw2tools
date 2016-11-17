@@ -261,6 +261,7 @@ img.item {
     opacity: 1;
 }
 .page-achievements .ap-achievement .detail > div {
+    font-size: .8em; 
     padding-top: .5em;
 }
 .page-achievements .ap-achievement .detail > div > div {

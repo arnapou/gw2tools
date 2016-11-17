@@ -1,3 +1,8 @@
+## 2.1.0 (2016-11-17)
+
+  - small css fixes
+  - technical evolutions (php7, ...)
+
 ## 2.0.1 (2016-09-10)
 
   - small bugfix (character sort, ...)

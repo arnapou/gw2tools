@@ -33,7 +33,7 @@
             {% block stylesheets %}
                 <link href="{{ asset('assets/bootstrap-3.3.7/css/bootstrap-flatly.min.css') }}" rel="stylesheet" />
                 <link href="{{ asset('assets/fontello/css/gw2tool.css') }}" rel="stylesheet" />
-                {% stylesheets filter='cssrewrite' 
+                {% stylesheets filter='cssrewrite' output='assets/style.css'
                 'assets/css/bootstrap-hack.css' 
                 'assets/css/general.css' 
                 'assets/css/specialization.css' 
@@ -184,7 +184,7 @@
             <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}"></script>
             <script src="{{ asset('assets/bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
             {% block javascripts %}
-                {% javascripts filter="?jsqueeze"
+                {% javascripts filter="?jsqueeze" output='assets/script.js'
                 'assets/js/js.cookie.js'
                 'assets/js/plugin-bootbox.js'
                 'assets/js/script.js'
