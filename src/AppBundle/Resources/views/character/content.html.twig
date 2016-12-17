@@ -285,6 +285,27 @@
                                         </span>
                                     </div>
                                 {% endif %}
+                            {% elseif mode == 'wvw' %}
+                                {% for ability in character.getWvwAbilities %}
+                                    <div class="wvw_ability">
+                                        <div>
+                                            <span><img src="{{ ability|image }}" /></span>
+                                            <span class="name">{{ ability.getName() }}</span>
+                                            <span class="total-cost">{{ ability.getTotalCost() }}</span>
+                                        </div>
+                                        {% set ranks = ability.getRanks %}
+                                        {% if ranks and ranks|length %}
+                                            <ul style="display: none">
+                                                {% for i, rank in ranks %}
+                                                    <li class="{{ ability.getRank() >= i + 1 ? 'spent' : 'not-spent' }}">
+                                                        <span class="cost">({{ rank.cost }})</span>
+                                                        <span class="effect">{{ rank.effect }}</span>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
                             {% endif %}
                         </div>
                         <div class="build2">
@@ -317,8 +338,7 @@
     <script type="text/javascript">
         if ($('.char_tabs .tab').length == 1) {
             $('.char_tabs .tab').show();
-        }
-        else {
+        } else {
             $('.nav-tabs a').eq(0).trigger('click');
         }
     </script>

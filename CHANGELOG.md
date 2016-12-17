@@ -1,3 +1,10 @@
+## 2.1.1 (2016-12-18)
+
+  - small css fixes
+  - new translations
+  - add wvw abilities on characters
+  - added item chat links
+
 ## 2.1.0 (2016-11-17)
 
   - small css fixes

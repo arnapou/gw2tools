@@ -3,33 +3,69 @@
 
     {% set tables = [
         {
-            'class': 'armor',
-            'types': ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots'],
+            'types': [
+                ['armor', 'Helm'], 
+                ['armor', 'Shoulders'], 
+                ['armor', 'Coat'], 
+                ['armor', 'Gloves'], 
+                ['armor', 'Leggings'], 
+                ['armor', 'Boots'],
+            ],
             'limit': 5
         },
         {
-            'class': 'armor',
-            'types': ['Amulet', 'Accessory', 'Ring', 'Backpack', 'HelmAquatic', ''],
+            'types': [
+                ['armor', 'Amulet'], 
+                ['armor', 'Accessory'], 
+                ['armor', 'Ring'], 
+                ['armor', 'Backpack'], 
+                ['armor', 'HelmAquatic'], 
+                none,
+            ],
             'limit': 10
         },
         {
-            'class': 'weapon',
-            'types': ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
+            'types': [
+                ['weapon', 'Greatsword'], 
+                ['weapon', 'Hammer'], 
+                ['weapon', 'Rifle'], 
+                ['weapon', 'Staff'], 
+                ['weapon', 'LongBow'], 
+                ['weapon', 'ShortBow'],
+            ],
             'limit': 5
         },
         {
-            'class': 'weapon',
-            'types': ['Focus', 'Warhorn', 'Shield', 'Torch', '', ''],
+            'types': [
+                ['weapon', 'Focus'], 
+                ['weapon', 'Warhorn'], 
+                ['weapon', 'Shield'], 
+                ['weapon', 'Torch'], 
+                none,
+                none,
+            ],
             'limit': 5
         },
         {
-            'class': 'weapon',
-            'types': ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol'],
+            'types': [
+                ['weapon', 'Sword'], 
+                ['weapon', 'Axe'], 
+                ['weapon', 'Mace'], 
+                ['weapon', 'Dagger'], 
+                ['weapon', 'Scepter'], 
+                ['weapon', 'Pistol'],
+            ],
             'limit': 5
         },
         {
-            'class': 'weapon',
-            'types': ['Speargun', 'Harpoon', 'Trident', '', '', ''],
+            'types': [
+                ['weapon', 'Speargun'], 
+                ['weapon', 'Harpoon'], 
+                ['weapon', 'Trident'], 
+                ['gathering', 'Foraging'], 
+                ['gathering', 'Logging'], 
+                ['gathering', 'Mining'],
+            ],
             'limit': 5
         },
     ] %}
@@ -48,8 +84,8 @@
                     </th>
                     {% for type in table.types %}
                         {% if type %}
-                            <th title="{{ ('itemtype.'~type)|trans }}">
-                                <i class="ic-{{ table.class }}-{{ type|lower }}"></i>
+                            <th title="{{ ('itemtype.'~type.1)|trans }}">
+                                <i class="ic-{{ type.0 }}-{{ type.1|lower }}"></i>
                             </th>
                         {% else %}
                             <th>
@@ -72,8 +108,8 @@
                                     {% for type in table.types %}
                                         {% if type %}
                                             <td>
-                                                {% if equipments[type] %}
-                                                    {% for item in equipments[type]|slice(0, table.limit) %}
+                                                {% if equipments[type.1] %}
+                                                    {% for item in equipments[type.1]|slice(0, table.limit) %}
                                                         {{ macro.object(item, 0, 1) }}
                                                     {% endfor %}
                                                 {% endif %}

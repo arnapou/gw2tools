@@ -155,6 +155,10 @@ $(function () {
         }
     });
 
+    $(document).on('click', '.wvw_ability div', function () {
+        $(this).parent().find('ul').toggle();
+    });
+
     (function () {
         var cachedHtml = {};
         var $gwitemdetail = $('#gwitemdetail');

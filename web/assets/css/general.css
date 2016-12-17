@@ -87,6 +87,10 @@ td [class^="ic-weapon-"],
 th [class^="ic-weapon-"],
 td [class*=" ic-weapon-"],
 th [class*=" ic-weapon-"],
+td [class^="ic-gathering-"],
+th [class^="ic-gathering-"],
+td [class*=" ic-gathering-"],
+th [class*=" ic-gathering-"],
 td [class^="ic-armor-"],
 th [class^="ic-armor-"],
 td [class*=" ic-armor-"],
@@ -138,45 +142,6 @@ img.currency {
     display: inline-block;
     vertical-align: middle;
 }
-
-/*img.craft, i.craft,
-img.profession, i.profession {
-    height: 1.42857em;
-    width: 1.42857em;
-    display: inline-block;
-    vertical-align: middle;
-}
-img.attribute {
-    width: 1.42857em;
-    height: 1.42857em;
-    margin-right: .5em;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-img.upgrade,
-img.infusion {
-    height: 2em;
-    width: 2em;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: .3em;
-}
-img.infusion.empty {
-    height: 1.8em;
-    width: 1.8em;
-    display: inline-block;
-    vertical-align: middle;
-    margin: .1em .4em .1em .1em;
-}
-
-
-img.item {
-    height: 3em;
-    width: 3em;
-    display: inline-block;
-    vertical-align: middle;
-}*/
 
 /************************************************/
 
@@ -536,6 +501,65 @@ img.item {
 
 /************************************************/
 
+.wvw_ability div {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	flex-wrap: nowrap;
+	-webkit-justify-content: flex-start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	-webkit-align-content: center;
+	-ms-flex-line-pack: center;
+	align-content: center;
+	-webkit-align-items: flex-start;
+	-ms-flex-align: start;
+	align-items: flex-start;
+	cursor: pointer;
+}
+.wvw_ability div:hover {
+	font-weight: bold;
+}
+.page-character .wvw_ability img {
+	width: 2em;
+	height: 2em;
+    margin: 0;
+}
+.wvw_ability div span {
+	-webkit-order: 0;
+	-ms-flex-order: 0;
+	order: 0;
+	-webkit-flex: 0 1 auto;
+	-ms-flex: 0 1 auto;
+	flex: 0 1 auto;
+	-webkit-align-self: center;
+	-ms-flex-item-align: center;
+	align-self: center;
+}
+.wvw_ability div span.name {
+	-webkit-flex: 1 1 auto;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+	padding-left: .5em;
+}
+.wvw_ability ul{
+	font-size: .8em;
+}
+.wvw_ability ul .cost{
+	margin-right: .5em;
+}
+.wvw_ability ul .not-spent{
+	opacity: .7;
+	text-decoration: line-through;
+}
+
+/************************************************/
+
 .page-pvp .season {
     background: #2c3e50;
     color: white;
@@ -588,12 +612,6 @@ img.item {
 .page-equipments .equipments .inventory-slot {
     font-size: 1.6em;
     margin: 2px 0;
-}
-.page-equipments .equipments .inventory-slot .item img {
-    border-left-width: 0;
-    border-right-width: 4px;
-    padding-left: 0;
-    padding-right: 4px;
 }
 .page-equipments .equipments td {
     border-bottom: 1px solid #ecf0f1 !important;
@@ -689,10 +707,12 @@ img.item {
 }
 .inventory-slot .stat img {
     height: .8em;
+    width: .8em;
     vertical-align: top;
 }
 .inventory-slot .item img {
     height: 1em;
+    width: 1em;
     vertical-align: top;
     margin: 0 .2em;
     border-left-width: 5px;
@@ -700,6 +720,7 @@ img.item {
     border-right-width: 0;
     border-bottom-width: 0;
     padding-left: 1px;
+    box-sizing: content-box;
 }
 .inventory-slot .addons .upgrades {
     height: .45em;

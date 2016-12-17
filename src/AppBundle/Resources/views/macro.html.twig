@@ -2,13 +2,13 @@
 {% macro object(obj, force, nopic) %}
     {% if obj.getId() %}
         <div class="inventory-slot">
-            {% if nopic %}
+            {#{% if nopic %}
                 <div class="item">
                     <span {{ obj|gwlink|raw }}>
                         <img src="{{ obj.getStatname()|imagestat }}" class="rarity-{{ obj.getRarity() }}" />
                     </span>
                 </div>
-            {% else %}
+            {% else %}#}
                 {% if obj.gettype != 'Gathering' %}
                     <div class="stat">
                         <img src="{{ obj.getStatname()|imagestat }}" title="{{ ('stats.'~obj.getStatname())|trans }}" />
@@ -20,7 +20,7 @@
                         <img src="{{ obj|image }}" class="item rarity-{{ obj.getRarity() }}" />
                     </span>
                 </div>
-            {% endif %}
+{#            {% endif %}#}
             {% if obj.gettype != 'Gathering' %}
                 <div class="addons">
                     <div class="upgrades">

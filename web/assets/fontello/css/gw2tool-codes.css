@@ -142,3 +142,6 @@
 .ic-ui-finisher:before { content: '\e88c'; } /* '' */
 .ic-ui-title:before { content: '\e88d'; } /* '' */
 .ic-ui-mastery:before { content: '\e88e'; } /* '' */
+.ic-gathering-foraging:before { content: '\e88f'; } /* '' */
+.ic-gathering-logging:before { content: '\e890'; } /* '' */
+.ic-gathering-mining:before { content: '\e891'; } /* '' */
