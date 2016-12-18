@@ -1,0 +1,18 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+    <div class="page page-{{ page }}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="pull-right">
+                    <b>{{ account.getMasteriesSpentPoints }}</b>
+                </div>
+                <i class="ic-ui-masteries"></i> {{ page_name }}
+            </div>
+            <div class="panel-body" data-content="ajax" data-src="./content.html">
+                <div class="spinner-loader"></div> <em>{{ "global.loading"|trans }}</em>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

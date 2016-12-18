@@ -101,7 +101,7 @@
                                         </a>
                                         <ul class="dropdown-menu scrollable-menu">
                                             {% for usr in users %}
-                                                <li title="{{ usr.account.permissions|join("\n") }}">
+                                                <li>
                                                     <a href="/{{ lang }}/{{ usr.code }}/" class="account-link">
                                                         <small> ... {{ usr.token|slice(-4) }}</small>
                                                         {{ usr.name ? usr.name : '??????' }}

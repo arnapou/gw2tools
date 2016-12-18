@@ -106,6 +106,129 @@ th [class*=" ic-attribute-"] {
 
 /************************************************/
 
+.page-masteries .regions {
+    float: left;
+    width: 300px;
+}
+.page-masteries .regions .region div {
+    padding: .5em;
+    border-top: 1px solid #ecf0f1;
+    border-left: 1px solid #ecf0f1;
+    border-right: 1px solid #ecf0f1;
+    cursor: default;
+}
+.page-masteries .regions .region div:hover {
+    background: #ecf0f1 !important;
+}
+.page-masteries .regions .region:last-child div:last-child {
+    border-bottom: 1px solid #ecf0f1;
+}
+.page-masteries .regions .region div.region-name {
+    font-weight: bold;
+}
+.page-masteries .regions .region div.mastery-name {
+    padding-left: 1.5em;
+    cursor: pointer;
+}
+.page-masteries .regions .region div.mastery-name.unlocked {
+    box-shadow: -8px 0 0 -5px #18bc9c inset;
+    background: rgba(24, 188, 156, 0.05);
+}
+
+.page-masteries .mastery{
+    margin-left: 315px;
+    color: white;
+    text-shadow: 0 0 3px black;
+    padding: 5px 8px 5px 10px;
+    background-repeat: no-repeat;
+    background-color: #999;
+    background-size: 100% auto;
+}
+.page-masteries .mastery .header{
+    height: 100px;
+    padding-top: 15px;
+}
+.page-masteries .mastery .header .spent{
+    float: right;
+    line-height: 60px;
+    padding-right: 2em;
+}
+.page-masteries .mastery .header .spent b{
+    font-size: 1.5em;
+    margin-left: 1em;
+}
+.page-masteries .mastery .region-name{
+    color: #ccc;
+}
+.page-masteries .mastery .mastery-name{
+    font-size: 1.5em;
+}
+.page-masteries .mastery .level.unlocked {
+    background-image: url(/assets/images/mastery-bg.png);
+}
+.page-masteries .mastery .level.locked {
+    opacity: .4;
+}
+.page-masteries .mastery .level{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+.page-masteries .mastery .level > div{
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: flex-start;
+    -ms-flex-item-align: flex-start;
+    align-self: flex-start;
+}
+.page-masteries .mastery .level > div.level-body {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: .4em 0;
+}
+.page-masteries .mastery .level > div.point-cost{
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    text-align: center;
+}
+.page-masteries .mastery .level > div.point-cost div{
+    width: 8em;
+    padding: .5em .5em .5em 1em;
+}
+.page-masteries .mastery .level .level-icon img{
+    width: 3em;
+    height: 3em;
+    margin: .6em 1em .6em .4em;
+}
+.page-masteries .mastery .level .level-instruction {
+    font-size: .8em;
+    color: #999;
+}
+
+
+/************************************************/
+
 .gold, .silver, .copper {
     padding-right: 18px;
     margin: 0 .2em;
@@ -502,60 +625,60 @@ img.currency {
 /************************************************/
 
 .wvw_ability div {
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	-webkit-flex-direction: row;
-	-ms-flex-direction: row;
-	flex-direction: row;
-	-webkit-flex-wrap: nowrap;
-	-ms-flex-wrap: nowrap;
-	flex-wrap: nowrap;
-	-webkit-justify-content: flex-start;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
-	-webkit-align-content: center;
-	-ms-flex-line-pack: center;
-	align-content: center;
-	-webkit-align-items: flex-start;
-	-ms-flex-align: start;
-	align-items: flex-start;
-	cursor: pointer;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    cursor: pointer;
 }
 .wvw_ability div:hover {
-	font-weight: bold;
+    font-weight: bold;
 }
 .page-character .wvw_ability img {
-	width: 2em;
-	height: 2em;
+    width: 2em;
+    height: 2em;
     margin: 0;
 }
 .wvw_ability div span {
-	-webkit-order: 0;
-	-ms-flex-order: 0;
-	order: 0;
-	-webkit-flex: 0 1 auto;
-	-ms-flex: 0 1 auto;
-	flex: 0 1 auto;
-	-webkit-align-self: center;
-	-ms-flex-item-align: center;
-	align-self: center;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
 }
 .wvw_ability div span.name {
-	-webkit-flex: 1 1 auto;
-	-ms-flex: 1 1 auto;
-	flex: 1 1 auto;
-	padding-left: .5em;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding-left: .5em;
 }
 .wvw_ability ul{
-	font-size: .8em;
+    font-size: .8em;
 }
 .wvw_ability ul .cost{
-	margin-right: .5em;
+    margin-right: .5em;
 }
 .wvw_ability ul .not-spent{
-	opacity: .7;
-	text-decoration: line-through;
+    opacity: .7;
+    text-decoration: line-through;
 }
 
 /************************************************/
@@ -798,7 +921,6 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 .page-wallet .column-name {
     line-height: 2em;
     text-align: right;
-    width: 50%;
 }
 .page-wallet .column-icon {
     text-align: center;
@@ -806,6 +928,8 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 }
 .page-wallet .column-quantity {
     line-height: 2em;
+    min-width: 8em;
+    white-space: nowrap;
 }
 
 /************************************************/

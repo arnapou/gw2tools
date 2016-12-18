@@ -11,6 +11,27 @@
         <p>flvlmax = {{flvlmax}}</p>#}
 
     {% if module.isAllowed('inventories', 'characters') %}
+
+        {% set slots = account.inventory %}
+        {% if slots|length %}
+
+            {% set found = '' %}
+            {% for item in slots %}
+                {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+            {% endfor %}
+
+            {% if found|trim %}
+                <div class="row">
+                    <div class="col-xs-2">
+                        {{ 'global.shared_inventory'|trans }}
+                    </div>
+                    <div class="col-xs-10 slots">
+                        {{ found|raw }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+
         {% for char in account.characters %}
             {% if owner or token.hasright('character/'~char.name) %}
 

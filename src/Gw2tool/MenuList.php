@@ -31,6 +31,7 @@ class MenuList implements \IteratorAggregate {
         // GENERAL
         $menu = Menu::create($tr->trans('menu.general'));
         $menu->addItem('account', $tr->trans('menu.general.account'), null, 'ic-ui-key');
+        $menu->addItem('masteries', $tr->trans('menu.general.masteries'), null, 'ic-ui-masteries')->setPermission(Account::PERMISSION_PROGRESSION);
         $menu->addItem('wallet', $tr->trans('menu.general.wallet'), null, 'ic-ui-wallet')->setPermission(Account::PERMISSION_WALLET);
         $menu->addItem('golds', $tr->trans('menu.general.golds'), null, 'ic-ui-golds');
         $menu->addItem('search', $tr->trans('menu.general.search'), null, 'ic-ui-magnifier');

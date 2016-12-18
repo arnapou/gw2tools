@@ -82,6 +82,37 @@
 
     {% endif %}
 
+    {% if module.isAllowed('tp_buys', 'tradingpost') and module.isAllowed('tp_sells', 'tradingpost') %}
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th class="column-icon"></th>
+                    <th class="column-amount"></th>
+                    <th class="column-amount"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set tp = account.tradingpost %}
+                {% for data in [
+                    ['tp_buys', ('global.tp_current_buys'|trans), tp.currentbuys],
+                    ['tp_sells', ('global.tp_current_sells'|trans), tp.currentsells],
+                ] %}
+                    {% set tmp = 0 %}
+                    {% for trade in data.2 %}
+                        {% set tmp = tmp + trade.quantity * trade.price %}
+                    {% endfor %}
+                    <tr>
+                        <td class="column-name"><i class="ic-ui-blc-balance"></i> <a href="../{{ data.0 }}/">{{ data.1 }}</a></td>
+                        <td class="column-amount"></td>
+                        <td class="column-amount">{{ macro.amount(tmp) }}</td>
+                    </tr>
+                    {% set sum_max = sum_max + tmp %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+
     <table class="table table-condensed table-hover">
         <thead>
             <tr>
@@ -100,6 +131,8 @@
     </table>
 
     {% if module.isAllowed('wallet', 'wallet') %}
+        <br />
+        <br />
         <table class="table table-condensed table-hover">
             <thead>
                 <tr>

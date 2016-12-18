@@ -159,6 +159,12 @@ $(function () {
         $(this).parent().find('ul').toggle();
     });
 
+    $(document).on('click', '.page-masteries .regions .region div.mastery-name', function () {
+        var id = $(this).data('id');
+        $('.page-masteries .mastery').hide();
+        $('#' + id).show();
+    });
+
     (function () {
         var cachedHtml = {};
         var $gwitemdetail = $('#gwitemdetail');

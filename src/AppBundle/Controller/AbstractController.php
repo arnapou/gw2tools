@@ -150,8 +150,9 @@ abstract class AbstractController extends Controller {
      */
     public function getCookieUsers() {
         if ($this->cookieUsers === null) {
-            $items = [];
-            $repo  = $this->getTokenRepository();
+            $savedAccessToken = $this->getGwEnvironment()->getAccessToken();
+            $items            = [];
+            $repo             = $this->getTokenRepository();
             foreach ($this->getCookieTokens() as $token) {
                 $object = $repo->findOneByToken($token);
                 if ($object && $this->checkToken($object)) {
@@ -159,6 +160,7 @@ abstract class AbstractController extends Controller {
                 }
             }
             $this->cookieUsers = $items;
+            $this->getGwEnvironment()->setAccessToken($savedAccessToken);
         }
         return $this->cookieUsers;
     }

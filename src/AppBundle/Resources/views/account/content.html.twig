@@ -15,6 +15,12 @@
             <td>{{ 'global.world'|trans }}</td>
             <td colspan="2">{{ account.world }}</td>
         </tr>
+        {% if account.haspermission('progression') and account.hasAccessHeartOfThorns() %}
+            <tr>
+                <td>{{ 'global.mastery_points'|trans }}</td>
+                <td colspan="2">{{ account.getMasteriesSpentPoints }}</td>
+            </tr>
+        {% endif %}
         <tr>
             <td>{{ 'global.fractal_level'|trans }}</td>
             <td colspan="2">{{ account.getFractallevel }}</td>

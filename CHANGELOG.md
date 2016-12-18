@@ -1,4 +1,12 @@
-## 2.1.1 (2016-12-18)
+## 2.1.2 (2016-12-18)
+
+  - statistics bugfix
+  - auto clean older accounts / codes (more than 1 year without use)
+  - added shared slots into search tab
+  - added TP into golds count
+  - added account masteries
+
+## 2.1.1 (2016-12-17)
 
   - small css fixes
   - new translations

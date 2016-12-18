@@ -1,0 +1,53 @@
+{% spaceless %}
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    <div class="regions">
+        {% for region in ['Tyria', 'Maguuma'] %}
+            <div class="region">
+                <div class="region-name">
+                    <i class="ic-ui-masteries {{ region|lower}}"></i> {{ ('region.'~region)|trans }}
+                </div>
+                {% for mastery in account.masteries %}
+                    {% if mastery.getRegion == region %}
+                        <div class="mastery-name {{ mastery.isUnlocked ? 'unlocked': 'locked' }}" data-id="mastery{{ mastery.getId }}">
+                            {{ mastery.getName }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    {% for mastery in account.masteries %}
+        <div class="mastery" id="mastery{{ mastery.getId }}" style="display: none; background-image: url({{ mastery.getBackground|image }})">
+            <div class="header">
+                <div class="spent">{{ 'global.spent'|trans }}: <b>{{ mastery.getSpentPoints() }}</b></div>
+                <div class="region-name">{{ ('region.'~mastery.getRegion)|trans }}</div>
+                <div class="mastery-name">{{ mastery.getName }}</div>
+            </div>
+            {% for i, level in mastery.getLevels %}
+                <div class="level {{ mastery.getUnlockedLevel >= i ? 'unlocked' : 'locked' }}">
+                    <div class="level-icon">
+                        <img src="{{ level.getIcon|image }}" />
+                    </div>
+                    <div class="level-body">
+                        <div class="level-name">{{ level.getName }}</div>
+                        <div class="level-instruction">{{ level.getInstruction }}</div>
+                    </div>
+                    <div class="point-cost">
+                        <div>
+                            {% for k in 1..(level.getPointCost) %}
+                                <i class="ic-ui-mastery {{ mastery.getRegion|lower}}"></i>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    
+    <script>
+        $('.page-masteries .regions .region div.mastery-name').eq(0).trigger('click');
+    </script>
+    
+{% endspaceless %}
