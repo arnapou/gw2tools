@@ -13,36 +13,40 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Token;
 use Arnapou\GW2Api\Cache\MongoCache;
+use Gw2tool\Account;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanCommand extends AbstractCommand {
+class CalculateStatisticsCommand extends AbstractCommand {
 
     protected function configure() {
         $this
-            ->setName('gw2tool:clean')
-            ->setDescription('Clean old accounts and codes.')
+            ->setName('gw2tool:statistics')
+            ->setDescription('Calculate statistics.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
 
-        $limitTime = time() - 365 * 86400; // 1 year
-
-        /*
-         * clean statistics into mongodb
-         */
         $env        = $this->getGwEnvironment('en');
         $cache      = $env->getCache(); /* @var $cache MongoCache */
         $collection = $cache->getMongoDB()->selectCollection('statistics');
-        $collection->deleteMany(['last_update' => ['$lt' => $limitTime]]);
 
-        /*
-         * clean accounts into mysql
-         */
-        $conn  = $this->getDoctrine()->getConnection();
-        $table = $this->getDoctrine()->getManager()->getClassMetadata(Token::class)->getTableName();
-        $conn->exec("DELETE FROM `" . $table . "` WHERE `lastaccess` < " . $limitTime);
+        $repo = $this->getDoctrine()->getRepository(Token::class);
+        foreach ($repo->findAll() as /* @var $token Token */ $token) {
+            try {
+                $env->setAccessToken((string) $token);
+                $account    = new Account($env);
+                $calculated = $account->calculateStatistics($collection);
+
+                if ($calculated) {
+                    $output->writeln("statistics calclulated for " . $token->getName());
+                }
+            }
+            catch (\Exception $ex) {
+                $output->writeln($ex->getMessage());
+            }
+        }
     }
 
 }

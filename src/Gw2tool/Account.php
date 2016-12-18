@@ -130,6 +130,8 @@ class Account extends \Arnapou\GW2Api\Model\Account {
                 Item::RARITY_LEGENDARY => $this->getLegendariesCount(),
             ];
             $collection->updateOne(['account' => $this->getName()], ['$set' => $data], ['upsert' => true]);
+
+            return true;
         }
         catch (\Exception $ex) {
             if (!$quiet) {
