@@ -35,28 +35,43 @@ class CalculateStatisticsCommand extends AbstractCommand {
         $manager    = $this->getDoctrine()->getManager();
         $repo       = $this->getDoctrine()->getRepository(Token::class);
 
-        foreach ($repo->findBy(['valid' => 1]) as /* @var $token Token */ $token) {
-            try {
-                if ($token->getLastaccess() < time() - 86400) {
-                    $env->setAccessToken((string) $token);
-                    $account    = new Account($env);
-                    $account->getName(); // used only to trigger InvalidTokenException if something is wrong
-                    $calculated = $account->calculateStatistics($collection);
+        foreach ($collection->find() as $data) {
+            if (!isset($data['account'])) {
+                continue;
+            }
+            $accountName = $data['account'];
+            $token       = $repo->findOneBy(['name' => $accountName]);
+            if (empty($token) || !$token->hasRight('other.disable_statistics')) {
+                $collection->deleteMany(['name' => $accountName]);
+                continue;
+            }
 
-                    if ($calculated) {
-                        $output->writeln("statistics calclulated for <info>" . $token->getName() . "</info>");
-                    }
+            $disableAccount = false;
+            try {
+                $env->setAccessToken((string) $token);
+                $account = new Account($env);
+                $account->getName(); // used only to trigger InvalidTokenException if something is wrong
+
+                if ($account->calculateStatistics($collection)) {
+                    $output->writeln("statistics calclulated for <info>" . $accountName . "</info>");
                 }
             }
             catch (InvalidTokenException $ex) {
-                $token->setIsValid(false);
-                $manager->persist($token);
-                $manager->flush();
-
-                $output->writeln("statistics calculated for <info>" . $token->getName() . "</info>");
+                $disableAccount = true;
+            }
+            catch (MissingPermissionException $ex) {
+                $disableAccount = true;
             }
             catch (\Exception $ex) {
                 $output->writeln("<error>" . $ex->getMessage() . "</error>");
+            }
+            if ($disableAccount) {
+                $token->setIsValid(false);
+                $manager->persist($token);
+                $manager->flush();
+                $collection->deleteMany(['name' => $accountName]);
+
+                $output->writeln("disabled statistics for <info>" . $accountName . "</info>");
             }
         }
     }
