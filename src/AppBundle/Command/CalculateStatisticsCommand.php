@@ -40,6 +40,7 @@ class CalculateStatisticsCommand extends AbstractCommand {
                 if ($token->isValid()) {
                     $env->setAccessToken((string) $token);
                     $account    = new Account($env);
+                    $account->getName(); // used only to trigger InvalidTokenException if something is wrong
                     $calculated = $account->calculateStatistics($collection);
 
                     if ($calculated) {
@@ -47,7 +48,7 @@ class CalculateStatisticsCommand extends AbstractCommand {
                     }
                 }
             }
-            catch (\InvalidTokenException $ex) {
+            catch (InvalidTokenException $ex) {
                 $token->setIsValid(false);
                 $manager->persist($token);
                 $manager->flush();
