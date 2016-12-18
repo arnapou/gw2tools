@@ -13,6 +13,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Token;
 use Arnapou\GW2Api\Cache\MongoCache;
+use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Gw2tool\Account;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,8 +32,9 @@ class CalculateStatisticsCommand extends AbstractCommand {
         $env        = $this->getGwEnvironment('en');
         $cache      = $env->getCache(); /* @var $cache MongoCache */
         $collection = $cache->getMongoDB()->selectCollection('statistics');
+        $manager    = $this->getDoctrine()->getManager();
+        $repo       = $this->getDoctrine()->getRepository(Token::class);
 
-        $repo = $this->getDoctrine()->getRepository(Token::class);
         foreach ($repo->findAll() as /* @var $token Token */ $token) {
             try {
                 if ($token->isValid()) {
@@ -44,6 +46,11 @@ class CalculateStatisticsCommand extends AbstractCommand {
                         $output->writeln("statistics calclulated for " . $token->getName());
                     }
                 }
+            }
+            catch (\InvalidTokenException $ex) {
+                $token->setIsValid(false);
+                $manager->persist($token);
+                $manager->flush();
             }
             catch (\Exception $ex) {
                 $output->writeln($ex->getMessage());
