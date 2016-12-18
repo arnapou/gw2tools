@@ -97,6 +97,13 @@ td [class*=" ic-armor-"],
 th [class*=" ic-armor-"] {
     font-size: 2em;
 }
+td [class^="ic-"],
+th [class^="ic-"],
+th [class*=" ic-"],
+td [class*=" ic-"] {
+    display: inline-block;
+    margin-top: -.3em;
+}
 td [class^="ic-attribute-"],
 th [class^="ic-attribute-"],
 td [class*=" ic-attribute-"],
