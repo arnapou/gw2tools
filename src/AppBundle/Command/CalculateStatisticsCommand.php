@@ -35,16 +35,16 @@ class CalculateStatisticsCommand extends AbstractCommand {
         $manager    = $this->getDoctrine()->getManager();
         $repo       = $this->getDoctrine()->getRepository(Token::class);
 
-        foreach ($repo->findAll() as /* @var $token Token */ $token) {
+        foreach ($repo->findBy(['valid' => 1]) as /* @var $token Token */ $token) {
             try {
-                if ($token->isValid()) {
+                if ($token->getLastaccess() < time() - 86400) {
                     $env->setAccessToken((string) $token);
                     $account    = new Account($env);
                     $account->getName(); // used only to trigger InvalidTokenException if something is wrong
                     $calculated = $account->calculateStatistics($collection);
 
                     if ($calculated) {
-                        $output->writeln("statistics calclulated for " . $token->getName());
+                        $output->writeln("statistics calclulated for <info>" . $token->getName() . "</info>");
                     }
                 }
             }
@@ -52,9 +52,11 @@ class CalculateStatisticsCommand extends AbstractCommand {
                 $token->setIsValid(false);
                 $manager->persist($token);
                 $manager->flush();
+
+                $output->writeln("statistics calculated for <info>" . $token->getName() . "</info>");
             }
             catch (\Exception $ex) {
-                $output->writeln($ex->getMessage());
+                $output->writeln("<error>" . $ex->getMessage() . "</error>");
             }
         }
     }
