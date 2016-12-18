@@ -35,12 +35,14 @@ class CalculateStatisticsCommand extends AbstractCommand {
         $repo = $this->getDoctrine()->getRepository(Token::class);
         foreach ($repo->findAll() as /* @var $token Token */ $token) {
             try {
-                $env->setAccessToken((string) $token);
-                $account    = new Account($env);
-                $calculated = $account->calculateStatistics($collection);
+                if ($token->isValid()) {
+                    $env->setAccessToken((string) $token);
+                    $account    = new Account($env);
+                    $calculated = $account->calculateStatistics($collection);
 
-                if ($calculated) {
-                    $output->writeln("statistics calclulated for " . $token->getName());
+                    if ($calculated) {
+                        $output->writeln("statistics calclulated for " . $token->getName());
+                    }
                 }
             }
             catch (\Exception $ex) {
