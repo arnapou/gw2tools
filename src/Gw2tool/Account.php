@@ -11,6 +11,7 @@
 
 namespace Gw2tool;
 
+use AppBundle\Entity\Token;
 use Arnapou\GW2Api\Model\Achievement;
 use Arnapou\GW2Api\Model\AchievementCategory;
 use Arnapou\GW2Api\Model\AchievementGroup;
@@ -66,14 +67,14 @@ class Account extends \Arnapou\GW2Api\Model\Account {
                 foreach ($category->getAchievements() as /* @var $item Achievement */ $item) {
                     $done = false;
                     if (isset($aps[$item->getId()]) && $aps[$item->getId()]->isDone()) {
-                        $done = true;
+                        $done             = true;
                         $catCalc['count'] += 1;
                     }
                     $catCalc['total'] ++;
                 }
                 $catCalc['completed'] = $catCalc['count'] == $catCalc['total'];
-                $groupCalc['count'] += $catCalc['count'];
-                $groupCalc['total'] += $catCalc['total'];
+                $groupCalc['count']   += $catCalc['count'];
+                $groupCalc['total']   += $catCalc['total'];
 
                 $groupCalc[$category->getId()] = $catCalc;
             }
@@ -128,7 +129,7 @@ class Account extends \Arnapou\GW2Api\Model\Account {
                 Item::RARITY_ASCENDED  => $this->getAscendedCount(),
                 Item::RARITY_LEGENDARY => $this->getLegendariesCount(),
             ];
-            $collection->updateOne([ 'account' => $this->getName()], $data, [ 'upsert' => true]);
+            $collection->updateOne(['account' => $this->getName()], ['$set' => $data], ['upsert' => true]);
         }
         catch (\Exception $ex) {
             if (!$quiet) {
@@ -227,7 +228,7 @@ class Account extends \Arnapou\GW2Api\Model\Account {
                 ];
             }
             $grouped[$rarity]['items'][] = [$color, $item];
-            $grouped[$rarity]['count'] += $color->isUnlocked() ? 1 : 0;
+            $grouped[$rarity]['count']   += $color->isUnlocked() ? 1 : 0;
             $grouped[$rarity]['total'] ++;
         }
         return $grouped;
@@ -346,7 +347,7 @@ class Account extends \Arnapou\GW2Api\Model\Account {
                 ];
             }
             $grouped[$rarity]['items'][] = [$mini, $item];
-            $grouped[$rarity]['count'] += $mini->isUnlocked() ? 1 : 0;
+            $grouped[$rarity]['count']   += $mini->isUnlocked() ? 1 : 0;
             $grouped[$rarity]['total'] ++;
         }
         return $grouped;

@@ -17,8 +17,17 @@ use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Model\AbstractStoredObject;
 use Arnapou\GW2Api\Storage\MongoStorage;
 use MongoClient;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand {
+
+    /**
+     * 
+     * @return RegistryInterface
+     */
+    public function getDoctrine() {
+        return $this->getContainer()->get('doctrine');
+    }
 
     /**
      * 
