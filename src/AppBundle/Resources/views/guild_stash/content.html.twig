@@ -1,0 +1,29 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% spaceless %}  
+    {% set columns = guild.getStash|columns(2) %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {{ macro.amount(guild.getStashPrice) }}
+            </div>
+            <img src="{{ guild|image }}" class="guild-icon"> <b>{{ guild }}</b>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                {% for stashs in columns %}
+                    <div class="col-xs-6">
+                        {% for stash in stashs %}
+                            {% if stash %}
+                                {{ macro.guild_stash(stash) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endspaceless %}

@@ -33,6 +33,18 @@ body {
     min-width: 1.5em;
     text-align: center;
 }
+.menuicon[class*=" guild-icon-"] {
+    width: 1.5em;
+    height: 1.5em;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    vertical-align: top;
+}
+.guild-icon {
+    max-height: 1.5em;
+    vertical-align: top;
+    margin-right: .5em;
+}
 
 .nav.nav-tabs a {
     outline: 0 !important;
@@ -113,6 +125,76 @@ th [class*=" ic-attribute-"] {
 
 /************************************************/
 
+.stash {
+    margin-right: 1em;
+}
+.stash:after {
+    content: "";
+    display: block;
+    background: #ecf0f1;
+    height: 1px;
+    width: 80%;
+    margin: .5em auto 2em auto;
+}
+.stash:last-child:after {
+    display: none;
+}
+.stash .stash-header {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: .5em;
+}
+
+.stash .stash-header > div {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+
+.stash .stash-header > div:nth-child(1) img {
+    width: 2em;
+    height: 2em;
+    margin-right: .5em;
+}
+
+.stash .stash-header > div:nth-child(2) {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.stash .stash-coins {
+    text-align: right;
+    line-height: 2em;
+    margin-top: .5em;
+}
+
+
+
+/************************************************/
+
 .page-masteries .regions {
     float: left;
     width: 300px;
@@ -174,7 +256,7 @@ th [class*=" ic-attribute-"] {
     background-image: url(/assets/images/mastery-bg.png);
 }
 .page-masteries .mastery .level.locked {
-    opacity: .4;
+    opacity: .5;
 }
 .page-masteries .mastery .level{
     display: -ms-flexbox;

@@ -18,16 +18,16 @@
         {% if account.haspermission('progression') and account.hasAccessHeartOfThorns() %}
             <tr>
                 <td>{{ 'global.mastery_points'|trans }}</td>
-                <td colspan="2">{{ account.getMasteriesSpentPoints }}</td>
+                <td colspan="2"><i class="ic-ui-masteries"></i> {{ account.getMasteriesSpentPoints }}</td>
             </tr>
         {% endif %}
         <tr>
             <td>{{ 'global.fractal_level'|trans }}</td>
-            <td colspan="2">{{ account.getFractallevel }}</td>
+            <td colspan="2"><i class="ic-mode-pve"></i> {{ account.getFractallevel }}</td>
         </tr>
         <tr>
             <td>{{ 'global.wvw_rank'|trans }}</td>
-            <td colspan="2">{{ account.getWvwRank() }}</td>
+            <td colspan="2"><i class="ic-mode-wvw"></i> {{ account.getWvwRank() }}</td>
         </tr>
         {% if account.getWvwMatch.getAllWorlds %}
             <tr>
@@ -46,11 +46,18 @@
         {% endif %}
         <tr>
             <td>{{ 'global.commander_tag'|trans }}</td>
-            <td colspan="2">{{ (account.hasCommanderTag ? 'global.yes' : 'global.no')|trans }}</td>
+            <td colspan="2">
+                {% if account.hasCommanderTag %}
+                    <i class="ic-ui-commander"></i> {{ 'global.yes'|trans }} 
+                {% else %}
+                    <i class="ic-ui-commander text-muted"></i> {{ 'global.no'|trans }}
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <td>{{ 'global.achievement_points'|trans }}</td>
             <td colspan="2">
+                <i class="ic-ui-arenanet"></i> 
                 {{ 'global.permanent'|trans }} = {{ account.OtherAP }}, 
                 {{ 'global.daily'|trans }} = {{ account.DailyAP }}{% if account.MonthlyAP %}, {{ 'global.monthly'|trans }} = {{ account.MonthlyAP }} &nbsp; ({{ 'global.total'|trans }} = {{ account.TotalAP }}){% endif %}
             </td>
@@ -62,6 +69,7 @@
                     <div>
                         <img src="{{ guild|image }}" class="emblem" />
                         {{ guild }}
+                        {% if guild.isLeader %} <i class="ic-ui-shield" style="font-size: 1.5em; cursor: default" title="{{ 'global.guild_leader'|trans}}"></i> {% endif %}
                     </div>
                 {% endfor %}
             </td>

@@ -44,6 +44,12 @@ class PageController extends AbstractController {
 
     /**
      *
+     * @var array
+     */
+    protected $guilds = [];
+
+    /**
+     *
      * @var MenuList
      */
     protected $menu;
@@ -122,7 +128,7 @@ class PageController extends AbstractController {
 
     /**
      * 
-     * @Route("/{_locale}/{_code}/gw2skills-{mode}/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9]+", "name" = "[^.]+", "mode" = "pve|pvp|wvw"})
+     * @Route("/{_locale}/{_code}/gw2skills-{mode}/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+", "mode" = "pve|pvp|wvw"})
      */
     public function gw2skillsBuildAction($_code, $mode, $name, Request $request) {
         $context = $this->getContext($_code, 'character/' . $name);
@@ -130,14 +136,14 @@ class PageController extends AbstractController {
             return $this->createNotFoundException();
         }
         $character = $this->characters[$name]; /* @var $character Character */
-        
+
         $url = $character->getGw2SkillsLink($mode);
         return $this->redirect($url);
     }
 
     /**
      * 
-     * @Route("/{_locale}/{_code}/character/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9]+", "name" = "[^.]+"})
+     * @Route("/{_locale}/{_code}/character/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
      */
     public function characterAction($_code, $name, Request $request) {
         $context = $this->getContext($_code, 'character/' . $name);
@@ -150,7 +156,7 @@ class PageController extends AbstractController {
 
     /**
      * 
-     * @Route("/{_locale}/{_code}/character/{name}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9]+", "name" = "[^.]+"})
+     * @Route("/{_locale}/{_code}/character/{name}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
      */
     public function characterContentAction($_code, $name, Request $request) {
         try {
@@ -160,6 +166,37 @@ class PageController extends AbstractController {
             }
             $context['character'] = $this->characters[$name];
             return $this->render('character/content.html.twig', $context);
+        }
+        catch (AccessNotAllowedException $ex) {
+            return $this->render('error-access-not-allowed.html.twig');
+        }
+    }
+
+    /**
+     * 
+     * @Route("/{_locale}/{_code}/guild_stash/{guildid}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+"})
+     */
+    public function guildStashAction($_code, $guildid, Request $request) {
+        $context = $this->getContext($_code, 'guild_stash/' . $guildid);
+        if (!isset($this->guilds[$guildid])) {
+            return $this->createNotFoundException();
+        }
+        $context['guild'] = $this->guilds[$guildid];
+        return $this->render('guild_stash/page.html.twig', $context);
+    }
+
+    /**
+     * 
+     * @Route("/{_locale}/{_code}/guild_stash/{guildid}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+"})
+     */
+    public function guildStashContentAction($_code, $guildid, Request $request) {
+        try {
+            $context = $this->getContext($_code, 'guild_stash/' . $guildid, true);
+            if (!isset($this->guilds[$guildid])) {
+                return $this->createNotFoundException();
+            }
+            $context['guild'] = $this->guilds[$guildid];
+            return $this->render('guild_stash/content.html.twig', $context);
         }
         catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
@@ -186,7 +223,8 @@ class PageController extends AbstractController {
             }
             $this->account    = $this->getAccount($this->token);
             $this->characters = $this->getCharacters($this->account);
-            $this->menu       = new MenuList($this->getTranslator(), $this->characters);
+            $this->guilds     = $this->getGuilds($this->account);
+            $this->menu       = new MenuList($this->getTranslator(), $this->characters, $this->guilds);
             if (!$this->menu->pageExists($page)) {
                 throw $this->createNotFoundException('Unknown page.');
             }
@@ -290,6 +328,22 @@ class PageController extends AbstractController {
             return true;
         }
         return $this->token->hasRight('character/' . $name);
+    }
+
+    /**
+     * 
+     * @param string $guildid
+     * @return boolean
+     */
+    public function isAllowedGuildStash($guildid) {
+        $guildid = (string) $guildid;
+        if ($this->isOwner) {
+            return true;
+        }
+        if (empty($this->token)) {
+            return false;
+        }
+        return $this->token->hasRight('guild_stash/' . $guildid);
     }
 
 }

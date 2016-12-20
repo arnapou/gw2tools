@@ -1,3 +1,7 @@
+## 2.1.3 (2016-12-20)
+
+  - added guild stash (for leaders)
+
 ## 2.1.2 (2016-12-18)
 
   - statistics bugfix

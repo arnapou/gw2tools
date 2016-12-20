@@ -87,6 +87,19 @@ abstract class AbstractController extends Controller {
 
     /**
      * 
+     * @param Account $account
+     * @return array
+     */
+    protected function getGuilds(Account $account) {
+        $guilds = [];
+        foreach ($account->getGuilds(true) as $guild) {
+            $guilds[$guild->getId()] = $guild;
+        }
+        return $guilds;
+    }
+
+    /**
+     * 
      * @param Token $token
      * @return boolean
      */

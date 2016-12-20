@@ -37,7 +37,8 @@ class ApiController extends AbstractController {
             if (!is_array($rights) || empty($rights)) {
                 $rights = [];
             }
-            $menu            = new MenuList($this->getTranslator(), $this->getCharacters($this->getAccount($token)));
+            $account         = $this->getAccount($token);
+            $menu            = new MenuList($this->getTranslator(), $this->getCharacters($account), $this->getGuilds($account));
             $allowedRights   = array_keys($menu->getRights());
             $allowedRights[] = 'other.limit_characters';
             $allowedRights[] = 'other.disable_statistics';

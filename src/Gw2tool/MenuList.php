@@ -13,6 +13,7 @@ namespace Gw2tool;
 
 use Arnapou\GW2Api\Model\Account;
 use Arnapou\GW2Api\Model\Character;
+use Arnapou\GW2Api\Model\Guild;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class MenuList implements \IteratorAggregate {
@@ -26,7 +27,7 @@ class MenuList implements \IteratorAggregate {
     /**
      * 
      */
-    public function __construct(TranslatorInterface $tr, $characters) {
+    public function __construct(TranslatorInterface $tr, $characters, $guilds) {
 
         // GENERAL
         $menu = Menu::create($tr->trans('menu.general'));
@@ -58,6 +59,13 @@ class MenuList implements \IteratorAggregate {
         $menu = Menu::create($tr->trans('menu.vaults'));
         $menu->addItem('bank', $tr->trans('menu.vaults.bank'), null, 'ic-ui-bank')->setPermission(Account::PERMISSION_INVENTORIES);
         $menu->addItem('collectibles', $tr->trans('menu.vaults.collectibles'), null, 'ic-ui-collections')->setPermission(Account::PERMISSION_INVENTORIES);
+        if (!empty($guilds) && is_array($guilds)) {
+            $menu->addSeparator();
+            foreach ($guilds as $id => /* @var $guild Guild */ $guild) {
+                $icon = $guild->hasEmblem() ? 'guild-icon-' . $id : 'guild-icon-nothing';
+                $menu->addItem('guild_stash/' . $id, (string) $guild, 'guild_stash/' . $id, $icon);
+            }
+        }
         $this->addMenu($menu);
 
         // UNLOCKS
