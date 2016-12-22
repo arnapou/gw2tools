@@ -1,3 +1,8 @@
+## 2.1.4 (2016-12-22)
+
+  - refactor menu to add guild infos
+  - added guild log, treasury, ranks, members, upgrades
+
 ## 2.1.3 (2016-12-20)
 
   - added guild stash (for leaders)

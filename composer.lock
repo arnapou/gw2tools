@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "1abfa6ecf81d9a8b41785bd971007f6cc39d9d58"
+                "reference": "73d022da8f9a5a5a3fbf4044e38a3b5ad4c8b956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/1abfa6ecf81d9a8b41785bd971007f6cc39d9d58",
-                "reference": "1abfa6ecf81d9a8b41785bd971007f6cc39d9d58",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/73d022da8f9a5a5a3fbf4044e38a3b5ad4c8b956",
+                "reference": "73d022da8f9a5a5a3fbf4044e38a3b5ad4c8b956",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2016-12-20 19:52:47"
+            "time": "2016-12-22 17:33:21"
         },
         {
             "name": "doctrine/annotations",

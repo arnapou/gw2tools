@@ -1,0 +1,517 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set ctab = app.request.get('tab') %}
+
+{% spaceless %}  
+
+    {% if ctab %}
+
+        {% if ctab == 'tab-upgrades' %}
+
+            <table class="table table-condensed table-hover">
+                {% for up in guild.getUpgrades %}
+                    <tr class="upgrade">
+                        <td>
+                            <div class="upgrade-title">
+                                <div><img src="{{ up|image }}" /></div>
+                                <div><b>{{ up.getName }}</b></div>
+                            </div>
+                            <div class="upgrade-detail">
+                                <p>{{ up.getDescription }}</p>
+                                <ul>
+                                    {% if up.getRequiredLevel %}
+                                        <li>
+                                            {{ 'global.required_level'|trans }}: {{ up.getRequiredLevel }}
+                                        </li>
+                                    {% endif %}
+                                    {% if up.getBuildTime %}
+                                        <li>
+                                            {{ 'global.build_time'|trans }}: {{ up.getBuildTime }}
+                                        </li>
+                                    {% endif %}
+                                    {% if up.getExperience %}
+                                        <li>
+                                            {{ 'global.experience'|trans }}: {{ up.getExperience }}
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            <p>{{ 'global.costs'|trans }} :</p>
+                            {% for cost in up.getCosts %}
+                                {% if cost.getItem %}
+                                    <div class="upgrade-cost">
+                                        <img src="{{ cost.getItem|image }}" {{ cost.getItem|gwlink|raw }} /><span>{{ cost.getCount }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <p>{{ 'global.prerequisites'|trans }} :</p>
+                            {% for pre in up.getPrerequisites %}
+                                <div class="upgrade-title">
+                                    <div><img src="{{ pre|image }}" /></div>
+                                    <div>{{ pre.getName }}</div>
+                                </div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        {% elseif ctab == 'tab-ranks' %}
+
+            <div class="row">
+                {% for rank in guild.getRanks %}
+                    <div class="col-xs-6">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <td>{{ rank.getId() }}</td>
+                                <td class="rank">
+                                    <span>
+                                        <img src="{{ rank|image }}" />
+                                    </span>
+                                </td>
+                                <td style="font-size: .8em; width: 60%">
+                                    <ul>
+                                        {% for perm in rank.getPermissions %}
+                                            {% if perm %}
+                                                <li>
+                                                    {{ perm }}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% if loop.index0 % 2 == 1 %}
+                    </div>
+                    <div class="row">
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        {% elseif ctab == 'tab-members' %}
+
+            {% set ranks = guild.getRanks %}
+            <div class="row">
+                {% set columns = guild.getMembers|columns(2) %}
+                {% for items in columns %}
+                    <div class="col-xs-6">
+                        <table class="table table-condensed table-hover">
+                            {% for member in items %}
+                                <tr>
+                                    <td title="{{ member.getJoined() }}">{{ member.getJoined()|datediff }}</td>
+                                    <td>{{ member.getName() }}</td>
+                                    <td class="rank" title="{{ member.getRank() }}">
+                                        <span>
+                                            <img src="{{ ranks[member.getRank()]|image }}" />
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elseif ctab == 'tab-treasury' %}
+
+            {% set upgradeIds = guild.getUpgradeIds() %}
+            <div class="row">
+                {% for obj in guild.getTreasury %}
+                    <div class="col-xs-4 treasury">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <td>
+                                    {% set pct = obj.getTotalCount > 1 ? 100 * obj.getItem.getCount / obj.getTotalCount : 0 %}
+                                    <img src="{{ obj.getItem|image }}" {{ obj.getItem|gwlink|raw }} />
+                                    <div class="pct" title="{{ pct|round() }}%, {{ obj.getItem.getCount + 0 }}/{{ obj.getTotalCount + 0}}">
+                                        <div style="width: {{ pct|round(3) }}%; background: {{ pct < 33 ? 'red' : (pct < 67 ? 'orange' : ( pct == 100 ? 'green' : 'yellow' )) }}"></div>
+                                    </div>
+                                    <div>{{ obj.getItem.getCount }}</div>
+                                </td>
+                                <td>
+                                    <ul>
+                                        {% for up in obj.getNeededBy %}
+                                            {% if up.upgrade.getId not in upgradeIds %}
+                                                <li>
+                                                    {{ up.count }} : {{ up.upgrade.getName }}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% if loop.index0 % 3 == 2 %}
+                    </div>
+                    <div class="row">
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        {% elseif ctab == 'tab-stashs' %}
+
+            <div class="row">
+                {% set columns = guild.getStash|columns(2) %}
+                {% for items in columns %}
+                    <div class="col-xs-6">
+                        {% for stash in items %}
+                            {% if stash %}
+                                {{ macro.guild_stash(stash) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elseif ctab == 'tab-teams' %}
+
+            {#
+            #
+            #
+            # --------------- TODO ---------------
+            #
+            #
+            #}
+
+        {% elseif ctab == 'tab-log' %}
+
+            {% set ranks = guild.getRanks %}
+
+            <div class="row">
+                <div class="col-xs-3">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li role="presentation" class="active"><a href="#" data-types="">{{ 'global.all'|trans }}</a></li>
+                        <li role="presentation"><a href="#" data-types="joined,invited,kick,rank_change,invite_declined">{{ 'global.guild.members'|trans }}</a></li>
+                        <li role="presentation"><a href="#" data-types="treasury">{{ 'global.guild.treasury'|trans }}</a></li>
+                        <li role="presentation"><a href="#" data-types="stash">{{ 'global.stash'|trans }}</a></li>
+                        <li role="presentation"><a href="#" data-types="motd">{{ 'global.guild.motd'|trans }}</a></li>
+                        <li role="presentation"><a href="#" data-types="upgrade">{{ 'global.guild.upgrades'|trans }}</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-9">
+                    <table class="table table-condensed table-hover">
+                        {% for log in guild.getLog %}
+                            {% set type = log.getType() %}
+                            {% if type in ['joined', 'invited', 'kick', 'rank_change', 'invite_declined','treasury', 'stash', 'motd', 'upgrade'] %}
+                                <tr data-type="{{ type }}">
+                                    <td title="{{ log.getTime()|datediff }}">{{ log.getTime() }}</td>
+                                    <td>
+                                        {% if type == 'joined' %}
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        {% elseif type == 'invited' %}
+                                            <i class="glyphicon glyphicon-share-alt"></i>
+                                        {% elseif type == 'kick' %}
+                                            <i class="glyphicon glyphicon-minus"></i>
+                                        {% elseif type == 'invite_declined' %}
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        {% elseif type == 'rank_change' %}
+                                            <img src="{{ ranks[log.getNewRank]|image }}" />
+                                        {% elseif type == 'motd' %}
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        {% elseif type == 'stash' %}
+                                            {% if log.getCoins %}
+                                                <i class="ic-ui-golds"></i>
+                                            {% else %}
+                                                <img src="{{ log.getItem|image }}" {{ log.getItem|gwlink|raw }} />
+                                            {% endif %}
+                                        {% elseif type == 'treasury' %}
+                                            <img src="{{ log.getItem|image }}" {{ log.getItem|gwlink|raw }} />
+                                        {% elseif type == 'upgrade' %}
+                                            <img src="{{ log.getUpgrade|image }}"/>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if type == 'joined' %}
+                                            {{ log.getUser }} <span>{{ 'guild.log.has_joined_the_guild'|trans }}</span>
+                                        {% elseif type == 'invited' %}
+                                            {{ log.getUser }} <span>{{ 'guild.log.was_invited_by'|trans }}</span> {{ log.getInvitedBy }}
+                                        {% elseif type == 'kick' %}
+                                            {{ log.getUser }} <span>{{ 'guild.log.was_kicked_by'|trans }}</span> {{ log.getKickedBy }}
+                                        {% elseif type == 'invite_declined' %}
+                                            {{ log.getUser }} <span>{{ 'guild.log.invite_declined'|trans }}</span> {{ log.getDeclinedBy }}
+                                        {% elseif type == 'rank_change' %}
+                                            {% if ranks[log.getOldRank].getOrder < ranks[log.getNewRank].getOrder %}
+                                                {{ log.getUser }} <span>{{ 'guild.log.rank_changed_up'|trans }}</span> {{ log.getNewRank }}
+                                            {% else %}
+                                                {{ log.getUser }} <span>{{ 'guild.log.rank_changed_down'|trans }}</span> {{ log.getNewRank }}
+                                            {% endif %}
+                                        {% elseif type == 'motd' %}
+                                            {{ log.getUser }} <span>{{ 'guild.log.motd_changed'|trans }} :</span>
+                                            <blockquote>{{ log.getMotd|nl2br }}</blockquote>
+                                        {% elseif type == 'stash' %}
+                                            {% if log.getCoins %}
+                                                {{ log.getUser }} <span>{{ ('guild.log.stash_'~log.getOperation)|trans }}</span> 
+                                                <span class="amount">{{ macro.amount(log.getCoins) }}</span>
+                                            {% else %}
+                                                {{ log.getUser }} <span>{{ ('guild.log.stash_'~log.getOperation)|trans }}</span> 
+                                                {{ log.getCount }} {{ log.getItem.getName }}
+                                            {% endif %}
+                                        {% elseif type == 'treasury' %}
+                                            {{ log.getUser }} <span>{{ ('guild.log.treasury_deposit')|trans }}</span> 
+                                            {{ log.getCount }} {{ log.getItem.getName }}
+                                        {% elseif type == 'upgrade' %}
+                                            {{ log.getUpgrade.getName }} <span>{{ ('guild.log.upgrade_'~log.getAction)|trans }}{{ log.getUser ? ' '~('global.by'|trans) : '' }}</span> {{ log.getUser }}
+                                        {% else %}
+                                            {{ type }} ? unknown
+                                            <div >{{ log.getData|json_encode }}</div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                (function($tabLog) {
+                    $tabLog.find('.nav a').click(function(e) {
+                        e.preventDefault();
+                        $tabLog.find('.nav .active').removeClass('active');
+                        $tabLog.find('tr').css('display', 'table-row');
+                        $(this).parents('li').addClass('active');
+                        var types = $(this).data('types');
+                        if (types) {
+                            types = ',' + types + ',';
+                            $tabLog.find('tr').each(function() {
+                                var $this = $(this);
+                                var type = $this.data('type');
+                                if (types.indexOf(',' + type + ',') < 0) {
+                                    $this.css('display', 'none');
+                                }
+                            });
+                        }
+                        return false;
+                    });
+                })($('.tab-log'));
+            </script>
+        {% endif %}
+    {% else %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <img src="{{ guild|image }}" class="guild-icon"> <b>{{ guild }}</b>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-5">
+                        {{ guild.getMOTD|nl2br }}
+                    </div>
+                    <div class="col-xs-5">
+                        <p><i class="ic-ui-guild-members"></i> {{ 'global.guild.members'|trans }}: {{ guild.getMembers|length }}</p>
+                        <p><i class="ic-ui-guild-upgrades"></i> {{ 'global.level_min'|trans }}: {{ guild.getMinLevel }}</p>
+                    </div>
+                    <div class="col-xs-2">
+                        <img src="{{ guild|image }}" style="max-width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading with-tabs">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a href="#" data-tab="tab-members">
+                            <i class="ic-ui-guild-members"></i> {{ 'global.guild.members'|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="tab-ranks">
+                            <i class="ic-ui-guild-shield"></i> {{ 'global.guild.ranks'|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="tab-upgrades">
+                            <i class="ic-ui-guild-upgrades"></i> {{ 'global.guild.upgrades'|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="tab-treasury">
+                            <i class="ic-ui-guild-treasury"></i> {{ 'global.guild.treasury'|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="tab-log">
+                            <i class="ic-ui-list"></i> {{ 'global.guild.log'|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="tab-stashs">
+                            <i class="ic-ui-bank"></i> {{ 'global.stashs'|trans }}
+                        </a>
+                    </li>
+                    {# --------------- TODO ---------------
+                    <li>
+                        <a href="#" data-tab="tab-teams">
+                            <i class="ic-mode-pvp"></i> {{ 'global.guild.teams'|trans }}
+                        </a>
+                    </li>
+                    #}
+                </ul>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="tab tab-upgrades" style="display: none;"></div>
+                <div class="tab tab-members" style="display: none;"></div>
+                <div class="tab tab-ranks" style="display: none;"></div>
+                <div class="tab tab-stashs" style="display: none;"></div>
+                <div class="tab tab-log" style="display: none;"></div>
+                <div class="tab tab-teams" style="display: none;"></div>
+                <div class="tab tab-treasury" style="display: none;"></div>
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $('.panel-body .tab').on('tab-activation', function() {
+                var $this = $(this);
+                var filled = $this.data('filled');
+                if (filled) {
+                    return;
+                }
+                var tabname = $this.data('tab');
+                if (tabname) {
+                    $this.data('filled', true);
+                    $this.html('<div class="spinner-loader"></div> <em>'+{{ "global.loading"|trans|json_encode|raw }}+'</em>');
+                            $.get('{{ guild.getId }}.html?tab=' + tabname, function(html) {
+                                $this.html(html);
+                            })
+                            .fail(function() {
+                                $this.html('<div class="text-danger">ERROR</div>');
+                            })
+                }
+            });
+            $('.nav-tabs a').eq(0).trigger('click');
+        </script>
+
+        <style>
+            .tab-log td:first-child {
+                white-space: nowrap;
+                width: 5em;
+            }
+            .tab-log td:nth-child(2) img,
+            .tab-log td:last-child img {
+                background: #2c3e50;
+                width: 22px;
+                height: 22px;
+                vertical-align: top;
+            }
+            .tab-log td:last-child img {
+                margin-left: .2em;
+            }
+            .tab-log td:last-child span {
+                color: #808b96;
+            }
+            .tab-log td:last-child div,
+            .tab-log td:last-child blockquote {
+                color: #808b96;
+                font-size: .8em;
+                margin-bottom: 0;
+            }
+            .tab-log td:nth-child(2) {
+                text-align: center;
+            }
+            .tab-log td:last-child .amount,
+            .tab-log td:last-child .amount * {
+                color: inherit;
+            }
+
+            .upgrade td {
+                width: 30%;
+            }
+            .upgrade td:first-child {
+                width: 40%;
+            }
+            .upgrade .upgrade-detail {
+                font-size: .8em;
+            }
+            .upgrade-title {
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-flex-direction: row;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -webkit-flex-wrap: nowrap;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+                -webkit-justify-content: flex-start;
+                -ms-flex-pack: start;
+                justify-content: flex-start;
+                -webkit-align-content: stretch;
+                -ms-flex-line-pack: stretch;
+                align-content: stretch;
+                -webkit-align-items: flex-start;
+                -ms-flex-align: flex-start;
+                align-items: flex-start;
+            }
+            .upgrade-title img {
+                width: 2em;
+                height: 2em;
+            }
+            .upgrade-title div:nth-child(1) {
+                padding-top: .3em;
+            }
+            .upgrade-title div:nth-child(2) {
+                padding-left: .5em;
+                -webkit-align-self: center;
+                -ms-flex-item-align: center;
+                align-self: center;
+            }
+            .upgrade .upgrade-cost {
+                display: inline-block;
+                width: 7em;
+                margin-top: .3em;
+            }
+            .upgrade .upgrade-cost img {
+                width: 2em;
+                height: 2em;
+                margin-right: .5em;
+            }
+
+            td.rank {
+                width: 40px;
+                padding: 0 0 1px 0 !important;
+            }
+            td.rank span {
+                display: inline-block;
+                padding: 0;
+                background: #2c3e50;
+            }
+            td.rank span img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .treasury td:first-child {
+                width: 4em;
+                text-align: center;
+            }
+            .treasury td:first-child img {
+                width: 100%;
+            }
+            .treasury ul {
+                font-size: .8em;
+            }
+            .treasury .pct{
+                height: 8px;
+                background: #aaa;
+                margin-bottom: .5em;
+            }
+            .treasury .pct div {
+                height: 8px;
+            }
+        </style>
+    {% endif %}
+{% endspaceless %}

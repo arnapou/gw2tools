@@ -174,29 +174,29 @@ class PageController extends AbstractController {
 
     /**
      * 
-     * @Route("/{_locale}/{_code}/guild_stash/{guildid}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+"})
+     * @Route("/{_locale}/{_code}/{folder}/{guildid}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" = "guild(_stash)?"})
      */
-    public function guildStashAction($_code, $guildid, Request $request) {
-        $context = $this->getContext($_code, 'guild_stash/' . $guildid);
+    public function guildStashAction($_code, $guildid, $folder, Request $request) {
+        $context = $this->getContext($_code, $folder . '/' . $guildid);
         if (!isset($this->guilds[$guildid])) {
             return $this->createNotFoundException();
         }
         $context['guild'] = $this->guilds[$guildid];
-        return $this->render('guild_stash/page.html.twig', $context);
+        return $this->render($folder . '/page.html.twig', $context);
     }
 
     /**
      * 
-     * @Route("/{_locale}/{_code}/guild_stash/{guildid}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+"})
+     * @Route("/{_locale}/{_code}/{folder}/{guildid}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" = "guild(_stash)?"})
      */
-    public function guildStashContentAction($_code, $guildid, Request $request) {
+    public function guildStashContentAction($_code, $folder, $guildid, Request $request) {
         try {
-            $context = $this->getContext($_code, 'guild_stash/' . $guildid, true);
+            $context = $this->getContext($_code, $folder . '/' . $guildid, true);
             if (!isset($this->guilds[$guildid])) {
                 return $this->createNotFoundException();
             }
             $context['guild'] = $this->guilds[$guildid];
-            return $this->render('guild_stash/content.html.twig', $context);
+            return $this->render($folder . '/content.html.twig', $context);
         }
         catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');

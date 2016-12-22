@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'gw2tool';
-  src: url('../font/gw2tool.eot?84459100');
-  src: url('../font/gw2tool.eot?84459100#iefix') format('embedded-opentype'),
-       url('../font/gw2tool.woff2?84459100') format('woff2'),
-       url('../font/gw2tool.woff?84459100') format('woff'),
-       url('../font/gw2tool.ttf?84459100') format('truetype'),
-       url('../font/gw2tool.svg?84459100#gw2tool') format('svg');
+  src: url('../font/gw2tool.eot?97149986');
+  src: url('../font/gw2tool.eot?97149986#iefix') format('embedded-opentype'),
+       url('../font/gw2tool.woff2?97149986') format('woff2'),
+       url('../font/gw2tool.woff?97149986') format('woff'),
+       url('../font/gw2tool.ttf?97149986') format('truetype'),
+       url('../font/gw2tool.svg?97149986#gw2tool') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'gw2tool';
-    src: url('../font/gw2tool.svg?84459100#gw2tool') format('svg');
+    src: url('../font/gw2tool.svg?97149986#gw2tool') format('svg');
   }
 }
 */
@@ -202,3 +202,7 @@
 .ic-gathering-logging:before { content: '\e890'; } /* '' */
 .ic-gathering-mining:before { content: '\e891'; } /* '' */
 .ic-ui-commander:before { content: '\e892'; } /* '' */
+.ic-ui-guild-members:before { content: '\e893'; } /* '' */
+.ic-ui-guild-shield:before { content: '\e894'; } /* '' */
+.ic-ui-guild-upgrades:before { content: '\e895'; } /* '' */
+.ic-ui-guild-treasury:before { content: '\e896'; } /* '' */

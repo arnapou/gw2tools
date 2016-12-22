@@ -146,3 +146,7 @@
 .ic-gathering-logging:before { content: '\e890'; } /* '' */
 .ic-gathering-mining:before { content: '\e891'; } /* '' */
 .ic-ui-commander:before { content: '\e892'; } /* '' */
+.ic-ui-guild-members:before { content: '\e893'; } /* '' */
+.ic-ui-guild-shield:before { content: '\e894'; } /* '' */
+.ic-ui-guild-upgrades:before { content: '\e895'; } /* '' */
+.ic-ui-guild-treasury:before { content: '\e896'; } /* '' */

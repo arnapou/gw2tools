@@ -202,7 +202,7 @@ function gwlink_inventoryslot(InventorySlot $item) {
             }
         }
     }
-    $url.= '.html';
+    $url .= '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
 
@@ -212,6 +212,9 @@ function gwlink_inventoryslot(InventorySlot $item) {
  * @return string
  */
 function datediff($date) {
+    if (empty($date)) {
+        return '';
+    }
     $utc  = new \DateTimeZone('UTC');
     $diff = (new \DateTime('now', $utc))->getTimestamp() - (new \DateTime($date, $utc))->getTimestamp();
     if ($diff < 60) {
@@ -228,9 +231,15 @@ function datediff($date) {
         $d = floor($diff / 86400);
         return $d . ' day' . ($d > 1 ? 's' : '');
     }
-    else {
+    elseif ($diff < 31536000) {
         $m = floor($diff / 2629728);
         return $m . ' month' . ($m > 1 ? 's' : '');
+    }
+    else {
+        $m = floor($diff / 2629728);
+        $y = floor($m / 12);
+        $m -= $y * 12;
+        return $y . ' year' . ($y > 1 ? 's' : '') . ($m > 1 ? ', ' . $m . ' month' . ($m > 1 ? 's' : '') : '');
     }
 }
 

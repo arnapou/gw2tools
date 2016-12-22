@@ -133,10 +133,12 @@ $(function() {
     });
 
     $(document).on('click', '.nav.nav-tabs a', function(e) {
+        var tabname = $(this).data('tab');
         $(this).parents('.nav').find('.active').removeClass('active');
         $(this).parent().addClass('active');
         $('#container .tab').hide();
-        $('#container .tab.' + $(this).data('tab')).show();
+        $('#container .tab.' + tabname).data('tab', tabname).show();
+        $('#container .tab.' + tabname).trigger('tab-activation');
         e.preventDefault();
     });
 

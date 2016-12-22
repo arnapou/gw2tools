@@ -2,7 +2,6 @@
 {% import "AppBundle::macro.html.twig" as macro %}
 
 {% spaceless %}  
-    {% set columns = guild.getStash|columns(2) %}
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -13,6 +12,7 @@
         </div>
         <div class="panel-body">
             <div class="row">
+                {% set columns = guild.getStash|columns(2) %}
                 {% for stashs in columns %}
                     <div class="col-xs-6">
                         {% for stash in stashs %}

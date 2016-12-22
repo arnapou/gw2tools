@@ -78,16 +78,20 @@ class MenuList implements \IteratorAggregate {
         $menu->addItem('finishers', $tr->trans('menu.unlocks.finishers'), null, 'ic-ui-finisher')->setPermission(Account::PERMISSION_UNLOCKS);
         $this->addMenu($menu);
 
-        // TRADING POST
-        $menu = Menu::create($tr->trans('menu.tp'));
+        // OTHERS 
+        $menu = Menu::create($tr->trans('menu.others'));
         $menu->addItem('tp_buys', $tr->trans('menu.tp.tp_buys'), null, 'ic-ui-blc-balance')->setPermission(Account::PERMISSION_TRADINGPOST);
         $menu->addItem('tp_sells', $tr->trans('menu.tp.tp_sells'), null, 'ic-ui-blc-balance')->setPermission(Account::PERMISSION_TRADINGPOST);
-        $this->addMenu($menu);
-
-        // ACHIEVMENTS
-        $menu = Menu::create($tr->trans('menu.achievements'));
+        $menu->addSeparator();
         $menu->addItem('achievements_daily', $tr->trans('menu.achievements.daily'), null, 'ic-ui-arenanet');
         $menu->addItem('achievements', $tr->trans('menu.achievements'), null, 'ic-ui-arenanet');
+        if (!empty($guilds) && is_array($guilds)) {
+            $menu->addSeparator();
+            foreach ($guilds as $id => /* @var $guild Guild */ $guild) {
+                $icon = $guild->hasEmblem() ? 'guild-icon-' . $id : 'guild-icon-nothing';
+                $menu->addItem('guild/' . $id, (string) $guild, 'guild/' . $id, $icon);
+            }
+        }
         $this->addMenu($menu);
     }
 
