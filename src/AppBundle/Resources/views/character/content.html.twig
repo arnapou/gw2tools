@@ -233,7 +233,7 @@
                                                 {{ training.getName() }}
                                             </td>
                                             <td>
-                                                {{ obj.spent }} / {{ training.getTotalCost }}
+                                                {{ obj.spent + 0 }} / {{ training.getTotalCost + 0 }}
                                             </td>
                                             <td class="track-items">
                                                 {% for item in training.getTrack() %}
