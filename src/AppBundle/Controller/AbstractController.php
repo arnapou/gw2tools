@@ -190,6 +190,9 @@ abstract class AbstractController extends Controller {
             $env          = new Environment($this->getTranslator()->getLocale());
             $env->setCache($cache);
             $env->setStorage(new MongoStorage($mongoDB));
+            if ($this->getEnv() == 'dev') {
+                $env->setCacheRetention(1800); // 30 min
+            }
 
             $this->gwEnvironment = $env;
         }

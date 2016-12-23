@@ -125,6 +125,173 @@ th [class*=" ic-attribute-"] {
 
 /************************************************/
 
+.page-guild .tab-log td:first-child  {
+    white-space: nowrap;
+    width: 5em;
+}
+.page-guild .tab-log td:nth-child(2) img,
+.page-guild .tab-log td:last-child img  {
+    background: #2c3e50;
+    width: 22px;
+    height: 22px;
+    vertical-align: top;
+}
+.page-guild .tab-log td:last-child img  {
+    margin-left: .2em;
+}
+.page-guild .tab-log td:last-child span  {
+    color: #808b96;
+}
+.page-guild .tab-log td:last-child div,
+.page-guild .tab-log td:last-child blockquote  {
+    color: #808b96;
+    font-size: .8em;
+    margin-bottom: 0;
+}
+.page-guild .tab-log td:nth-child(2)  {
+    text-align: center;
+}
+.page-guild .tab-log td:last-child .amount,
+.page-guild .tab-log td:last-child .amount *  {
+    color: inherit;
+}
+
+.page-guild .upgrade-title  {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+}
+.page-guild .upgrade-title img  {
+    width: 2em;
+    height: 2em;
+}
+.page-guild .upgrade-title div:nth-child(1)  {
+    padding-top: .3em;
+}
+.page-guild .upgrade-title div:nth-child(2)  {
+    padding-left: .5em;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+.page-guild .tab-upgrades {
+    min-height: 500px;
+}
+.page-guild .tab-upgrades > .row > div {
+    position: relative;
+}
+.page-guild .tab-upgrades .upgrade-title.menu:hover  {
+    cursor: pointer;
+    font-weight: bold;
+}
+.page-guild .tab-upgrades .upgrade-title.menu.active {
+    cursor: pointer;
+    font-weight: bold;
+    background: #ecf0f1;
+}
+.page-guild .tab-upgrades .upgrade-title div:first-child {
+    padding: 0;
+    margin-bottom: 1px;
+}
+.page-guild .tab-upgrades .upgrade-detail {
+    position: absolute;
+    left: -16px;
+    right: 15px;
+    background: #ecf0f1;
+    padding: 5px 15px 5px 15px;
+}
+.page-guild .tab-upgrades .upgrade-detail small {
+    display: block;
+}
+.page-guild .tab-upgrades .upgrade-detail > div {
+    margin-bottom: .5em;
+}
+.page-guild .tab-upgrades .upgrade-cost  {
+    display: inline-block;
+    vertical-align: top;
+    width: 7em;
+    margin-top: .3em;
+    line-height: 2em;
+}
+.page-guild .tab-upgrades .upgrade-cost.done  {
+    color: green;
+}
+.page-guild .tab-upgrades .upgrade-cost img  {
+    width: 2em;
+    height: 2em;
+}
+.page-guild .tab-upgrades .upgrade-cost > span  {
+    display: inline-block;
+    vertical-align: top;
+}
+.page-guild .tab-upgrades .upgrade-cost > span:first-child  {
+    margin-right: .5em;
+}
+
+.page-guild td.rank  {
+    width: 40px;
+    padding: 0 0 1px 0 !important;
+}
+.page-guild td.rank span  {
+    display: inline-block;
+    padding: 0;
+    background: #2c3e50;
+}
+.page-guild td.rank span img  {
+    width: 32px;
+    height: 32px;
+}
+.page-guild .tab-ranks .permissions  {
+    font-size: .8em; 
+    width: 31%;
+}
+.page-guild .tab-ranks .permissions .glyphicon {
+    margin-right: .3em;
+    vertical-align: middle;
+}
+.page-guild .tab-ranks .permissions .locked {
+    opacity: .5;
+}
+
+.page-guild .treasury td:first-child  {
+    width: 4em;
+    text-align: center;
+}
+.page-guild .treasury td:first-child img  {
+    width: 100%;
+}
+.page-guild .treasury ul  {
+    font-size: .8em;
+}
+.page-guild .pct {
+    height: 8px;
+    background: #aaa;
+    margin-bottom: .5em;
+}
+.page-guild .pct div  {
+    height: 8px;
+}
+.page-guild .tab-teams .label {
+    font-size: inherit;
+}
+
+/************************************************/
+
 .stash {
     margin-right: 1em;
 }
@@ -189,6 +356,7 @@ th [class*=" ic-attribute-"] {
     text-align: right;
     line-height: 2em;
     margin-top: .5em;
+    overflow: hidden;
 }
 
 
@@ -706,6 +874,49 @@ img.currency {
 }
 .page-character .build2 {
     margin-left: 430px;
+}
+.page-character table.training td:first-child {
+    width: 25%;
+    padding-left: 3em;
+}
+.page-character table.training td:nth-child(2) {
+    width: 6em;
+    text-align: center;
+}
+.page-character table.training .track {
+    line-height: 2.5em;
+}
+.page-character table.training .track-items > span {
+    display: inline-block;
+    margin-right: .5em;
+    position: relative;
+}
+.page-character table.training .track-items > span span {
+    display: block;
+    font-size: .8em;
+    text-align: center;
+    color: rgba(0, 0, 0, .5);
+}
+.page-character table.training .track-items > span.not-done:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    background: rgba(170, 0, 0, .5);
+}
+.page-character table.training .track-items > span.not-done img {
+    opacity: .5;
+}
+.page-character table.training .track-items > span.not-done span {
+    color: red;
+    opacity: .5;
+}
+.page-character table.training .track-items img {
+    width: 2em;
+    height: 2em;
 }
 .gw2skillslink i {
     margin-right: .5em;
@@ -1249,92 +1460,110 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 
 /************************************************/
 
+
+.page-guild .tab-teams .rank,
+.page-guild .tab-teams .rank,
 .page-pvp .rank {
     overflow: visible;
     margin-bottom: 1em;
 }
+.page-guild .tab-teams .rank img,
 .page-pvp .rank img {
     height: 100px;
     margin-right: 1em;
 }
+.page-guild .tab-teams .rank div span,
 .page-pvp .rank div span {
     display: block;
     text-align: center;
     font-size: 150%;
 }
+.page-guild .tab-teams .rank .level,
 .page-pvp .rank .level {
     font-size: 300%;
     font-weight: bold;
 }
+.page-guild .tab-teams td.column-profession,
 .page-pvp td.column-profession {
     width: 10em;
     text-align: right;
 }
+.page-guild .tab-teams td.column-profession img,
 .page-pvp td.column-profession img {
     margin-left: .5em;
 }
+.page-guild .tab-teams td.column-winrate,
 .page-pvp td.column-winrate {
     width: 20%;
     text-align: right;
 }
+.page-guild .tab-teams td.column-scorebar,
 .page-pvp td.column-scorebar {
     width: 20%;
 }
-.page-pvp .progress {
-    margin-bottom: 0;
-    height: 21px;
-}
-.page-pvp .progress-bar {
-    text-align: left;
-}
+.page-guild .tab-teams .global td:first-child,
 .page-pvp .global td:first-child {
     width: 65%;
 }
-.page-pvp .progress {
-    position: relative;
-}
-.page-pvp .progress-bar {
-    overflow: hidden;
-    position: relative;
-}
-.page-pvp .progress span {
-    position: absolute;
-    left: 0;
-    top: 5px;
-    font-size: 12px;
-    padding-left: 1em;
-    margin-top: 0;
-}
-.page-pvp .progress-bar span {
-    color: white !important;
-    top: 5px;
-}
-.page-pvp .progress-scores {
-    background: #d9534f;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
-}
-.page-pvp .progress-scores span {
-    color: #5bc0de;
-}
-.page-pvp .progress-warning span {
-    color: #f0ad4e;
-}
-.page-pvp .progress-success span {
-    color: #5cb85c;
-}
+.page-guild .tab-teams .red,
 .page-pvp .red {
     color: #d9534f;
 }
+.page-guild .tab-teams .blue,
 .page-pvp .blue {
     color: #32a7c9;
 }
+.page-guild .tab-teams .glyphicon-ok,
 .page-pvp .glyphicon-ok {
     color: #5cb85c;
     margin-right: .5em;
 }
+.page-guild .tab-teams .glyphicon-remove,
 .page-pvp .glyphicon-remove {
     color: #d9534f;
     margin-right: .5em;
+}
+
+/************************************************/
+
+.progress {
+    margin-bottom: 0;
+    height: 21px;
+}
+.progress-bar {
+    text-align: left;
+}
+.progress {
+    position: relative;
+}
+.progress-bar {
+    overflow: hidden;
+    position: relative;
+}
+.progress span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 12px;
+    padding-left: 1em;
+    margin: 0;
+    line-height: 21px;
+}
+.progress-bar span {
+    color: white !important;
+}
+.progress-scores {
+    background: #d9534f;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+}
+.progress-scores span {
+    color: #5bc0de;
+}
+.progress-warning span {
+    color: #f0ad4e;
+}
+.progress-success span {
+    color: #5cb85c;
 }
 
 /************************************************/

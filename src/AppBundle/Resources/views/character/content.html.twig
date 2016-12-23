@@ -12,7 +12,7 @@
                     {% if char.guild %}
                         <div class="pull-right">
                             {{ char.guild }}
-                            <img src="{{ char.guild|image }}" style="margin-left: .5em; height: 2em; margin-top: -.2em" />
+                            <img src="{{ char.getGuild|image }}" style="margin-left: .5em; height: 2em; margin-top: -.2em" />
                         </div>
                     {% endif %}
                     <i class="ic-profession-{{ character.getProfession()|lower }}"></i> <b>{{ character }}</b>
@@ -168,11 +168,12 @@
     {% set tab_inven = module.isAllowed('inventories') ? 1 : 0 %}
     {% set tab_build = module.isAllowed('builds', 'pvp') ? 3 : 0 %}
     {% set tab_story = 1 %}
+    {% set tab_training = 1 %}
 
 
     <div class="panel panel-default">
         <div class="panel-heading with-tabs">
-            {% if tab_inven + tab_build + tab_story > 0 %}
+            {% if tab_inven + tab_build + tab_story + tab_training > 0 %}
                 <ul class="nav nav-tabs">
                     {% if tab_inven %}
                         <li>
@@ -197,11 +198,63 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if tab_training %}
+                        <li>
+                            <a href="#" data-tab="tab-training">
+                                <i class="ic-ui-archetype"></i> {{ 'global.training'|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             {% endif %}
         </div>
 
         <div class="panel-body char_tabs">
+
+            {% if tab_training %}
+                <div class="tab tab-training" style="display: none; position: relative">
+                    {% set profTraining = char.getProfession(true).getTraining() %}
+                    {% set charTraining = char.getTraining() %}
+                    {% for category in ['Skills', 'Specializations', 'EliteSpecializations'] %}
+                        <table class="table table-condensed table-hover training">
+                            <thead>
+                                <tr>
+                                    <th>{{ ('global.'~(category|lower))|trans }}</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for training in profTraining %}
+                                    {% if training.getCategory == category %}
+                                        {% set obj = charTraining[training.getId()] %}
+                                        <tr class="track {{ obj.done ? 'done' : 'not-done' }}">
+                                            <td>
+                                                {{ training.getName() }}
+                                            </td>
+                                            <td>
+                                                {{ obj.spent }} / {{ training.getTotalCost }}
+                                            </td>
+                                            <td class="track-items">
+                                                {% for item in training.getTrack() %}
+                                                    <span class="type-{{ item.getType }} {{ obj.spent >= item.getCost ? 'done' : 'not-done' }}">
+                                                        {% if item.getType == 'Trait' %}
+                                                            <img src="{{ item.getTrait()|image }}" {{ item.getTrait()|gwlink|raw }} />
+                                                        {% else %}
+                                                            <img src="{{ item.getSkill()|image }}" {{ item.getSkill()|gwlink|raw }} />
+                                                        {% endif %}
+                                                        <span>{{ item.getCost }}</span>
+                                                    </span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             {% if tab_inven %}
                 <div class="tab tab-inventory" style="display: none; position: relative">

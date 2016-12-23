@@ -15,7 +15,8 @@
 
 #gwitemdetail > .gwitem {
     position: relative;
-    width: 400px;
+    min-width: 400px;
+    max-width: 600px;
     border-top: 1px solid #4c7092;
     margin-top: 1em;
 }
@@ -27,6 +28,10 @@
 
 #gwitemdetail > .gwitem > div {
     margin: .5em;
+}
+
+#gwitemdetail .gwdescription {
+    width: 400px;
 }
 
 #gwitemdetail .gwicon {
@@ -94,8 +99,41 @@
     margin-right: .5em;
 }
 
-#gwitemdetail .gwvendorcount {
-    float: right;
+#gwitemdetail .gwvendor {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+#gwitemdetail .gwvendor > div {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    white-space: nowrap;
+}
+#gwitemdetail .gwvendor > div:last-child {
+    padding-left: 2em;
 }
 
 #gwitemdetail .gwclickinfo .unlock,

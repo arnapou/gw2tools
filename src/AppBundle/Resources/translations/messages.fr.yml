@@ -73,17 +73,22 @@ global.days: "Jours"
 global.deaths: "Morts"
 global.defense: "Défense"
 global.details: "Détails"
+global.elitespecializations: "Spécialisations élite"
 global.equipment: "Equipement"
 global.experience: "Expérience"
 global.filters: "Filtres"
 global.for: "pour"
 global.fractal_level: "Niveau fractal"
 global.gender: "Genre"
+global.guild.aetherium: "Aetherium"
+global.guild.favor: "Faveur"
+global.guild.influence: "Influence"
 global.guild.leader: "Chef de guilde"
 global.guild.log: "Historique"
 global.guild.members: "Membres"
 global.guild.motd: "Message du jour"
 global.guild.ranks: "Rangs"
+global.guild.resonance: "Résonance"
 global.guild.teams: "Equipes"
 global.guild.treasury: "Trésor"
 global.guild.upgrades: "Améliorations"
@@ -129,6 +134,7 @@ global.sells: "Ventes"
 global.shared_inventory: "Inventaire partagé"
 global.skills: "Compétences"
 global.special: "Spécial"
+global.specializations: "Spécialisations"
 global.spent: "Dépensé"
 global.stash: "Coffre"
 global.stashs: "Coffres"
@@ -144,6 +150,7 @@ global.tp_history_buys: "Historique des achats"
 global.tp_history_sells: "Historique des ventes"
 global.trading_post_buy: "Prix comptoir à l'achat"
 global.trading_post_sell: "Prix comptoir à la vente"
+global.training: "Entraînement"
 global.transmuted: "Transmuté"
 global.trinkets: "Bijoux"
 global.trophy: "Trophée"
@@ -188,6 +195,16 @@ guild.log.upgrade_queued: mis en file d'attente
 guild.log.upgrade_sped_up: a été accéléré
 guild.log.was_invited_by: a été invité par
 guild.log.was_kicked_by: a été expulsé par
+guild.upgrade.type.AccumulatingCurrency: Accumulation de monaies <small>Utilisé pour les améliorations de la mine</small>
+guild.upgrade.type.BankBag: Sac de banque <small>Utilisé pour les améliorations de banque de guilde</small>
+guild.upgrade.type.Boost: Boost <small>Utilisé pour les buffs de guilde permanents (réduction de coût de téléporation, ...)</small>
+guild.upgrade.type.Claimable: Réclamations <small>Utilisé pour les tactiques de McM</small>
+guild.upgrade.type.Consumable: Consommable <small>Utilisé pour les bannières de guilde et engins de siège</small>
+guild.upgrade.type.Decoration: Décoration <small>Utilisé pour les décorations fabriquées par les Illustrateurs</small>
+guild.upgrade.type.Hub: Initiative de guilde <small>Utilisé pour les déverrouillages d'initiative de guilde</small>
+guild.upgrade.type.Unlock: Déverrouillage <small>Utilisé pour les déverrouillages permanents, comme les marchands et décorations d'arène</small>
+guild.upgrades.locked: "A débloquer"
+guild.upgrades.unlocked: "Débloquées"
 gwdblink: "http://db.gw2.fr/item/"
 itemtype.: "Dorsale"
 itemtype.Accessory1: "Accessoire1"

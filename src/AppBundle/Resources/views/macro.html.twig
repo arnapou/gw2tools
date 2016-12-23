@@ -155,7 +155,12 @@
 
         </div>
         <div class="stash-coins">
+            <div class="pull-right">
             {{ _self.amount(stash.getCoins) }}
+            </div>
+            <div class="pull-left">
+                {{ stash.getNote() }}
+            </div>
         </div>
     </div>
 {% endmacro %}

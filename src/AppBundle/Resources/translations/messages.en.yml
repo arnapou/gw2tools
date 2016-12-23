@@ -73,17 +73,22 @@ global.days: "Days"
 global.deaths: "Deaths"
 global.defense: "Defense"
 global.details: "Details"
+global.elitespecializations: "Elite Specializations"
 global.equipment: "Equipment"
 global.experience: "Experience"
 global.filters: "Filters"
 global.for: "for"
 global.fractal_level: "Fractal level"
 global.gender: "Gender"
+global.guild.aetherium: "Aetherium"
+global.guild.favor: "Favor"
+global.guild.influence: "Influence"
 global.guild.leader: "Guild leader"
 global.guild.log: "History"
 global.guild.members: "Members"
 global.guild.motd: "Message of the day"
 global.guild.ranks: "Ranks"
+global.guild.resonance: "Resonance"
 global.guild.teams: "Teams"
 global.guild.treasury: "Treasury"
 global.guild.upgrades: "Upgrades"
@@ -129,6 +134,7 @@ global.sells: "Sells"
 global.shared_inventory: "Shared inventory"
 global.skills: "Skills"
 global.special: "Special"
+global.specializations: "Specializations"
 global.spent: "Spent"
 global.stash: "Stash"
 global.stashs: "Stashs"
@@ -144,6 +150,7 @@ global.tp_history_buys: "History buys"
 global.tp_history_sells: "History sells"
 global.trading_post_buy: "Trading post buy price"
 global.trading_post_sell: "Trading post sell price"
+global.training: "Training"
 global.transmuted: "Transmuted"
 global.trinkets: "Trinkets"
 global.trophy: "Trophy"
@@ -188,6 +195,16 @@ guild.log.upgrade_queued: queued
 guild.log.upgrade_sped_up: sped up
 guild.log.was_invited_by: was invited by
 guild.log.was_kicked_by: was kicked by
+guild.upgrade.type.AccumulatingCurrency: Accumulating Currency <small>Used for mine capacity upgrades</small>
+guild.upgrade.type.BankBag: Bank Bag <small>Used for guild bank upgrades</small>
+guild.upgrade.type.Boost: Boost <small>Used for permanent guild buffs such as waypoint cost reduction</small>
+guild.upgrade.type.Claimable: Claimable <small>Used for guild WvW tactics</small>
+guild.upgrade.type.Consumable: Consumable <small>Used for banners and guild siege</small>
+guild.upgrade.type.Decoration: Decoration <small>Used for decorations that must be crafted by a Scribe</small>
+guild.upgrade.type.Hub: Hub <small>Used for the Guild Initiative office unlock</small>
+guild.upgrade.type.Unlock: Unlock <small>Used for permanent unlocks, such as merchants and arena decorations</small>
+guild.upgrades.locked: "To unlock"
+guild.upgrades.unlocked: "Unlocked"
 gwdblink: "http://db.dulfy.net/item/"
 itemtype.: "Backpack"
 itemtype.Accessory1: "Accessory1"

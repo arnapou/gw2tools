@@ -1,3 +1,9 @@
+## 2.1.5 (2016-12-23)
+
+  - added guild teams
+  - added character training
+  - tooltip css bugfix
+
 ## 2.1.4 (2016-12-22)
 
   - refactor menu to add guild infos

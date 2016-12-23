@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "73d022da8f9a5a5a3fbf4044e38a3b5ad4c8b956"
+                "reference": "f8a445fa16c30390c66c8849a0d5f8d0d419b55a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/73d022da8f9a5a5a3fbf4044e38a3b5ad4c8b956",
-                "reference": "73d022da8f9a5a5a3fbf4044e38a3b5ad4c8b956",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/f8a445fa16c30390c66c8849a0d5f8d0d419b55a",
+                "reference": "f8a445fa16c30390c66c8849a0d5f8d0d419b55a",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2016-12-22 17:33:21"
+            "time": "2016-12-23 17:29:51"
         },
         {
             "name": "doctrine/annotations",
@@ -2207,16 +2207,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "74f723e542368ca2080b252740be5f1113ebb898"
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/74f723e542368ca2080b252740be5f1113ebb898",
-                "reference": "74f723e542368ca2080b252740be5f1113ebb898",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/c6ff71094fde15d12398eaba029434b013dc5e59",
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59",
                 "shasum": ""
             },
             "require": {
@@ -2229,7 +2229,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.29-dev"
+                    "dev-master": "1.30-dev"
                 }
             },
             "autoload": {
@@ -2264,7 +2264,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-12-13 17:28:18"
+            "time": "2016-12-23 11:06:22"
         }
     ],
     "packages-dev": [

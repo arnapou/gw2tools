@@ -1,99 +1,187 @@
 
 {% import "AppBundle::macro.html.twig" as macro %}
+{% import "AppBundle::pvp/content.html.twig" as pvp %}
 
 {% set ctab = app.request.get('tab') %}
+{% set guildLevel = guild.getLevel() %}
 
 {% spaceless %}  
 
     {% if ctab %}
 
-        {% if ctab == 'tab-upgrades' %}
+        {% if 'tab-upgrades' in ctab %}
 
-            <table class="table table-condensed table-hover">
-                {% for up in guild.getUpgrades %}
-                    <tr class="upgrade">
-                        <td>
-                            <div class="upgrade-title">
-                                <div><img src="{{ up|image }}" /></div>
-                                <div><b>{{ up.getName }}</b></div>
-                            </div>
-                            <div class="upgrade-detail">
-                                <p>{{ up.getDescription }}</p>
-                                <ul>
-                                    {% if up.getRequiredLevel %}
-                                        <li>
-                                            {{ 'global.required_level'|trans }}: {{ up.getRequiredLevel }}
-                                        </li>
-                                    {% endif %}
-                                    {% if up.getBuildTime %}
-                                        <li>
-                                            {{ 'global.build_time'|trans }}: {{ up.getBuildTime }}
-                                        </li>
-                                    {% endif %}
-                                    {% if up.getExperience %}
-                                        <li>
-                                            {{ 'global.experience'|trans }}: {{ up.getExperience }}
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </td>
-                        <td>
-                            <p>{{ 'global.costs'|trans }} :</p>
-                            {% for cost in up.getCosts %}
-                                {% if cost.getItem %}
-                                    <div class="upgrade-cost">
-                                        <img src="{{ cost.getItem|image }}" {{ cost.getItem|gwlink|raw }} /><span>{{ cost.getCount }}</span>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            <p>{{ 'global.prerequisites'|trans }} :</p>
-                            {% for pre in up.getPrerequisites %}
-                                <div class="upgrade-title">
-                                    <div><img src="{{ pre|image }}" /></div>
-                                    <div>{{ pre.getName }}</div>
+            {% if ctab == 'tab-upgrades-locked' %}
+
+                <div class="row unlocked">
+                    <div class="col-xs-6">
+                        {% for item in guild.getTreasuryByUpgrade %}
+                            {% set up = item.upgrade %}
+                            {% set class = 'locked' %}
+                            {% block upgrades_list_title %}
+                                <div class="upgrade-title menu {{ class }}" data-id="upg-{{ up.getId() }}">
+                                    <div><img src="{{ up|image }}" /></div>
+                                    <div>{{ up.getName }}</div>
                                 </div>
-                            {% endfor %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+                            {% endblock %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-xs-6">
+                        {% for item in guild.getTreasuryByUpgrade %}
+                            {% set up = item.upgrade %}
+                            {% set treasuries = item.treasuries %}
+                            {% block upgrades_list_detail %}
+                                <div class="upgrade-detail" id="upg-{{ up.getId() }}" style="display: none">
+                                    <div>
+                                        {{ up.getDescription() }}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-3">{{ 'global.type'|trans }}</div>
+                                        <div class="col-xs-9">{{ ('guild.upgrade.type.'~up.getType())|trans|raw }}</div>
+                                    </div>
+                                    {% if up.getRequiredLevel() %}
+                                        <div class="row">
+                                            <div class="col-xs-3">{{ 'global.required_level'|trans }}</div>
+                                            <div class="col-xs-9">{{ up.getRequiredLevel() }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if up.getBuildTime() %}
+                                        <div class="row">
+                                            <div class="col-xs-3">{{ 'global.build_time'|trans }}</div>
+                                            <div class="col-xs-9">{{ up.getBuildTime() }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if up.getExperience() %}
+                                        <div class="row">
+                                            <div class="col-xs-3">{{ 'global.experience'|trans }}</div>
+                                            <div class="col-xs-9">{{ up.getExperience() }}</div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="col-xs-3">{{ 'global.costs'|trans }}</div>
+                                        <div class="col-xs-9">
+                                            {% for cost in up.getCosts() %}
+                                                {% if cost.getItem %}
+                                                    {% set treasury = none %}
+                                                    {% if treasuries %}
+                                                        {% if cost.getItem().getId() == 70701 %}
+                                                            {% set treasury = { getCount: guild.getFavor } %}
+                                                        {% else %}
+                                                            {% set treasury = treasuries[cost.getItem().getId()] %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if treasury %}
+                                                        {% set pct = cost.getCount > 1 ? 100 * treasury.getCount / cost.getCount : 0 %}
+                                                        <div class="upgrade-cost {{ treasury.getCount >= cost.getCount() ? 'done' : '' }}">
+                                                            <span>
+                                                                <img src="{{ cost.getItem()|image }}" {{ cost.getItem()|gwlink|raw }} />
+                                                                {{ _self.pct(treasury.getCount, cost.getCount) }}
+                                                            </span>
+                                                            <span>{{ cost.getCount() }}</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="upgrade-cost">
+                                                            <span><img src="{{ cost.getItem()|image }}" {{ cost.getItem()|gwlink|raw }} /></span>
+                                                            <span>{{ cost.getCount() }}</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-3">{{ 'global.prerequisites'|trans }}</div>
+                                        <div class="col-xs-9">
+                                            {% for pre in up.getPrerequisites() %}
+                                                <div class="upgrade-title">
+                                                    <div><img src="{{ pre|image }}" /></div>
+                                                    <div>{{ pre.getName() }}</div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endblock %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+            {% elseif ctab == 'tab-upgrades-unlocked' %}
+
+                <div class="row unlocked">
+                    <div class="col-xs-6">
+                        {% for up in guild.getUpgrades %}
+                            {% set class = 'unlocked' %}
+                            {{ block('upgrades_list_title') }}
+                        {% endfor %}
+                    </div>
+                    <div class="col-xs-6">
+                        {% for up in guild.getUpgrades %}
+                            {% set treasuries = none %}
+                            {{ block('upgrades_list_detail') }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+            {% endif %}
+
+            <script type="text/javascript">
+                (function($tab) {
+                    $tab.find('.upgrade-title').click(function(e) {
+                        var $this = $(this);
+                        var tabHeight = $tab.innerHeight();
+                        e.preventDefault();
+                        $tab.find('.upgrade-title.active').removeClass('active');
+                        $tab.find('.upgrade-detail').hide();
+                        var $div = $tab.find('#' + $this.data('id'));
+                        $div.show();
+                        var pos = $this.position();
+                        var divHeight = $div.height();
+                        if (pos && pos.top) {
+                            if (tabHeight && pos.top + divHeight > tabHeight) {
+                                $div.css('top', Math.round(tabHeight - divHeight - 5) + 'px');
+                            } else {
+                                $div.css('top', Math.round(pos.top) + 'px');
+                            }
+                        }
+                        $this.addClass('active');
+                        return false;
+                    }).eq(0).trigger('click');
+                })($('.{{ ctab }}'));
+            </script>
 
         {% elseif ctab == 'tab-ranks' %}
 
-            <div class="row">
-                {% for rank in guild.getRanks %}
-                    <div class="col-xs-6">
-                        <table class="table table-condensed table-hover">
-                            <tr>
-                                <td>{{ rank.getId() }}</td>
-                                <td class="rank">
-                                    <span>
-                                        <img src="{{ rank|image }}" />
-                                    </span>
-                                </td>
-                                <td style="font-size: .8em; width: 60%">
-                                    <ul>
-                                        {% for perm in rank.getPermissions %}
-                                            {% if perm %}
-                                                <li>
-                                                    {{ perm }}
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </ul>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    {% if loop.index0 % 2 == 1 %}
-                    </div>
-                    <div class="row">
-                    {% endif %}
-                {% endfor %}
-            </div>
+            {% for rank in guild.getRanks %}
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td class="rank">
+                            <span>
+                                <img src="{{ rank|image }}" />
+                            </span>
+                        </td>
+                        <td>{{ rank.getId() }}</td>
+                        {% set columns = rank.getPermissions|columns(2) %}
+                        {% for perms in columns %}
+                            <td class="permissions">
+                                {% for perm in perms %}
+                                    {% if perm %}
+                                        {% if perm.unlocked %}
+                                            <div class="unlocked">
+                                                <i class="glyphicon glyphicon-ok text-success"></i> {{ perm }}
+                                            </div>
+                                        {% else %}
+                                            <div class="locked">
+                                                <i class="glyphicon glyphicon-remove text-danger"></i> {{ perm }}
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            {% endfor %}
 
         {% elseif ctab == 'tab-members' %}
 
@@ -128,18 +216,15 @@
                         <table class="table table-condensed table-hover">
                             <tr>
                                 <td>
-                                    {% set pct = obj.getTotalCount > 1 ? 100 * obj.getItem.getCount / obj.getTotalCount : 0 %}
                                     <img src="{{ obj.getItem|image }}" {{ obj.getItem|gwlink|raw }} />
-                                    <div class="pct" title="{{ pct|round() }}%, {{ obj.getItem.getCount + 0 }}/{{ obj.getTotalCount + 0}}">
-                                        <div style="width: {{ pct|round(3) }}%; background: {{ pct < 33 ? 'red' : (pct < 67 ? 'orange' : ( pct == 100 ? 'green' : 'yellow' )) }}"></div>
-                                    </div>
+                                    {{ _self.pct(obj.getItem.getCount, obj.getTotalCount) }}
                                     <div>{{ obj.getItem.getCount }}</div>
                                 </td>
                                 <td>
                                     <ul>
                                         {% for up in obj.getNeededBy %}
                                             {% if up.upgrade.getId not in upgradeIds %}
-                                                <li>
+                                                <li title="{{ up.upgrade.getDescription }}">
                                                     {{ up.count }} : {{ up.upgrade.getName }}
                                                 </li>
                                             {% endif %}
@@ -173,13 +258,88 @@
 
         {% elseif ctab == 'tab-teams' %}
 
-            {#
-            #
-            #
-            # --------------- TODO ---------------
-            #
-            #
-            #}
+            {% for team in guild.getTeams %}
+                <div class="row" style="margin-bottom: 2em">
+                    <div class="col-xs-3">
+                        <b class="label label-primary">{{ team.getName }}</b>
+                        <table class="table table-condensed" style="margin-top: .5em">
+                            {% for member in team.getMembers %}
+                                <tr>
+                                    <td title="{{ member.getRole }}">
+                                        <i class="glyphicon glyphicon-user"></i> &nbsp;{{ member.getName }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <br />
+                        <div class="summary">
+                            {% set max = team.aggregatestats.total %}
+                            <table class="table table-condensed" style="table-layout: fixed">
+                                <tr>
+                                    <td>{{ 'pvp.total'|trans }}</td>
+                                    <td>{{ pvp.progress_matches(100, max) }}</td>
+                                    <td title="{{'pvp.winrate'|trans}}">{{ pvp.progress_winrate(team.aggregatestats.winrate) }}</td>
+                                </tr>
+                                {% for key in ['ranked', 'unranked'] %}
+                                    {% set stat = team.ladderstats(key) %}
+                                    {% if stat %}
+                                        <tr>
+                                            <td>{{ ('pvp.'~key)|trans }}</td>
+                                            <td>{{ pvp.progress_matches(max > 0 ? (100 * stat.total / max) : 0, stat.total) }}</td>
+                                            <td title="{{'pvp.winrate'|trans}}">{{ pvp.progress_winrate(stat.winrate) }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xs-9 games">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'pvp.map'|trans }}</th>
+                                    <th>{{ 'pvp.date'|trans }}</th>
+                                    <th>{{ 'pvp.result'|trans }}</th>
+                                    <th class="text-center">{{ 'pvp.team'|trans }}</th>
+                                    <th class="text-center">{{ 'pvp.duration'|trans }}</th>
+                                    <th class="text-center">{{ 'pvp.score'|trans }}</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set max = 0 %}
+                                {% for game in team.games %}
+                                    {% if loop.first %}
+                                        {% set max = stat.total %}
+                                    {% endif %}
+                                    <tr>
+                                        <td class="column-map">{{ game.map }}</td>
+                                        <td class="column-delay">{{ game.dateended|datediff }}</td>
+                                        <td class="column-result">
+                                            {% if game.isvictory %}
+                                                <i class="glyphicon glyphicon-ok"></i>
+                                            {% else %}
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            {% endif %}
+                                            {{ ('pvp.'~game.getresult)|trans }}
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="{{ game.getteam|lower }}">{{ ('pvp.'~game.getteam)|trans }}</span>
+                                        </td>
+                                        <td class="text-center">{{ game|gameduration }}</td>
+                                        <td class="text-center">
+                                            <span class="blue">{{ game.scoreblue }}</span> - <span class="red">{{ game.scorered }}</span>
+                                        </td>
+                                        <td class="column-scorebar">
+                                            {{ pvp.progress_score(game) }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
 
         {% elseif ctab == 'tab-log' %}
 
@@ -272,16 +432,16 @@
             </div>
 
             <script type="text/javascript">
-                (function($tabLog) {
-                    $tabLog.find('.nav a').click(function(e) {
+                (function($tab) {
+                    $tab.find('.nav a').click(function(e) {
                         e.preventDefault();
-                        $tabLog.find('.nav .active').removeClass('active');
-                        $tabLog.find('tr').css('display', 'table-row');
+                        $tab.find('.nav .active').removeClass('active');
+                        $tab.find('tr').css('display', 'table-row');
                         $(this).parents('li').addClass('active');
                         var types = $(this).data('types');
                         if (types) {
                             types = ',' + types + ',';
-                            $tabLog.find('tr').each(function() {
+                            $tab.find('tr').each(function() {
                                 var $this = $(this);
                                 var type = $this.data('type');
                                 if (types.indexOf(',' + type + ',') < 0) {
@@ -294,6 +454,7 @@
                 })($('.tab-log'));
             </script>
         {% endif %}
+
     {% else %}
 
         <div class="panel panel-default">
@@ -302,15 +463,39 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         {{ guild.getMOTD|nl2br }}
                     </div>
-                    <div class="col-xs-5">
-                        <p><i class="ic-ui-guild-members"></i> {{ 'global.guild.members'|trans }}: {{ guild.getMembers|length }}</p>
-                        <p><i class="ic-ui-guild-upgrades"></i> {{ 'global.level_min'|trans }}: {{ guild.getMinLevel }}</p>
+                    <div class="col-xs-3">
+                        <table class="table table-condensed">
+                            <tr>
+                                <td><i class="ic-ui-guild-upgrades"></i> {{ 'global.level'|trans }}</td>
+                                <td>{{ guild.getLevel }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="ic-ui-guild-members"></i> {{ 'global.guild.members'|trans }}</td>
+                                <td>{{ guild.getMembers|length }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="ic-ui-xxxxx"></i> {{ 'global.guild.aetherium'|trans }}</td>
+                                <td>{{ guild.getAetherium }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="ic-ui-xxxxx"></i> {{ 'global.guild.favor'|trans }}</td>
+                                <td>{{ guild.getFavor }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="ic-ui-xxxxx"></i> {{ 'global.guild.resonance'|trans }}</td>
+                                <td>{{ guild.getResonance }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="ic-ui-xxxxx"></i> {{ 'global.guild.influence'|trans }}</td>
+                                <td>{{ guild.getInfluence }}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-xs-2">
-                        <img src="{{ guild|image }}" style="max-width: 100%">
+                    <div class="col-xs-3 text-right">
+                        <img src="{{ guild|image }}" style="width: 75%">
                     </div>
                 </div>
             </div>
@@ -331,8 +516,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" data-tab="tab-upgrades">
+                        <a href="#" data-tab="tab-upgrades-unlocked">
                             <i class="ic-ui-guild-upgrades"></i> {{ 'global.guild.upgrades'|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="tab-upgrades-locked">
+                            <i class="ic-ui-guild-upgrades"></i> {{ 'guild.upgrades.locked'|trans }}
                         </a>
                     </li>
                     <li>
@@ -350,19 +540,18 @@
                             <i class="ic-ui-bank"></i> {{ 'global.stashs'|trans }}
                         </a>
                     </li>
-                    {# --------------- TODO ---------------
                     <li>
                         <a href="#" data-tab="tab-teams">
                             <i class="ic-mode-pvp"></i> {{ 'global.guild.teams'|trans }}
                         </a>
                     </li>
-                    #}
                 </ul>
             </div>
 
             <div class="panel-body">
 
-                <div class="tab tab-upgrades" style="display: none;"></div>
+                <div class="tab tab-upgrades tab-upgrades-locked" style="display: none;"></div>
+                <div class="tab tab-upgrades tab-upgrades-unlocked" style="display: none;"></div>
                 <div class="tab tab-members" style="display: none;"></div>
                 <div class="tab tab-ranks" style="display: none;"></div>
                 <div class="tab tab-stashs" style="display: none;"></div>
@@ -395,123 +584,13 @@
             $('.nav-tabs a').eq(0).trigger('click');
         </script>
 
-        <style>
-            .tab-log td:first-child {
-                white-space: nowrap;
-                width: 5em;
-            }
-            .tab-log td:nth-child(2) img,
-            .tab-log td:last-child img {
-                background: #2c3e50;
-                width: 22px;
-                height: 22px;
-                vertical-align: top;
-            }
-            .tab-log td:last-child img {
-                margin-left: .2em;
-            }
-            .tab-log td:last-child span {
-                color: #808b96;
-            }
-            .tab-log td:last-child div,
-            .tab-log td:last-child blockquote {
-                color: #808b96;
-                font-size: .8em;
-                margin-bottom: 0;
-            }
-            .tab-log td:nth-child(2) {
-                text-align: center;
-            }
-            .tab-log td:last-child .amount,
-            .tab-log td:last-child .amount * {
-                color: inherit;
-            }
-
-            .upgrade td {
-                width: 30%;
-            }
-            .upgrade td:first-child {
-                width: 40%;
-            }
-            .upgrade .upgrade-detail {
-                font-size: .8em;
-            }
-            .upgrade-title {
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                -webkit-flex-direction: row;
-                -ms-flex-direction: row;
-                flex-direction: row;
-                -webkit-flex-wrap: nowrap;
-                -ms-flex-wrap: nowrap;
-                flex-wrap: nowrap;
-                -webkit-justify-content: flex-start;
-                -ms-flex-pack: start;
-                justify-content: flex-start;
-                -webkit-align-content: stretch;
-                -ms-flex-line-pack: stretch;
-                align-content: stretch;
-                -webkit-align-items: flex-start;
-                -ms-flex-align: flex-start;
-                align-items: flex-start;
-            }
-            .upgrade-title img {
-                width: 2em;
-                height: 2em;
-            }
-            .upgrade-title div:nth-child(1) {
-                padding-top: .3em;
-            }
-            .upgrade-title div:nth-child(2) {
-                padding-left: .5em;
-                -webkit-align-self: center;
-                -ms-flex-item-align: center;
-                align-self: center;
-            }
-            .upgrade .upgrade-cost {
-                display: inline-block;
-                width: 7em;
-                margin-top: .3em;
-            }
-            .upgrade .upgrade-cost img {
-                width: 2em;
-                height: 2em;
-                margin-right: .5em;
-            }
-
-            td.rank {
-                width: 40px;
-                padding: 0 0 1px 0 !important;
-            }
-            td.rank span {
-                display: inline-block;
-                padding: 0;
-                background: #2c3e50;
-            }
-            td.rank span img {
-                width: 32px;
-                height: 32px;
-            }
-
-            .treasury td:first-child {
-                width: 4em;
-                text-align: center;
-            }
-            .treasury td:first-child img {
-                width: 100%;
-            }
-            .treasury ul {
-                font-size: .8em;
-            }
-            .treasury .pct{
-                height: 8px;
-                background: #aaa;
-                margin-bottom: .5em;
-            }
-            .treasury .pct div {
-                height: 8px;
-            }
-        </style>
     {% endif %}
 {% endspaceless %}
+
+{% macro pct(a, b) %}
+    {% set pct = b > 0 ? 100 * a / b : 0 %}
+    {% set pct = pct > 100 ? 100 : (pct < 0 ? 0 : pct) %}
+    <div class="pct" title="{{ pct|round() }}%  {{ a + 0 }}/{{ b + 0 }}">
+        <div style="width: {{ pct|round(3) }}%; background: {{ pct < 33 ? 'red' : (pct < 67 ? 'orange' : ( pct >= 100 ? 'green' : 'yellow' )) }}"></div>
+    </div>
+{% endmacro %}

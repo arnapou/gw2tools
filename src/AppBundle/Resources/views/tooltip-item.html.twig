@@ -16,7 +16,7 @@
             {{ count > 1 ? count~' ' : '' }}{{ item.getskin ? item.getskin.getname : item.getname }}
         </div>
     </div>
-    
+
     {% if item.getchatlink %}
         <div class="gwchatlink">
             <input type="text" readonly="readonly" value="{{ item.getchatlink }}" onclick="this.setSelectionRange(0, this.value.length)" />
@@ -202,7 +202,9 @@
 
     {% if item.getvendorvalue %}
         <div class="gwvendor">
-            {{ 'global.vendor_price'|trans }}: {{ macro.amount(item.getvendorvalue) }}
+            <div>
+                {{ 'global.vendor_price'|trans }}: {{ macro.amount(item.getvendorvalue) }}
+            </div>
             {% if count > 1 %}
                 <div class="gwvendorcount">
                     {{ macro.amount(item.getvendorvalue * count) }} {{ 'global.for'|trans }} {{ count }}
@@ -213,7 +215,9 @@
 
     {% if item.getprice.buy %}
         <div class="gwvendor">
-            {{ 'global.trading_post_buy'|trans }}: {{ macro.amount(item.getprice.buy) }}
+            <div>
+                {{ 'global.trading_post_buy'|trans }}: {{ macro.amount(item.getprice.buy) }}
+            </div>
             {% if item.getprice.buy_total and count > 1 %}
                 <div class="gwvendorcount">
                     {{ macro.amount(item.getprice.buy_total) }} {{ 'global.for'|trans }} {{ count }}
@@ -221,7 +225,9 @@
             {% endif %}
         </div>
         <div class="gwvendor">
-            {{ 'global.trading_post_sell'|trans }}: {{ macro.amount(item.getprice.sell) }}
+            <div>
+                {{ 'global.trading_post_sell'|trans }}: {{ macro.amount(item.getprice.sell) }}
+            </div>
             {% if item.getprice.sell_total and count > 1 %}
                 <div class="gwvendorcount">
                     {{ macro.amount(item.getprice.sell_total) }} {{ 'global.for'|trans }} {{ count }}
