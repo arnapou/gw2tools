@@ -192,15 +192,23 @@
                     <div class="col-xs-6">
                         <table class="table table-condensed table-hover">
                             {% for member in items %}
-                                <tr>
-                                    <td title="{{ member.getJoined() }}">{{ member.getJoined()|datediff }}</td>
-                                    <td>{{ member.getName() }}</td>
-                                    <td class="rank" title="{{ member.getRank() }}">
-                                        <span>
-                                            <img src="{{ ranks[member.getRank()]|image }}" />
-                                        </span>
-                                    </td>
-                                </tr>
+                                {% if member %}
+                                    <tr>
+                                        <td title="{{ member.getJoined() }}">{{ member.getJoined()|datediff }}</td>
+                                        <td>{{ member.getName() }}</td>
+                                        <td class="rank" title="{{ member.getRank() }}">
+                                            <span>
+                                                <img src="{{ ranks[member.getRank()]|image }}" />
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                         </table>
                     </div>

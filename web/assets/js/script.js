@@ -194,6 +194,16 @@ $(function() {
             e.stopPropagation();
         });
 
+        var triggerMove = function($el) {
+            var offset = $el.offset();
+            var event = $.Event("mousedown", {
+                which: 1,
+                pageX: offset.left,
+                pageY: offset.top
+            });
+            $el.trigger(event);
+        };
+
         $(document).on('click', 'body', function(e) {
             $gwitemdetail.data('locked', false);
             $gwitemdetail.removeClass('locked');
@@ -265,13 +275,16 @@ $(function() {
                                 cachedHtml[url] = html;
                                 if ($gwitemdetail.data('url') === url) {
                                     $gwitemdetail.html(html);
+                                    triggerMove($(self));
                                 }
                             })
                             .fail(function() {
                                 $gwitemdetail.html('<div class="gwitemerror">Error</div>');
+                                $gwitemdetail.trigger('checksize');
                             });
                 } else {
                     $gwitemdetail.html(cachedHtml[url]).show();
+                    triggerMove($(self));
                 }
             }
         });

@@ -16,7 +16,6 @@
 #gwitemdetail > .gwitem {
     position: relative;
     min-width: 400px;
-    max-width: 600px;
     border-top: 1px solid #4c7092;
     margin-top: 1em;
 }
@@ -28,10 +27,12 @@
 
 #gwitemdetail > .gwitem > div {
     margin: .5em;
+    max-width: 400px;
 }
 
-#gwitemdetail .gwdescription {
-    width: 400px;
+#gwitemdetail > .gwitem > div.gwvendor {
+    width: auto;
+    max-width: 600px;
 }
 
 #gwitemdetail .gwicon {
@@ -132,8 +133,8 @@
     align-self: auto;
     white-space: nowrap;
 }
-#gwitemdetail .gwvendor > div:last-child {
-    padding-left: 2em;
+#gwitemdetail .gwvendor > div:nth-child(2) {
+    padding-left: 1em;
 }
 
 #gwitemdetail .gwclickinfo .unlock,

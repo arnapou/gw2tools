@@ -1,3 +1,11 @@
+## 2.1.6 (2017-01-02)
+
+  - bugfix tooltip size
+  - bugfix css trading post 
+  - bugfix html guild members
+  - bugfix font size for 5th pvp season
+  - added pvp season rating when available
+
 ## 2.1.5 (2016-12-23)
 
   - added guild teams

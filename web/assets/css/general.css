@@ -1007,10 +1007,7 @@ img.currency {
     margin: .5em;
 }
 .page-pvp .season .division .tier .ic-ui-pip {
-    font-size: 2.7em;
-}
-.page-pvp .season .division .tier div i {
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
 .page-pvp .season .division-1 .tier .ic-ui-pip { color: #eda826; }
 .page-pvp .season .division-2 .tier .ic-ui-pip { color: #47a350; }
@@ -1421,19 +1418,19 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 
 /************************************************/
 
-.page-trading-post td span {
-    line-height: 3em;
+.page-trading-post td {
+    height: 3em;
+    vertical-align: middle !important;
 }
 .page-trading-post td img {
-    height: 3em;
+    max-height: 2.5em;
 }
 .page-trading-post .column-amount {
     text-align: right;
     width: 20%;
 }
-.page-trading-post .column-icom {
+.page-trading-post .column-icon {
     width: 3em;
-    height: 3em;
 }
 .page-trading-post .column-date,
 .page-trading-post .column-quantity {

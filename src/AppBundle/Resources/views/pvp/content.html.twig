@@ -53,7 +53,7 @@
                     <div class="rank">
                         <img src="/assets/images/rank/{{ pvp.rankname }}.png" class="pull-left" />
                         <div>
-                            <span class="level">{{ pvp.rank }}</span>
+                            <span class="level">{{ pvp.getRank + pvp.getRankRollovers }}</span>
                             <span class="name">{{ ('ranks.'~pvp.rankname)|trans }}</span>
                         </div>
                     </div>
@@ -153,7 +153,9 @@
     {% if standings|length %}
         {% for standing in standings %}
             <div class="panel panel-default">
-                <div class="panel-heading"><i class="ic-mode-pvp"></i> {{ standing.season.getName }}
+                <div class="panel-heading">
+                    <i class="ic-mode-pvp"></i> {{ standing.season.getName }}
+                    {% if standing.getCurrentRating %} &mdash; <span class="text-success">{{ 'global.rating'|trans }} {{ standing.getCurrentRating }}</span>{% endif %}
                     <span class="pull-right">
                         {{ standing.season.datestart|slice(0, 10) }} &nbsp; <i class="glyphicon glyphicon-arrow-right"></i> &nbsp; {{ standing.season.dateend|slice(0, 10) }}
                     </span>
