@@ -171,6 +171,9 @@ function gwlink_inventoryslot(InventorySlot $item) {
     if ($item->getCount() > 1) {
         $url .= '-cn' . $item->getCount();
     }
+    if ($item->getCharges()) {
+        $url .= '-ch' . $item->getCharges();
+    }
     if ($item->getBinding()) {
         $url .= '-bn' . $item->getBinding();
     }

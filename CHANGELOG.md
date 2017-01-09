@@ -1,3 +1,7 @@
+## 2.1.7 (2017-01-09)
+
+  - adding charges on inventory slots when available
+
 ## 2.1.6 (2017-01-02)
 
   - bugfix tooltip size

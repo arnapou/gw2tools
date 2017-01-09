@@ -106,7 +106,11 @@
 
     {% elseif item.gettype == 'Tool' %}
 
-        {% if item.getsalvagecharges > 1 %}
+        {% if item.getCharges %}
+            <div class="gwupgrade">
+                {{ 'global.charges'|trans }}: {{ item.getCharges }}
+            </div>
+        {% elseif item.getsalvagecharges > 1 %}
             <div class="gwupgrade">
                 {{ 'global.charges'|trans }}: {{ item.getsalvagecharges }}
             </div>

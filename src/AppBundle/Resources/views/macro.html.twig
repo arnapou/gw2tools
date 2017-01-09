@@ -18,6 +18,9 @@
             <div class="item">
                 <span {{ obj|gwlink|raw }}>
                     <img src="{{ obj|image }}" class="item rarity-{{ obj.getRarity() }}" />
+                    {% if obj.getCharges() %}
+                        <span class="charges">{{ obj.getCharges() }}</span>
+                    {% endif %}
                 </span>
             </div>
             {#            {% endif %}#}
@@ -156,7 +159,7 @@
         </div>
         <div class="stash-coins">
             <div class="pull-right">
-            {{ _self.amount(stash.getCoins) }}
+                {{ _self.amount(stash.getCoins) }}
             </div>
             <div class="pull-left">
                 {{ stash.getNote() }}
@@ -174,6 +177,8 @@
                 <img src="{{ item|image }}" />
                 {% if item.getCount() > 1 %}
                     <span class="count">{{ item.getCount() }}</span>
+                {% elseif item.getCharges() %}
+                    <span class="count">{{ item.getCharges() }}</span>
                 {% endif %}
             </span>
         {% endif %}

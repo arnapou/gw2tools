@@ -115,7 +115,7 @@ class TooltipController extends AbstractController {
 
     /**
      * 
-     * @Route("/{_locale}/tooltip/slot-{code}.html", requirements={"_locale" = "de|en|es|fr", "code" = "[0-9]+(-((up|in|sk|cn|st|z[a-z])[0-9]+|(bn|bt).+))*"})
+     * @Route("/{_locale}/tooltip/slot-{code}.html", requirements={"_locale" = "de|en|es|fr", "code" = "[0-9]+(-((up|in|sk|cn|ch|st|z[a-z])[0-9]+|(bn|bt).+))*"})
      */
     public function tooltipSlotAction($code, Request $request) {
         $data = [];
@@ -143,6 +143,7 @@ class TooltipController extends AbstractController {
                     'in' => 'infusions',
                 ];
                 $map3 = [
+                    'ch' => 'charges',
                     'cn' => 'count',
                     'sk' => 'skin',
                     'bn' => 'binding',
