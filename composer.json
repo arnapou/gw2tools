@@ -45,6 +45,7 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/assetic-bundle": "^2.8",
         "patchwork/jsqueeze": "~2.0",
+	"twig/twig": "1.*",
 		"arnapou/gw2apiclient": "dev-master"
     },
     "require-dev": {
