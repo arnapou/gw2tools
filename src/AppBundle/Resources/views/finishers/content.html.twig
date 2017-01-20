@@ -29,12 +29,21 @@
                         <div class="col-xs-6">
                             <table class="table table-condensed table-hover">
                                 {% for item in objects %}
+                                    {% set unlockItem = item.getUnlockItem(0) %}
                                     <tr class="{{ item.isUnlocked ? 'unlocked' : 'locked' }}">
                                         <td class="icon">
-                                            {% if item.getIcon %}
-                                                <img src="{{ item.getIcon|image }}" />
+                                            {% if unlockItem %}
+                                                <span {{ unlockItem|gwlink|raw }}>
+                                                    {{ block('finisher_icon') }}
+                                                </span>
                                             {% else %}
-                                                <i class="ic-ui-finisher"></i>
+                                                {% block finisher_icon %}
+                                                    {% if item.getIcon %}
+                                                        <img src="{{ item.getIcon|image }}" />
+                                                    {% else %}
+                                                        <i class="ic-ui-finisher"></i>
+                                                    {% endif %}
+                                                {% endblock %}
                                             {% endif %}
                                         </td>
                                         <td class="finisher" title="{{ item.unlockDetails|striptags }}">

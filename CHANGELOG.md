@@ -1,3 +1,9 @@
+## 2.1.8 (2017-01-20)
+
+  - added forgotten pvp rune in pvp build on character page
+  - added GW2BLTC links on tooltips
+  - added hover unlock item for finisher when available in the api
+
 ## 2.1.7 (2017-01-09)
 
   - adding charges on inventory slots when available

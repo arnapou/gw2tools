@@ -331,11 +331,19 @@
                                         {% endfor %}
                                     </div>
                                 {% endif %}
-                                {% if pvp.getAmulet %}
+                                {% if pvp.getAmulet or pvp.getRune %}
                                     <div>
-                                        <span {{ pvp.getAmulet|gwlink|raw }}>
-                                            <img src="{{ pvp.getAmulet|image }}" />
-                                        </span>
+                                        {% if pvp.getRune %}
+                                            <span {{ pvp.getRune|gwlink|raw }}>
+                                                <img src="{{ pvp.getRune|image }}" />
+                                            </span>
+                                            &nbsp;
+                                        {% endif %}
+                                        {% if pvp.getAmulet %}
+                                            <span {{ pvp.getAmulet|gwlink|raw }}>
+                                                <img src="{{ pvp.getAmulet|image }}" />
+                                            </span>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             {% elseif mode == 'wvw' %}
