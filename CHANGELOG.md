@@ -1,3 +1,7 @@
+## 2.1.9 (2017-02-09)
+
+  - added seraph stat
+
 ## 2.1.8 (2017-01-20)
 
   - added forgotten pvp rune in pvp build on character page
