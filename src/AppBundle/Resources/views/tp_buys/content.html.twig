@@ -1,11 +1,13 @@
 
+{% import _self as self %}
+    
 {% set tp = account.tradingpost %}
 
 
 {% if (tp.currentbuys|length) + (tp.historybuys|length) %}
 
-    {{ _self.tp_list('global.tp_current_buys'|trans, tp.currentbuys) }}
-    {{ _self.tp_list('global.tp_history_buys'|trans, tp.historybuys) }}
+    {{ self.tp_list('global.tp_current_buys'|trans, tp.currentbuys) }}
+    {{ self.tp_list('global.tp_history_buys'|trans, tp.historybuys) }}
 
 {% else %}
 

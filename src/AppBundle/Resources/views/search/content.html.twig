@@ -1,5 +1,6 @@
 {% spaceless %}
     {% import "AppBundle::macro.html.twig" as macro %}
+    {% import _self as self %}
 
     {% set fname = app.request.get('name')|lower %}
     {% set frarity = app.request.get('rarity') %}
@@ -17,7 +18,7 @@
 
             {% set found = '' %}
             {% for item in slots %}
-                {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                {% set found = found~self.match(item, fname, frarity, flvlmin, flvlmax) %}
             {% endfor %}
 
             {% if found|trim %}
@@ -38,12 +39,12 @@
                 {% set found = '' %}
 
                 {% for item in char.getEquipments() %}
-                    {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                    {% set found = found~self.match(item, fname, frarity, flvlmin, flvlmax) %}
                 {% endfor %}
 
                 {% for bag in char.getbags() %}
                     {% for item in bag.getInventorySlots() %}
-                        {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                        {% set found = found~self.match(item, fname, frarity, flvlmin, flvlmax) %}
                     {% endfor %}
                 {% endfor %}
 
@@ -66,7 +67,7 @@
             {% set found = '' %}
 
             {% for item in vault.getInventorySlots() %}
-                {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                {% set found = found~self.match(item, fname, frarity, flvlmin, flvlmax) %}
             {% endfor %}
 
             {% if found|trim %}
@@ -89,7 +90,7 @@
             {% set found = '' %}
 
             {% for item in category.getItems() %}
-                {% set found = found~_self.match(item, fname, frarity, flvlmin, flvlmax) %}
+                {% set found = found~self.match(item, fname, frarity, flvlmin, flvlmax) %}
             {% endfor %}
 
             {% if found|trim %}

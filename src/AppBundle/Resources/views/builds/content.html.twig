@@ -1,5 +1,6 @@
 
 {% import "AppBundle::macro.html.twig" as macro %}
+{% import _self as self %}
 
 {% spaceless %}
     {% if account.haspermission('builds') %}
@@ -23,7 +24,7 @@
                             <td>{{ macro.charname(_context, char) }}</td>
                             {% for mode in modes %}
                                 <td class="build">
-                                    {{ _self.build(char.getBuild(mode)) }}
+                                    {{ self.build(char.getBuild(mode)) }}
                                     <a href="../gw2skills-{{ mode }}/{{ char.getname }}" class="gw2skillslink" target="_blank">
                                         <i class="glyphicon glyphicon-link"></i>Gw2Skills
                                     </a>

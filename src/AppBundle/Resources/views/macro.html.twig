@@ -71,8 +71,9 @@
 
 
 {% macro amount(value) %}
+    {% import _self as self %}
     {% if value.buy is not none %}
-        {{ _self.amount(value.buy) }} &#8210; {{ _self.amount(value.sell) }}
+        {{ self.amount(value.buy) }} &#8210; {{ self.amount(value.sell) }}
     {% else %}
         {% set g = (value / 10000)|round(0, 'floor') %}
         {% set s = (value / 100)|round(0, 'floor') % 100 %}
@@ -93,6 +94,7 @@
 
 
 {% macro shared_slots(account, context) %}
+    {% import _self as self %}
     {% set slots = account.inventory %}
     {% if slots|length %}
         <div class="slots">
@@ -103,7 +105,7 @@
             </div>
 
             {% for item in slots %}
-                {{ _self.inventory_slot(item) }}
+                {{ self.inventory_slot(item) }}
             {% endfor %}
 
         </div>
@@ -113,6 +115,7 @@
 
 
 {% macro character_bags(char, context) %}
+    {% import _self as self %}
     {% for bag in char.bags %}
         <div class="slots">
             <div class="bag">
@@ -127,8 +130,8 @@
                 </div>
             </div>
 
-            {% for item in bag.InventorySlots %}
-                {{ _self.inventory_slot(item) }}
+            {% for item in bag.getInventorySlots() %}
+                {{ self.inventory_slot(item, context) }}
             {% endfor %}
 
         </div>
@@ -138,6 +141,7 @@
 
 
 {% macro guild_stash(stash) %}
+    {% import _self as self %}
     <div class="stash">
         <div class="stash-header">
             <div>
@@ -147,19 +151,19 @@
                 <b>{{ stash.getUpgrade.getName }}</b>
             </div>
             <div>
-                {{ _self.amount(stash.getStashPrice) }}
+                {{ self.amount(stash.getStashPrice) }}
             </div>
         </div>
         <div class="slots">
 
             {% for item in stash.InventorySlots %}
-                {{ _self.inventory_slot(item) }}
+                {{ self.inventory_slot(item, none) }}
             {% endfor %}
 
         </div>
         <div class="stash-coins">
             <div class="pull-right">
-                {{ _self.amount(stash.getCoins) }}
+                {{ self.amount(stash.getCoins) }}
             </div>
             <div class="pull-left">
                 {{ stash.getNote() }}

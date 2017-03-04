@@ -22,7 +22,12 @@ class TwigExtension extends \Twig_Extension {
             new \Twig_SimpleFilter('gameduration', [$this, 'gameduration']),
             new \Twig_SimpleFilter('datediff', [$this, 'datediff']),
             new \Twig_SimpleFilter('gwlink', [$this, 'gwlink']),
+            new \Twig_SimpleFilter('idtoname', [$this, 'idtoname']),
         );
+    }
+
+    public function idtoname($item) {
+        return \Arnapou\GW2Api\id_to_name($item);
     }
 
     public function gwlink($item) {

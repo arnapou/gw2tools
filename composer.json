@@ -1,13 +1,13 @@
 {
-	"name": "arnapou/gw2tools",
-	"description": "Arnapou GW2 tools",
-	"authors": [
-		{
-			"name": "Arnaud Buathier",
-			"email": "arnaud@arnapou.net",
-			"homepage": "http://arnapou.net"
-		}
-	],
+    "name": "arnapou/gw2tools",
+    "description": "Arnapou GW2 tools",
+    "authors": [
+        {
+            "name": "Arnaud Buathier",
+            "email": "arnaud@arnapou.net",
+            "homepage": "http://arnapou.net"
+        }
+    ],
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -18,14 +18,14 @@
             "app/AppKernel.php",
             "app/AppCache.php"
         ],
-		"files": ["src/Gw2tool/functions.php"]
+        "files": ["src/Gw2tool/functions.php"]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
-	"repositories": [
+    "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/arnapou/gw2apiclient.git"
@@ -45,8 +45,7 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/assetic-bundle": "^2.8",
         "patchwork/jsqueeze": "~2.0",
-	"twig/twig": "1.*",
-		"arnapou/gw2apiclient": "dev-master"
+        "arnapou/gw2apiclient": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -1,0 +1,119 @@
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% set wallet = account.getWallet() %}
+{% set wallet_mapping = {
+    "ascalonian_catacombs": 5,
+    "caudecus_manor": 9,
+    "twilight_arbor": 11,
+    "sorrows_embrace": 10,
+    "citadel_of_flame": 13,
+    "honor_of_the_waves": 12,
+    "crucible_of_eternity": 14,
+    "ruined_city_of_arah": 6,
+} %}
+
+<style>
+    .table th:last-child,
+    .table td:last-child {
+        text-align: right;
+        width: 1em;
+        white-space: nowrap;
+        font-weight: normal;
+    }
+    .table th:last-child img,
+    .table td:last-child img {
+        margin-left: .5em;
+    }
+    img.currency {
+        width: 1.428em;
+        height: 1.428em;
+    }
+</style>
+
+{% spaceless %}
+
+    <div class="row">
+        <div class="col-xs-6 dungeon">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="ic-ui-dungeon"></i> {{ 'global.dungeons'|trans }}
+                </div>
+                <div class="panel-body">
+                    {% for dungeon in account.getDungeons %}
+                        {% set currency = none %}
+                        {% if wallet_mapping[dungeon.getId()] is defined %}
+                            {% if wallet[wallet_mapping[dungeon.getId()]] is defined %}
+                                {% set currency = wallet[wallet_mapping[dungeon.getId()]] %}
+                            {% endif %}
+                        {% endif %}
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>{{ dungeon }}</th>
+                                    <th>
+                                        {{ currency.quantity }}
+                                        <img src="{{ currency|image }}" class="currency" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for path in dungeon.getPaths() %}
+                                    <tr>
+                                        <td>
+                                            {% if path.isUnlocked() %}
+                                                <i class="glyphicon glyphicon-ok text-success"></i>&nbsp;
+                                            {% else %}
+                                                <i class="glyphicon glyphicon-remove text-muted"></i>&nbsp;
+                                            {% endif %}
+                                            {{ 'global.path'|trans }} {{ path.number }} : {{ path }}
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 raid">
+            {% for raid in account.getRaids() %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="ic-ui-commander"></i> {{ 'global.raid'|trans }} - {{ raid }}
+                    </div>
+                    <div class="panel-body">
+                        {% for wing in raid.getWings() %}
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'global.wing'|trans }} {{ wing.number }} : {{ wing }}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for event in wing.getEvents() %}
+                                        <tr>
+                                            <td>
+                                                {% if event.isUnlocked() %}
+                                                    <i class="glyphicon glyphicon-ok text-success"></i>&nbsp;
+                                                {% else %}
+                                                    <i class="glyphicon glyphicon-remove text-muted"></i>&nbsp;
+                                                {% endif %}
+                                                {{ event }}
+                                            </td>
+                                            <td>{{ event.type }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endspaceless %}

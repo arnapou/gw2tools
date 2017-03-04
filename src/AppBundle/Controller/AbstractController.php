@@ -192,6 +192,17 @@ abstract class AbstractController extends Controller {
             $env->setStorage(new MongoStorage($mongoDB));
             if ($this->getEnv() == 'dev') {
                 $env->setCacheRetention(1800); // 30 min
+                $env->getEventListener()->bind(Environment::onRequest, function($event) {
+                    try {
+                        $logfile = $this->get('kernel')->getRootDir() . '/../var/logs/api_requests.log';
+                        $handle  = fopen($logfile, 'a');
+                        fwrite($handle, $event['code'] . "\t " . sprintf("%.3f", $event['time']) . "\t " . $event['url'] . "\n");
+                        fclose($handle);
+                    }
+                    catch (\Exception $ex) {
+                        
+                    }
+                });
             }
 
             $this->gwEnvironment = $env;

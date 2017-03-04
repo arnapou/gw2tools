@@ -1,0 +1,83 @@
+
+
+{% set outfits = account.outfits %}
+
+
+{% spaceless %}
+
+
+    <div class="panel panel-toggle panel-primary collapsed">
+        <div class="panel-heading">
+            <div class="pull-right expandcollapse">
+                <i class="glyphicon glyphicon-plus"></i>
+                <i class="glyphicon glyphicon-minus"></i>
+            </div>
+            <div class="pull-right" title="{{ (100 * outfits.count / outfits.total)|round }}%">
+                {{ outfits.count }} / {{ outfits.total }}
+            </div>
+            <i class="ic-ui-outfit"></i> {{ page_name }}
+        </div>
+    </div>
+
+    <div style="display: none">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    {% set columns = outfits.outfits|columns(2, false) %}
+                    {% for objects in columns %}
+                        <div class="col-xs-6">
+                            <table class="table table-condensed table-hover">
+                                {% for item in objects %}
+                                    {% set unlockItem = item.getUnlockItem(0) %}
+                                    <tr class="{{ item.isUnlocked ? 'unlocked' : 'locked' }}">
+                                        <td class="icon">
+                                            {% if unlockItem %}
+                                                <span {{ unlockItem|gwlink|raw }}>
+                                                    {{ block('outfit_icon') }}
+                                                </span>
+                                            {% else %}
+                                                {% block outfit_icon %}
+                                                    {% if item.getIcon %}
+                                                        <img src="{{ item.getIcon|image }}" />
+                                                    {% else %}
+                                                        <i class="ic-ui-outfit"></i>
+                                                    {% endif %}
+                                                {% endblock %}
+                                            {% endif %}
+                                        </td>
+                                        <td class="outfit" title="{{ item.unlockDetails|striptags }}">
+                                            {% if item.isunlocked %}
+                                                <i class="glyphicon glyphicon-ok"></i>
+                                            {% else %}
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            {% endif %}
+                                            {{ item.getname }}
+                                        </td>
+                                        <td title="{{ 'global.quantity'|trans }}">
+                                            {% if item.isunlocked %}
+                                                {% if item.isPermanent %}
+                                                    {{ 'global.permanent'|trans }}
+                                                {% elseif item.getQuantity %}
+                                                    {{ item.getQuantity }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endspaceless %}
+
+<script type="text/javascript">
+    $('.panel-toggle').eq(0).trigger('click');
+</script>
+
+

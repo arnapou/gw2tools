@@ -1,3 +1,11 @@
+## 2.1.10 (2017-03-04)
+
+  - added outfits
+  - added dungeon progression
+  - added raid progression
+  - added home nodes unlocks (beta, because api is not filled with all data)
+  - added home cat unlocks (beta, because api is not filled with all data)
+
 ## 2.1.9 (2017-02-09)
 
   - added seraph stat

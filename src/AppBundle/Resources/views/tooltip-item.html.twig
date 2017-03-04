@@ -1,5 +1,6 @@
 
 {% import "AppBundle::macro.html.twig" as macro %}
+{% import _self as self %}
 
 {% set statname = item.statname %}
 {% set attributes = item.attributes %}
@@ -44,10 +45,10 @@
             {% endif %}
         </div>
 
-        {{ _self.upgrades(item.getupgrades) }}
-        {{ _self.upgrades(item.getinfusions) }}
-        {{ _self.infusion_empty(item) }}
-        {{ _self.transmuted(item) }}
+        {{ self.upgrades(item.getupgrades) }}
+        {{ self.upgrades(item.getinfusions) }}
+        {{ self.infusion_empty(item) }}
+        {{ self.transmuted(item) }}
 
     {% elseif item.gettype in ['Armor', 'Back'] %}
 
@@ -65,10 +66,10 @@
             {% endif %}
         </div>
 
-        {{ _self.upgrades(item.getupgrades) }}
-        {{ _self.upgrades(item.getinfusions) }}
-        {{ _self.infusion_empty(item) }}
-        {{ _self.transmuted(item) }}
+        {{ self.upgrades(item.getupgrades) }}
+        {{ self.upgrades(item.getinfusions) }}
+        {{ self.infusion_empty(item) }}
+        {{ self.transmuted(item) }}
 
     {% elseif item.gettype == 'Trinket' %}
 
@@ -81,9 +82,9 @@
             {% endif %}
         </div>
 
-        {{ _self.upgrades(item.getupgrades) }}
-        {{ _self.upgrades(item.getinfusions) }}
-        {{ _self.infusion_empty(item) }}
+        {{ self.upgrades(item.getupgrades) }}
+        {{ self.upgrades(item.getinfusions) }}
+        {{ self.infusion_empty(item) }}
 
     {% elseif item.gettype == 'UpgradeComponent' %}
 

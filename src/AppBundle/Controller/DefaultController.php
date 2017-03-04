@@ -14,6 +14,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends AbstractController {
 
@@ -23,6 +24,13 @@ class DefaultController extends AbstractController {
      */
     public function indexAction(Request $request) {
         return $this->render('index.html.twig');
+    }
+    /**
+     * 
+     * @Route("/{_locale}/menu.html", requirements={"_locale" = "de|en|es|fr"})
+     */
+    public function menuAction(Request $request) {
+        return $this->render('menu.html.twig');
     }
 
     /**

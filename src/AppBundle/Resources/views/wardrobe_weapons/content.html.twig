@@ -1,9 +1,11 @@
 
+{% import _self as self %}
+    
 {% set wardrobe = account.wardrobe.weapons %}
 
-{{ _self.group('global.unlock_weapon_twohands'|trans, ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'], 'weapon', wardrobe, _context) }}
-{{ _self.group('global.unlock_weapon_onehand'|trans, ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'], 'weapon', wardrobe, _context) }}
-{{ _self.group('global.unlock_weapon_aquatic'|trans, ['Speargun', 'Harpoon', 'Trident'], 'weapon', wardrobe, _context) }}
+{{ self.group('global.unlock_weapon_twohands'|trans, ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'], 'weapon', wardrobe, _context) }}
+{{ self.group('global.unlock_weapon_onehand'|trans, ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol', 'Focus', 'Warhorn', 'Shield', 'Torch'], 'weapon', wardrobe, _context) }}
+{{ self.group('global.unlock_weapon_aquatic'|trans, ['Speargun', 'Harpoon', 'Trident'], 'weapon', wardrobe, _context) }}
 
 
 {% macro group(name, types, class, wardrobe, context) %}

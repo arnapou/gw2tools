@@ -150,3 +150,8 @@
 .ic-ui-guild-shield { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe894;&nbsp;'); }
 .ic-ui-guild-upgrades { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe895;&nbsp;'); }
 .ic-ui-guild-treasury { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe896;&nbsp;'); }
+.ic-ui-home { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe897;&nbsp;'); }
+.ic-ui-home-cat { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe898;&nbsp;'); }
+.ic-ui-home-node { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe899;&nbsp;'); }
+.ic-ui-waypoint { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89a;&nbsp;'); }
+.ic-ui-dungeon { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89b;&nbsp;'); }

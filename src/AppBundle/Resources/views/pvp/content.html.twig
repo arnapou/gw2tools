@@ -1,5 +1,6 @@
 
 {% import "AppBundle::macro.html.twig" as macro %}
+{% import _self as self %}
 
 {% set pvp = account.pvp %}
 {% spaceless %}
@@ -31,10 +32,10 @@
                                         {{ ('profession.'~stat.getprofession)|trans }}
                                     </td>
                                     <td>
-                                        {{ _self.progress_matches(100 * stat.gettotal / max, stat.gettotal) }}
+                                        {{ self.progress_matches(100 * stat.gettotal / max, stat.gettotal) }}
                                     </td>
                                     <td class="column-winrate">
-                                        {{ _self.progress_winrate(stat.getwinrate) }}
+                                        {{ self.progress_winrate(stat.getwinrate) }}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -63,11 +64,11 @@
                             <tr>
                                 <td>
                                     {{ 'pvp.total'|trans }}
-                                    {{ _self.progress_matches(100, max) }}
+                                    {{ self.progress_matches(100, max) }}
                                 </td>
                                 <td>
                                     <br />
-                                    {{ _self.progress_winrate(pvp.aggregatestats.winrate) }}
+                                    {{ self.progress_winrate(pvp.aggregatestats.winrate) }}
                                 </td>
                             </tr>
                             {% for key in ['ranked', 'unranked', 'soloarenarated', 'teamarenarated'] %}
@@ -76,11 +77,11 @@
                                     <tr>
                                         <td>
                                             {{ ('pvp.'~key)|trans }}
-                                            {{ _self.progress_matches(max > 0 ? (100 * stat.total / max) : 0, stat.total) }}
+                                            {{ self.progress_matches(max > 0 ? (100 * stat.total / max) : 0, stat.total) }}
                                         </td>
                                         <td>
                                             <br />
-                                            {{ _self.progress_winrate(stat.winrate) }}
+                                            {{ self.progress_winrate(stat.winrate) }}
                                         </td>
                                     </tr>
                                 {% endif %}
@@ -140,7 +141,7 @@
                                 <span class="blue">{{ game.scoreblue }}</span> - <span class="red">{{ game.scorered }}</span>
                             </td>
                             <td class="column-scorebar">
-                                {{ _self.progress_score(game) }}
+                                {{ self.progress_score(game) }}
                             </td>
                         </tr>
                     {% endfor %}

@@ -150,3 +150,8 @@
 .ic-ui-guild-shield:before { content: '\e894'; } /* '' */
 .ic-ui-guild-upgrades:before { content: '\e895'; } /* '' */
 .ic-ui-guild-treasury:before { content: '\e896'; } /* '' */
+.ic-ui-home:before { content: '\e897'; } /* '' */
+.ic-ui-home-cat:before { content: '\e898'; } /* '' */
+.ic-ui-home-node:before { content: '\e899'; } /* '' */
+.ic-ui-waypoint:before { content: '\e89a'; } /* '' */
+.ic-ui-dungeon:before { content: '\e89b'; } /* '' */

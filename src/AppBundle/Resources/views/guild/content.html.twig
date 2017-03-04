@@ -1,6 +1,7 @@
 
 {% import "AppBundle::macro.html.twig" as macro %}
 {% import "AppBundle::pvp/content.html.twig" as pvp %}
+{% import _self as self %}
 
 {% set ctab = app.request.get('tab') %}
 {% set guildLevel = guild.getLevel() %}
@@ -75,7 +76,7 @@
                                                         <div class="upgrade-cost {{ treasury.getCount >= cost.getCount() ? 'done' : '' }}">
                                                             <span>
                                                                 <img src="{{ cost.getItem()|image }}" {{ cost.getItem()|gwlink|raw }} />
-                                                                {{ _self.pct(treasury.getCount, cost.getCount) }}
+                                                                {{ self.pct(treasury.getCount, cost.getCount) }}
                                                             </span>
                                                             <span>{{ cost.getCount() }}</span>
                                                         </div>
@@ -225,7 +226,7 @@
                             <tr>
                                 <td>
                                     <img src="{{ obj.getItem|image }}" {{ obj.getItem|gwlink|raw }} />
-                                    {{ _self.pct(obj.getItem.getCount, obj.getTotalCount) }}
+                                    {{ self.pct(obj.getItem.getCount, obj.getTotalCount) }}
                                     <div>{{ obj.getItem.getCount }}</div>
                                 </td>
                                 <td>

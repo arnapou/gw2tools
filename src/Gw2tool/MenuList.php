@@ -76,6 +76,8 @@ class MenuList implements \IteratorAggregate {
         $menu->addItem('minis', $tr->trans('menu.unlocks.minis'), null, 'ic-ui-minipets')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('titles', $tr->trans('menu.unlocks.titles'), null, 'ic-ui-title')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('finishers', $tr->trans('menu.unlocks.finishers'), null, 'ic-ui-finisher')->setPermission(Account::PERMISSION_UNLOCKS);
+        $menu->addItem('outfits', $tr->trans('menu.unlocks.outfits'), null, 'ic-ui-hero')->setPermission(Account::PERMISSION_UNLOCKS);
+        $menu->addItem('home', $tr->trans('menu.unlocks.home'), null, 'ic-ui-home')->setPermission(Account::PERMISSION_PROGRESSION);
         $this->addMenu($menu);
 
         // OTHERS 
@@ -85,6 +87,7 @@ class MenuList implements \IteratorAggregate {
         $menu->addSeparator();
         $menu->addItem('achievements_daily', $tr->trans('menu.achievements.daily'), null, 'ic-ui-arenanet');
         $menu->addItem('achievements', $tr->trans('menu.achievements'), null, 'ic-ui-arenanet');
+        $menu->addItem('dungeons_raids', $tr->trans('menu.dungeons_raids'), null, 'ic-ui-dungeon')->setPermission(Account::PERMISSION_PROGRESSION);
         if (!empty($guilds) && is_array($guilds)) {
             $menu->addSeparator();
             foreach ($guilds as $id => /* @var $guild Guild */ $guild) {

@@ -17,12 +17,14 @@
     }
 </style>
 
-{% for row in [['pvp', 'wvw'], ['pve', 'special']] %}
+{% spaceless %}
+
+    {% set index = 0 %}
     <div class="row">
-        {% for env in row %}
-            <div class="col-xs-6 summary">
-                {% set items = daily[env] %}
-                {% if items and items|length %}
+        {% for env in ['pvp', 'wvw', 'pve', 'special', 'fractals'] %}
+            {% set items = daily[env] %}
+            {% if items and items|length %}
+                <div class="col-xs-6 summary">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="ic-ui-arenanet"></i> {{ page_name }} - {{ ('global.'~env)|trans }}
@@ -56,8 +58,14 @@
                             </table>
                         </div>
                     </div>
+                </div>
+                {% set index = index + 1 %}
+                {% if index % 2 == 0 %}
+                </div>
+                <div class="row">
                 {% endif %}
-            </div>
+            {% endif %}
         {% endfor %}
     </div>
-{% endfor %}
+
+{% endspaceless %}
