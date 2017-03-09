@@ -57,8 +57,9 @@ class CalculateStatisticsCommand extends AbstractCommand {
                 // ignore if the account was not connected for 1 week
                 continue;
             }
+            $data = isset($statistics[$accountName]) ? $statistics[$accountName] : null;
             if (
-                !isset($statistics[$accountName]) || // no data previously calculated > do it !
+                empty($data) || // no data previously calculated > do it !
                 $data['last_update'] <= time() - Account::STATISTIC_RETENTION_SECONDS // old, we should calculate again
             ) {
 
@@ -81,8 +82,10 @@ class CalculateStatisticsCommand extends AbstractCommand {
                 catch (\Exception $ex) {
                     $output->writeln("<error>" . $ex->getMessage() . "</error>");
 
-                    $data['last_update'] = time();
-                    $collection->updateOne(['account' => $accountName], ['$set' => $data], ['upsert' => true]);
+                    if ($data) {
+                        $data['last_update'] = time();
+                        $collection->updateOne(['account' => $accountName], ['$set' => $data], ['upsert' => true]);
+                    }
                 }
                 if ($disableAccount) {
                     $token->setIsValid(false);
