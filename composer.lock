@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e000f9c6bc3f2ec207c29040da143814",
-    "content-hash": "72f11edaf3a42527fb8c8ea3714a20b9",
+    "hash": "36219d4e12a7bbf372cb71792afa6816",
+    "content-hash": "cbba525039904459021ab38a6abd5be0",
     "packages": [
         {
             "name": "arnapou/gw2apiclient",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "22ddb22e96f7a505dccacd3fa027025fd344e341"
+                "reference": "ec7e75371940cdb0dcc539f5c30bc8e0dd2ef1f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/22ddb22e96f7a505dccacd3fa027025fd344e341",
-                "reference": "22ddb22e96f7a505dccacd3fa027025fd344e341",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/ec7e75371940cdb0dcc539f5c30bc8e0dd2ef1f8",
+                "reference": "ec7e75371940cdb0dcc539f5c30bc8e0dd2ef1f8",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2017-03-09 00:30:15"
+            "time": "2017-03-09 19:53:03"
         },
         {
             "name": "doctrine/annotations",
@@ -1446,16 +1446,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.1",
+            "version": "v4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "f2ce0035fc512287978510ca1740cd111d60f89f"
+                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/f2ce0035fc512287978510ca1740cd111d60f89f",
-                "reference": "f2ce0035fc512287978510ca1740cd111d60f89f",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/56bded66985e22f6eac2cf86735fd21c625bff2f",
+                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f",
                 "shasum": ""
             },
             "require": {
@@ -1486,7 +1486,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-02-18 17:53:25"
+            "time": "2017-03-09 17:33:20"
         },
         {
             "name": "swiftmailer/swiftmailer",
