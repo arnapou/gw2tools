@@ -110,7 +110,7 @@ class Account extends \Arnapou\GW2Api\Model\Account {
     public function calculateStatistics(MongoCollection $collection, $quiet = true) {
         try {
             $data = $collection->findOne(['account' => $this->getName()]);
-            if (!empty($data) && $data['last_update'] > time() - STATISTIC_RETENTION_SECONDS) {
+            if (!empty($data) && $data['last_update'] > time() - self::STATISTIC_RETENTION_SECONDS) {
                 return;
             }
 
