@@ -229,9 +229,13 @@ class PageController extends AbstractController {
                 throw $this->createNotFoundException('Unknown page.');
             }
             $statistics = new Statistics($this, $this->account);
-            if (!$this->token->hasRight('other.disable_statistics') && $this->token->isValid()) {
-                $statistics->calculateStatistics();
-            }
+            // 
+            // 2017-03-09 disabled dynamic calculation
+            // cron will now compute stats
+            // 
+//            if (!$this->token->hasRight('other.disable_statistics') && $this->token->isValid()) {
+//                $statistics->calculateStatistics();
+//            }
         }
         return [
             'page'       => $page,

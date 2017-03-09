@@ -1,6 +1,15 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    gw2apiclient.debug.request: 1
+    gw2apiclient.cache.duration: 900
+    gw2apiclient.cache.rules: 
+        '/v1/guild_details': 3600
+        '/v2/account': 1800
+        '/v2/guild/': 600
+        '/v2/tokeninfo': 86400
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"

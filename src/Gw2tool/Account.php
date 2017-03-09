@@ -29,10 +29,13 @@ use MongoDB\Collection as MongoCollection;
 
 class Account extends \Arnapou\GW2Api\Model\Account {
 
+    const STATISTIC_RETENTION_SECONDS = 14400; // 4 hours
+
     /**
      *
      * @var type 
      */
+
     private $characterEquipments = [];
 
     public function getCharacterNames() {
@@ -107,7 +110,7 @@ class Account extends \Arnapou\GW2Api\Model\Account {
     public function calculateStatistics(MongoCollection $collection, $quiet = true) {
         try {
             $data = $collection->findOne(['account' => $this->getName()]);
-            if (!empty($data) && time() - $data['last_update'] < 86400) {
+            if (!empty($data) && $data['last_update'] > time() - STATISTIC_RETENTION_SECONDS) {
                 return;
             }
 

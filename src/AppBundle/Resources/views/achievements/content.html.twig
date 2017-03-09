@@ -17,7 +17,7 @@
                 <table style="width: 100%;">
                     {% for item in category.getAchievements %}
                         {% set ap = aps[item.getId] %}
-                        <tr class="ap-achievement {{ item.isDone ? 'completed' : '' }} {{ ap.getTotalAP() == item.getTotalAP() and item.getTotalAP() > 0 ? 'completed' : '' }}" data-id="{{ item.getId }}">
+                        <tr class="ap-achievement {{ ap.isDone ? 'completed' : '' }} {{ ap.getTotalAP() == item.getTotalAP() and item.getTotalAP() > 0 ? 'completed' : '' }}" data-id="{{ item.getId }}">
                             <td class="flex">
                                 <img src="{{ (item.getIcon ? item : category)|image }}">
                             </td>

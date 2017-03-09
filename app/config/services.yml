@@ -16,4 +16,4 @@ services:
     app.mongo:
         class: AppBundle\Service\MongoService
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]
-        
+    

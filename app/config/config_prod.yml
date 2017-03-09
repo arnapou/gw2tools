@@ -1,6 +1,15 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    gw2apiclient.debug.request: 0
+    gw2apiclient.cache.duration: 300
+    gw2apiclient.cache.rules: 
+        '/v1/guild_details': 3600
+        '/v2/account': 3600
+        '/v2/guild/': 600
+        '/v2/tokeninfo': 86400
+
 #doctrine:
 #    orm:
 #        metadata_cache_driver: apc

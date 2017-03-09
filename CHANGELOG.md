@@ -1,3 +1,9 @@
+## 2.1.11 (2017-03-09)
+
+  - bugfix success not flagged as realized
+  - bugfix recursive requests for skills
+  - improve requests performance
+
 ## 2.1.10 (2017-03-04)
 
   - added outfits

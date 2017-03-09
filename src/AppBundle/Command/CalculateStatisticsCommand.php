@@ -35,51 +35,70 @@ class CalculateStatisticsCommand extends AbstractCommand {
         $manager    = $this->getDoctrine()->getManager();
         $repo       = $this->getDoctrine()->getRepository(Token::class);
 
+        $tokens = [];
+        foreach ($repo->findAll() as /* @var $token Token */ $token) {
+            $tokens[$token->getName()] = $token;
+        }
+
+        $statistics = [];
         foreach ($collection->find() as $data) {
             if (!isset($data['account']) || !isset($data['last_update'])) {
                 continue;
             }
-            if ($data['last_update'] > time() - 86400) {
-                // ignore if statistic is fresh
-                continue;
-            }
+            $statistics[$data['account']] = $data;
+        }
 
-            $accountName = $data['account'];
-            $token       = $repo->findOneBy(['name' => $accountName]);
-            if (empty($token) || !$token->hasRight('other.disable_statistics')) {
+        foreach ($tokens as $accountName => /* @var $token Token */ $token) {
+            if ($token->hasRight('other.disable_statistics')) {
                 $collection->deleteMany(['name' => $accountName]);
                 continue;
             }
+            if ($token->getLastaccess() < time() - 86400 * 7) {
+                // ignore if the account was not connected for 1 week
+                continue;
+            }
+            if (
+                !isset($statistics[$accountName]) || // no data previously calculated > do it !
+                $data['last_update'] <= time() - Account::STATISTIC_RETENTION_SECONDS // old, we should calculate again
+            ) {
 
-            $disableAccount = false;
-            try {
-                $env->setAccessToken((string) $token);
-                $account = new Account($env);
-                $account->getName(); // used only to trigger InvalidTokenException if something is wrong
+                $disableAccount = false;
+                try {
+                    $env->setAccessToken((string) $token);
+                    $account = new Account($env);
+                    $account->getName(); // used only to trigger InvalidTokenException if something is wrong
 
-                if ($account->calculateStatistics($collection)) {
-                    $output->writeln("statistics calclulated for <info>" . $accountName . "</info>");
+                    if ($account->calculateStatistics($collection)) {
+                        $output->writeln("statistics calclulated for <info>" . $accountName . "</info>");
+                    }
+                }
+                catch (InvalidTokenException $ex) {
+                    $disableAccount = true;
+                }
+                catch (MissingPermissionException $ex) {
+                    $disableAccount = true;
+                }
+                catch (\Exception $ex) {
+                    $output->writeln("<error>" . $ex->getMessage() . "</error>");
+
+                    $data['last_update'] = time();
+                    $collection->updateOne(['account' => $accountName], ['$set' => $data], ['upsert' => true]);
+                }
+                if ($disableAccount) {
+                    $token->setIsValid(false);
+                    $manager->persist($token);
+                    $manager->flush();
+                    $collection->deleteMany(['name' => $accountName]);
+
+                    $output->writeln("disabled statistics for <info>" . $accountName . "</info>");
                 }
             }
-            catch (InvalidTokenException $ex) {
-                $disableAccount = true;
-            }
-            catch (MissingPermissionException $ex) {
-                $disableAccount = true;
-            }
-            catch (\Exception $ex) {
-                $output->writeln("<error>" . $ex->getMessage() . "</error>");
+        }
 
-                $data['last_update'] = time();
-                $collection->updateOne(['account' => $accountName], ['$set' => $data], ['upsert' => true]);
-            }
-            if ($disableAccount) {
-                $token->setIsValid(false);
-                $manager->persist($token);
-                $manager->flush();
+        foreach ($statistics as $accountName => $data) {
+            if (!isset($tokens[$accountName])) {
+                // old statistics we should delete
                 $collection->deleteMany(['name' => $accountName]);
-
-                $output->writeln("disabled statistics for <info>" . $accountName . "</info>");
             }
         }
     }

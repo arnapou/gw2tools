@@ -190,13 +190,26 @@ abstract class AbstractController extends Controller {
             $env          = new Environment($this->getTranslator()->getLocale());
             $env->setCache($cache);
             $env->setStorage(new MongoStorage($mongoDB));
-            if ($this->getEnv() == 'dev') {
-                $env->setCacheRetention(1800); // 30 min
+            $env->setCacheRetention($this->getParameter('gw2apiclient.cache.duration'));
+            // cache rules
+            $cacheRules   = $this->getParameter('gw2apiclient.cache.rules');
+            if (is_array($cacheRules)) {
+                foreach ($cacheRules as $apiEndpoint => $seconds) {
+                    $env->addCacheRetentionRule($apiEndpoint, $seconds);
+                }
+            }
+            // log gw2 api requests if debug
+            if ($this->getParameter('gw2apiclient.debug.request')) {
                 $env->getEventListener()->bind(Environment::onRequest, function($event) {
                     try {
-                        $logfile = $this->get('kernel')->getRootDir() . '/../var/logs/api_requests.log';
+                        $logfile = $this->get('kernel')->getRootDir() . '/../var/logs/gw2apiclient.requests.log';
                         $handle  = fopen($logfile, 'a');
-                        fwrite($handle, $event['code'] . "\t " . sprintf("%.3f", $event['time']) . "\t " . $event['url'] . "\n");
+                        $message = date('Y-m-d H:i:s')
+                            . "\t" . $event['code']
+                            . "\t " . sprintf("%.3f", $event['time'])
+                            . "\t " . (!empty($this->token) ? $this->token->getCode() : '          ')
+                            . "\t " . $event['url'];
+                        fwrite($handle, $message . "\n");
                         fclose($handle);
                     }
                     catch (\Exception $ex) {
