@@ -26,11 +26,6 @@ abstract class AbstractController extends Controller {
 
     use \Gw2tool\Gw2ApiEnvironmentTrait;
 
-    /**
-     *
-     * @var Environment
-     */
-    private $gwEnvironment = null;
 
     /**
      *

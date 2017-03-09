@@ -17,3 +17,8 @@ services:
         class: AppBundle\Service\MongoService
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]
     
+    app.request.listener:
+        class: AppBundle\EventListener\RequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

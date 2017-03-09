@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "36219d4e12a7bbf372cb71792afa6816",
-    "content-hash": "cbba525039904459021ab38a6abd5be0",
+    "hash": "e000f9c6bc3f2ec207c29040da143814",
+    "content-hash": "72f11edaf3a42527fb8c8ea3714a20b9",
     "packages": [
         {
             "name": "arnapou/gw2apiclient",
@@ -2329,20 +2329,23 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "996374975357b569ea319ec1c98c5ca0f7dda610"
+                "reference": "6de70e232e8b60e4247ea49d6d51b04a943c4972"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/996374975357b569ea319ec1c98c5ca0f7dda610",
-                "reference": "996374975357b569ea319ec1c98c5ca0f7dda610",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/6de70e232e8b60e4247ea49d6d51b04a943c4972",
+                "reference": "6de70e232e8b60e4247ea49d6d51b04a943c4972",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "conflict": {
+                "phpunit/phpunit": ">=6.0"
             },
             "suggest": {
                 "ext-zip": "Zip support is required when using bin/simple-phpunit",
@@ -2384,7 +2387,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21 17:06:35"
+            "time": "2017-03-06 16:08:22"
         }
     ],
     "aliases": [],
