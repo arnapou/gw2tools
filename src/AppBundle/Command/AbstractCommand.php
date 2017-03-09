@@ -11,15 +11,13 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Twig\MongoService;
-use Arnapou\GW2Api\Cache\MongoCache;
 use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Model\AbstractStoredObject;
-use Arnapou\GW2Api\Storage\MongoStorage;
-use MongoClient;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand {
+
+    use \Gw2tool\Gw2ApiEnvironmentTrait;
 
     /**
      * 
@@ -35,21 +33,6 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
      */
     public function getLocales() {
         return $this->getContainer()->getParameter('locales');
-    }
-
-    /**
-     * 
-     * @return Environment
-     */
-    public function getGwEnvironment($lang) {
-        $mongoService = $this->getContainer()->get('app.mongo'); /* @var $mongoService MongoService */
-        $mongoDB      = $mongoService->getCacheDatabase();
-        $cache        = new MongoCache($mongoDB);
-        $env          = new Environment($lang);
-        $env->setCache($cache);
-        $env->setStorage(new MongoStorage($mongoDB));
-
-        return $env;
     }
 
     /**

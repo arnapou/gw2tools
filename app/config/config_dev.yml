@@ -21,15 +21,35 @@ web_profiler:
     intercept_redirects: false
 
 monolog:
+    channels: ['gw2frontrequests', 'gw2consolerequests']
     handlers:
         main:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
-            channels: [!event]
+            type:            rotating_file
+            max_files:       3
+            path:            "%kernel.logs_dir%/%kernel.environment%.log"
+            level:           debug
+            channels:        [!event, !gw2frontrequests, !gw2consolerequests]
+            filename_format: '{date}.{filename}'
+            date_format:     'Ymd'
+        gw2frontrequests:
+            type:            rotating_file
+            max_files:       10
+            path:            "%kernel.logs_dir%/gw2frontrequests.log"
+            level:           debug
+            channels:        [gw2frontrequests]
+            filename_format: '{date}.{filename}'
+            date_format:     'Ymd'
+        gw2consolerequests:
+            type:            rotating_file
+            max_files:       10
+            path:            "%kernel.logs_dir%/gw2consolerequests.log"
+            level:           debug
+            channels:        [gw2consolerequests]
+            filename_format: '{date}.{filename}'
+            date_format:     'Ymd'
         console:
-            type:   console
-            channels: [!event, !doctrine]
+            type:            console
+            channels:       [!event, !doctrine, !gw2frontrequests, !gw2consolerequests]
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:
