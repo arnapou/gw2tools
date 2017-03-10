@@ -1,20 +1,38 @@
 {% extends "AppBundle::base.html.twig" %}
 
 {% block content %}
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                GW2 Tools is a pure Gw2 api <b>browser</b>.<br />
+                It will not display any information that is not present on the official api.
+            </h3>
+        </div>
+    </div>
+    <p>
+        When you first access the website the first time of the day, it can take a few seconds to requests data from Gw2 api (~4 sec in average only to retrieve characters data, it depends on characters number). 
+        After that, all is in cache for 5 min and will be fast.
+    </p>
+    
     <h1>Development</h1>
     <p>
         The site is a "server" oriented development. Not a frontend javascript application.<br />
-        Technically, this is pure object oriented PHP 5.5+.
+        Technically, this is pure object oriented PHP 7+.
+    </p>
+    <p>
+        We can argue forever about the choice I made: developping it server side and not front side with javascript. There are pro and con.<br />
+        I wanted to build an account browser which won't be heavy for Arenanet Api. I needed to proxify images, to cache requests and so on.<br />
+        Too much Gw2 fan websites don't care about the load they make on Gw2 Api servers.
     </p>
     <p>
         Images are cached by CloudFlare and by me on the server with a long time retention.
     </p>
     <p>
-        Gw2 api request are cached (5 min) in a MongoDB database and data are dynamically stored into Mongo collections. Almost all data is daily refreshed, prices are refresh more often.
+        Gw2 api request are cached (5 min for most of them) in a MongoDB database and data are dynamically stored into Mongo collections. Almost all data is daily refreshed, prices are refreshed more often (15 min).
     </p>
     <p>
-        The codes used to share pages (ie 'R2eZnmgC4B') are randomly generated (no hashing function used = no possibility to find a link between code and access token).<br />
-        Codes, Tokens and share preferences are stored locally in a MySql database.<br />
+        The codes used to share pages (ie 'R2eZnmgC4B') are randomly generated (no hashing function used = no possibility to guess a code from access token or vice versa).<br />
+        Tokens, their related code and share preferences are stored locally in a MySql database. Tokens and codes not used for 1 year are automatically deleted.<br />
         To be authentified and to allow the site to show your accounts, the site store tokens in a browser cookie (maximum 20 tokens stored).
     </p>
 
@@ -26,7 +44,7 @@
     <p>
         <a href="https://github.com/arnapou/gw2apiclient">GW2 Api Client</a> is a site agnostic project which allow you to request GW2 Api with caching (file, mysql, mongo, memcached, ...).<br />
         This is the low level PHP code used on the site.<br />
-        You can use it for your own project (but I won't help, you must have the technical prerequisites).
+        You can use it for your own project (but you must know to write PHP code).
     </p>
     <p>
         If you want to contribute, forks the project and make pull requests.
@@ -37,7 +55,7 @@
 
     <h1>Plateform</h1>
     <p>
-        The site is hosted at <a href="https://www.ovh.com/">OVH</a> on a dedicated server. This is not a big server, be kind if you have lags sometimes.
+        The site is hosted at <a href="https://www.ovh.com/">OVH</a> on a VPS server. This is not a big server, be kind if you have lags sometimes.
     </p>
     <p>
         The trafic is going through <a href="https://www.cloudflare.com/">CloudFlare</a> for better performances.
@@ -50,6 +68,7 @@
         Well I did lots of things, also was a Ms sysadmin for a few years (ms Exchange, Active Directory and so on ...)<br />
     </p>
     <p>
-        All that to say that I aim to make a functional / efficient site, and not a beautiful GUI ! Even if I have graphical/ergonomy skills (thanks to Ms Surface development).
+        All that to say that I aim to make a functional / efficient site, and not a beautiful GUI ! Even if I have graphical/ergonomy skills (thanks to Ms Surface development).<br />
+        If designers want to customize this website or make themes, contact me.
     </p>
 {% endblock %}
