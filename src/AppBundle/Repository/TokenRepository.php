@@ -42,8 +42,13 @@ class TokenRepository extends \Doctrine\ORM\EntityRepository {
         $entity->setToken($token);
         $entity->setData([
             'rights' => [
-                'account',
-                'characters',
+                // disabled the 2017-03-10
+                // following suggestion of cylonapplepie
+                // link: https://www.reddit.com/r/Guildwars2/comments/5ylb2w/api_gw2toolnet_v2111_account_browser/deqzifm/
+//                'account',
+//                'characters',
+                'other.limit_characters',
+                'other.disable_statistics',
             ],
         ]);
         $this->_em->persist($entity);

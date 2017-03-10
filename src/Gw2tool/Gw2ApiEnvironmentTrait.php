@@ -59,6 +59,7 @@ trait Gw2ApiEnvironmentTrait {
         $env          = new Environment($lang);
         $env->setCache($cache);
         $env->setStorage(new MongoStorage($mongoDB));
+        $env->setCurlRequestTimeout(20);
         $env->setCacheRetention($container->getParameter('gw2apiclient.cache.duration'));
 
         // cache rules

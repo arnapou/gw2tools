@@ -19,7 +19,7 @@ $(function() {
 
     function isValidToken(token) {
         token = String(token);
-        if (token.match(/^[A-F0-9-]{70,80}$/)) {
+        if (token.match(/^\s*[A-F0-9-]{70,80}\s*$/)) {
             $('.alert.token-error').fadeOut(400);
             return true;
         }
