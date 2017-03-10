@@ -75,7 +75,7 @@ class ApiController extends AbstractController {
     public function tokenReplaceAction(Request $request) {
         $return = [];
         try {
-            $newtoken = $request->get('token');
+            $newtoken = trim($request->get('token'));
             $token    = $this->getOwnerTokenFromCode($request->get('code'));
             $manager  = $this->getDoctrine()->getManager();
             if ($token->getToken() == $newtoken) {
@@ -160,7 +160,7 @@ class ApiController extends AbstractController {
     public function tokenCheckAction(Request $request) {
         $return = [];
         try {
-            $paramToken = $request->get('token');
+            $paramToken = trim($request->get('token'));
             if (empty($paramToken)) {
                 throw new InvalidTokenException('No token was provided.');
             }
