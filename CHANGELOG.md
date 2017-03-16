@@ -1,3 +1,7 @@
+## 2.1.12 (2017-03-16)
+
+  - adding gliders
+
 ## 2.1.11 (2017-03-09)
 
   - bugfix success not flagged as realized

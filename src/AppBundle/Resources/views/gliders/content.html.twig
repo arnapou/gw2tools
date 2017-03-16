@@ -1,6 +1,6 @@
 
 
-{% set outfits = account.outfits %}
+{% set gliders = account.gliders %}
 
 
 {% spaceless %}
@@ -12,10 +12,10 @@
                 <i class="glyphicon glyphicon-plus"></i>
                 <i class="glyphicon glyphicon-minus"></i>
             </div>
-            <div class="pull-right" title="{{ (100 * outfits.count / outfits.total)|round }}%">
-                {{ outfits.count }} / {{ outfits.total }}
+            <div class="pull-right" title="{{ (100 * gliders.count / gliders.total)|round }}%">
+                {{ gliders.count }} / {{ gliders.total }}
             </div>
-            <i class="ic-ui-outfit"></i> {{ page_name }}
+            <i class="ic-ui-glider"></i> {{ page_name }}
         </div>
     </div>
 
@@ -24,7 +24,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
-                    {% set columns = outfits.outfits|columns(2, false) %}
+                    {% set columns = gliders.gliders|columns(2, false) %}
                     {% for objects in columns %}
                         <div class="col-xs-6">
                             <table class="table table-condensed table-hover">
@@ -34,19 +34,19 @@
                                         <td class="icon">
                                             {% if unlockItem %}
                                                 <span {{ unlockItem|gwlink|raw }}>
-                                                    {{ block('outfit_icon') }}
+                                                    {{ block('glider_icon') }}
                                                 </span>
                                             {% else %}
-                                                {% block outfit_icon %}
+                                                {% block glider_icon %}
                                                     {% if item.getIcon %}
                                                         <img src="{{ item.getIcon|image }}" />
                                                     {% else %}
-                                                        <i class="ic-ui-outfit"></i>
+                                                        <i class="ic-ui-glider"></i>
                                                     {% endif %}
                                                 {% endblock %}
                                             {% endif %}
                                         </td>
-                                        <td class="outfit">
+                                        <td class="glider" title="{{ item.getdescription|striptags }}">
                                             {% if item.isunlocked %}
                                                 <i class="glyphicon glyphicon-ok"></i>
                                             {% else %}

@@ -1408,6 +1408,31 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 
 /************************************************/
 
+.page-gliders table td  {
+    line-height: 2em !important;
+}
+.page-gliders td.icon {
+    width: 2em;
+}
+.page-gliders td.icon img {
+    height: 2em;
+}
+.page-gliders .unlocked i {
+    color: #ddd;
+}
+.page-gliders .locked td.category,
+.page-gliders .locked td.icon {
+    opacity: .3;
+}
+.page-gliders .locked td.glider {
+    color: #a00 !important;
+}
+.page-gliders td.glider .glyphicon {
+    margin-right: .5em;
+}
+
+/************************************************/
+
 .page-outfits table td  {
     line-height: 2em !important;
 }

@@ -77,6 +77,7 @@ class MenuList implements \IteratorAggregate {
         $menu->addItem('titles', $tr->trans('menu.unlocks.titles'), null, 'ic-ui-title')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('finishers', $tr->trans('menu.unlocks.finishers'), null, 'ic-ui-finisher')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('outfits', $tr->trans('menu.unlocks.outfits'), null, 'ic-ui-hero')->setPermission(Account::PERMISSION_UNLOCKS);
+        $menu->addItem('gliders', $tr->trans('menu.unlocks.gliders'), null, 'ic-ui-glider')->setPermission(Account::PERMISSION_UNLOCKS);
         $menu->addItem('home', $tr->trans('menu.unlocks.home'), null, 'ic-ui-home')->setPermission(Account::PERMISSION_PROGRESSION);
         $this->addMenu($menu);
 
