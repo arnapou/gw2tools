@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "bf685ce4c706bb3a80216bdbf1ea9e55b0e7512d"
+                "reference": "40d95af046d539202771a65ad0d49bc8410af550"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/bf685ce4c706bb3a80216bdbf1ea9e55b0e7512d",
-                "reference": "bf685ce4c706bb3a80216bdbf1ea9e55b0e7512d",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/40d95af046d539202771a65ad0d49bc8410af550",
+                "reference": "40d95af046d539202771a65ad0d49bc8410af550",
                 "shasum": ""
             },
             "require": {
@@ -27,8 +27,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Arnapou\\GW2Api": "src/Arnapou/GW2Api/",
-                    "Arnapou\\GW2Skills": "src/Arnapou/GW2Skills/"
+                    "Arnapou\\GW2Api\\": "src/Arnapou/GW2Api/",
+                    "Arnapou\\GW2Skills\\": "src/Arnapou/GW2Skills/"
                 },
                 "files": [
                     "src/Arnapou/GW2Api/functions.php"
@@ -46,7 +46,7 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2017-06-24 18:39:57"
+            "time": "2017-06-24 18:47:20"
         },
         {
             "name": "composer/ca-bundle",
