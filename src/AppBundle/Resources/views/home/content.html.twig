@@ -1,88 +1,10 @@
 
 {% import "AppBundle::macro.html.twig" as macro %}
 
-{% set client = account.getEnvironment().getClientVersion2() %}
-{% set cats = client.apiAccountHomeCats() %}
-{% set nodes = client.apiAccountHomeNodes()|sort %}
-
-{% set allnodes = [
-        "basic_ore_nodes",
-        "basic_lumber_nodes",
-        "basic_harvesting_nodes",
-        "basic_cloth_rack",
-        "basic_leather_rack",
-        "hard_wood_node",
-        "ancient_wood_node",
-        "elder_wood_node",
-        "iron_ore_node",
-        "platinum_ore_node",
-        "mithril_ore_node",
-        "orichalcum_ore_node",
-        "omnomberry_node",
-        "snow_truffle_node",
-        "lotus_node",
-        "orrian_truffle_node",
-        "flaxseed_node",
-        "ghost_pepper_node",
-        "aurilium_node",
-        "enchanted_treasure_chest",
-        "candy_corn_node",
-        "wintersday_tree",
-        "quartz_node",
-        "sprocket_generator",
-        "krait_obelisk",
-        "bandit_chest",
-        "bloodstone_crystals",
-        "king_sized_candy_corn",
-        "airship_cargo",
-        "crystallized_supply_cache",
-        "exalted_chest",
-        "petrified_stump",
-        "winterberry_bush",
-        "jade_fragment",
-        "noxious_pod"
-]|sort %}
-
-{% set allcats = {
-        1  : "chicken",
-        2  : "grilled_chicken",
-        3  : "spicy_flank",
-        4  : "spicier_flank",
-        5  : "fire_flank",
-        6  : "prickley_pear_sorbet",
-        7  : "ginger_lime_icecream",
-        8  : "saffron_mango_icecream",
-        9  : "peach_raspberry_icecream",
-        10 : "chicken_day",
-        11 : "chicken_night",
-        12 : "warrior",
-        13 : "mesmer",
-        14 : "ranger",
-        15 : "guardian",
-        16 : "elementalist",
-        17 : "engineer",
-        18 : "revenant",
-        19 : "thief",
-        20 : "necromancer",
-        21 : "lava_skritt",
-        22 : "ghost_peppers",
-        23 : "halloween",
-        24 : "snow_leopard",
-        25 : "frozen",
-        26 : "ice",
-        27 : "freezer",
-        28 : "cold",
-        29 : "cadeucus",
-        30 : "bundle",
-        32 : "ghost"
-} %}
+{% set cats = account.getHomeCats() %}
+{% set nodes = account.getHomeNodes() %}
 
 {% spaceless %}
-
-    <div class="alert alert-warning" role="alert">
-        I am sorry, but Gw2tool cannot currently show you a "nice" view because the Gw2 API is not filled with all data.<br />
-        You will find bellow the "raw" data from the api.<br />
-    </div>
 
     <div class="row">
         <div class="col-xs-6">
@@ -92,30 +14,18 @@
                 </div>
                 <div class="panel-body">
                     
-                    <a href="https://wiki.guildwars2.com/wiki/Hungry_cat_scavenger_hunt" class="btn btn-warning" target="_blank">
-                        Wiki cats tracker page &nbsp; <i class="glyphicon glyphicon-new-window"></i>
-                    </a>
-                    <p>&nbsp;</p>
-
                     <table class="table table-hover table-condensed">
                         <tbody>
-                            {% for id, hint in allcats %}
-                                {% set found = 0 %}
-                                {% for item in cats %}
-                                    {% if item.id == id %}
-                                        {% set found = 1 %}
-                                    {% endif %}
-                                {% endfor %}
+                            {% for cat in cats %}
                                 <tr>
                                     <td>
-                                        {% if found %}
+                                        {% if cat.isUnlocked() %}
                                             <i class="glyphicon glyphicon-ok text-success"></i>&nbsp;
                                         {% else %}
                                             <i class="glyphicon glyphicon-remove text-muted"></i>&nbsp;
                                         {% endif %}
-                                        {{ hint|idtoname }}
+                                        {{ cat.getHint()|idtoname }}
                                     </td>
-                                    <td class="text-right text-muted">#{{ id }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -131,22 +41,17 @@
                 </div>
                 <div class="panel-body">
                     
-                    <a href="https://wiki.guildwars2.com/wiki/Home_instance" class="btn btn-warning" target="_blank">
-                        Wiki full node list &nbsp; <i class="glyphicon glyphicon-new-window"></i>
-                    </a>
-                    <p>&nbsp;</p>
-                    
                     <table class="table table-hover table-condensed">
                         <tbody>
-                            {% for item in allnodes %}
+                            {% for node in nodes %}
                                 <tr>
                                     <td>
-                                        {% if item in nodes %}
+                                        {% if node.isUnlocked() %}
                                             <i class="glyphicon glyphicon-ok text-success"></i>&nbsp;
                                         {% else %}
                                             <i class="glyphicon glyphicon-remove text-muted"></i>&nbsp;
                                         {% endif %}
-                                        {{ item|idtoname }}
+                                        {{ node.getId()|idtoname }}
                                     </td>
                                 </tr>
                             {% endfor %}

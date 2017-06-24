@@ -1,0 +1,74 @@
+
+
+{% set mailcarriers = account.mailcarriers %}
+
+
+{% spaceless %}
+
+
+    <div class="panel panel-toggle panel-primary collapsed">
+        <div class="panel-heading">
+            <div class="pull-right expandcollapse">
+                <i class="glyphicon glyphicon-plus"></i>
+                <i class="glyphicon glyphicon-minus"></i>
+            </div>
+            <div class="pull-right" title="{{ (100 * mailcarriers.count / mailcarriers.total)|round }}%">
+                {{ mailcarriers.count }} / {{ mailcarriers.total }}
+            </div>
+            <i class="ic-ui-mailcarrier"></i> {{ page_name }}
+        </div>
+    </div>
+
+    <div style="display: none">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    {% set columns = mailcarriers.getMailcarriers|columns(2, false) %}
+                    {% for objects in columns %}
+                        <div class="col-xs-6">
+                            <table class="table table-condensed table-hover">
+                                {% for item in objects %}
+                                    {% set unlockItem = item.getUnlockItem(0) %}
+                                    <tr class="{{ item.isUnlocked ? 'unlocked' : 'locked' }}">
+                                        <td class="icon">
+                                            {% if unlockItem %}
+                                                <span {{ unlockItem|gwlink|raw }}>
+                                                    {{ block('mailcarrier_icon') }}
+                                                </span>
+                                            {% else %}
+                                                {% block mailcarrier_icon %}
+                                                    {% if item.getIcon %}
+                                                        <img src="{{ item.getIcon|image }}" />
+                                                    {% else %}
+                                                        <i class="ic-ui-mailcarrier"></i>
+                                                    {% endif %}
+                                                {% endblock %}
+                                            {% endif %}
+                                        </td>
+                                        <td class="mailcarrier" title="{{ item.getdescription|striptags }}">
+                                            {% if item.isunlocked %}
+                                                <i class="glyphicon glyphicon-ok"></i>
+                                            {% else %}
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            {% endif %}
+                                            {{ item.getname }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endspaceless %}
+
+<script type="text/javascript">
+    $('.panel-toggle').eq(0).trigger('click');
+</script>
+
+

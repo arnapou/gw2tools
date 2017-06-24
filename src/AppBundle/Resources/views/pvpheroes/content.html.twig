@@ -1,0 +1,95 @@
+
+
+{% set pvpheroes = account.pvpheroes %}
+
+
+{% spaceless %}
+
+
+    <div class="panel panel-toggle panel-primary collapsed">
+        <div class="panel-heading">
+            <div class="pull-right expandcollapse">
+                <i class="glyphicon glyphicon-plus"></i>
+                <i class="glyphicon glyphicon-minus"></i>
+            </div>
+            <div class="pull-right" title="{{ (100 * pvpheroes.count / pvpheroes.total)|round }}%">
+                {{ pvpheroes.count }} / {{ pvpheroes.total }}
+            </div>
+            <i class="ic-mode-pvp"></i> {{ page_name }}
+        </div>
+    </div>
+
+    <div style="display: none">
+
+        {% for hero in pvpheroes.heroes %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        {{ hero.getType }}
+                    </div>
+                    {{ hero.getName }}
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p>
+                                <small>
+                                    {{ hero .getDescription }}
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div class="panel panel-default">
+                                <table class="table table-condensed">
+                                    <tbody>
+                                        {% for k, v in hero.getStats %}
+                                            <tr>
+                                                <td>
+                                                    {{ ('pvphero.attribute.'~k)|trans }}
+                                                </td>
+                                                <td>
+                                                    {% for i in 1..5 %}
+                                                        {% if i <= v %}
+                                                            &#9632;
+                                                        {% else %}
+                                                            &#9633;
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% for skin in hero.getSKins %}
+                            {% set unlockItem = skin.getUnlockItem(0) %}
+                            <div class="col-xs-2">
+                                <div class="panel panel-default">
+                                    <div class="heroskin {{ skin.isUnlocked ? 'unlocked' : 'locked' }}">
+                                        {% if unlockItem %}
+                                            <span {{ unlockItem|gwlink|raw }}>
+                                                {{ block('skin_icon') }}
+                                            </span>
+                                        {% else %}
+                                            {% block skin_icon %}
+                                                <img src="{{ skin.getIcon|image }}" />
+                                            {% endblock %}
+                                        {% endif %}
+                                        <div>{{ skin.getName }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endspaceless %}
+
+<script type="text/javascript">
+    $('.panel-toggle').eq(0).trigger('click');
+</script>

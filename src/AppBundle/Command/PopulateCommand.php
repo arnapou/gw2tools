@@ -26,6 +26,7 @@ class PopulateCommand extends AbstractCommand
             ->setName('gw2tool:populate')
             ->setDescription('Populate mongoDB storage with all Gw2 API objects.')
             ->addArgument('lang', InputArgument::REQUIRED, 'The language.')
+            ->addArgument('apiname', InputArgument::OPTIONAL, 'The optional api name.')
         ;
     }
 
@@ -45,18 +46,22 @@ class PopulateCommand extends AbstractCommand
         if (!in_array($lang, $this->getLocales())) {
             throw new \Exception('Value not allowed for argument "lang"');
         }
+        $argumentApiName = $input->getArgument('apiname');
 
         $env     = $this->getGwEnvironment($lang);
         $storage = $env->getStorage(); /* @var $storage MongoStorage */
         $client  = $env->getClientVersion2();
         foreach ($this->getArrayClasses($env, $lang) as $class) {
             try {
-                $apiName    = $class['name'];
-                $apiMethod  = $class['method'];
+                $apiName   = $class['name'];
+                $apiMethod = $class['method'];
+                if (!empty($argumentApiName) && $argumentApiName !== $apiName) {
+                    continue;
+                }
                 $collection = $storage->getCollection($class['lang'], $apiName);
                 $date       = new MongoDate((time() - $this->getRandomizedTime($class['time'])) * 1000);
 
-                $output->writeln('<info>' . $apiName . '</info> ');
+                $output->writeln('<comment>[' . $lang . ']</comment> <info>' . $apiName . '</info> ');
                 $ids       = array_map('strval', $client->$apiMethod());
                 $freshIds  = [];
                 $documents = $collection->find(['datecreated' => ['$gt' => $date]]);

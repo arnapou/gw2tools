@@ -1,11 +1,18 @@
 {% spaceless %}
     {% import "AppBundle::macro.html.twig" as macro %}
-
+    
+    {% set totals = account.getMasteryRegionTotals() %}
+    
     <div class="regions">
         {% for region in ['Tyria', 'Maguuma'] %}
             <div class="region">
                 <div class="region-name">
                     <i class="ic-ui-masteries {{ region|lower}}"></i> {{ ('region.'~region)|trans }}
+                    {% if totals[region] is defined %}
+                        <span class="pull-right" title="{{ 'global.remain'|trans }}">
+                            {{ totals[region].earned - totals[region].spent }}
+                        </span>
+                    {% endif %}
                 </div>
                 {% for mastery in account.masteries %}
                     {% if mastery.getRegion == region %}

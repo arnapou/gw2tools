@@ -1,3 +1,10 @@
+## 2.1.13 (2017-06-24)
+
+  - adding unlocked pvp heroes 
+  - adding unlocked mail carriers
+  - updated home cats and nodes with the new api
+  - updated mastery points (new info with remaining points)
+
 ## 2.1.12 (2017-03-16)
 
   - adding gliders

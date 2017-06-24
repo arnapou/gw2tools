@@ -1408,6 +1408,52 @@ img.rarity-Legendary  { border: 1px solid #4C139D; }
 
 /************************************************/
 
+.page-pvpheroes .panel-body .row .panel  {
+    margin-bottom: 0;
+}
+.page-pvpheroes .heroskin {
+    text-align: center;
+    min-height: 6.3em;
+}
+.page-pvpheroes .heroskin img {
+    height: 4em;
+    margin-top: 4px;
+}
+.page-pvpheroes .locked img {
+    opacity: .3;
+}
+.page-pvpheroes .locked {
+    color: #a00 !important;
+    background: rgba(255,0,0,.05);
+}
+
+/************************************************/
+
+.page-mailcarriers table td  {
+    line-height: 2em !important;
+}
+.page-mailcarriers td.icon {
+    width: 2em;
+}
+.page-mailcarriers td.icon img {
+    height: 2em;
+}
+.page-mailcarriers .unlocked i {
+    color: #ddd;
+}
+.page-mailcarriers .locked td.category,
+.page-mailcarriers .locked td.icon {
+    opacity: .3;
+}
+.page-mailcarriers .locked td.mailcarrier {
+    color: #a00 !important;
+}
+.page-mailcarriers td.mailcarrier .glyphicon {
+    margin-right: .5em;
+}
+
+/************************************************/
+
 .page-gliders table td  {
     line-height: 2em !important;
 }
