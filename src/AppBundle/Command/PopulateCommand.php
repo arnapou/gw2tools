@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace AppBundle\Command;
 
 use Arnapou\GW2Api\Model\AbstractStoredObject;
@@ -19,9 +17,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 
-class PopulateCommand extends AbstractCommand {
+class PopulateCommand extends AbstractCommand
+{
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
             ->setName('gw2tool:populate')
             ->setDescription('Populate mongoDB storage with all Gw2 API objects.')
@@ -29,7 +29,8 @@ class PopulateCommand extends AbstractCommand {
         ;
     }
 
-    protected function getRandomizedTime($t) {
+    protected function getRandomizedTime($t)
+    {
         if ($t < 3600) {
             return $t;
         }
@@ -38,7 +39,8 @@ class PopulateCommand extends AbstractCommand {
         return round($t);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $lang = $input->getArgument('lang');
         if (!in_array($lang, $this->getLocales())) {
             throw new \Exception('Value not allowed for argument "lang"');
@@ -86,8 +88,7 @@ class PopulateCommand extends AbstractCommand {
                                     $bar->advance($step);
                                 }
                             }
-                        }
-                        catch (\Exception $ex) {
+                        } catch (\Exception $ex) {
                             $output->writeln('<error>' . $ex->getMessage() . '</error>');
                         }
                     }
@@ -95,16 +96,13 @@ class PopulateCommand extends AbstractCommand {
                 }
                 if ($k) {
                     $output->writeln('    <info>' . $k . '/' . count($ids) . '</info> objects stored');
-                }
-                else {
+                } else {
                     $output->writeln('    ' . $k . '/' . count($ids) . ' objects stored');
                 }
                 $storage->clearCache();
-            }
-            catch (\Exception $ex) {
+            } catch (\Exception $ex) {
                 $output->writeln('<error>' . $ex->getMessage() . '</error>');
             }
         }
     }
-
 }

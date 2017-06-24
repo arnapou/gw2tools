@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace AppBundle\Controller;
 
 use Arnapou\GW2Api\Core\Curl;
@@ -17,7 +15,8 @@ use Gw2tool\ResponseFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProxyController extends AbstractController {
+class ProxyController extends AbstractController
+{
 
     /**
      * 
@@ -26,7 +25,8 @@ class ProxyController extends AbstractController {
      * @param integer $retention
      * @return ResponseFile
      */
-    protected function getVaultResponseFile(FileVault $vault, $url, $retention) {
+    protected function getVaultResponseFile(FileVault $vault, $url, $retention)
+    {
         if ($vault->exists($url)) {
             $filepath = $vault->getVaultFilename($url);
             if (time() - filemtime($filepath) < 86400 * $retention) {
@@ -49,7 +49,8 @@ class ProxyController extends AbstractController {
      * 
      * @return integer
      */
-    public function getGuildEmblemSize() {
+    public function getGuildEmblemSize()
+    {
         return $this->getParameter('guild.emblem.size');
     }
 
@@ -62,14 +63,14 @@ class ProxyController extends AbstractController {
      * @param string $format
      * @param Request $request
      */
-    public function fileAction($signature, $file, $format, Request $request) {
+    public function fileAction($signature, $file, $format, Request $request)
+    {
         try {
             $url       = 'https://render.guildwars2.com/file/' . $signature . '/' . $file . '.' . $format;
             $retention = $this->getParameter('proxy.file.retention');
             $vault     = new FileVault($this->getDataPath() . '/proxy/file');
             return $this->getVaultResponseFile($vault, $url, $retention);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             
         }
     }
@@ -81,7 +82,8 @@ class ProxyController extends AbstractController {
      * @param string $id
      * @param Request $request
      */
-    public function guildEmblemSvgAction($id, Request $request) {
+    public function guildEmblemSvgAction($id, Request $request)
+    {
         try {
             $client = $this->getGwEnvironment()->getClientVersion1();
             $infos  = $client->apiGuildDetails($id);
@@ -96,8 +98,7 @@ class ProxyController extends AbstractController {
                 }
                 return $response;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             
         }
     }
@@ -109,7 +110,8 @@ class ProxyController extends AbstractController {
      * @param string $id
      * @param Request $request
      */
-    public function guildEmblemPngAction($id, Request $request) {
+    public function guildEmblemPngAction($id, Request $request)
+    {
         try {
             $client = new ClientVersion1($this->getGwEnvironment());
             $infos  = $client->apiGuildDetails($id);
@@ -123,10 +125,8 @@ class ProxyController extends AbstractController {
                 }
                 return $response;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             
         }
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
@@ -20,7 +18,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ApiController extends AbstractController {
+class ApiController extends AbstractController
+{
 
     /**
      * 
@@ -28,7 +27,8 @@ class ApiController extends AbstractController {
      * 
      * @param Request $request
      */
-    public function saveRightsAction(Request $request) {
+    public function saveRightsAction(Request $request)
+    {
         $return = [];
         try {
             $token   = $this->getOwnerTokenFromCode($request->get('code'));
@@ -59,8 +59,7 @@ class ApiController extends AbstractController {
 
             $return['ok']      = true;
             $return['message'] = $this->trans('global.saved_preferences');
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $return['error'] = $ex->getMessage();
         }
         return new JsonResponse($return);
@@ -72,7 +71,8 @@ class ApiController extends AbstractController {
      * 
      * @param Request $request
      */
-    public function tokenReplaceAction(Request $request) {
+    public function tokenReplaceAction(Request $request)
+    {
         $return = [];
         try {
             $newtoken = trim($request->get('token'));
@@ -107,14 +107,11 @@ class ApiController extends AbstractController {
 
             $return['ok']     = true;
             $return['tokens'] = array_unique($tokens);
-        }
-        catch (InvalidTokenException $ex) {
+        } catch (InvalidTokenException $ex) {
             $return['error'] = $this->trans('error.invalid-token');
-        }
-        catch (MissingPermissionException $ex) {
+        } catch (MissingPermissionException $ex) {
             $return['error'] = $this->trans('error.invalid-token');
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $return['error'] = $ex->getMessage();
         }
         return new JsonResponse($return);
@@ -126,7 +123,8 @@ class ApiController extends AbstractController {
      * 
      * @param Request $request
      */
-    public function tokenDeleteAction(Request $request) {
+    public function tokenDeleteAction(Request $request)
+    {
         $return = [];
         try {
             $token   = $this->getOwnerTokenFromCode($request->get('code'));
@@ -144,8 +142,7 @@ class ApiController extends AbstractController {
 
             $return['ok']     = true;
             $return['tokens'] = array_unique($tokens);
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $return['error'] = $ex->getMessage();
         }
         return new JsonResponse($return);
@@ -157,14 +154,14 @@ class ApiController extends AbstractController {
      * 
      * @param Request $request
      */
-    public function tokenCheckAction(Request $request) {
+    public function tokenCheckAction(Request $request)
+    {
         $return = [];
         try {
             $paramToken = trim($request->get('token'));
             if (empty($paramToken)) {
                 throw new InvalidTokenException('No token was provided.');
-            }
-            elseif (!preg_match('!^[A-F0-9-]{70,80}$!', $paramToken)) {
+            } elseif (!preg_match('!^[A-F0-9-]{70,80}$!', $paramToken)) {
                 throw new InvalidTokenException('Invalid token.');
             }
             $repo        = $this->getTokenRepository();
@@ -186,11 +183,9 @@ class ApiController extends AbstractController {
 
             $return['code']   = $entityToken->getCode();
             $return['tokens'] = array_unique($tokens);
-        }
-        catch (InvalidTokenException $e) {
+        } catch (InvalidTokenException $e) {
             $return['error'] = $e->getMessage();
-        }
-        catch (MissingPermissionException $e) {
+        } catch (MissingPermissionException $e) {
             $return['error'] = 'The token is missing "' . $e->getMessage() . '" permission.';
         }
         return new JsonResponse($return);
@@ -201,7 +196,8 @@ class ApiController extends AbstractController {
      * @param string $code
      * @return Token
      */
-    protected function getOwnerTokenFromCode($code) {
+    protected function getOwnerTokenFromCode($code)
+    {
         $token = $this->getTokenRepository()->findOneByCode((string) $code);
         if (empty($token)) {
             throw new \Exception('Unknown code.');
@@ -211,5 +207,4 @@ class ApiController extends AbstractController {
         }
         return $token;
     }
-
 }

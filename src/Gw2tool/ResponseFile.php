@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use SplFileInfo;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
+class ResponseFile extends \Symfony\Component\HttpFoundation\Response
+{
 
     /**
      *
@@ -28,7 +27,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      * @param string $filename
      * @param int $cachetime time in seconds (1 year by default)
      */
-    public function __construct($path, $filename = null, $cachetime = 31536000) {
+    public function __construct($path, $filename = null, $cachetime = 31536000)
+    {
         parent::__construct();
 
         if (!is_file($path)) {
@@ -63,7 +63,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      *
      * @param int $time en seconds
      */
-    public function setFileCacheTime($time) {
+    public function setFileCacheTime($time)
+    {
         // max age
         $maxAge = $time;
         $this->setMaxAge($maxAge);
@@ -74,7 +75,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
         $this->setExpires($dateExpire);
     }
 
-    public function send() {
+    public function send()
+    {
         if (function_exists('http_match_etag') && function_exists('http_match_modified')) {
             $lastModified = $this->getLastModified()->getTimestamp();
             if (http_match_etag($this->getEtag()) || http_match_modified($lastModified)) {
@@ -86,13 +88,13 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
         $this->sendHeaders();
         if (empty($this->content)) {
             readfile($this->file->getPathname());
-        }
-        else {
+        } else {
             $this->sendContent();
         }
     }
 
-    public function sendHeaders() {
+    public function sendHeaders()
+    {
         if (headers_sent()) {
             return $this;
         }
@@ -105,7 +107,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      * @param string $filename
      * @return Response 
      */
-    public function setContentDispositionInline($filename) {
+    public function setContentDispositionInline($filename)
+    {
         $filename = str_replace(array('\\', '/', ':'), '_', $filename);
         $this->headers->set('Content-Disposition', 'inline; filename="' . $filename . '"');
         return $this;
@@ -116,7 +119,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      * @param string $filename
      * @return Response 
      */
-    public function setContentDispositionAttachment($filename) {
+    public function setContentDispositionAttachment($filename)
+    {
         $filename = str_replace(array('\\', '/', ':'), '_', $filename);
         $this->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
         return $this;
@@ -127,7 +131,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      * @param string $filename
      * @return Response 
      */
-    public function forceDownload($filename) {
+    public function forceDownload($filename)
+    {
         $this->setContentType('application/force-download');
         $this->setContentDispositionAttachment($filename);
         return $this;
@@ -137,7 +142,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      *
      * @return Response 
      */
-    public function setNoCache() {
+    public function setNoCache()
+    {
         $expire = new \DateTime();
         $expire->setDate(1980, 01, 01);
         $expire->setTime(0, 0, 0);
@@ -153,7 +159,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      * @param int $length
      * @return Response 
      */
-    public function setContentLength($length) {
+    public function setContentLength($length)
+    {
         $this->headers->set('Content-Length', $length);
         return $this;
     }
@@ -163,7 +170,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      * @param string $type
      * @return Response
      */
-    public function setContentType($type) {
+    public function setContentType($type)
+    {
         $this->headers->set('Content-Type', $type);
         return $this;
     }
@@ -172,8 +180,8 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response {
      * 
      * @return string
      */
-    public function getStatusText() {
+    public function getStatusText()
+    {
         return $this->statusText;
     }
-
 }

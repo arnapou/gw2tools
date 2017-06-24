@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use AppBundle\Command\AbstractCommand;
@@ -18,7 +16,8 @@ use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Storage\MongoStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-trait Gw2ApiEnvironmentTrait {
+trait Gw2ApiEnvironmentTrait
+{
 
     /**
      *
@@ -30,19 +29,18 @@ trait Gw2ApiEnvironmentTrait {
      * 
      * @return Environment
      */
-    public function getGwEnvironment($lang = null) {
+    public function getGwEnvironment($lang = null)
+    {
         if ($this instanceof AbstractCommand) {
             $container  = $this->getContainer(); /* @var $container ContainerInterface */
             $tokenCode  = str_replace('gw2tool:', '', $this->getName());
             $logchannel = 'gw2consolerequests';
-        }
-        elseif ($this instanceof AbstractController) {
+        } elseif ($this instanceof AbstractController) {
             $lang       = $lang ? $lang : $this->getTranslator()->getLocale();
             $container  = $this->container; /* @var $container ContainerInterface */
             $tokenCode  = (!empty($this->token) ? $this->token->getCode() : '          ');
             $logchannel = 'gw2frontrequests';
-        }
-        else {
+        } else {
             throw new \Exception('Internal error which should not happen. Contact the administrator');
         }
 
@@ -85,5 +83,4 @@ trait Gw2ApiEnvironmentTrait {
         $this->gwEnvironments[$lang] = $env;
         return $env;
     }
-
 }

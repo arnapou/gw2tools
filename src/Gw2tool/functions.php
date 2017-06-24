@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use Arnapou\GW2Api\Model\AbstractObject;
@@ -31,18 +29,17 @@ use Arnapou\GW2Api\Model\SpecializationTrait;
  * @param Item $item
  * @return string
  */
-function consumableduration(AbstractObject $item) {
+function consumableduration(AbstractObject $item)
+{
     $ms = $item->getConsumableDurationMs();
     if ($ms) {
         $h = floor($ms / 3600000);
         $m = round(($ms % 3600000) / 60000);
         if ($h && $m) {
             return $h . 'h' . $m . 'm';
-        }
-        elseif ($m) {
+        } elseif ($m) {
             return $m . 'm';
-        }
-        elseif ($h) {
+        } elseif ($h) {
             return $h . 'h';
         }
     }
@@ -54,7 +51,8 @@ function consumableduration(AbstractObject $item) {
  * @param PvpGame $item
  * @return string
  */
-function gameduration(PvpGame $item) {
+function gameduration(PvpGame $item)
+{
     $s = $item->getDuration();
     if ($s) {
         return sprintf('%0d:%02d', floor($s / 60), $s % 60);
@@ -67,7 +65,8 @@ function gameduration(PvpGame $item) {
  * @param Item $item
  * @return string
  */
-function buffdescription(AbstractObject $item) {
+function buffdescription(AbstractObject $item)
+{
     $desc = $item->getBuffDescription();
     if ($desc) {
         if ($item->getSubType() == Item::SUBTYPE_UPGRADE_COMPONENT_RUNE) {
@@ -87,7 +86,8 @@ function buffdescription(AbstractObject $item) {
  * @param SpecializationTrait $item
  * @return string
  */
-function gwlink_trait(SpecializationTrait $item) {
+function gwlink_trait(SpecializationTrait $item)
+{
     $url = 'trait-' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
@@ -97,7 +97,8 @@ function gwlink_trait(SpecializationTrait $item) {
  * @param Specialization $item
  * @return string
  */
-function gwlink_specialization(Specialization $item) {
+function gwlink_specialization(Specialization $item)
+{
     $url = 'specialization-' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
@@ -107,7 +108,8 @@ function gwlink_specialization(Specialization $item) {
  * @param Skin $item
  * @return string
  */
-function gwlink_skin(Skin $item) {
+function gwlink_skin(Skin $item)
+{
     $url = 'skin-' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
@@ -117,7 +119,8 @@ function gwlink_skin(Skin $item) {
  * @param Skill $item
  * @return string
  */
-function gwlink_skill(Skill $item) {
+function gwlink_skill(Skill $item)
+{
     $url = 'skill-' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
@@ -127,7 +130,8 @@ function gwlink_skill(Skill $item) {
  * @param Pet $item
  * @return string
  */
-function gwlink_pet(Pet $item) {
+function gwlink_pet(Pet $item)
+{
     $url = 'pet-' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
@@ -137,7 +141,8 @@ function gwlink_pet(Pet $item) {
  * @param PvpAmulet $item
  * @return string
  */
-function gwlink_pvpamulet(PvpAmulet $item) {
+function gwlink_pvpamulet(PvpAmulet $item)
+{
     $url = 'pvpamulet-' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
@@ -147,7 +152,8 @@ function gwlink_pvpamulet(PvpAmulet $item) {
  * @param Item $item
  * @return string
  */
-function gwlink_item(Item $item) {
+function gwlink_item(Item $item)
+{
     $url = 'item-' . $item->getId() . '.html';
     return ' class="gwitemlink" data-url="' . $url . '"';
 }
@@ -157,7 +163,8 @@ function gwlink_item(Item $item) {
  * @param InventorySlot $item
  * @return string
  */
-function gwlink_inventoryslot(InventorySlot $item) {
+function gwlink_inventoryslot(InventorySlot $item)
+{
     $url = 'slot-' . $item->getId();
     foreach ($item->getUpgrades() as $upgrade) {
         $url .= '-up' . $upgrade->getId();
@@ -214,7 +221,8 @@ function gwlink_inventoryslot(InventorySlot $item) {
  * @param string $date
  * @return string
  */
-function datediff($date) {
+function datediff($date)
+{
     if (empty($date)) {
         return '';
     }
@@ -222,23 +230,18 @@ function datediff($date) {
     $diff = (new \DateTime('now', $utc))->getTimestamp() - (new \DateTime($date, $utc))->getTimestamp();
     if ($diff < 60) {
         return '< 1 min.';
-    }
-    elseif ($diff < 3600) {
+    } elseif ($diff < 3600) {
         return floor($diff / 60) . ' min.';
-    }
-    elseif ($diff < 86400) {
+    } elseif ($diff < 86400) {
         $h = floor($diff / 3600);
         return $h . ' hour' . ($h > 1 ? 's' : '');
-    }
-    elseif ($diff < 2629728) {
+    } elseif ($diff < 2629728) {
         $d = floor($diff / 86400);
         return $d . ' day' . ($d > 1 ? 's' : '');
-    }
-    elseif ($diff < 31536000) {
+    } elseif ($diff < 31536000) {
         $m = floor($diff / 2629728);
         return $m . ' month' . ($m > 1 ? 's' : '');
-    }
-    else {
+    } else {
         $m = floor($diff / 2629728);
         $y = floor($m / 12);
         $m -= $y * 12;
@@ -251,26 +254,22 @@ function datediff($date) {
  * @param string $url
  * @return string
  */
-function image($url) {
+function image($url)
+{
     if (is_string($url) && !empty($url)) {
         if ($url == 'empty') {
             return '/assets/images/empty.png';
         }
         return str_replace('https://render.guildwars2.com/file/', '/proxy/file/', $url);
-    }
-    elseif ($url instanceof InventorySlot) {
+    } elseif ($url instanceof InventorySlot) {
         return image($url->getSkin() ? $url->getSkin()->getIcon() : $url->getIcon());
-    }
-    elseif ($url instanceof Character || $url instanceof PvpStatsProfession || $url instanceof PvpGame) {
+    } elseif ($url instanceof Character || $url instanceof PvpStatsProfession || $url instanceof PvpGame) {
         return '/assets/images/icons/profession-' . strtolower($url->getProfession()) . '.svg';
-    }
-    elseif ($url instanceof CraftingDiscipline) {
+    } elseif ($url instanceof CraftingDiscipline) {
         return '/assets/images/icons/crafting-' . strtolower($url->getName()) . '.svg';
-    }
-    elseif ($url instanceof Guild) {
+    } elseif ($url instanceof Guild) {
         return image($url->hasEmblem() ? '/proxy/guild/' . $url->getId() . '.svg' : '');
-    }
-    elseif ($url instanceof AbstractObject) {
+    } elseif ($url instanceof AbstractObject) {
         $icon = $url->getIcon();
         if ($icon) {
             return image($icon);
@@ -284,7 +283,8 @@ function image($url) {
  * @param string $stat
  * @return string
  */
-function imagestat($stat) {
+function imagestat($stat)
+{
     if (empty($stat)) {
         return '/assets/images/nothing.svg';
     }
@@ -300,7 +300,8 @@ function imagestat($stat) {
  * @param boolean $fill
  * @return array
  */
-function chunk($array, $n, $fill = true) {
+function chunk($array, $n, $fill = true)
+{
     $return  = [];
     $current = [];
     $i       = 0;
@@ -330,30 +331,27 @@ function chunk($array, $n, $fill = true) {
  * @param integer $value
  * @return string
  */
-function amount($value) {
+function amount($value)
+{
     if ($value === null || $value === '') {
         return '';
     }
     if (is_array($value)) {
         if (isset($value['buy_total']) && $value['buy_total'] != $value['buy']) {
             return amount($value['buy_total']) . ' - ' . amount($value['sell_total']) . ' / ' . amount($value['buy']) . ' - ' . amount($value['sell']);
-        }
-        elseif (isset($value['buy'])) {
+        } elseif (isset($value['buy'])) {
             return amount($value['buy']) . ' - ' . amount($value['sell']);
         }
         return '';
-    }
-    else {
+    } else {
         $g = floor($value / 10000);
         $s = floor($value / 100) % 100;
         $c = $value % 100;
         if ($g) {
             return $g . 'g' . $s . 's';
-        }
-        elseif ($s) {
+        } elseif ($s) {
             return $s . 's' . $c . 'c';
-        }
-        else {
+        } else {
             return $c . 'c';
         }
     }

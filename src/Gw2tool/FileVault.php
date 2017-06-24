@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use \FilesystemIterator;
@@ -16,7 +14,8 @@ use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
 use \Exception;
 
-class FileVault implements \Iterator {
+class FileVault implements \Iterator
+{
 
     /**
      *
@@ -40,7 +39,8 @@ class FileVault implements \Iterator {
      * 
      * @param string $path
      */
-    public function __construct($path) {
+    public function __construct($path)
+    {
         if (!is_dir($path)) {
             Fn::createDirectoryIfNotExists($path);
         }
@@ -55,7 +55,8 @@ class FileVault implements \Iterator {
      * @param string $filename
      * @return string
      */
-    public function getVaultFilename($filename) {
+    public function getVaultFilename($filename)
+    {
         $hash = hash('sha256', $filename);
         $ext  = Fn::fileExtension($filename);
         return $this->repository . '/' . substr($hash, 0, 2) . '/' . substr($hash, 2, 2) . '/' . substr($hash, 4) . ($ext ? '.' . $ext : '');
@@ -66,7 +67,8 @@ class FileVault implements \Iterator {
      * @param string $filename
      * @return boolean
      */
-    public function exists($filename) {
+    public function exists($filename)
+    {
         $path = $this->getVaultFilename($filename);
         return is_file($path);
     }
@@ -76,7 +78,8 @@ class FileVault implements \Iterator {
      * @param string $filename
      * @return string
      */
-    public function get($filename) {
+    public function get($filename)
+    {
         $this->checkExists($filename);
         $path = $this->getVaultFilename($filename);
         return file_get_contents($path);
@@ -87,7 +90,8 @@ class FileVault implements \Iterator {
      * @param type $filename
      * @throws Exception
      */
-    protected function checkExists($filename) {
+    protected function checkExists($filename)
+    {
         if (!$this->exists($filename)) {
             throw new Exception('The filename does not exists <' . $filename . '>');
         }
@@ -98,7 +102,8 @@ class FileVault implements \Iterator {
      * @param string $filename
      * @return ResponseFile
      */
-    public function getResponse($filename) {
+    public function getResponse($filename)
+    {
         $this->checkExists($filename);
         $path = $this->getVaultFilename($filename);
         return new ResponseFile($path);
@@ -108,7 +113,8 @@ class FileVault implements \Iterator {
      * 
      * @param string $filename
      */
-    public function remove($filename) {
+    public function remove($filename)
+    {
         $path = $this->getVaultFilename($filename);
         if (is_file($path)) {
             @unlink($path);
@@ -124,18 +130,17 @@ class FileVault implements \Iterator {
      * @param string $content
      * @throws Exception
      */
-    public function set($filename, $content) {
+    public function set($filename, $content)
+    {
         $path = $this->getVaultFilename($filename);
         Fn::createDirectoryIfNotExists(dirname($path));
         if (is_string($content)) {
             file_put_contents($path, $content, LOCK_EX);
-        }
-        elseif (is_resource($content)) {
+        } elseif (is_resource($content)) {
             $fh = fopen($path, 'wb');
             stream_copy_to_stream($content, $fh);
             fclose($fh);
-        }
-        else {
+        } else {
             throw new Exception("The content is an invalid type (not resource or string).");
         }
         file_put_contents($path . '.original-filename', $filename, LOCK_EX);
@@ -146,7 +151,8 @@ class FileVault implements \Iterator {
      * @param string $from
      * @param string $to
      */
-    public function copy($from, $to) {
+    public function copy($from, $to)
+    {
         $this->checkExists(from);
         $this->remove($to);
         $pathfrom = $this->getVaultFilename($from);
@@ -160,7 +166,8 @@ class FileVault implements \Iterator {
      * @param string $from
      * @param string $to
      */
-    public function rename($from, $to) {
+    public function rename($from, $to)
+    {
         $this->checkExists($from);
         $this->remove($to);
         $this->set($to, '');
@@ -170,17 +177,19 @@ class FileVault implements \Iterator {
         $this->remove($from);
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         $flags             = FilesystemIterator::KEY_AS_PATHNAME;
-        $flags|= FilesystemIterator::SKIP_DOTS;
-        $flags|= FilesystemIterator::CURRENT_AS_FILEINFO;
+        $flags             |= FilesystemIterator::SKIP_DOTS;
+        $flags             |= FilesystemIterator::CURRENT_AS_FILEINFO;
         $directoryIterator = new RecursiveDirectoryIterator($this->repository, $flags);
 
         $flags          = RecursiveIteratorIterator::LEAVES_ONLY;
         $this->iterator = new RecursiveIteratorIterator($directoryIterator, $flags);
     }
 
-    public function valid() {
+    public function valid()
+    {
         $valid = $this->iterator->valid();
         while ($valid) {
             $filename = $this->iterator->current()->getPathname();
@@ -195,16 +204,18 @@ class FileVault implements \Iterator {
         return $valid;
     }
 
-    public function current() {
+    public function current()
+    {
         return $this->currentFilename;
     }
 
-    public function key() {
+    public function key()
+    {
         return file_get_contents($this->currentFilename . '.original-filename');
     }
 
-    public function next() {
+    public function next()
+    {
         $this->iterator->next();
     }
-
 }

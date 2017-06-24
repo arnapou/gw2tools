@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,18 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use Gw2tool\Exception\JsonException;
 
-class Fn {
+class Fn
+{
 
     /**
      * 
      * @param string $path
      */
-    private function __construct() {
+    private function __construct()
+    {
         
     }
 
@@ -29,7 +29,8 @@ class Fn {
      * @param integer $length
      * @return string
      */
-    static function randomString($chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890', $length = 10) {
+    static function randomString($chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890', $length = 10)
+    {
         $nbchars = strlen($chars);
         $string  = '';
         while ($length--) {
@@ -43,7 +44,8 @@ class Fn {
      * @param string $json
      * @return array
      */
-    static function jsonDecode($json) {
+    static function jsonDecode($json)
+    {
         $json = trim($json);
         if ($json === '' || ($json[0] !== '{' && $json[0] !== '[' && $json[0] !== '"')) {
             throw new JsonException('Json not valid');
@@ -71,7 +73,8 @@ class Fn {
      * @param string $filename
      * @return string
      */
-    static function fileMimeType($filename) {
+    static function fileMimeType($filename)
+    {
         static $types;
         static $mode;
 
@@ -80,11 +83,9 @@ class Fn {
         if (!isset($mode)) {
             if (function_exists('mime_content_type') && file_exists($filename)) {
                 $mode = 1;
-            }
-            elseif (function_exists('finfo_file') && file_exists($filename)) {
+            } elseif (function_exists('finfo_file') && file_exists($filename)) {
                 $mode = 2;
-            }
-            else {
+            } else {
                 $mode = 3;
             }
         }
@@ -93,8 +94,7 @@ class Fn {
         $mimeType = '';
         if ($mode == 1) {
             $mimeType = mime_content_type($filename);
-        }
-        elseif ($mode == 2) {
+        } elseif ($mode == 2) {
             $finfo    = finfo_open(FILEINFO_MIME);
             $mimeType = finfo_file($finfo, $filename);
             finfo_close($finfo);
@@ -365,7 +365,8 @@ class Fn {
      * @param string $path
      * @param octal $mode
      */
-    static function createDirectoryIfNotExists($path, $mode = 0777) {
+    static function createDirectoryIfNotExists($path, $mode = 0777)
+    {
         if (!file_exists($path)) {
             @mkdir($path, $mode, true);
         }
@@ -376,7 +377,8 @@ class Fn {
      * @param string $filename
      * @return string
      */
-    static function fileExtension($filename) {
+    static function fileExtension($filename)
+    {
         $ext = '';
         $i   = strrpos($filename, '.');
         if ($i !== false) {
@@ -384,5 +386,4 @@ class Fn {
         }
         return $ext;
     }
-
 }

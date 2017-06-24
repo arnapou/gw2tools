@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace AppBundle\Command;
 
 use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Model\AbstractStoredObject;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand {
+abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand
+{
 
     use \Gw2tool\Gw2ApiEnvironmentTrait;
 
@@ -23,7 +22,8 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
      * 
      * @return RegistryInterface
      */
-    public function getDoctrine() {
+    public function getDoctrine()
+    {
         return $this->getContainer()->get('doctrine');
     }
 
@@ -31,7 +31,8 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
      * 
      * @return array
      */
-    public function getLocales() {
+    public function getLocales()
+    {
         return $this->getContainer()->getParameter('locales');
     }
 
@@ -41,7 +42,8 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
      * @param string $lang
      * @return array
      */
-    protected function getArrayClasses(Environment $env, $lang) {
+    protected function getArrayClasses(Environment $env, $lang)
+    {
         $array = [];
         foreach ($this->getAbstractStoredObjectClasses($env) as $class) {
             try {
@@ -52,8 +54,7 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
                     'lang'   => $lang,
                     'time'   => 86400,
                 ];
-            }
-            catch (\Exception $ex) {
+            } catch (\Exception $ex) {
                 
             }
         }
@@ -71,7 +72,8 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
      * @param Environment $env
      * @return array
      */
-    private function getAbstractStoredObjectClasses(Environment $env) {
+    private function getAbstractStoredObjectClasses(Environment $env)
+    {
 
         $folder = __DIR__ . '/../../../vendor/arnapou/gw2apiclient/src/Arnapou/GW2Api/Model';
         if (!is_dir($folder)) {
@@ -102,12 +104,10 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
                 if ($isStorageClass) {
                     $classes[] = $class;
                 }
-            }
-            catch (\Exception $ex) {
+            } catch (\Exception $ex) {
                 
             }
         }
         return $classes;
     }
-
 }

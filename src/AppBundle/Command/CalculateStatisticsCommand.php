@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Token;
@@ -18,16 +16,19 @@ use Gw2tool\Account;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CalculateStatisticsCommand extends AbstractCommand {
+class CalculateStatisticsCommand extends AbstractCommand
+{
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
             ->setName('gw2tool:statistics')
             ->setDescription('Calculate statistics.')
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
         $env        = $this->getGwEnvironment('en');
         $cache      = $env->getCache(); /* @var $cache MongoCache */
@@ -72,14 +73,11 @@ class CalculateStatisticsCommand extends AbstractCommand {
                     if ($account->calculateStatistics($collection)) {
                         $output->writeln("statistics calclulated for <info>" . $accountName . "</info>");
                     }
-                }
-                catch (InvalidTokenException $ex) {
+                } catch (InvalidTokenException $ex) {
                     $disableAccount = true;
-                }
-                catch (MissingPermissionException $ex) {
+                } catch (MissingPermissionException $ex) {
                     $disableAccount = true;
-                }
-                catch (\Exception $ex) {
+                } catch (\Exception $ex) {
                     $output->writeln("<error>" . $ex->getMessage() . "</error>");
 
                     if ($data) {
@@ -105,5 +103,4 @@ class CalculateStatisticsCommand extends AbstractCommand {
             }
         }
     }
-
 }

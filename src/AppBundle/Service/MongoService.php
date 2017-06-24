@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
@@ -7,7 +6,8 @@ use MongoDB\Client as MongoClient;
 use MongoDB\Database as MongoDatabase;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
-class MongoService {
+class MongoService
+{
 
     /**
      *
@@ -33,7 +33,8 @@ class MongoService {
      */
     private $cacheDatabase = null;
 
-    public function __construct(EntityManager $em, Container $container) {
+    public function __construct(EntityManager $em, Container $container)
+    {
         $this->em        = $em;
         $this->container = $container;
     }
@@ -42,7 +43,8 @@ class MongoService {
      * 
      * @return MongoClient
      */
-    public function getClient() {
+    public function getClient()
+    {
         if (empty($this->client)) {
             $this->client = new MongoClient('mongodb://localhost:27017', [], [
                 'typeMap' => [
@@ -58,12 +60,12 @@ class MongoService {
      * 
      * @return MongoDatabase
      */
-    public function getCacheDatabase() {
+    public function getCacheDatabase()
+    {
         if (empty($this->cacheDatabase)) {
             $mongo               = $this->getClient();
             $this->cacheDatabase = $mongo->selectDatabase($this->container->getParameter('mongo.collection'));
         }
         return $this->cacheDatabase;
     }
-
 }

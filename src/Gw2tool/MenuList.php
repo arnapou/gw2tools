@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use Arnapou\GW2Api\Model\Account;
@@ -16,7 +14,8 @@ use Arnapou\GW2Api\Model\Character;
 use Arnapou\GW2Api\Model\Guild;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class MenuList implements \IteratorAggregate {
+class MenuList implements \IteratorAggregate
+{
 
     /**
      *
@@ -27,7 +26,8 @@ class MenuList implements \IteratorAggregate {
     /**
      * 
      */
-    public function __construct(TranslatorInterface $tr, $characters, $guilds) {
+    public function __construct(TranslatorInterface $tr, $characters, $guilds)
+    {
 
         // GENERAL
         $menu = Menu::create($tr->trans('menu.general'));
@@ -104,7 +104,8 @@ class MenuList implements \IteratorAggregate {
      * @param string $page
      * @return boolean
      */
-    public function pageExists($page) {
+    public function pageExists($page)
+    {
         return $this->pageName($page) !== null;
     }
 
@@ -113,7 +114,8 @@ class MenuList implements \IteratorAggregate {
      * @param string $page
      * @return string
      */
-    public function pageName($page) {
+    public function pageName($page)
+    {
         foreach ($this->menus as /* @var $menu Menu */ $menu) {
             foreach ($menu->getItems() as /* @var $item MenuItem */ $item) {
                 if ($item->getPage() && $item->getPage() === $page) {
@@ -128,7 +130,8 @@ class MenuList implements \IteratorAggregate {
      * 
      * @return array
      */
-    public function getRights() {
+    public function getRights()
+    {
         $list = [];
         foreach ($this->menus as /* @var $menu Menu */ $menu) {
             foreach ($menu->getItems() as /* @var $item MenuItem */ $item) {
@@ -145,7 +148,8 @@ class MenuList implements \IteratorAggregate {
      * @param Menu $menu
      * @return MenuList
      */
-    public function addMenu(Menu $menu) {
+    public function addMenu(Menu $menu)
+    {
         $this->menus[] = $menu;
         return $this;
     }
@@ -155,12 +159,13 @@ class MenuList implements \IteratorAggregate {
      * @param string $label
      * @return Menu
      */
-    static public function create($label) {
+    static public function create($label)
+    {
         return new self($label);
     }
 
-    public function getIterator() {
+    public function getIterator()
+    {
         return new \ArrayIterator($this->menus);
     }
-
 }

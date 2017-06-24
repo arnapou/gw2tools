@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use AppBundle\Entity\Token;
 
-class Menu implements \IteratorAggregate {
+class Menu implements \IteratorAggregate
+{
 
     /**
      *
@@ -31,7 +30,8 @@ class Menu implements \IteratorAggregate {
      * 
      * @param string $label
      */
-    public function __construct($label) {
+    public function __construct($label)
+    {
         $this->label = $label;
     }
 
@@ -43,7 +43,8 @@ class Menu implements \IteratorAggregate {
      * @param string $icon
      * @return MenuItem
      */
-    public function addItem($page, $label, $uri = null, $icon = null) {
+    public function addItem($page, $label, $uri = null, $icon = null)
+    {
         $item          = new MenuItem($page, $label, $uri, $icon);
         $this->items[] = $item;
         return $item;
@@ -53,7 +54,8 @@ class Menu implements \IteratorAggregate {
      * 
      * @return MenuItem
      */
-    public function addSeparator() {
+    public function addSeparator()
+    {
         return $this->addItem(null, null)->setSeparator(true);
     }
 
@@ -61,7 +63,8 @@ class Menu implements \IteratorAggregate {
      * 
      * @return string
      */
-    public function getLabel() {
+    public function getLabel()
+    {
         return $this->label;
     }
 
@@ -70,7 +73,8 @@ class Menu implements \IteratorAggregate {
      * @param Token $token
      * @return array
      */
-    public function getItems(Token $token = null) {
+    public function getItems(Token $token = null)
+    {
         if ($token === null) {
             return $this->items;
         }
@@ -83,7 +87,8 @@ class Menu implements \IteratorAggregate {
         return $this->trimSeparators($items);
     }
 
-    public function getIterator() {
+    public function getIterator()
+    {
         return new \ArrayIterator($this->getItems());
     }
 
@@ -92,7 +97,8 @@ class Menu implements \IteratorAggregate {
      * @param array $items
      * @return array
      */
-    protected function trimSeparators($items) {
+    protected function trimSeparators($items)
+    {
         if (empty($items)) {
             return [];
         }
@@ -126,8 +132,8 @@ class Menu implements \IteratorAggregate {
      * @param string $label
      * @return Menu
      */
-    static public function create($label) {
+    static public function create($label)
+    {
         return new self($label);
     }
-
 }

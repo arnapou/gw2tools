@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
@@ -22,7 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class PageController extends AbstractController {
+class PageController extends AbstractController
+{
 
     /**
      *
@@ -64,7 +63,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}"})
      */
-    public function homeAction(Request $request) {
+    public function homeAction(Request $request)
+    {
         return $this->redirect('./account/');
     }
 
@@ -72,7 +72,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/statistics/{dataset}.json", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "dataset" = "[a-zA-Z0-9_-]+"})
      */
-    public function statisticsJsonAction($_code, $dataset, Request $request) {
+    public function statisticsJsonAction($_code, $dataset, Request $request)
+    {
         try {
             $context = $this->getContext($_code, 'statistics');
             $stats   = new Statistics($this, $this->account);
@@ -84,8 +85,7 @@ class PageController extends AbstractController {
                         $response = new JsonResponse($data);
                     }
                 }
-            }
-            else {
+            } else {
                 $method = 'getDataset' . $dataset;
                 if (method_exists($stats, $method)) {
                     $response = new JsonResponse($stats->$method());
@@ -97,8 +97,7 @@ class PageController extends AbstractController {
                 $response->setPublic();
                 return $response;
             }
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             return new JsonResponse(['error' => $ex->getMessage()]);
         }
     }
@@ -107,7 +106,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/{page}/", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9_]+"})
      */
-    public function pageAction($_code, $page, Request $request) {
+    public function pageAction($_code, $page, Request $request)
+    {
         $context = $this->getContext($_code, $page);
         return $this->render($page . '/page.html.twig', $context);
     }
@@ -116,12 +116,12 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/{page}/content.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9_]+"})
      */
-    public function pageContentAction($_code, $page, Request $request) {
+    public function pageContentAction($_code, $page, Request $request)
+    {
         try {
             $context = $this->getContext($_code, $page, true);
             return $this->render($page . '/content.html.twig', $context);
-        }
-        catch (AccessNotAllowedException $ex) {
+        } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
     }
@@ -130,7 +130,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/gw2skills-{mode}/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+", "mode" = "pve|pvp|wvw"})
      */
-    public function gw2skillsBuildAction($_code, $mode, $name, Request $request) {
+    public function gw2skillsBuildAction($_code, $mode, $name, Request $request)
+    {
         $context = $this->getContext($_code, 'character/' . $name);
         if (!isset($this->characters[$name])) {
             return $this->createNotFoundException();
@@ -145,7 +146,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/character/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
      */
-    public function characterAction($_code, $name, Request $request) {
+    public function characterAction($_code, $name, Request $request)
+    {
         $context = $this->getContext($_code, 'character/' . $name);
         if (!isset($this->characters[$name])) {
             return $this->createNotFoundException();
@@ -158,7 +160,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/character/{name}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
      */
-    public function characterContentAction($_code, $name, Request $request) {
+    public function characterContentAction($_code, $name, Request $request)
+    {
         try {
             $context = $this->getContext($_code, 'character/' . $name, true);
             if (!isset($this->characters[$name])) {
@@ -166,8 +169,7 @@ class PageController extends AbstractController {
             }
             $context['character'] = $this->characters[$name];
             return $this->render('character/content.html.twig', $context);
-        }
-        catch (AccessNotAllowedException $ex) {
+        } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
     }
@@ -176,7 +178,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/{folder}/{guildid}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" = "guild(_stash)?"})
      */
-    public function guildStashAction($_code, $guildid, $folder, Request $request) {
+    public function guildStashAction($_code, $guildid, $folder, Request $request)
+    {
         $context = $this->getContext($_code, $folder . '/' . $guildid);
         if (!isset($this->guilds[$guildid])) {
             return $this->createNotFoundException();
@@ -189,7 +192,8 @@ class PageController extends AbstractController {
      * 
      * @Route("/{_locale}/{_code}/{folder}/{guildid}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" = "guild(_stash)?"})
      */
-    public function guildStashContentAction($_code, $folder, $guildid, Request $request) {
+    public function guildStashContentAction($_code, $folder, $guildid, Request $request)
+    {
         try {
             $context = $this->getContext($_code, $folder . '/' . $guildid, true);
             if (!isset($this->guilds[$guildid])) {
@@ -197,8 +201,7 @@ class PageController extends AbstractController {
             }
             $context['guild'] = $this->guilds[$guildid];
             return $this->render($folder . '/content.html.twig', $context);
-        }
-        catch (AccessNotAllowedException $ex) {
+        } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
     }
@@ -207,7 +210,8 @@ class PageController extends AbstractController {
      * 
      * @param string $_code
      */
-    protected function getContext($_code, $page, $ownerMandatory = false) {
+    protected function getContext($_code, $page, $ownerMandatory = false)
+    {
         $statistics = null;
         if (empty($this->token)) {
             $this->token = $this->getTokenRepository()->findOneByCode($_code);
@@ -250,7 +254,8 @@ class PageController extends AbstractController {
         ];
     }
 
-    protected function render($view, array $parameters = array(), Response $response = null) {
+    protected function render($view, array $parameters = array(), Response $response = null)
+    {
         if ($this->token) {
             $parameters['owner']      = $this->isOwner;
             $parameters['user']       = $this->token;
@@ -266,7 +271,8 @@ class PageController extends AbstractController {
      * 
      * @return array
      */
-    public function getBreadcrumb() {
+    public function getBreadcrumb()
+    {
         if ($this->token) {
             $code = $this->token->getCode();
             $path = rawurldecode($this->getRequest()->getPathInfo());
@@ -285,7 +291,8 @@ class PageController extends AbstractController {
      * 
      * @return MenuList
      */
-    public function getMenu() {
+    public function getMenu()
+    {
         return $this->menu;
     }
 
@@ -293,7 +300,8 @@ class PageController extends AbstractController {
      * 
      * @return array
      */
-    public function getPermissionsList() {
+    public function getPermissionsList()
+    {
         return Account::permissionsList();
     }
 
@@ -303,7 +311,8 @@ class PageController extends AbstractController {
      * @param string $permission
      * @return boolean
      */
-    public function isAllowed($right, $permission = null) {
+    public function isAllowed($right, $permission = null)
+    {
         if ($permission) {
             if (empty($this->token) || !$this->account->hasPermission($permission)) {
                 return false;
@@ -320,7 +329,8 @@ class PageController extends AbstractController {
      * @param string $name
      * @return boolean
      */
-    public function isAllowedCharacter($name) {
+    public function isAllowedCharacter($name)
+    {
         $name = (string) $name;
         if ($this->isOwner) {
             return true;
@@ -339,7 +349,8 @@ class PageController extends AbstractController {
      * @param string $guildid
      * @return boolean
      */
-    public function isAllowedGuildStash($guildid) {
+    public function isAllowedGuildStash($guildid)
+    {
         $guildid = (string) $guildid;
         if ($this->isOwner) {
             return true;
@@ -349,5 +360,4 @@ class PageController extends AbstractController {
         }
         return $this->token->hasRight('guild_stash/' . $guildid);
     }
-
 }

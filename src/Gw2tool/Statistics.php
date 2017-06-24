@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
 use AppBundle\Controller\AbstractController;
@@ -19,7 +17,8 @@ use Arnapou\GW2Api\Model\Item;
 use Gw2tool\Account;
 use MongoDB\Collection as MongoCollection;
 
-class Statistics {
+class Statistics
+{
 
     /**
      *
@@ -54,7 +53,8 @@ class Statistics {
     /**
      * 
      */
-    public function __construct(AbstractController $controller, Account $account) {
+    public function __construct(AbstractController $controller, Account $account)
+    {
         $this->controller = $controller;
         $this->env        = $controller->getGwEnvironment();
         $this->lang       = $this->env->getLang();
@@ -64,11 +64,13 @@ class Statistics {
         $this->account    = $account;
     }
 
-    public function removeStatistics() {
+    public function removeStatistics()
+    {
         $this->account->removeStatistics($this->collection);
     }
 
-    public function calculateStatistics() {
+    public function calculateStatistics()
+    {
         $this->account->calculateStatistics($this->collection);
     }
 
@@ -76,7 +78,8 @@ class Statistics {
      * 
      * @return int
      */
-    public function getCount() {
+    public function getCount()
+    {
         return $this->cacheGet('statistics/count', function() {
                 return $this->collection->count();
             });
@@ -86,7 +89,8 @@ class Statistics {
      * 
      * @return MongoCollection
      */
-    public function getCollection() {
+    public function getCollection()
+    {
         return $this->collection;
     }
 
@@ -94,7 +98,8 @@ class Statistics {
      * 
      * @return Account
      */
-    public function getAccount() {
+    public function getAccount()
+    {
         return $this->account;
     }
 
@@ -103,7 +108,8 @@ class Statistics {
      * @param string $key
      * @return string
      */
-    protected function trans($key) {
+    protected function trans($key)
+    {
         return $this->controller->trans($key);
     }
 
@@ -114,7 +120,8 @@ class Statistics {
      * @param integer $expiration
      * @return array
      */
-    protected function cacheGet($key, $callable, $expiration = 900) {
+    protected function cacheGet($key, $callable, $expiration = 900)
+    {
         $cacheKey = 'statistics/' . $this->lang . '/' . $key;
         $cache    = $this->env->getCache();
         $result   = $cache->get($cacheKey);
@@ -132,7 +139,8 @@ class Statistics {
      * @param mixed $uservalue
      * @return array
      */
-    protected function doCalcPercentiles($array, $uservalue = null) {
+    protected function doCalcPercentiles($array, $uservalue = null)
+    {
         $userindex = null;
         $n         = ceil(count($array) / 100);
         $chunks    = array_chunk($array, $n);
@@ -162,7 +170,8 @@ class Statistics {
      * @param mixed $uservalue
      * @return array
      */
-    protected function calcPercentiles($key, $subkey, $uservalue = null) {
+    protected function calcPercentiles($key, $subkey, $uservalue = null)
+    {
         $cacheKey = 'percentile/' . $key . '/' . $subkey . '/' . ($this->account ? $this->account->getName() : '');
         return $this->cacheGet($cacheKey, function() use ($key, $subkey, $uservalue) {
                 $array = $this->cacheGet('rawpercentile/' . $key . '/' . $subkey, function() use ($key, $subkey) {
@@ -182,7 +191,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetUsers() {
+    public function getDatasetUsers()
+    {
         $cacheKey = 'percentile/users_connections/' . ($this->account ? $this->account->getName() : '');
         return $this->cacheGet($cacheKey, function() {
                 $array = $this->cacheGet('rawpercentile/users_connections', function() {
@@ -202,7 +212,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetItemsLegendary() {
+    public function getDatasetItemsLegendary()
+    {
         $value = $this->account ? $this->account->getLegendariesCount()['Total'] : null;
         return $this->calcPercentiles(Item::RARITY_LEGENDARY, 'Total', $value);
     }
@@ -211,7 +222,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetItemsAscended() {
+    public function getDatasetItemsAscended()
+    {
         $value = $this->account ? $this->account->getAscendedCount()['Total'] : null;
         return $this->calcPercentiles(Item::RARITY_ASCENDED, 'Total', $value);
     }
@@ -220,7 +232,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetItemsAscendedWeapons() {
+    public function getDatasetItemsAscendedWeapons()
+    {
         $value = $this->account ? $this->account->getAscendedCount()[Item::TYPE_WEAPON] : null;
         return $this->calcPercentiles(Item::RARITY_ASCENDED, Item::TYPE_WEAPON, $value);
     }
@@ -229,7 +242,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetItemsAscendedArmors() {
+    public function getDatasetItemsAscendedArmors()
+    {
         $value = $this->account ? $this->account->getAscendedCount()[Item::TYPE_ARMOR] : null;
         return $this->calcPercentiles(Item::RARITY_ASCENDED, Item::TYPE_ARMOR, $value);
     }
@@ -238,7 +252,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetItemsAscendedBacks() {
+    public function getDatasetItemsAscendedBacks()
+    {
         $value = $this->account ? $this->account->getAscendedCount()[Item::TYPE_BACK] : null;
         return $this->calcPercentiles(Item::RARITY_ASCENDED, Item::TYPE_BACK, $value);
     }
@@ -247,7 +262,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetItemsAscendedTrinkets() {
+    public function getDatasetItemsAscendedTrinkets()
+    {
         $value = $this->account ? $this->account->getAscendedCount()[Item::TYPE_TRINKET] : null;
         return $this->calcPercentiles(Item::RARITY_ASCENDED, Item::TYPE_TRINKET, $value);
     }
@@ -256,7 +272,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetPvpWinrates() {
+    public function getDatasetPvpWinrates()
+    {
         $value = $this->account ? $this->account->getStatsPvp()['winrate'] : null;
         return $this->calcPercentiles('pvp', 'winrate', $value);
     }
@@ -265,7 +282,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetPvpWins() {
+    public function getDatasetPvpWins()
+    {
         $value = $this->account ? $this->account->getStatsPvp()['wins'] : null;
         return $this->calcPercentiles('pvp', 'wins', $value);
     }
@@ -274,7 +292,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetPvpTotals() {
+    public function getDatasetPvpTotals()
+    {
         $value = $this->account ? $this->account->getStatsPvp()['total'] : null;
         return $this->calcPercentiles('pvp', 'total', $value);
     }
@@ -283,7 +302,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetPvpRanks() {
+    public function getDatasetPvpRanks()
+    {
         $value = $this->account ? $this->account->getStatsPvp()['rank'] : null;
         return $this->calcPercentiles('pvp', 'rank', $value);
     }
@@ -292,7 +312,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetCharacters() {
+    public function getDatasetCharacters()
+    {
         $value = $this->account ? $this->account->getCharactersCount() : null;
         return $this->calcPercentiles('generic', 'characters', $value);
     }
@@ -301,7 +322,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetDeaths() {
+    public function getDatasetDeaths()
+    {
         $value = $this->account ? $this->account->getTotalDeaths() : null;
         return $this->calcPercentiles('generic', 'deaths', $value);
     }
@@ -310,7 +332,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetAge() {
+    public function getDatasetAge()
+    {
         $value = $this->account ? $this->account->getTotalAge() : null;
         return $this->calcPercentiles('generic', 'age', $value);
     }
@@ -319,7 +342,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetLevel80() {
+    public function getDatasetLevel80()
+    {
         $value = $this->account ? $this->account->getCharactersLevel80Count() : null;
         return $this->calcPercentiles('generic', 'level80', $value);
     }
@@ -328,7 +352,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetDyes() {
+    public function getDatasetDyes()
+    {
         $value = $this->account ? $this->account->getStatsUnlocks()['dyes'] : null;
         return $this->calcPercentiles('unlocks', 'dyes', $value);
     }
@@ -337,7 +362,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetSkins() {
+    public function getDatasetSkins()
+    {
         $value = $this->account ? $this->account->getStatsUnlocks()['skins'] : null;
         return $this->calcPercentiles('unlocks', 'skins', $value);
     }
@@ -346,7 +372,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetWallet($id) {
+    public function getDatasetWallet($id)
+    {
         $value = $this->account ? $this->account->getStatsWallet()[$id] : null;
         return $this->calcPercentiles('wallet', $id, $value);
     }
@@ -355,7 +382,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetProfessions() {
+    public function getDatasetProfessions()
+    {
         return $this->cacheGet('pie/professions/', function() {
                 $data = [
                     Character::PROFESSION_ELEMENTALIST => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_ELEMENTALIST)],
@@ -383,7 +411,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetGenders() {
+    public function getDatasetGenders()
+    {
         return $this->cacheGet('pie/genders/', function() {
                 $data = [
                     Character::GENDER_MALE   => ['y' => 0, 'name' => $this->trans('gender.' . Character::GENDER_MALE)],
@@ -404,7 +433,8 @@ class Statistics {
      * 
      * @return array
      */
-    public function getDatasetRaces() {
+    public function getDatasetRaces()
+    {
         return $this->cacheGet('pie/races/', function() {
                 $data = [
                     Character::RACE_ASURA   => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_ASURA)],
@@ -423,5 +453,4 @@ class Statistics {
                 return array_values($data);
             }, 4 * 3600);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Arnapou GW2Tools package.
  *
@@ -8,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Gw2tool;
 
-class MenuItem {
+class MenuItem
+{
 
     /**
      *
@@ -59,7 +58,8 @@ class MenuItem {
      * 
      * @param string $label
      */
-    public function __construct($page, $label, $uri = null, $icon = null) {
+    public function __construct($page, $label, $uri = null, $icon = null)
+    {
         $this->page  = $page;
         $this->icon  = $icon;
         $this->label = $label;
@@ -71,7 +71,8 @@ class MenuItem {
      * 
      * @return boolean
      */
-    function getSeparator() {
+    function getSeparator()
+    {
         return $this->separator;
     }
 
@@ -79,7 +80,8 @@ class MenuItem {
      * 
      * @return string
      */
-    function getIcon() {
+    function getIcon()
+    {
         return $this->icon;
     }
 
@@ -87,7 +89,8 @@ class MenuItem {
      * 
      * @return string
      */
-    function getPage() {
+    function getPage()
+    {
         return $this->page;
     }
 
@@ -95,7 +98,8 @@ class MenuItem {
      * 
      * @return string
      */
-    function getUri() {
+    function getUri()
+    {
         return $this->uri;
     }
 
@@ -103,7 +107,8 @@ class MenuItem {
      * 
      * @return string
      */
-    function getLabel() {
+    function getLabel()
+    {
         return $this->label;
     }
 
@@ -111,7 +116,8 @@ class MenuItem {
      * 
      * @return string
      */
-    function getRight() {
+    function getRight()
+    {
         return $this->right;
     }
 
@@ -119,7 +125,8 @@ class MenuItem {
      * 
      * @return string
      */
-    function getPermission() {
+    function getPermission()
+    {
         return $this->permission;
     }
 
@@ -128,7 +135,8 @@ class MenuItem {
      * @param boolean $separator
      * @return MenuItem
      */
-    function setSeparator($separator) {
+    function setSeparator($separator)
+    {
         $this->separator = $separator;
         return $this;
     }
@@ -138,7 +146,8 @@ class MenuItem {
      * @param string $page
      * @return MenuItem
      */
-    function setPage($page) {
+    function setPage($page)
+    {
         $this->page = $page;
         return $this;
     }
@@ -148,7 +157,8 @@ class MenuItem {
      * @param string $uri
      * @return MenuItem
      */
-    function setUri($uri) {
+    function setUri($uri)
+    {
         $this->uri = $uri;
         return $this;
     }
@@ -158,7 +168,8 @@ class MenuItem {
      * @param string $icon
      * @return MenuItem
      */
-    function setIcon($icon) {
+    function setIcon($icon)
+    {
         $this->icon = $icon;
         return $this;
     }
@@ -168,7 +179,8 @@ class MenuItem {
      * @param string $label
      * @return MenuItem
      */
-    function setLabel($label) {
+    function setLabel($label)
+    {
         $this->label = $label;
         return $this;
     }
@@ -178,7 +190,8 @@ class MenuItem {
      * @param string $right
      * @return MenuItem
      */
-    function setRight($right) {
+    function setRight($right)
+    {
         $this->right = $right;
         return $this;
     }
@@ -188,9 +201,9 @@ class MenuItem {
      * @param string $permission
      * @return MenuItem
      */
-    function setPermission($permission) {
+    function setPermission($permission)
+    {
         $this->permission = $permission;
         return $this;
     }
-
 }

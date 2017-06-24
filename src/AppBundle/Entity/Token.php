@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TokenRepository")
  */
-class Token {
+class Token
+{
 
     /**
      * @var string
@@ -64,7 +64,8 @@ class Token {
      */
     private $_rights = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->lastaccess = time();
     }
 
@@ -73,7 +74,8 @@ class Token {
      *
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -84,7 +86,8 @@ class Token {
      *
      * @return Token
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
         return $this;
     }
@@ -94,7 +97,8 @@ class Token {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -105,7 +109,8 @@ class Token {
      *
      * @return Token
      */
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->code = $code;
         return $this;
     }
@@ -115,7 +120,8 @@ class Token {
      *
      * @return string
      */
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
 
@@ -126,7 +132,8 @@ class Token {
      *
      * @return Token
      */
-    public function setToken($token) {
+    public function setToken($token)
+    {
         $this->token = $token;
         return $this;
     }
@@ -136,7 +143,8 @@ class Token {
      *
      * @return string
      */
-    public function getToken() {
+    public function getToken()
+    {
         return $this->token;
     }
 
@@ -147,7 +155,8 @@ class Token {
      *
      * @return Token
      */
-    public function setLastaccess($lastaccess) {
+    public function setLastaccess($lastaccess)
+    {
         $this->lastaccess = $lastaccess;
         return $this;
     }
@@ -157,7 +166,8 @@ class Token {
      *
      * @return int
      */
-    public function getLastaccess() {
+    public function getLastaccess()
+    {
         return $this->lastaccess;
     }
 
@@ -166,7 +176,8 @@ class Token {
      *
      * @return Token
      */
-    public function updateLastaccess() {
+    public function updateLastaccess()
+    {
         $this->lastaccess = time();
         return $this;
     }
@@ -178,7 +189,8 @@ class Token {
      *
      * @return Token
      */
-    public function setIsValid($bool) {
+    public function setIsValid($bool)
+    {
         $this->valid = $bool;
         return $this;
     }
@@ -188,7 +200,8 @@ class Token {
      *
      * @return boolean
      */
-    public function isValid() {
+    public function isValid()
+    {
         return $this->valid;
     }
 
@@ -199,7 +212,8 @@ class Token {
      *
      * @return Token
      */
-    public function setData($data) {
+    public function setData($data)
+    {
         $this->data    = serialize($data);
         $this->_rights = null;
         return $this;
@@ -210,11 +224,11 @@ class Token {
      *
      * @return array
      */
-    public function getData() {
+    public function getData()
+    {
         if (is_resource($this->data)) {
             $data = stream_get_contents($this->data);
-        }
-        else {
+        } else {
             return [];
         }
         if (empty($data)) {
@@ -227,7 +241,8 @@ class Token {
      * 
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->token;
     }
 
@@ -236,7 +251,8 @@ class Token {
      * @param string $right
      * @return boolean
      */
-    public function hasRight($right) {
+    public function hasRight($right)
+    {
         return in_array($right, $this->getRights());
     }
 
@@ -244,7 +260,8 @@ class Token {
      * 
      * @return array
      */
-    public function getRights() {
+    public function getRights()
+    {
         if ($this->_rights === null) {
             $data          = $this->getData();
             $this->_rights = isset($data['rights']) ? $data['rights'] : [];
@@ -257,12 +274,12 @@ class Token {
      * @param array $rights
      * @return Token
      */
-    public function setRights($rights) {
+    public function setRights($rights)
+    {
         $this->_rights  = $rights;
         $data           = $this->getData();
         $data['rights'] = $rights;
         $this->setData($data);
         return $this;
     }
-
 }
