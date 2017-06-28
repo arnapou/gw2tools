@@ -48,8 +48,9 @@ twig:
     debug:            "%kernel.debug%"
 #    strict_variables: "%kernel.debug%"
     strict_variables: false
-#    globals:
-#        foo: bar
+    globals:
+        tracking_piwik_url: "%tracking.piwik.url%"
+        tracking_piwik_id: "%tracking.piwik.id%"
 
 # Doctrine Configuration
 doctrine:
