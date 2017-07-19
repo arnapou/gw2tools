@@ -13,6 +13,8 @@ parameters:
     mongo.collection: gw2tool
     proxy.file.retention: 30
     proxy.guild.emblem.retention: 4
+    tracking.piwik.url: ""
+    tracking.piwik.id: 0
 
 framework:
     #esi:             ~
@@ -46,8 +48,9 @@ twig:
     debug:            "%kernel.debug%"
 #    strict_variables: "%kernel.debug%"
     strict_variables: false
-#    globals:
-#        foo: bar
+    globals:
+        tracking_piwik_url: "%tracking.piwik.url%"
+        tracking_piwik_id: "%tracking.piwik.id%"
 
 # Doctrine Configuration
 doctrine:
