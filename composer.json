@@ -18,7 +18,9 @@
             "app/AppKernel.php",
             "app/AppCache.php"
         ],
-        "files": ["src/Gw2tool/functions.php"]
+        "files": [
+            "src/Gw2tool/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
