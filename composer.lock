@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "ef2bc1d87e88128a41c97c7d58aa6894831a5237"
+                "reference": "3de61597d79acd214254fc3ac80459cdc5a76ae4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/ef2bc1d87e88128a41c97c7d58aa6894831a5237",
-                "reference": "ef2bc1d87e88128a41c97c7d58aa6894831a5237",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/3de61597d79acd214254fc3ac80459cdc5a76ae4",
+                "reference": "3de61597d79acd214254fc3ac80459cdc5a76ae4",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2017-07-26 12:03:44"
+            "time": "2017-07-26 12:21:36"
         },
         {
             "name": "composer/ca-bundle",
