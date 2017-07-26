@@ -88,14 +88,29 @@
                 </thead>
                 <tbody>
                     {% set tp = account.tradingpost %}
+
+                    {%  set tmp_min = tp.deliveryitems|tpsum('buy') %}
+                    {%  set tmp_max = tp.deliveryitems|tpsum('sell') %}
+                    <tr>
+                        <td class="column-name"><i class="ic-ui-blc-balance"></i> <a href="../tp_buys/">{{ 'global.tp_delivered_items'|trans }}</a></td>
+                        <td class="column-amount">{{ macro.amount(tmp_min) }}</td>
+                        <td class="column-amount">{{ macro.amount(tmp_max) }}</td>
+                    </tr>
+                    {% set sum_min = sum_min + tmp_min %}
+                    {% set sum_max = sum_max + tmp_max %}
+
+                    <tr>
+                        <td class="column-name"><i class="ic-ui-blc-balance"></i> <a href="../tp_sells/">{{ 'global.tp_delivered_amount'|trans }}</a></td>
+                        <td class="column-amount"></td>
+                        <td class="column-amount">{{ macro.amount(tp.deliveryamount) }}</td>
+                    </tr>
+                    {% set sum_max = sum_max + tp.deliveryamount %}
+
                     {% for data in [
                         ['tp_buys', ('global.tp_current_buys'|trans), tp.currentbuys],
                         ['tp_sells', ('global.tp_current_sells'|trans), tp.currentsells],
                     ] %}
-                        {% set tmp = 0 %}
-                        {% for trade in data.2 %}
-                            {% set tmp = tmp + trade.quantity * trade.price %}
-                        {% endfor %}
+                        {% set tmp = data.2|tpsum %}
                         <tr>
                             <td class="column-name"><i class="ic-ui-blc-balance"></i> <a href="../{{ data.0 }}/">{{ data.1 }}</a></td>
                             <td class="column-amount"></td>

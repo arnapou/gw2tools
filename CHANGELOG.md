@@ -1,3 +1,7 @@
+## 2.1.14 (2017-07-26)
+
+  - adding tp delivery
+
 ## 2.1.13 (2017-06-24)
 
   - adding unlocked pvp heroes 

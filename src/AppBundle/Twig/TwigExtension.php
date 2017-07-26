@@ -25,7 +25,19 @@ class TwigExtension extends \Twig_Extension
             new \Twig_SimpleFilter('datediff', [$this, 'datediff']),
             new \Twig_SimpleFilter('gwlink', [$this, 'gwlink']),
             new \Twig_SimpleFilter('idtoname', [$this, 'idtoname']),
+            new \Twig_SimpleFilter('tpsum', [$this, 'tpsum']),
         );
+    }
+
+    public function tpsum($items, $subkey = null)
+    {
+        $sum = 0;
+        foreach ($items as $item) {
+            if (\is_array($item) && isset($item['quantity'], $item['price'])) {
+                $sum += (\is_array($item['price']) ? $item['price'][$subkey] : $item['price']) * $item['quantity'];
+            }
+        }
+        return $sum;
     }
 
     public function idtoname($item)
