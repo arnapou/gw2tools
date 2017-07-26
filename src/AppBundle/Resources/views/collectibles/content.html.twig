@@ -2,7 +2,7 @@
     {% import "AppBundle::macro.html.twig" as macro %}
 
     {% set collectibles = account.collectibles %}
-    {% set columns = [collectibles|slice(0, 3), collectibles|slice(3)] %}
+    {% set columns = [collectibles|slice(0, 4), collectibles|slice(4)] %}
 
     <div class="row">
         {% for collectibles in columns %}
