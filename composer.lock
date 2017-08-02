@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "3de61597d79acd214254fc3ac80459cdc5a76ae4"
+                "reference": "10583cb0dd220b380f0f99b6b476e6fe49e2f51e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/3de61597d79acd214254fc3ac80459cdc5a76ae4",
-                "reference": "3de61597d79acd214254fc3ac80459cdc5a76ae4",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/10583cb0dd220b380f0f99b6b476e6fe49e2f51e",
+                "reference": "10583cb0dd220b380f0f99b6b476e6fe49e2f51e",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2017-07-26 12:21:36"
+            "time": "2017-08-02 11:57:45"
         },
         {
             "name": "composer/ca-bundle",
@@ -1504,16 +1504,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.5",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "6a3b0c3b42e41c777b1ad75032d8177863fdc5e1"
+                "reference": "9c7bfbc7be32781d39f8e262744f7fb0c410df67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/6a3b0c3b42e41c777b1ad75032d8177863fdc5e1",
-                "reference": "6a3b0c3b42e41c777b1ad75032d8177863fdc5e1",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/9c7bfbc7be32781d39f8e262744f7fb0c410df67",
+                "reference": "9c7bfbc7be32781d39f8e262744f7fb0c410df67",
                 "shasum": ""
             },
             "require": {
@@ -1526,7 +1526,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -1545,7 +1545,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-07-24T11:42:56+00:00"
+            "time": "2017-08-02T07:52:06+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2393,7 +2393,7 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.3.5",
+            "version": "v3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
