@@ -70,24 +70,26 @@
 
 
 
-{% macro amount(value) %}
+{% macro amount(value, type) %}
     {% import _self as self %}
     {% if value.buy is not none %}
-        {{ self.amount(value.buy) }} &#8210; {{ self.amount(value.sell) }}
+        {{ self.amount(value.buy, 'buy') }} &#8210; {{ self.amount(value.sell, 'sell') }}
     {% else %}
-        {% set g = (value / 10000)|round(0, 'floor') %}
-        {% set s = (value / 100)|round(0, 'floor') % 100 %}
-        {% set c = value % 100 %}
-        {% if g %}
-            <span class="gold">{{ g }}</span>
-            <span class="silver">{{ s }}</span>
-            <span class="copper">{{ c }}</span>
-        {% elseif s %}
-            <span class="silver">{{ s }}</span>
-            <span class="copper">{{ c }}</span>
-        {% else %}
-            <span class="copper">{{ c }}</span>
-        {% endif %}
+        <span data-amount="{{ value }}" data-type="{{ type is defined ? type : '' }}">
+            {% set g = (value / 10000)|round(0, 'floor') %}
+            {% set s = (value / 100)|round(0, 'floor') % 100 %}
+            {% set c = value % 100 %}
+            {% if g %}
+                <span class="gold">{{ g }}</span>
+                <span class="silver">{{ s }}</span>
+                <span class="copper">{{ c }}</span>
+            {% elseif s %}
+                <span class="silver">{{ s }}</span>
+                <span class="copper">{{ c }}</span>
+            {% else %}
+                <span class="copper">{{ c }}</span>
+            {% endif %}
+        </span>
     {% endif %}
 {% endmacro %}
 
@@ -175,6 +177,7 @@
 
 
 {% macro inventory_slot(item, context) %}
+    {% import _self as self %}
     <div class="slot rarity-{{ item.getRarity() }}">
         {% if item.getId() %}
             <span {{ item|gwlink|raw }}>
@@ -184,9 +187,25 @@
                 {% elseif item.getCharges() %}
                     <span class="count">{{ item.getCharges() }}</span>
                 {% endif %}
+                {% if item.getPrice().sell_total %}
+                    {{ self.inventory_slot_amount(item.getPrice().sell_total) }}
+                {% else %}
+                    {{ self.inventory_slot_amount(item.getPrice().sell) }}
+                {% endif %}
             </span>
         {% endif %}
     </div>
+{% endmacro %}
+
+
+
+{% macro inventory_slot_amount(value) %}
+    {% set g = (value / 10000)|round(0, 'floor') %}
+    {%  if g >=1 %}
+        <span class="amount" data-amount="{{ value }}">
+            <span class="gold">{{ g }}</span>
+        </span>
+    {% endif %}
 {% endmacro %}
 
 

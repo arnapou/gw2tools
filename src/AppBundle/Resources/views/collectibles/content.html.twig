@@ -22,6 +22,11 @@
                                         <span {{ item|gwlink|raw }}>
                                             <img src="{{ item|image }}" />
                                             <span class="count">{{ item.count }}</span>
+                                            {% if item.getPrice().sell_total %}
+                                                {{ macro.inventory_slot_amount(item.getPrice().sell_total) }}
+                                            {% else %}
+                                                {{ macro.inventory_slot_amount(item.getPrice().sell) }}
+                                            {% endif %}
                                         </span>
                                     {% else %}
                                         <img src="{{ ""|image }}" class="nothing" />
