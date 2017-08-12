@@ -1,3 +1,8 @@
+## 2.1.15 (2017-08-12)
+
+  - adding an 'item stats list' tool page
+  - adding sell price (rounded to gold) on collectibles
+  
 ## 2.1.14 (2017-07-26)
 
   - adding tp delivery

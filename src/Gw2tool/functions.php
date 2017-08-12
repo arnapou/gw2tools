@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Gw2tool;
 
 use Arnapou\GW2Api\Model\AbstractObject;
@@ -25,7 +26,7 @@ use Arnapou\GW2Api\Model\Specialization;
 use Arnapou\GW2Api\Model\SpecializationTrait;
 
 /**
- * 
+ *
  * @param Item $item
  * @return string
  */
@@ -47,7 +48,7 @@ function consumableduration(AbstractObject $item)
 }
 
 /**
- * 
+ *
  * @param PvpGame $item
  * @return string
  */
@@ -61,7 +62,7 @@ function gameduration(PvpGame $item)
 }
 
 /**
- * 
+ *
  * @param Item $item
  * @return string
  */
@@ -82,7 +83,7 @@ function buffdescription(AbstractObject $item)
 }
 
 /**
- * 
+ *
  * @param SpecializationTrait $item
  * @return string
  */
@@ -93,7 +94,7 @@ function gwlink_trait(SpecializationTrait $item)
 }
 
 /**
- * 
+ *
  * @param Specialization $item
  * @return string
  */
@@ -104,7 +105,7 @@ function gwlink_specialization(Specialization $item)
 }
 
 /**
- * 
+ *
  * @param Skin $item
  * @return string
  */
@@ -115,7 +116,7 @@ function gwlink_skin(Skin $item)
 }
 
 /**
- * 
+ *
  * @param Skill $item
  * @return string
  */
@@ -126,7 +127,7 @@ function gwlink_skill(Skill $item)
 }
 
 /**
- * 
+ *
  * @param Pet $item
  * @return string
  */
@@ -137,7 +138,7 @@ function gwlink_pet(Pet $item)
 }
 
 /**
- * 
+ *
  * @param PvpAmulet $item
  * @return string
  */
@@ -148,7 +149,7 @@ function gwlink_pvpamulet(PvpAmulet $item)
 }
 
 /**
- * 
+ *
  * @param Item $item
  * @return string
  */
@@ -159,7 +160,7 @@ function gwlink_item(Item $item)
 }
 
 /**
- * 
+ *
  * @param InventorySlot $item
  * @return string
  */
@@ -217,7 +218,7 @@ function gwlink_inventoryslot(InventorySlot $item)
 }
 
 /**
- * 
+ *
  * @param string $date
  * @return string
  */
@@ -250,7 +251,7 @@ function datediff($date)
 }
 
 /**
- * 
+ *
  * @param string $url
  * @return string
  */
@@ -279,7 +280,7 @@ function image($url)
 }
 
 /**
- * 
+ *
  * @param string $stat
  * @return string
  */
@@ -289,13 +290,18 @@ function imagestat($stat)
         return '/assets/images/nothing.svg';
     }
     $stat = strtolower(str_replace("'s", "", $stat));
+    $stat = str_replace(' and ', '+', $stat);
     $stat = preg_replace('![^a-z]+!', '-', $stat);
+    $file = __DIR__ . '/../../web/assets/images/stats/' . $stat . '.svg';
+    if (!is_file($file)) {
+        $stat = 'unknown';
+    }
     return '/assets/images/stats/' . $stat . '.svg';
 }
 
 /**
- * 
- * @param array $array
+ *
+ * @param array   $array
  * @param integer $n
  * @param boolean $fill
  * @return array
@@ -327,7 +333,7 @@ function chunk($array, $n, $fill = true)
 }
 
 /**
- * 
+ *
  * @param integer $value
  * @return string
  */

@@ -55,13 +55,15 @@ class ProxyController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/proxy/file/{signature}/{file}.{format}", requirements={"signature": "[a-fA-F0-9]+", "file": "[0-9]+", "format": "jpg|png"})
-     * 
-     * @param string $signature
-     * @param string $file
-     * @param string $format
+     *
+     * @Route("/proxy/file/{signature}/{file}.{format}", requirements={"signature": "[a-fA-F0-9]+", "file": "[0-9]+",
+     *                                                   "format": "jpg|png"})
+     *
+     * @param string  $signature
+     * @param string  $file
+     * @param string  $format
      * @param Request $request
+     * @return ResponseFile
      */
     public function fileAction($signature, $file, $format, Request $request)
     {
@@ -76,11 +78,12 @@ class ProxyController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/proxy/guild/{id}.svg", requirements={"id": "[a-fA-F0-9-]+"})
-     * 
-     * @param string $id
+     *
+     * @param string  $id
      * @param Request $request
+     * @return ResponseFile
      */
     public function guildEmblemSvgAction($id, Request $request)
     {
@@ -104,11 +107,12 @@ class ProxyController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/proxy/guild/{id}.png", requirements={"id": "[a-fA-F0-9-]+"})
-     * 
-     * @param string $id
+     *
+     * @param string  $id
      * @param Request $request
+     * @return ResponseFile
      */
     public function guildEmblemPngAction($id, Request $request)
     {

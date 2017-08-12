@@ -1,0 +1,62 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <h1>{{ 'tools.itemstats_list'|trans }}</h1>
+
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            {% for lng in langs %}
+                <th>{{ 'global.name'|trans }} {{ lng|upper }}</th>
+            {% endfor %}
+            <th>{{ 'global.statistics'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set nb = 9999 %}
+        {% for stat in stats %}
+            {% if nb != stat.nbattrs %}
+                {% set nb = stat.nbattrs %}
+                {% if not loop.first %}
+                    <tr>
+                        <td></td>
+                        <td colspan="{{ langs|length +1 }}">
+                            <span class="label label-default">
+                                {{ nb }} {{ 'global.attributes'|trans|lower }}
+                            </span>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+            <tr>
+                <td class="stat-image">
+                    {% set img = stat.en|imagestat %}
+                    <img src="{{ img }}" style="opacity: {{ ('unknown' in img) ? 0.25 : 1 }}"/>
+                </td>
+                {% for lng in langs %}
+                    <td>{{ stat[lng] }}</td>
+                {% endfor %}
+                <td>
+                    {% for attr in stat.attrs %}
+                        {{ ('attribute.'~attr)|trans }}
+                        {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <style>
+        td.stat-image {
+            width: 3em;
+            vertical-align: middle;
+        }
+        td.stat-image img {
+            width: 24px;
+        }
+    </style>
+
+{% endblock %}

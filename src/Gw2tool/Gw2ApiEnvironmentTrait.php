@@ -26,8 +26,10 @@ trait Gw2ApiEnvironmentTrait
     protected $gwEnvironments = [];
 
     /**
-     * 
+     *
+     * @param null $lang
      * @return Environment
+     * @throws \Exception
      */
     public function getGwEnvironment($lang = null)
     {

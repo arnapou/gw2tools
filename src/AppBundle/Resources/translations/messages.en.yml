@@ -49,6 +49,7 @@ global.api_key: "Api key"
 global.appearance: "Appearance"
 global.armor: "Armor"
 global.attack_power: "Attack power"
+global.attributes: "Attributes"
 global.backstory: "Back story"
 global.bagsize: "Bag size"
 global.bank: "Bank"
@@ -145,6 +146,7 @@ global.specializations: "Specializations"
 global.spent: "Spent"
 global.stash: "Stash"
 global.stashs: "Stashs"
+global.statistics: "Statistics"
 global.time: "Time"
 global.title: "Title"
 global.tools: "Tools"
@@ -152,8 +154,8 @@ global.total: "Total"
 global.total_price: "Total price"
 global.tp_current_buys: "Current buys"
 global.tp_current_sells: "Current sells"
-global.tp_delivered_items: "Delivered items"
 global.tp_delivered_amount: "Delivered amount"
+global.tp_delivered_items: "Delivered items"
 global.tp_empty: "There is nothing to display : either in current or history."
 global.tp_history_buys: "History buys"
 global.tp_history_sells: "History sells"
@@ -196,8 +198,8 @@ global.yes: "Yes"
 guild.log.has_joined_the_guild: has joined the guild
 guild.log.invite_declined: declined the invitation from
 guild.log.motd_changed: changed the message of the day
-guild.log.rank_changed_down: was downgraded to 
-guild.log.rank_changed_up: was promoted to 
+guild.log.rank_changed_down: was downgraded to
+guild.log.rank_changed_up: was promoted to
 guild.log.stash_deposit: deposited in stash
 guild.log.stash_withdraw: withdrawn
 guild.log.treasury_deposit: deposited in terasury
@@ -295,6 +297,7 @@ menu.general.statistics: "Statistics"
 menu.general.wallet: "Wallet"
 menu.general: "General"
 menu.others: "Others"
+menu.tools: "Tools"
 menu.tp.tp_buys: "Buys"
 menu.tp.tp_sells: "Sells"
 menu.tp: "Trading post"
@@ -446,6 +449,7 @@ stats.Vigilant: "Vigilant"
 stats.Viper's: "Viper's"
 stats.Wanderer: "Wanderer"
 stats.Zealot's: "Zealot's"
+tools.itemstats_list: "Item stats list"
 tooltip.click_lock: "Click on the item to lock the tooltip."
 tooltip.click_unlock: "Click again to unlock the tooltip."
 traits.buff_conversion: "Gain %dst based on a percentage of %src%: %pct%%"
