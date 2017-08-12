@@ -11,215 +11,224 @@
      #}
 
     <html lang="en">
-        <head>
-            <meta charset="utf-8" />
-            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-            <meta http-equiv="Cache-control" content="no-cache" />
-            <meta http-equiv="Expires" content="-1" />
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>
-                {% set breadcrumb = module.breadcrumb %}
-                {% block title %}
-                    {% if account and breadcrumb %}
-                        {{ account.name }} &raquo; {{ breadcrumb|join(' &raquo; ')|raw }}
-                    {% elseif account %}
-                        {{ account.name }}
-                    {% else %}
-                        GW2 Tools
-                    {% endif %}
-                {% endblock %}
-            </title>
-            {% block stylesheets %}
-                <link href="{{ asset('assets/bootstrap-3.3.7/css/bootstrap-flatly.min.css') }}" rel="stylesheet" />
-                <link href="{{ asset('assets/fontello/css/gw2tool.css') }}" rel="stylesheet" />
-                {% stylesheets filter='cssrewrite' output='assets/style.css'
-                'assets/css/bootstrap-hack.css' 
-                'assets/css/general.css' 
-                'assets/css/specialization.css' 
-                'assets/css/spinner.css' 
-                'assets/css/tooltip.css' 
-                %}
-                <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
-                {% endstylesheets %}
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
+        <meta http-equiv="Cache-control" content="no-cache"/>
+        <meta http-equiv="Expires" content="-1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% set breadcrumb = module.breadcrumb %}
+            {% block title %}
+                {% if account and breadcrumb %}
+                    {{ account.name }} &raquo; {{ breadcrumb|join(' &raquo; ')|raw }}
+                {% elseif account %}
+                    {{ account.name }}
+                {% else %}
+                    GW2 Tools
+                {% endif %}
             {% endblock %}
-            <script>
-                var LANG = "{{ lang }}";
-                var CODE = "{{ code }}";
-            </script>
-        </head>
-        <body>
+        </title>
+        {% block stylesheets %}
+            <link href="{{ asset('assets/bootstrap-3.3.7/css/bootstrap-flatly.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('assets/fontello/css/gw2tool.css') }}" rel="stylesheet"/>
+            {% stylesheets filter='cssrewrite' output='assets/style.css'
+            'assets/css/bootstrap-hack.css'
+            'assets/css/general.css'
+            'assets/css/specialization.css'
+            'assets/css/spinner.css'
+            'assets/css/tooltip.css' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
+            {% endstylesheets %}
+        {% endblock %}
+        <script>
+            var LANG = "{{ lang }}";
+            var CODE = "{{ code }}";
+        </script>
+    </head>
+    <body>
 
-            <div class="navbar navbar-default" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <a href="/" class="navbar-brand">GW2 Tools</a>
-                    </div>
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">GW2 Tools</a>
+            </div>
 
-                    <div class="collapse navbar-collapse">
-                        {% if code %}
-                            <ul class="nav navbar-nav">
-                                {% for list in module.menu %}
-                                    {% set items = list.items(owner ? none : user) %}
-                                    {% if items|length %}
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                {{ list.label }} <span class="caret"></span>
-                                            </a>
-                                            <ul class="dropdown-menu scrollable-menu">
-                                                {% for item in items %}
-                                                    {% if item.separator %}
-                                                        <li role="separator" class="divider">
-                                                        </li>
+            <div class="collapse navbar-collapse">
+                {% if code %}
+                    <ul class="nav navbar-nav">
+                        {% for list in module.menu %}
+                            {% set items = list.items(owner ? none : user) %}
+                            {% if items|length %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        {{ list.label }} <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu scrollable-menu">
+                                        {% for item in items %}
+                                            {% if item.separator %}
+                                                <li role="separator" class="divider">
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    {% if item.permission is none or item.permission and account.haspermission(item.permission) %}
+                                                        <a href="../{{ item.uri }}">
+                                                            <i class="menuicon {{ item.icon }}"></i> {{ item.label }}
+                                                        </a>
                                                     {% else %}
-                                                        <li>
-                                                            {% if item.permission is none or item.permission and account.haspermission(item.permission) %}
-                                                                <a href="../{{ item.uri }}">
-                                                                    <i class="menuicon {{ item.icon }}"></i> {{ item.label }}
-                                                                </a>
-                                                            {% else %}
-                                                                <a href="../{{ item.uri }}" class="locked">
-                                                                    <i class="menuicon glyphicon glyphicon-lock"></i> {{ item.label }}
-                                                                </a>
-                                                            {% endif %}
-                                                        </li>
+                                                        <a href="../{{ item.uri }}" class="locked">
+                                                            <i class="menuicon glyphicon glyphicon-lock"></i> {{ item.label }}
+                                                        </a>
                                                     {% endif %}
-                                                {% endfor %}
-                                            </ul>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                        {% set users = module.cookieusers %}
-                            <ul class="nav navbar-nav navbar-right">
-                        {% if account or (users|length) %}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% set users = module.cookieusers %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            {{ ('menu.tools'|trans) }} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu scrollable-menu">
+                            <li>
+                                <a href="/{{ lang }}/tools/itemstats_list" class="account-link">
+                                    {{ 'tools.itemstats_list'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% if account or (users|length) %}
+                        {% if users|length %}
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    {{ ('menu.tools'|trans) }} <span class="caret"></span>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    {{ account.name ? account.name : ('menu.accounts'|trans) }} <span
+                                            class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu scrollable-menu">
+                                    {% for usr in users %}
                                         <li>
-                                            <a href="/{{ lang }}/tools/itemstats_list" class="account-link">
-                                                {{ 'tools.itemstats_list'|trans }}
+                                            <a href="/{{ lang }}/{{ usr.code }}/" class="account-link">
+                                                <small> ... {{ usr.token|slice(-4) }}</small>
+                                                {{ usr.name ? usr.name : '??????' }}
                                             </a>
                                         </li>
+                                    {% endfor %}
                                 </ul>
                             </li>
-                                {% if users|length %}
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            {{ account.name ? account.name : ('menu.accounts'|trans) }} <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu scrollable-menu">
-                                            {% for usr in users %}
-                                                <li>
-                                                    <a href="/{{ lang }}/{{ usr.code }}/" class="account-link">
-                                                        <small> ... {{ usr.token|slice(-4) }}</small>
-                                                        {{ usr.name ? usr.name : '??????' }}
-                                                    </a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% elseif account %}
-                                    <li>
-                                        <p class="navbar-text"><b>{{ account.name }}</b></p>
-                                    </li>
-                                {% endif %}
+                        {% elseif account %}
+                            <li>
+                                <p class="navbar-text"><b>{{ account.name }}</b></p>
+                            </li>
                         {% endif %}
-                            </ul>
+                    {% endif %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="container" id="container">
+        {% block content %}
+        {% endblock %}
+        <div id="gwitemdetail"></div>
+    </div>
+    <div id="footer">
+        <div class="container">
+            {% block footer %}
+                <div class="row">
+                    <div class="col-xs-6">
+                        <ul>
+                            <li>
+                                <i class="glyphicon glyphicon-user"></i> {{ "footer.site_development"|trans }}:
+                                <a href="mailto:arnaud@arnapou.net">Arnaud Buathier</a>
+                            </li>
+                            <li>
+                                <img src="{{ asset('assets/images/misc/github.png') }}"/> GitHub:
+                                <a href="https://github.com/arnapou/gw2tools"
+                                   target="_blank">{{ "footer.gw2tools_project"|trans }}</a>&nbsp;
+                                <em>(v{{ asset_version('') }})</em>
+                            </li>
+                            <li>
+                                <i class="glyphicon glyphicon-list-alt"></i> {{ "footer.changelog"|trans }}:
+                                <a href="https://github.com/arnapou/gw2tools/blob/master/CHANGELOG.md"
+                                   target="_blank">{{ "footer.project_changelog"|trans }}</a>
+                            </li>
+                            <li>
+                                <i class="glyphicon glyphicon-wrench"></i> {{ "footer.technical"|trans }}:
+                                <a href="{{ path('technical-infos') }}">{{ "footer.for_developers"|trans }}</a>
+                            </li>
+                            <li>
+                                <i class="glyphicon glyphicon-globe"></i> {{ "footer.languages"|trans }}:
+                                {% for lang in module.langs %}
+                                    {% if not loop.first %}
+                                        <span>, </span>
+                                    {% endif %}
+                                    <a href="/{{ lang }}{{ app.request.pathinfo|slice(3) }}">{{ lang|upper }}</a>
+                                {% endfor %}
+                            </li>
+                        </ul>
                     </div>
-
-                </div>
-            </div>
-            <div class="container" id="container">
-                {% block content %}
-                {% endblock %}
-                <div id="gwitemdetail"></div>
-            </div>
-            <div id="footer">
-                <div class="container">
-                    {% block footer %}
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <ul>
-                                    <li>
-                                        <i class="glyphicon glyphicon-user"></i> {{ "footer.site_development"|trans }}: 
-                                        <a href="mailto:arnaud@arnapou.net">Arnaud Buathier</a>
-                                    </li>
-                                    <li>
-                                        <img src="{{ asset('assets/images/misc/github.png') }}" /> GitHub: 
-                                        <a href="https://github.com/arnapou/gw2tools" target="_blank">{{ "footer.gw2tools_project"|trans }}</a>&nbsp; <em>(v{{ asset_version('') }})</em>
-                                    </li>
-                                    <li>
-                                        <i class="glyphicon glyphicon-list-alt"></i> {{ "footer.changelog"|trans }}: 
-                                        <a href="https://github.com/arnapou/gw2tools/blob/master/CHANGELOG.md" target="_blank">{{ "footer.project_changelog"|trans }}</a>
-                                    </li>
-                                    <li>
-                                        <i class="glyphicon glyphicon-wrench"></i> {{ "footer.technical"|trans }}: 
-                                        <a href="{{ path('technical-infos') }}">{{ "footer.for_developers"|trans }}</a>
-                                    </li>
-                                    <li>
-                                        <i class="glyphicon glyphicon-globe"></i> {{ "footer.languages"|trans }}: 
-                                        {% for lang in module.langs %}
-                                            {% if not loop.first %}
-                                                <span>, </span>
-                                            {% endif %}
-                                            <a href="/{{ lang }}{{ app.request.pathinfo|slice(3) }}">{{ lang|upper }}</a>
-                                        {% endfor %}
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="logo">
-                                    <a href="http://guildwars2.com/" target="_blank">
-                                        <img src="/assets/images/logo/gw2.png" width="128" />
-                                    </a>
-                                    <a href="http://www.arena.net/" target="_blank">
-                                        <img src="/assets/images/logo/anet.png" width="128" />
-                                    </a>
-                                    <a href="http://us.ncsoft.com/" target="_blank">
-                                        <img src="/assets/images/logo/ncsoft.png" width="128" />
-                                    </a>
-                                </div>
-                                <p>
-                                    &copy; {{ "footer.anet_copyright"|trans }}
-                                </p>
-                            </div>
+                    <div class="col-xs-6">
+                        <div class="logo">
+                            <a href="http://guildwars2.com/" target="_blank">
+                                <img src="/assets/images/logo/gw2.png" width="128"/>
+                            </a>
+                            <a href="http://www.arena.net/" target="_blank">
+                                <img src="/assets/images/logo/anet.png" width="128"/>
+                            </a>
+                            <a href="http://us.ncsoft.com/" target="_blank">
+                                <img src="/assets/images/logo/ncsoft.png" width="128"/>
+                            </a>
                         </div>
-                    {% endblock %}
+                        <p>
+                            &copy; {{ "footer.anet_copyright"|trans }}
+                        </p>
+                    </div>
                 </div>
-            </div>
-
-            <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}"></script>
-            <script src="{{ asset('assets/bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
-            {% block javascripts %}
-                {% javascripts filter="?jsqueeze" output='assets/script.js'
-                'assets/js/js.cookie.js'
-                'assets/js/plugin-bootbox.js'
-                'assets/js/script.js'
-                %}
-                <script src="{{ asset_url }}"></script>
-                {% endjavascripts %}
             {% endblock %}
-            {% if tracking_piwik_url and tracking_piwik_id %}
-                <!-- Piwik -->
-                <script type="text/javascript">
-                  var _paq = _paq || [];
-                  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-                  _paq.push(['trackPageView']);
-                  _paq.push(['enableLinkTracking']);
-                  (function() {
-                    var u={{ tracking_piwik_url|json_encode|raw }};
-                    _paq.push(['setTrackerUrl', u+'piwik.php']);
-                    _paq.push(['setSiteId', {{ tracking_piwik_id|json_encode|raw }}]);
-                    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-                  })();
-                </script>
-                <!-- End Piwik Code -->
-            {% endif %}
-        </body>
+        </div>
+    </div>
+
+    <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}"></script>
+    <script src="{{ asset('assets/bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
+    {% block javascripts %}
+        {% javascripts filter="?jsqueeze" output='assets/script.js'
+        'assets/js/js.cookie.js'
+        'assets/js/plugin-bootbox.js'
+        'assets/js/script.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
+    {% if tracking_piwik_url and tracking_piwik_id %}
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function () {
+                var u ={{ tracking_piwik_url|json_encode|raw }};
+                _paq.push(['setTrackerUrl', u + 'piwik.php']);
+                _paq.push(['setSiteId', {{ tracking_piwik_id|json_encode|raw }}]);
+                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+                g.type = 'text/javascript';
+                g.async = true;
+                g.defer = true;
+                g.src = u + 'piwik.js';
+                s.parentNode.insertBefore(g, s);
+            })();
+        </script>
+        <!-- End Piwik Code -->
+    {% endif %}
+    </body>
     </html>
 {% endspaceless %}
