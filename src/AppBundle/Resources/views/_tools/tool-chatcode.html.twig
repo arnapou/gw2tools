@@ -1,0 +1,244 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <h1>{{ 'tools.chatcode'|trans }}</h1>
+
+    <div class="generator">
+
+        <div class="row qItem">
+            <div class="col-xs-3"><span>{{ 'global.item'|trans }}</span></div>
+            <div class="col-xs-6">
+                <input class="form-control search" type="text" placeholder="{{ 'global.id_or_name'|trans }}">
+                <div class="erase" style="display: none"><i class="glyphicon glyphicon-remove"></i></div>
+            </div>
+            <div class="col-xs-2"><span class="chatlink"></span></div>
+        </div>
+
+        {% for i in 1..2 %}
+
+            <div class="row qUpgrade{{ i }}">
+                <div class="col-xs-3"><span>{{ 'global.upgrade'|trans }} {{ i }}</span></div>
+                <div class="col-xs-6">
+                    <input class="form-control search" type="text" placeholder="{{ 'global.id_or_name'|trans }}">
+                    <div class="erase" style="display: none"><i class="glyphicon glyphicon-remove"></i></div>
+                </div>
+                <div class="col-xs-2"><span class="chatlink"></span></div>
+            </div>
+
+        {% endfor %}
+
+        <div class="row qSkin">
+            <div class="col-xs-3"><span>{{ 'global.skin'|trans }}</span></div>
+            <div class="col-xs-6">
+                <input class="form-control search" type="text" placeholder="{{ 'global.id_or_name'|trans }}">
+                <div class="erase" style="display: none"><i class="glyphicon glyphicon-remove"></i></div>
+            </div>
+            <div class="col-xs-2"><span class="chatlink"></span></div>
+        </div>
+
+        <div class="row qQuantity">
+            <div class="col-xs-3"><span>{{ 'global.quantity'|trans }}</span></div>
+            <div class="col-xs-2">
+                <input class="form-control quantity" type="number" value="1">
+            </div>
+        </div>
+
+        <div class="row result">
+            <div class="col-xs-3"><span>{{ 'global.generated_code'|trans }}</span></div>
+            <div class="col-xs-6">
+                <input class="form-control chatlink" type="text" readonly>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 4em">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-6">
+                {% if lang == 'fr' %}
+                    <div class="well">
+                        Notez que vous pouvez générer des codes aberrants pour le jeu et/ou qui ne marcheront pas.
+                        (par exemple une arme équipée d'une rune)
+                    </div>
+                {% else %}
+                    <div class="well">
+                        Note that you can generate stupid codes which can/not work into the game.
+                        (example: a weapon with a rune)
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .twitter-typeahead {
+            width: 100%;
+        }
+
+        .tt-hint {
+            padding-left: 58px;
+        }
+
+        .tt-input {
+            padding-left: 58px;
+            -webkit-background-size: auto 75%;
+            background-size: auto 30px;
+            background-position: 18px 5px;
+            background-repeat: no-repeat;
+        }
+
+        .search {
+            width: 100%;
+        }
+
+        .generator .row {
+            margin-bottom: .5em;
+        }
+
+        .generator .row > div > span {
+            line-height: 40px;
+        }
+
+        .generator .row > div:first-child {
+            text-align: right;
+        }
+
+        .empty-message {
+            padding-left: 2em;
+            padding-right: 2em;
+            color: darkred;
+        }
+
+        .erase {
+            position: absolute;
+            right: 18px;
+            top: 3px;
+            font-size: 30px;
+            cursor: pointer;
+            opacity: .5;
+        }
+
+        .erase:hover {
+            opacity: 1;
+        }
+    </style>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+
+            var typeheadSettings = {
+                name: 'items',
+                display: 'value',
+                limit: 10,
+                minLength: 2,
+                highlight: true,
+                templates: {
+                    empty: '<div class="empty-message">{{ 'global.nothing_found'|trans }}</div>',
+                    suggestion: function (suggestion) {
+                        var str = suggestion.value;
+                        var parts = suggestion._query.split(/ +/);
+                        var cls = '';
+                        if (typeof suggestion.rarity === 'string') {
+                            cls = 'rarity-' + suggestion.rarity;
+                        }
+                        for (var i = 0; i < parts.length; i++) {
+                            str = str.replace(new RegExp(parts[i], 'i'), '<b>' + parts[i] + '</b>');
+                        }
+                        return '<div class="' + cls + '"><img src="' + suggestion.icon + '" data-id="' + suggestion.id + '"/> ' + str + '</div>';
+                    }
+                }
+            };
+
+            var qSkins = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: './skins-%QUERY.json',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            var qItems = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: './items-%QUERY.json',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            var qUpgrades = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: './upgrades-%QUERY.json',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            function int(val) {
+                var s = String(val).replace(/[^0-9]/g, '');
+                return (s.length == 0) ? 0 : parseInt(s);
+            }
+
+            function generate() {
+                var numbers = [
+                    int($('.qItem').data('item_id')),
+                    int($('.qUpgrade1').data('item_id')),
+                    int($('.qUpgrade2').data('item_id')),
+                    int($('.qSkin').data('item_id')),
+                    int($('.qQuantity input').val()),
+                ];
+                $.getJSON('./generate-' + numbers.join('-') + '.json', function (json) {
+                    if (typeof json.chatlink === 'string') {
+                        $('.result .chatlink').val(json.chatlink);
+                    }
+                });
+            }
+
+            function update($container, suggestion) {
+                $container.data('item_id', suggestion.id);
+                $container.find('.tt-input').css('background-image', suggestion.icon ? 'url(' + suggestion.icon + ')' : 'none');
+                $container.find('.chatlink').text((typeof suggestion.chatlink === 'string') ? suggestion.chatlink : '');
+                if (suggestion.id) {
+                    $container.find('.erase').show();
+                } else {
+                    $container.find('.erase').hide();
+                    $container.find('.search').val('');
+                }
+                generate();
+            }
+
+            function bindTypeHead(cls, source) {
+                var $container = $('.' + cls);
+                $container.find('.search')
+                    .typeahead(null, $.extend(typeheadSettings, {source: source}))
+                    .bind('typeahead:select', function (ev, suggestion) {
+                        update($container, suggestion);
+                    });
+                $container.find('.erase')
+                    .bind('click', function () {
+                        update($container, {id: 0, icon: ''});
+                    });
+            }
+
+            bindTypeHead('qItem', qItems);
+            bindTypeHead('qSkin', qSkins);
+            for (var i = 1; i <= 2; i++) {
+                bindTypeHead('qUpgrade' + i, qUpgrades);
+            }
+            $('.qQuantity input').keyChange(generate);
+
+        });
+    </script>
+{% endblock %}

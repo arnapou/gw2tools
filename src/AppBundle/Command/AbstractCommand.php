@@ -68,9 +68,10 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
     }
 
     /**
-     * 
+     *
      * @param Environment $env
      * @return array
+     * @throws \Exception
      */
     private function getAbstractStoredObjectClasses(Environment $env)
     {

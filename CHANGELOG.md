@@ -1,3 +1,7 @@
+## 2.1.16 (2017-08-12)
+
+  - adding a chat code generator
+  
 ## 2.1.15 (2017-08-12)
 
   - adding an 'item stats list' tool page

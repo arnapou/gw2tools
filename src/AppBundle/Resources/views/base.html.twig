@@ -100,8 +100,13 @@
                         </a>
                         <ul class="dropdown-menu scrollable-menu">
                             <li>
-                                <a href="/{{ lang }}/tools/itemstats_list" class="account-link">
-                                    {{ 'tools.itemstats_list'|trans }}
+                                <a href="/{{ lang }}/tools/itemstatslist/" class="account-link">
+                                    {{ 'tools.itemstatslist'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/{{ lang }}/tools/chatcode/" class="account-link">
+                                    {{ 'tools.chatcode'|trans }}
                                 </a>
                             </li>
                         </ul>
@@ -200,10 +205,12 @@
 
     <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/typeahead/dist/typeahead.bundle.min.js') }}"></script>
     {% block javascripts %}
         {% javascripts filter="?jsqueeze" output='assets/script.js'
         'assets/js/js.cookie.js'
         'assets/js/plugin-bootbox.js'
+        'assets/js/jqkeychange.js'
         'assets/js/script.js' %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
