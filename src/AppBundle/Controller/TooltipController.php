@@ -178,7 +178,7 @@ class TooltipController extends AbstractController
     protected function renderTooltip($page, $context)
     {
         try {
-            $response = $this->render('_tooltips/tooltip-' . $page . '.html.twig', $context());
+            $response = $this->render('tooltips/tooltip-' . $page . '.html.twig', $context());
             $response->setMaxAge(900);
             $response->setExpires(new \DateTime('@' . (time() + 900)));
             $response->setPublic();

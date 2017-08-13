@@ -1,36 +1,36 @@
-
 {% import "AppBundle::macro.html.twig" as macro %}
 
 
 {% set attrs = [
-    'Power',
-    'Toughness',
-    'Vitality',
-    'Precision',
-    'PrecisionPct',
-    'CritDamage',
-    'CritDamagePct',
-    'Healing',
-    'ConditionDamage',
-    'ConditionDuration',
-    'ConditionDurationPct',
-    'BoonDuration',
-    'BoonDurationPct',
-    'AgonyResistance',
+'Power',
+'Toughness',
+'Vitality',
+'Precision',
+'PrecisionPct',
+'CritDamage',
+'CritDamagePct',
+'Healing',
+'ConditionDamage',
+'ConditionDuration',
+'ConditionDurationPct',
+'BoonDuration',
+'BoonDurationPct',
+'AgonyResistance',
 ] %}
 
-<table class="table">
-    <thead>
+{% spaceless %}
+    <table id="table_attrs" class="table">
+        <thead>
         <tr>
             <th>{{ 'global.name'|trans }}</th>
-                {% for attr in attrs %}
+            {% for attr in attrs %}
                 <th title="{{ ('attribute.'~attr)|trans }}" class="text-center">
                     <i class="ic-attribute-{{ attr|lower }}"></i>
                 </th>
             {% endfor %}
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         {% for char in account.characters %}
             {% if module.isAllowedCharacter(char) %}
                 {% set attributes = char.attributes %}
@@ -47,5 +47,27 @@
                 </tr>
             {% endif %}
         {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+
+    <script>
+        $(function () {
+            $('#table_attrs').DataTable({
+                paging: false,
+                searching: false,
+            });
+        });
+    </script>
+
+    <style>
+        #table_attrs_info {
+            display: none;
+        }
+
+        thead th {
+            cursor: pointer;
+        }
+    </style>
+
+{% endspaceless %}

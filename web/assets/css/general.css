@@ -1366,7 +1366,7 @@ img.currency {
 
 .slots .slot .amount {
     right: 1px;
-    bottom: 1px;
+    bottom: 2px;
     font-size: 10px;
 }
 
@@ -1386,6 +1386,16 @@ img.currency {
 .slots .slot.empty .count,
 .slots .slot.empty .amount {
     display: none;
+}
+
+.slots .goldbar {
+    display: none;
+    background: #ebda77;
+    height: 2px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    box-shadow: 1px 1px 0 rgb(0,0,0,.5), -1px 1px 0 rgb(0,0,0,.5), 1px -1px 0 rgb(0,0,0,.5), -1px -1px 0 rgb(0,0,0,.5);
 }
 
 /************************************************/
@@ -2186,63 +2196,4 @@ img.rarity-Legendary {
 .page-builds .gw2skillslink {
     display: inline-block;
     margin-top: .8em;
-}
-
-
-/************************************************/
-
-.twitter-typeahead .tt-query,
-.twitter-typeahead .tt-hint {
-    margin-bottom: 0;
-}
-.tt-hint {
-    display: block;
-    width: 100%;
-    height: 45px;
-    padding: 10px 15px;
-    font-size: 15px;
-    line-height: 1.428571429;
-    color: #999;
-    vertical-align: middle;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-}
-.tt-menu {
-    min-width: 200px;
-    margin-top: 2px;
-    padding: 5px 0;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    background-clip: padding-box;
-
-}
-.tt-suggestion {
-    display: block;
-    padding: 3px 20px;
-    white-space: nowrap;
-    cursor: default;
-}
-.tt-suggestion:hover {
-    color: #fff;
-    background-color: #428bca;
-}
-.tt-suggestion:hover a {
-    color: #fff;
-}
-.tt-suggestion p {
-    margin: 0;
-}
-.tt-suggestion img {
-    height: 2em;
-    width: 2em;
-    margin-right: .5em;
 }

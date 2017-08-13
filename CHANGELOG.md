@@ -1,26 +1,32 @@
+## 2.1.17 (2017-08-13)
+
+  - added a bar in collectibles to represent the sell value
+  - characters table is sortable
+  - attributes table is sortable
+  
 ## 2.1.16 (2017-08-12)
 
-  - adding a chat code generator
+  - added a chat code generator
   
 ## 2.1.15 (2017-08-12)
 
-  - adding an 'item stats list' tool page
-  - adding sell price (rounded to gold) on collectibles
+  - added an 'item stats list' tool page
+  - added sell price (rounded to gold) on collectibles
   
 ## 2.1.14 (2017-07-26)
 
-  - adding tp delivery
+  - added tp delivery
 
 ## 2.1.13 (2017-06-24)
 
-  - adding unlocked pvp heroes 
-  - adding unlocked mail carriers
+  - added unlocked pvp heroes 
+  - added unlocked mail carriers
   - updated home cats and nodes with the new api
   - updated mastery points (new info with remaining points)
 
 ## 2.1.12 (2017-03-16)
 
-  - adding gliders
+  - added gliders
 
 ## 2.1.11 (2017-03-09)
 
@@ -48,7 +54,7 @@
 
 ## 2.1.7 (2017-01-09)
 
-  - adding charges on inventory slots when available
+  - added charges on inventory slots when available
 
 ## 2.1.6 (2017-01-02)
 
@@ -110,16 +116,16 @@
 
 ## 1.0.23 (2015-11-06)
 
-  - adding mini unlocks
-  - adding HoT new stats (Commander, Wanderer, Marauder, Crusader, Trailblazer, Minstrel, Vigilant, Viper's)
-  - adding HoT new attributes (Concentration, Expertise)
-  - adding HoT new crafting discipline (Scribe)
+  - added mini unlocks
+  - added HoT new stats (Commander, Wanderer, Marauder, Crusader, Trailblazer, Minstrel, Vigilant, Viper's)
+  - added HoT new attributes (Concentration, Expertise)
+  - added HoT new crafting discipline (Scribe)
   - fix AR calculation for attributes
   - update profession icons (elementalist, engineer, ...)
 
 ## 1.0.22 (2015-10-16)
 
-  - adding a statistic tab for users
+  - added a statistic tab for users
 
 ## 1.0.21 (2015-10-16)
 
@@ -129,7 +135,7 @@
 
 ## 1.0.20 (2015-10-09)
 
-  - adding icons 
+  - added icons 
   - css fixes
 
 ## 1.0.19 (2015-10-09)
@@ -141,28 +147,28 @@
 
 ## 1.0.18 (2015-10-03)
 
-  - statistics : adding all currencies
+  - statistics : added all currencies
   - dyes : grouped dyes by rarity
   - cache : decrease the retention time to 10 min for characters
 
 ## 1.0.17 (2015-09-29)
 
   - scrollbar in menu if too much characters
-  - adding empty infusion slot in character and equipments
+  - added empty infusion slot in character and equipments
 
 ## 1.0.16 (2015-09-27)
 
-  - adding chat link in tooltips
+  - added chat link in tooltips
   - better message for locking/unlocking tooltips
   - new version of gw2 api client for gw2skills links (with integration of food/utility)
 
 ## 1.0.15 (2015-09-26)
 
-  - adding statistics tab
+  - added statistics tab
 
 ## 1.0.14 (2015-09-25)
 
-  - adding a new right to manage better the characters views
+  - added a new right to manage better the characters views
 
 ## 1.0.13
 
@@ -181,29 +187,29 @@
 
 ## 1.0.11 (2015-09-19)
 
-  - adding pvp stats
-  - adding character builds + gw2skills links
+  - added pvp stats
+  - added character builds + gw2skills links
 
 ## 1.0.10 (2015-09-18)
 
-  - adding item search page
+  - added item search page
   - small link bugfixes
 
 ## 1.0.9 (2015-09-16)
 
   - bugfix on special trinkets for 4 stats
-  - adding gw2skills links on characters
+  - added gw2skills links on characters
 
 ## 1.0.8 (2015-09-14)
 
-  - adding tooltips for pure skins (wardrobe)
+  - added tooltips for pure skins (wardrobe)
   - little js tooltip bugfix
 
 ## 1.0.7 (2015-09-14)
 
   - improve dye performance
-  - adding dyes related item as tooltip
-  - adding wardrobe skins related item as tooltip
+  - added dyes related item as tooltip
+  - added wardrobe skins related item as tooltip
   - small tooltip css bugfixes
 
 ## 1.0.6 (2015-09-13)
@@ -212,19 +218,19 @@
 
 ## 1.0.5 (2015-09-13)
 
-  - adding tooltip over items
-  - adding dyes related items (tooltip)
-  - adding links to gw2spidy + gw2tp
+  - added tooltip over items
+  - added dyes related items (tooltip)
+  - added links to gw2spidy + gw2tp
   - css update for items in inventories (better look)
 
 ## 1.0.3 (2015-09-09)
 
-  - adding multiple languages support (en/fr/de/es)
+  - added multiple languages support (en/fr/de/es)
   - minor bugfixes
 
 ## 1.0.3 (2015-09-04)
 
-  - adding a mysql field
+  - added a mysql field
   - better mongodb caching performance
 
 ## 1.0.2 (2015-09-03)

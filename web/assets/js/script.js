@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     var messages = {
         'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
@@ -34,55 +34,63 @@ $(function() {
         Cookies.set('accesstoken', tokens.join('|'), {expires: cookieRetention});
     }
 
-    $('[data-content="ajax"]').on('loadContent', function() {
+    /**
+     * ajax load of page content
+     */
+    $('[data-content="ajax"]').on('loadContent', function () {
         var $this = $(this);
         var url = $this.data('src');
         if (url) {
             $.get(url)
-                    .done(function(html) {
-                        $this.html(html);
-                    })
-                    .fail(function() {
-                        $this.html('<div class="alert alert-danger" role="alert">' + messages['alert-ajax'] + '</div>');
-                    });
+                .done(function (html) {
+                    $this.html(html);
+                    $('#container').trigger('loadedContent');
+                })
+                .fail(function () {
+                    $this.html('<div class="alert alert-danger" role="alert">' + messages['alert-ajax'] + '</div>');
+                });
         }
     });
 
-    $('[data-content="ajax"]').trigger('loadContent');
-
-    $('#access-token-form button').click(function() {
+    /**
+     * home / register token
+     */
+    $('#access-token-form button').click(function () {
         var token = String($('#access-token-form input[name=access_token]').val());
         if (isValidToken(token)) {
             $.post('/api/token-check', {token: token})
-                    .done(function(json) {
-                        if (json && json.code) {
-                            saveTokens(json.tokens);
-                            window.location = './' + json.code + '/';
-                        }
-                        if (json && json.error) {
-                            bootbox.alert(json.error);
-                        }
-                    })
-                    .fail(function(json) {
-                        if (json && json.error) {
-                            bootbox.alert(json.error);
-                        }
-                    });
+                .done(function (json) {
+                    if (json && json.code) {
+                        saveTokens(json.tokens);
+                        window.location = './' + json.code + '/';
+                    }
+                    if (json && json.error) {
+                        bootbox.alert(json.error);
+                    }
+                })
+                .fail(function (json) {
+                    if (json && json.error) {
+                        bootbox.alert(json.error);
+                    }
+                });
 
         }
     });
 
-    $(document).on('click', '.page-account .action-save-rights', function() {
+    /**
+     * page account / save settings
+     */
+    $(document).on('click', '.page-account .action-save-rights', function () {
         var $btn = $(this);
         if (!$btn.hasClass('disabled')) {
             var rights = [];
             $btn.addClass('disabled');
-            $('.rights input[type=checkbox]').each(function() {
+            $('.rights input[type=checkbox]').each(function () {
                 if ($(this).is(':checked')) {
                     rights.push($(this).prop('value'));
                 }
             });
-            $.post('/api/save-rights', {code: CODE, rights: rights}).always(function(json) {
+            $.post('/api/save-rights', {code: CODE, rights: rights}).always(function (json) {
                 $btn.removeClass('disabled');
                 bootbox.alert(json.message);
             });
@@ -90,10 +98,13 @@ $(function() {
 
     });
 
-    $(document).on('click', '.page-account .action-delete-token', function() {
-        bootbox.confirm(messages['action-delete-token'], function(result) {
+    /**
+     * page account / delete token
+     */
+    $(document).on('click', '.page-account .action-delete-token', function () {
+        bootbox.confirm(messages['action-delete-token'], function (result) {
             if (result) {
-                $.post('/api/token-delete', {code: CODE}).always(function(json) {
+                $.post('/api/token-delete', {code: CODE}).always(function (json) {
                     if (json.ok) {
                         saveTokens(json.tokens);
                     }
@@ -107,32 +118,38 @@ $(function() {
         });
     });
 
-    $(document).on('click', '.page-account .action-replace-token', function() {
-        bootbox.prompt(messages['action-replace-token'], function(result) {
+    /**
+     * page account / replace token
+     */
+    $(document).on('click', '.page-account .action-replace-token', function () {
+        bootbox.prompt(messages['action-replace-token'], function (result) {
             if (result && isValidToken(result)) {
                 $.post('/api/token-replace', {code: CODE, token: result})
-                        .done(function(json) {
-                            if (json) {
-                                if (json.ok) {
-                                    saveTokens(json.tokens);
-                                    window.location.reload();
-                                }
-                                if (json.error) {
-                                    bootbox.alert(json.error);
-                                }
+                    .done(function (json) {
+                        if (json) {
+                            if (json.ok) {
+                                saveTokens(json.tokens);
+                                window.location.reload();
                             }
-                        })
-                        .fail(function(json) {
-                            if (json && json.error) {
+                            if (json.error) {
                                 bootbox.alert(json.error);
                             }
-                        });
+                        }
+                    })
+                    .fail(function (json) {
+                        if (json && json.error) {
+                            bootbox.alert(json.error);
+                        }
+                    });
 
             }
         });
     });
 
-    $(document).on('click', '.nav.nav-tabs a', function(e) {
+    /**
+     * tabs
+     */
+    $(document).on('click', '.nav.nav-tabs a', function (e) {
         var tabname = $(this).data('tab');
         $(this).parents('.nav').find('.active').removeClass('active');
         $(this).parent().addClass('active');
@@ -142,31 +159,43 @@ $(function() {
         e.preventDefault();
     });
 
-    $(document).on('click', '.panel-toggle', function() {
+    /**
+     * collapsible panels
+     */
+    $(document).on('click', '.panel-toggle', function () {
         var $panel = $(this);
         if ($panel.hasClass('collapsed')) {
-            $panel.next('div').slideDown(500, function() {
+            $panel.next('div').slideDown(500, function () {
                 $panel.removeClass('collapsed').addClass('expanded');
             });
         } else {
-            $panel.next('div').slideUp(300, function() {
+            $panel.next('div').slideUp(300, function () {
                 $panel.removeClass('expanded').addClass('collapsed');
             });
         }
     });
 
-    $(document).on('click', '.wvw_ability div', function() {
+    /**
+     * wvw
+     */
+    $(document).on('click', '.wvw_ability div', function () {
         $(this).parent().find('ul').toggle();
     });
 
-    $(document).on('click', '.page-masteries .regions .region div.mastery-name', function() {
+    /**
+     * Masteries
+     */
+    $(document).on('click', '.page-masteries .regions .region div.mastery-name', function () {
         var id = $(this).data('id');
         $('.page-masteries .mastery').hide();
         $('#' + id).show();
     });
 
-    (function() {
-        $('.menuicon').each(function() {
+    /**
+     * dynamically set menu guild icons
+     */
+    (function () {
+        $('.menuicon').each(function () {
             var m = (this.className + '').match(/guild-icon-([a-z0-9-]+)/i);
             if (m && m.length > 1) {
                 if (m[1] == 'nothing') {
@@ -178,7 +207,10 @@ $(function() {
         });
     })();
 
-    (function() {
+    /**
+     * tooltips
+     */
+    (function () {
         var cachedHtml = {};
         var $gwitemdetail = $('#gwitemdetail');
         var $body = $('body');
@@ -190,11 +222,11 @@ $(function() {
             $(obj).trigger(ev);
         }
 
-        $gwitemdetail.on('click', function(e) {
+        $gwitemdetail.on('click', function (e) {
             e.stopPropagation();
         });
 
-        var triggerMove = function($el) {
+        var triggerMove = function ($el) {
             var offset = $el.offset();
             var event = $.Event("mousedown", {
                 which: 1,
@@ -204,13 +236,13 @@ $(function() {
             $el.trigger(event);
         };
 
-        $(document).on('click', 'body', function(e) {
+        $(document).on('click', 'body', function (e) {
             $gwitemdetail.data('locked', false);
             $gwitemdetail.removeClass('locked');
             $gwitemdetail.hide();
         });
 
-        $(document).on('click', '.gwitemlink', function(e) {
+        $(document).on('click', '.gwitemlink', function (e) {
             var locked = $gwitemdetail.data('locked');
             var url = '/' + LANG + '/' + $(this).data('url');
             $gwitemdetail.data('locked', false);
@@ -229,7 +261,7 @@ $(function() {
             e.stopPropagation();
         });
 
-        $(document).on('mousemove', '.gwitemlink', function(e) {
+        $(document).on('mousemove', '.gwitemlink', function (e) {
             if (!$gwitemdetail.data('locked')) {
                 var margin = 5;
                 var posX = e.pageX + margin;
@@ -255,13 +287,13 @@ $(function() {
             }
         });
 
-        $(document).on('mouseleave', '.gwitemlink', function() {
+        $(document).on('mouseleave', '.gwitemlink', function () {
             if (!$gwitemdetail.data('locked')) {
                 $gwitemdetail.hide();
             }
         });
 
-        $(document).on('mouseenter', '.gwitemlink', function(e) {
+        $(document).on('mouseenter', '.gwitemlink', function (e) {
             var self = this;
             if (!$gwitemdetail.data('locked')) {
                 var url = '/' + LANG + '/tooltip/' + $(self).data('url');
@@ -271,17 +303,17 @@ $(function() {
                     $gwitemdetail.removeClass('locked');
                     $gwitemdetail.data('locked', false).html('<div class="spinner-loader-white"></div>').show();
                     $.get(url)
-                            .done(function(html) {
-                                cachedHtml[url] = html;
-                                if ($gwitemdetail.data('url') === url) {
-                                    $gwitemdetail.html(html);
-                                    triggerMove($(self));
-                                }
-                            })
-                            .fail(function() {
-                                $gwitemdetail.html('<div class="gwitemerror">Error</div>');
-                                $gwitemdetail.trigger('checksize');
-                            });
+                        .done(function (html) {
+                            cachedHtml[url] = html;
+                            if ($gwitemdetail.data('url') === url) {
+                                $gwitemdetail.html(html);
+                                triggerMove($(self));
+                            }
+                        })
+                        .fail(function () {
+                            $gwitemdetail.html('<div class="gwitemerror">Error</div>');
+                            $gwitemdetail.trigger('checksize');
+                        });
                 } else {
                     $gwitemdetail.html(cachedHtml[url]).show();
                     triggerMove($(self));
@@ -291,22 +323,54 @@ $(function() {
 
     })();
 
-    // refresh cookie
-    (function(tokens) {
+    /**
+     * refresh cookie
+     */
+    (function (tokens) {
         if (tokens) {
             Cookies.set('accesstoken', tokens, {expires: cookieRetention});
         }
     })(Cookies.get('accesstoken'));
+
+    /**
+     * checks a the end of loaded content
+     */
+    $('#container').bind('loadedContent', function () {
+        $('.slots').each(function () {
+            var sum = 0, max = 0;
+            var $bars = $(this).find('.slot .goldbar');
+            $bars.each(function () {
+                var g = parseInt($(this).data('g'));
+                if (g > max) max = g;
+                sum += g;
+            });
+            if (max > 0) {
+                $bars.each(function () {
+                    var g = parseInt($(this).data('g'));
+                    $(this).css('width', (Math.round(1000 * g / max) / 10) + '%');
+                });
+                $bars.css('display', 'block');
+            }
+        });
+    });
+
+    /**
+     * load contenet
+     */
+    $('[data-content="ajax"]').trigger('loadContent');
 })
 
+/**
+ * statistics / render pie chart
+ */
 function renderPieChart() {
-    $('[data-chart="Pie"]').each(function() {
+    $('[data-chart="Pie"]').each(function () {
         var $chart = $(this);
         if ($chart.data('rendered')) {
             return;
         }
         $chart.data('rendered', true);
-        $.getJSON($(this).data('source'), function(data) {
+        $.getJSON($(this).data('source'), function (data) {
             $chart.highcharts({
                 exporting: {
                     enabled: false
@@ -325,7 +389,7 @@ function renderPieChart() {
                     text: ''
                 },
                 tooltip: {
-                    formatter: function() {
+                    formatter: function () {
                         return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage, 1) + ' %';
                     }
                 },
@@ -340,16 +404,19 @@ function renderPieChart() {
                     }
                 },
                 series: [{
-                        colorByPoint: true,
-                        data: data
-                    }]
+                    colorByPoint: true,
+                    data: data
+                }]
             });
         });
     });
 }
 
+/**
+ * statistics / render percentile chart
+ */
 function renderPercentileChart() {
-    $('[data-chart="Percentile"]:visible').each(function() {
+    $('[data-chart="Percentile"]:visible').each(function () {
         var $chart = $(this);
         if ($chart.data('rendered')) {
             return;
@@ -358,12 +425,12 @@ function renderPercentileChart() {
         var unit = $chart.data('unit');
         var tooltip = $chart.data('tooltip') || '<b>{point}%</b> of players have <b>{val}</b> {unit}';
         var divisor = $chart.data('divisor') ? parseInt($chart.data('divisor')) : 1;
-        $.getJSON($(this).data('source'), function(data) {
+        $.getJSON($(this).data('source'), function (data) {
             var series = [{
-                    type: 'area',
-                    zIndex: 0,
-                    data: data[0]
-                }];
+                type: 'area',
+                zIndex: 0,
+                data: data[0]
+            }];
             if (data.length > 1) {
                 series.push({
                     type: 'line',
@@ -388,7 +455,7 @@ function renderPercentileChart() {
                 xAxis: {
                     allowDecimals: false,
                     labels: {
-                        formatter: function() {
+                        formatter: function () {
                             return this.value + '%';
                         }
                     }
@@ -398,18 +465,18 @@ function renderPercentileChart() {
                         text: $chart.data('legend')
                     },
                     labels: {
-                        formatter: function() {
+                        formatter: function () {
                             var val = Math.floor(this.value / divisor);
                             return formatNumber(val);
                         }
                     }
                 },
                 tooltip: {
-                    formatter: function() {
+                    formatter: function () {
                         return tooltip
-                                .replace('{point}', this.point.x)
-                                .replace('{val}', formatNumber(Math.floor(this.point.y / divisor)))
-                                .replace('{unit}', unit);
+                            .replace('{point}', this.point.x)
+                            .replace('{val}', formatNumber(Math.floor(this.point.y / divisor)))
+                            .replace('{unit}', unit);
                     }
                 },
                 plotOptions: {
@@ -447,8 +514,13 @@ function renderPercentileChart() {
     });
 }
 
+/**
+ *
+ * @param n
+ * @returns string
+ */
 function formatNumber(n) {
-    return String(n).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, function($1) {
+    return String(n).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, function ($1) {
         return $1 + "."
     });
 }

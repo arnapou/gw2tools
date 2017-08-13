@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
@@ -25,13 +26,13 @@ class PageController extends AbstractController
 
     /**
      *
-     * @var Token 
+     * @var Token
      */
     protected $token;
 
     /**
      *
-     * @var Account 
+     * @var Account
      */
     protected $account;
 
@@ -60,7 +61,7 @@ class PageController extends AbstractController
     protected $isOwner = false;
 
     /**
-     * 
+     *
      * @Route("/{_locale}/{_code}/", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}"})
      */
     public function homeAction(Request $request)
@@ -69,8 +70,9 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/statistics/{dataset}.json", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "dataset" = "[a-zA-Z0-9_-]+"})
+     *
+     * @Route("/{_locale}/{_code}/statistics/{dataset}.json", requirements={"_locale" = "de|en|es|fr", "_code" =
+     *                                                        "[a-zA-Z0-9]{10}", "dataset" = "[a-zA-Z0-9_-]+"})
      */
     public function statisticsJsonAction($_code, $dataset, Request $request)
     {
@@ -103,8 +105,9 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/{page}/", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9_]+"})
+     *
+     * @Route("/{_locale}/{_code}/{page}/", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}",
+     *                                      "page" = "[a-zA-Z0-9_]+"})
      */
     public function pageAction($_code, $page, Request $request)
     {
@@ -113,8 +116,9 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/{page}/content.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9_]+"})
+     *
+     * @Route("/{_locale}/{_code}/{page}/content.html", requirements={"_locale" = "de|en|es|fr", "_code" =
+     *                                                  "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9_]+"})
      */
     public function pageContentAction($_code, $page, Request $request)
     {
@@ -127,8 +131,10 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/gw2skills-{mode}/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+", "mode" = "pve|pvp|wvw"})
+     *
+     * @Route("/{_locale}/{_code}/gw2skills-{mode}/{name}", requirements={"_locale" = "de|en|es|fr", "_code" =
+     *                                                      "[a-zA-Z0-9]{10}", "name" = "[^.]+", "mode" =
+     *                                                      "pve|pvp|wvw"})
      */
     public function gw2skillsBuildAction($_code, $mode, $name, Request $request)
     {
@@ -136,15 +142,17 @@ class PageController extends AbstractController
         if (!isset($this->characters[$name])) {
             return $this->createNotFoundException();
         }
-        $character = $this->characters[$name]; /* @var $character Character */
+        $character = $this->characters[$name];
+        /* @var $character Character */
 
         $url = $character->getGw2SkillsLink($mode);
         return $this->redirect($url);
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/character/{name}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
+     *
+     * @Route("/{_locale}/{_code}/character/{name}", requirements={"_locale" = "de|en|es|fr", "_code" =
+     *                                               "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
      */
     public function characterAction($_code, $name, Request $request)
     {
@@ -157,8 +165,9 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/character/{name}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
+     *
+     * @Route("/{_locale}/{_code}/character/{name}.html", requirements={"_locale" = "de|en|es|fr", "_code" =
+     *                                                    "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
      */
     public function characterContentAction($_code, $name, Request $request)
     {
@@ -175,8 +184,10 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/{folder}/{guildid}", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" = "guild(_stash)?"})
+     *
+     * @Route("/{_locale}/{_code}/{folder}/{guildid}", requirements={"_locale" = "de|en|es|fr", "_code" =
+     *                                                 "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+",
+     *                                                 "folder" = "guild(_stash)?"})
      */
     public function guildStashAction($_code, $guildid, $folder, Request $request)
     {
@@ -189,8 +200,11 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
-     * @Route("/{_locale}/{_code}/{folder}/{guildid}.html", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" = "guild(_stash)?"})
+     *
+     * @Route("/{_locale}/{_code}/{folder}/{guildid}.html", requirements={"_locale" = "de|en|es|fr", "_code" =
+     *                                                      "[a-zA-Z0-9]{10}", "guildid" =
+     *                                                      "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" =
+     *                                                      "guild(_stash)?"})
      */
     public function guildStashContentAction($_code, $folder, $guildid, Request $request)
     {
@@ -207,7 +221,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @param string $_code
      */
     protected function getContext($_code, $page, $ownerMandatory = false)
@@ -254,7 +268,7 @@ class PageController extends AbstractController
         ];
     }
 
-    protected function render($view, array $parameters = array(), Response $response = null)
+    protected function render($view, array $parameters = [], Response $response = null)
     {
         if ($this->token) {
             $parameters['owner']      = $this->isOwner;
@@ -264,11 +278,11 @@ class PageController extends AbstractController
             $parameters['account']    = $this->account;
             $parameters['characters'] = $this->characters;
         }
-        return parent::render($view, $parameters, $response);
+        return parent::render('pages/' . $view, $parameters, $response);
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getBreadcrumb()
@@ -276,8 +290,10 @@ class PageController extends AbstractController
         if ($this->token) {
             $code = $this->token->getCode();
             $path = rawurldecode($this->getRequest()->getPathInfo());
-            foreach ($this->getMenu() as /* @var $menu Menu */ $menu) {
-                foreach ($menu->getItems() as /* @var $item MenuItem */ $item) {
+            foreach ($this->getMenu() as /* @var $menu Menu */
+                     $menu) {
+                foreach ($menu->getItems() as /* @var $item MenuItem */
+                         $item) {
                     if ($item->getUri() && '/' . $this->getTranslator()->getLocale() . '/' . $code . '/' . $item->getUri() === $path) {
                         return [$menu->getLabel(), $item->getLabel()];
                     }
@@ -288,7 +304,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @return MenuList
      */
     public function getMenu()
@@ -297,7 +313,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getPermissionsList()
@@ -306,7 +322,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @param string $right
      * @param string $permission
      * @return boolean
@@ -325,13 +341,13 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @param string $name
      * @return boolean
      */
     public function isAllowedCharacter($name)
     {
-        $name = (string) $name;
+        $name = (string)$name;
         if ($this->isOwner) {
             return true;
         }
@@ -345,13 +361,13 @@ class PageController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @param string $guildid
      * @return boolean
      */
     public function isAllowedGuildStash($guildid)
     {
-        $guildid = (string) $guildid;
+        $guildid = (string)$guildid;
         if ($this->isOwner) {
             return true;
         }
