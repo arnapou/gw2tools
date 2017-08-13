@@ -336,7 +336,7 @@ $(function () {
      * checks a the end of loaded content
      */
     $('#container').bind('loadedContent', function () {
-        $('.slots').each(function () {
+        $('.slotbars .slots').each(function () {
             var sum = 0, max = 0;
             var $bars = $(this).find('.slot .goldbar');
             $bars.each(function () {

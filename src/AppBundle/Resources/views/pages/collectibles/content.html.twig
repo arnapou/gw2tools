@@ -4,7 +4,7 @@
     {% set collectibles = account.collectibles %}
     {% set columns = [collectibles|slice(0, 4), collectibles|slice(4)] %}
 
-    <div class="row">
+    <div class="row slotbars">
         {% for collectibles in columns %}
             <div class="col-xs-6">
                 {% for category in collectibles %}
