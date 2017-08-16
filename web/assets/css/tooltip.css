@@ -79,11 +79,32 @@
     background-position: 0 0;
     background-size: 3em 3em;
 }
+
 #gwitemdetail .gwstats.food {
     background-image: url(/assets/images/misc/buff-food.png);
 }
+
 #gwitemdetail .gwstats.utility {
     background-image: url(/assets/images/misc/buff-utility.png);
+}
+
+#gwitemdetail .gwstats.withstatname {
+    padding-left: 4em;
+    position: relative;
+}
+
+#gwitemdetail .gwstats.withstatname .statname {
+    color: white;
+}
+
+#gwitemdetail .gwstats.withstatname img {
+    position: absolute;
+    width: 2.6em;
+    height: 2.6em;
+    left: 1px;
+    top: 1px;
+    background: white;
+    box-shadow: 0 0 1px 1px white;
 }
 
 #gwitemdetail .gwupgrade {
@@ -133,6 +154,7 @@
     align-self: auto;
     white-space: nowrap;
 }
+
 #gwitemdetail .gwvendor > div:nth-child(2) {
     padding-left: 1em;
 }
@@ -182,6 +204,7 @@
     right: 0;
     font-size: 120%;
 }
+
 #gwitemdetail .gwfact-recharge img {
     height: 1.5em;
     width: 1.5em;

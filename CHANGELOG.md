@@ -1,3 +1,7 @@
+## 2.1.18 (2017-08-16)
+
+  - added stat icon in tooltip for weapons/armors/trinkets
+  
 ## 2.1.17 (2017-08-13)
 
   - added a bar in collectibles to represent the sell value

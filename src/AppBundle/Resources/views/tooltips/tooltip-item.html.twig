@@ -36,13 +36,14 @@
                 {{ 'global.defense'|trans }}: <span class="gwstats">{{ item.getweapondefense }}</span>
             </div>
         {% endif %}
-        <div>
-            {% for attr, val in attributes %}
-                <div class="gwstats">+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
-            {% endfor %}
-            {% if statname %}
-                <em>{{ ('stats.'~statname)|trans }}</em>
+        <div class="gwstats {{ statname and not ('unknown' in img) ? 'withstatname' : '' }}">
+            {% if statname and not ('unknown' in img) %}
+                <img src="{{ statname|imagestat }}"/>
+                <em class="statname">{{ ('stats.'~statname)|trans }}</em>
             {% endif %}
+            {% for attr, val in attributes %}
+                <div>+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
+            {% endfor %}
         </div>
 
         {{ self.upgrades(item.getupgrades) }}
@@ -57,13 +58,14 @@
                 {{ 'global.defense'|trans }}: <span class="gwstats">{{ item.getarmordefense }}</span>
             </div>
         {% endif %}
-        <div>
-            {% for attr, val in attributes %}
-                <div class="gwstats">+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
-            {% endfor %}
-            {% if statname %}
-                <em>{{ ('stats.'~statname)|trans }}</em>
+        <div class="gwstats {{ statname and not ('unknown' in img) ? 'withstatname' : '' }}">
+            {% if statname and not ('unknown' in img) %}
+                <img src="{{ statname|imagestat }}"/>
+                <em class="statname">{{ ('stats.'~statname)|trans }}</em>
             {% endif %}
+            {% for attr, val in attributes %}
+                <div>+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
+            {% endfor %}
         </div>
 
         {{ self.upgrades(item.getupgrades) }}
@@ -73,13 +75,14 @@
 
     {% elseif item.gettype == 'Trinket' %}
 
-        <div>
-            {% for attr, val in attributes %}
-                <div class="gwstats">+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
-            {% endfor %}
-            {% if statname %}
-                <em>{{ ('stats.'~statname)|trans }}</em>
+        <div class="gwstats {{ statname and not ('unknown' in img) ? 'withstatname' : '' }}">
+            {% if statname and not ('unknown' in img) %}
+                <img src="{{ statname|imagestat }}"/>
+                <em class="statname">{{ ('stats.'~statname)|trans }}</em>
             {% endif %}
+            {% for attr, val in attributes %}
+                <div>+{{ val }} {{ ('attribute.'~attr)|trans }}</div>
+            {% endfor %}
         </div>
 
         {{ self.upgrades(item.getupgrades) }}
