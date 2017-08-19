@@ -167,3 +167,12 @@
 .ic-ui-waypoint { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89a;&nbsp;'); }
 .ic-ui-dungeon { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89b;&nbsp;'); }
 .ic-ui-glider { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89c;&nbsp;'); }
+.ic-profession-firebrand { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89d;&nbsp;'); }
+.ic-profession-renegade { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89e;&nbsp;'); }
+.ic-profession-spellbreaker { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe89f;&nbsp;'); }
+.ic-profession-holosmith { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8a0;&nbsp;'); }
+.ic-profession-soulbeast { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8a1;&nbsp;'); }
+.ic-profession-deadeye { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8a2;&nbsp;'); }
+.ic-profession-weaver { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8a3;&nbsp;'); }
+.ic-profession-scourge { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8a4;&nbsp;'); }
+.ic-profession-mirage { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe8a5;&nbsp;'); }

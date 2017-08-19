@@ -1,3 +1,7 @@
+## 2.1.19 (2017-08-19)
+
+  - added PoF professions
+  
 ## 2.1.18 (2017-08-16)
 
   - added stat icon in tooltip for weapons/armors/trinkets

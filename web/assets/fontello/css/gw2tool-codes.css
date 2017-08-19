@@ -156,3 +156,12 @@
 .ic-ui-waypoint:before { content: '\e89a'; } /* '' */
 .ic-ui-dungeon:before { content: '\e89b'; } /* '' */
 .ic-ui-glider:before { content: '\e89c'; } /* '' */
+.ic-profession-firebrand:before { content: '\e89d'; } /* '' */
+.ic-profession-renegade:before { content: '\e89e'; } /* '' */
+.ic-profession-spellbreaker:before { content: '\e89f'; } /* '' */
+.ic-profession-holosmith:before { content: '\e8a0'; } /* '' */
+.ic-profession-soulbeast:before { content: '\e8a1'; } /* '' */
+.ic-profession-deadeye:before { content: '\e8a2'; } /* '' */
+.ic-profession-weaver:before { content: '\e8a3'; } /* '' */
+.ic-profession-scourge:before { content: '\e8a4'; } /* '' */
+.ic-profession-mirage:before { content: '\e8a5'; } /* '' */
