@@ -80,39 +80,39 @@ body {
 
 /************************************************/
 
-.ic-profession-warrior, .ic-profession-berserker {
+.ic-profession-warrior, .ic-profession-berserker, .ic-profession-spellbreaker {
     color: #FFD166;
 }
 
-.ic-profession-mesmer, .ic-profession-chronomancer {
+.ic-profession-mesmer, .ic-profession-chronomancer, .ic-profession-mirage {
     color: #B679D5;
 }
 
-.ic-profession-elementalist, .ic-profession-tempest {
+.ic-profession-elementalist, .ic-profession-tempest, .ic-profession-weaver {
     color: #F68A87;
 }
 
-.ic-profession-revenant, .ic-profession-herald {
+.ic-profession-revenant, .ic-profession-herald, .ic-profession-renegade {
     color: #D16E5A;
 }
 
-.ic-profession-necromancer, .ic-profession-reaper {
+.ic-profession-necromancer, .ic-profession-reaper, .ic-profession-scourge {
     color: #52A76F;
 }
 
-.ic-profession-ranger, .ic-profession-druid {
+.ic-profession-ranger, .ic-profession-druid, .ic-profession-soulbeast {
     color: #8CDC82;
 }
 
-.ic-profession-guardian, .ic-profession-dragonhunter {
+.ic-profession-guardian, .ic-profession-dragonhunter, .ic-profession-firebrand {
     color: #72C1D9;
 }
 
-.ic-profession-engineer, .ic-profession-scrapper {
+.ic-profession-engineer, .ic-profession-scrapper, .ic-profession-holosmith {
     color: #D09C59;
 }
 
-.ic-profession-thief, .ic-profession-daredevil {
+.ic-profession-thief, .ic-profession-daredevil, .ic-profession-deadeye {
     color: #C08F95;
 }
 
@@ -1395,7 +1395,7 @@ img.currency {
     position: absolute;
     right: 0;
     bottom: 0;
-    box-shadow: 1px 1px 0 rgb(0,0,0,.5), -1px 1px 0 rgb(0,0,0,.5), 1px -1px 0 rgb(0,0,0,.5), -1px -1px 0 rgb(0,0,0,.5);
+    box-shadow: 1px 1px 0 rgb(0, 0, 0, .5), -1px 1px 0 rgb(0, 0, 0, .5), 1px -1px 0 rgb(0, 0, 0, .5), -1px -1px 0 rgb(0, 0, 0, .5);
 }
 
 /************************************************/
