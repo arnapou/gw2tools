@@ -12,7 +12,7 @@
                 <input class="form-control search" type="text" placeholder="{{ 'global.id_or_name'|trans }}">
                 <div class="erase" style="display: none"><i class="glyphicon glyphicon-remove"></i></div>
             </div>
-            <div class="col-xs-2"><span class="chatlink"></span></div>
+            <div class="col-xs-3"><span class="chatlink"></span></div>
         </div>
 
         {% for i in 1..2 %}
@@ -23,7 +23,7 @@
                     <input class="form-control search" type="text" placeholder="{{ 'global.id_or_name'|trans }}">
                     <div class="erase" style="display: none"><i class="glyphicon glyphicon-remove"></i></div>
                 </div>
-                <div class="col-xs-2"><span class="chatlink"></span></div>
+                <div class="col-xs-3"><span class="chatlink"></span></div>
             </div>
 
         {% endfor %}
@@ -34,7 +34,7 @@
                 <input class="form-control search" type="text" placeholder="{{ 'global.id_or_name'|trans }}">
                 <div class="erase" style="display: none"><i class="glyphicon glyphicon-remove"></i></div>
             </div>
-            <div class="col-xs-2"><span class="chatlink"></span></div>
+            <div class="col-xs-3"><span class="chatlink"></span></div>
         </div>
 
         <div class="row qQuantity">
@@ -163,7 +163,7 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: './skins-%QUERY.json',
+                    url: '/api/chatlink-skins?name=%QUERY&lang={{ lang }}',
                     wildcard: '%QUERY'
                 }
             });
@@ -172,7 +172,7 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: './items-%QUERY.json',
+                    url: '/api/chatlink-items?name=%QUERY&lang={{ lang }}',
                     wildcard: '%QUERY'
                 }
             });
@@ -181,7 +181,7 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: './upgrades-%QUERY.json',
+                    url: '/api/chatlink-upgrades?name=%QUERY&lang={{ lang }}',
                     wildcard: '%QUERY'
                 }
             });
@@ -192,14 +192,14 @@
             }
 
             function generate() {
-                var numbers = [
-                    int($('.qItem').data('item_id')),
-                    int($('.qUpgrade1').data('item_id')),
-                    int($('.qUpgrade2').data('item_id')),
-                    int($('.qSkin').data('item_id')),
-                    int($('.qQuantity input').val()),
-                ];
-                $.getJSON('./generate-' + numbers.join('-') + '.json', function (json) {
+                var data = {
+                    item: int($('.qItem').data('item_id')),
+                    upgrade1: int($('.qUpgrade1').data('item_id')),
+                    upgrade2: int($('.qUpgrade2').data('item_id')),
+                    skin: int($('.qSkin').data('item_id')),
+                    quantity: int($('.qQuantity input').val())
+                };
+                $.getJSON('/api/chatlink-generate', data, function (json) {
                     if (typeof json.chatlink === 'string') {
                         $('.result .chatlink').val(json.chatlink);
                     }
@@ -207,9 +207,13 @@
             }
 
             function update($container, suggestion) {
+                var chatlink = 'id=' + suggestion.id;
+                if(typeof suggestion.chatlink === 'string'){
+                    chatlink += ', code=' + suggestion.chatlink;
+                }
                 $container.data('item_id', suggestion.id);
                 $container.find('.tt-input').css('background-image', suggestion.icon ? 'url(' + suggestion.icon + ')' : 'none');
-                $container.find('.chatlink').text((typeof suggestion.chatlink === 'string') ? suggestion.chatlink : '');
+                $container.find('.chatlink').text(chatlink);
                 if (suggestion.id) {
                     $container.find('.erase').show();
                 } else {

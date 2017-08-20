@@ -1,0 +1,52 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <h1>{{ 'tools.api_titles'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'titles?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
+
+    {% set columns = titles|columns(2, false) %}
+
+    <div class="row">
+        {% for column in columns %}
+            <div class="col-xs-6">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>{{ 'global.id'|trans }}</th>
+                        <th colspan="2">{{ 'global.category'|trans }}</th>
+                        <th>{{ 'global.name'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in column %}
+                        <tr>
+                            <td>{{ item.title.id }}</td>
+                            <td><img src="{{ item.category|image }}"/></td>
+                            <td>{{ item.category.getName }}</td>
+                            <td>{{ item.title.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        td {
+            vertical-align: middle !important;
+        }
+
+        td img {
+            width: 3em;
+            height: 3em;
+        }
+    </style>
+
+{% endblock %}

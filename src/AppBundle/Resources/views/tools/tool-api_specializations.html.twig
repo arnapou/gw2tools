@@ -1,0 +1,43 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% block content %}
+
+    <h1>{{ 'tools.api_specializations'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'specializations?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading with-tabs">
+            <ul class="nav nav-tabs">
+                {% for prof in professions %}
+                    <li class="{{ loop.first ? 'active' : '' }}">
+                        <a href="#" data-tab="tab-{{ prof.id }}">
+                            <i class="ic-profession-{{ prof.id|lower }}"></i> {{ prof }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="panel-body">
+            {% for prof in professions %}
+                <div class="tab tab-{{ prof.id }}" style="display: {{ loop.first ? 'inline-block' : 'none' }}">
+                    {{ macro.specializations(prof, 1) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        div.tab {
+            display: inline-block;
+        }
+    </style>
+
+{% endblock %}

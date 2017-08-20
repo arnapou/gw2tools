@@ -1,0 +1,51 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <h1>{{ 'tools.api_files'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'files?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
+
+    {% set columns = files|columns(2, false) %}
+
+    <div class="row">
+        {% for column in columns %}
+            <div class="col-xs-6">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>{{ 'global.id'|trans }}</th>
+                        <th>{{ 'global.icon'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for file in column %}
+                        <tr>
+                            <td>{{ file.id }}</td>
+                            <td><img src="{{ file|image }}" /></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        td {
+            line-height:3em;
+        }
+        td:first-child {
+            width: 65%;
+        }
+        td img {
+            width: 3em;
+            height: 3em;
+        }
+    </style>
+
+{% endblock %}

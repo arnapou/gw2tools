@@ -1,0 +1,84 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <h1>{{ 'tools.api_minis'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'minis?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading with-tabs">
+            <ul class="nav nav-tabs">
+                {% for rarity, items in minis %}
+                    <li class="{{ loop.first ? 'active' : '' }}">
+                        <a href="#" data-tab="tab-{{ rarity ? rarity : 'xxx' }}">
+                            {{ ('rarity.'~rarity)|trans }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="panel-body">
+            {% for rarity, items in minis %}
+                {% set columns = items|columns(2, false) %}
+                <div class="tab tab-{{ rarity ? rarity : 'xxx' }}" style="display: {{ loop.first ? 'block' : 'none' }}">
+                    <div class="row">
+                        {% for column in columns %}
+                            <div class="col-xs-6">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ 'global.id'|trans }}</th>
+                                        <th>{{ 'global.item'|trans }}</th>
+                                        <th>{{ 'global.name'|trans }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for mini in column %}
+                                        <tr>
+                                            <td>{{ mini.id }}</td>
+                                            <td>
+                                                <span class="rarity-{{ mini.item.getrarity }}">
+                                                    <span class="icon">
+                                                        <img src="{{ mini.item|image }}" {{ mini.item|gwlink|raw }} />
+                                                    </span>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="rarity-{{ mini.item.getrarity }}">
+                                                    {{ mini.getname }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        td {
+            width: 20%;
+        }
+
+        td:last-child {
+            width: 60%;
+        }
+
+        td img {
+            width: 3em;
+            height: 3em;
+        }
+    </style>
+
+{% endblock %}

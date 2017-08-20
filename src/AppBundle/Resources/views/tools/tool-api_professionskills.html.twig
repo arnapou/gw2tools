@@ -1,0 +1,105 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% import "AppBundle::macro.html.twig" as macro %}
+
+{% block content %}
+
+    <h1>{{ 'tools.api_professionskills'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'specializations?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading with-tabs">
+            <ul class="nav nav-tabs">
+                {% for prof in professions %}
+                    <li class="{{ loop.first ? 'active' : '' }}">
+                        <a href="#" data-tab="tab-{{ prof.id }}">
+                            <i class="ic-profession-{{ prof.id|lower }}"></i> {{ prof }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="panel-body">
+            {% for prof in professions %}
+                <div class="tab tab-{{ prof.id }}" style="display: {{ loop.first ? 'block' : 'none' }}">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <strong>{{ 'global.weapons'|trans }}</strong>
+
+                            <table class="table table-hover table-condensed">
+                                <tbody>
+                                {% for weapon in prof.weapons %}
+                                    <tr class="skills">
+                                        <td title="{{ ('itemtype.'~weapon.gettype)|trans }}">
+                                            <i class="ic-weapon-{{ weapon.gettype|lower }}"></i>
+                                        </td>
+                                        <td>
+                                            {% set att = none %}
+                                            {% for wskill in weapon.skills %}
+                                                {% if att is none %}
+                                                    {% set att = wskill.getAttunement() %}
+                                                {% elseif att != wskill.getAttunement() %}
+                                                    {% set att = wskill.getAttunement() %}
+                                                    <br/>
+                                                {% endif %}
+                                                <span {{ wskill.skill|gwlink|raw }}>
+                                                    <img src="{{ wskill.skill|image }}"/>
+                                                </span>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="col-xs-6">
+                            <strong>{{ 'global.skills'|trans }}</strong>
+
+                            <table class="table table-hover table-condensed">
+                                <tbody>
+                                {% for type, skills in prof.getSkillsByType %}
+                                    {% if skills|length %}
+                                        <tr class="skills">
+                                            <td>
+                                                {{ type }}
+                                            </td>
+                                            <td>
+                                                {% for pskill in skills %}
+                                                    <span {{ pskill.skill|gwlink|raw }}>
+                                                    <img src="{{ pskill.skill|image }}"/>
+                                                </span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .skills img {
+            width: 3.5em;
+            height: 3.5em;
+            margin: 1px;
+        }
+
+        .skills td:first-child {
+            width: 1em;
+        }
+    </style>
+
+{% endblock %}

@@ -211,9 +211,12 @@
 
 
 
-{% macro specializations(build) %}
+{% macro specializations(build, show_id) %}
     {% for spe in build.getSpecializations() %}
         {% if spe %}
+            {% if show_id is defined and show_id %}
+                <span class="pull-right">{{ 'global.id'|trans }}={{ spe.id }}</span>
+            {% endif %}
             <b class="{{ spe.isElite() ? 'text-danger' : '' }}">{{ spe.getName() }}</b>
             <div class="specialization">
                 <img src="{{ spe.getbackground|image }}" class="background" />

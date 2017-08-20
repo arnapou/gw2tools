@@ -10,14 +10,19 @@
 
 namespace AppBundle\Controller;
 
-use function Arnapou\GW2Api\chatlink_item;
+use Arnapou\GW2Api\Model\AchievementCategory;
+use Arnapou\GW2Api\Model\AchievementGroup;
+use Arnapou\GW2Api\Model\File;
+use Arnapou\GW2Api\Model\Glider;
+use Arnapou\GW2Api\Model\Mailcarrier;
+use Arnapou\GW2Api\Model\Mini;
+use Arnapou\GW2Api\Model\Outfit;
+use Arnapou\GW2Api\Model\Pet;
+use Arnapou\GW2Api\Model\Profession;
+use Arnapou\GW2Api\Model\Title;
 use Arnapou\GW2Api\Storage\MongoStorage;
-use function Gw2tool\image;
-use MongoDB\BSON\Regex;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ToolsController extends AbstractController
@@ -25,18 +30,16 @@ class ToolsController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/tools/itemstatslist/", requirements={"_locale" = "de|en|es|fr"})
-     * @param Request $request
+     * @Route("/{_locale}/tools/api_itemstats/", requirements={"_locale" = "de|en|es|fr"})
      * @return Response
      */
-    public function itemStatsAction(Request $request)
+    public function apiItemStatsAction()
     {
         $langs = array_unique(['en', $this->getTranslator()->getLocale()]);
         $stats = [];
 
         foreach ($langs as $lang) {
-            $client   = $this->getGwEnvironment($lang)->getClientVersion2();
-            $allstats = $client->apiItemstats($client->apiItemstats());
+            $allstats = $this->getAllItems('itemstats', null, $lang);
             foreach ($allstats as $stat) {
                 if (empty($stat['name']) || !isset($stat['attributes']) ||
                     !is_array($stat['attributes']) || count($stat['attributes']) < 2
@@ -82,165 +85,234 @@ class ToolsController extends AbstractController
             return -$ret;
         });
 
-        return $this->renderTool('itemstatslist', [
-            'langs' => $langs,
-            'stats' => $stats,
+        return $this->renderTool('api_itemstats', [
+            'langs'  => $langs,
+            'stats'  => $stats,
+            'client' => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_pets/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiPetsAction()
+    {
+        $pets = $this->getAllItems('pets', Pet::class);
+
+        return $this->renderTool('api_pets', [
+            'pets'   => $pets,
+            'client' => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_files/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiFilesAction()
+    {
+        $files = $this->getAllItems('files', File::class, null, [], null, ['key' => 1]);
+
+        return $this->renderTool('api_files', [
+            'files'  => $files,
+            'client' => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_titles/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiTitlesAction()
+    {
+        $groups = $this->getAllItems('achievementsgroups', AchievementGroup::class, null, [], null, ['data.order' => 1]);
+        $titles = $this->getAllItems('titles', Title::class);
+        $map    = [];
+        foreach ($titles as $title) {
+            $map[$title->getAchievementId()] = $title;
+        }
+        $items = [];
+        foreach ($groups as $group) {
+            /** @var AchievementGroup $group */
+            foreach ($group->getCategories() as $category) {
+                /** @var AchievementCategory $category */
+                foreach ($category->getAchievementsIds() as $id) {
+                    if (isset($map[$id])) {
+                        $items[] = [
+                            'group'    => $group,
+                            'category' => $category,
+                            'title'    => $map[$id],
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $this->renderTool('api_titles', [
+            'titles' => $items,
+            'client' => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_quaggans/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiQuaggansAction()
+    {
+        $env      = $this->getGwEnvironment();
+        $quaggans = $env->getClientVersion2()->apiQuaggans($env->getClientVersion2()->apiQuaggans());
+
+        return $this->renderTool('api_quaggans', [
+            'quaggans' => $quaggans,
+            'client'   => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_specializations/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiSpecializationsAction()
+    {
+        $professions = $this->getAllItems('professions', Profession::class, null, [], null, ['data.name' => 1]);
+
+        return $this->renderTool('api_specializations', [
+            'professions' => $professions,
+            'client'      => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_professionskills/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiProfessionskillsAction()
+    {
+        $professions = $this->getAllItems('professions', Profession::class, null, [], null, ['data.name' => 1]);
+
+        return $this->renderTool('api_professionskills', [
+            'professions' => $professions,
+            'client'      => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_minis/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiMinisAction()
+    {
+        $minis = $this->getAllItems('minis', Mini::class, null, [], null, ['data.order' => 1]);
+
+        $minisByRarity = [];
+        foreach ($minis as $mini) {
+            $minisByRarity[$mini->getItem()->getRarity()][] = $mini;
+        }
+
+        return $this->renderTool('api_minis', [
+            'minis'  => $minisByRarity,
+            'client' => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_gliders/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiGlidersAction()
+    {
+        $gliders = $this->getAllItems('gliders', Glider::class, null, [], null, ['data.order' => 1]);
+
+        return $this->renderTool('api_gliders', [
+            'gliders' => $gliders,
+            'client'  => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_mailcarriers/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiMailcarriersAction()
+    {
+        $mailcarriers = $this->getAllItems('mailcarriers', Mailcarrier::class, null, [], null, ['data.order' => 1]);
+
+        return $this->renderTool('api_mailcarriers', [
+            'mailcarriers' => $mailcarriers,
+            'client'       => $this->getGwEnvironment()->getClientVersion2(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/tools/api_outfits/", requirements={"_locale" = "de|en|es|fr"})
+     * @return Response
+     */
+    public function apiOutfitsAction()
+    {
+        $outfits = $this->getAllItems('outfits', Outfit::class);
+
+        return $this->renderTool('api_outfits', [
+            'outfits' => $outfits,
+            'client'  => $this->getGwEnvironment()->getClientVersion2(),
         ]);
     }
 
     /**
      *
      * @Route("/{_locale}/tools/chatcode/", requirements={"_locale" = "de|en|es|fr"})
-     * @param Request $request
      * @return Response
      */
-    public function chatcodeAction(Request $request)
+    public function chatcodeAction()
     {
-
-        return $this->renderTool('chatcode', [
-        ]);
+        return $this->renderTool('chatcode', []);
     }
 
     /**
-     *
-     * @see      https://docs.mongodb.com/php-library/master/tutorial/
-     *
-     * @Route("/{_locale}/tools/chatcode/generate-{item}-{upgrade1}-{upgrade2}-{skin}-{quantity}.json",
-     *     requirements={
-     *         "_locale"  = "de|en|es|fr",
-     *         "item"     = "[0-9]+",
-     *         "upgrade1" = "[0-9]+",
-     *         "upgrade2" = "[0-9]+",
-     *         "skin"     = "[0-9]+",
-     *         "quantity" = "[0-9]+"
-     *     })
-     * @param int $item
-     * @param int $upgrade1
-     * @param int $upgrade2
-     * @param int $skin
-     * @param int $quantity
-     * @return Response
+     * @param string $collectionName
+     * @param string $class
+     * @param string $lang
+     * @param array  $criteria
+     * @param int    $limit
+     * @param array  $sort
+     * @return array
      */
-    public function chatcodeGenerateAction($item, $upgrade1, $upgrade2, $skin, $quantity)
+    private function getAllItems($collectionName, $class = null, $lang = null, $criteria = [], $limit = null, $sort = null)
     {
-        return new JsonResponse([
-            'chatlink' => chatlink_item($item, $skin, $upgrade1, $upgrade2, $quantity),
-        ]);
-    }
-
-    /**
-     *
-     * @see https://docs.mongodb.com/php-library/master/tutorial/
-     *
-     * @Route("/{_locale}/tools/chatcode/skins-{query}.json", requirements={"_locale" = "de|en|es|fr", "query" = ".+"})
-     * @param string $query
-     * @return Response
-     */
-    public function chatcodeSkinsSearchAction($query)
-    {
-        $env     = $this->getGwEnvironment();
+        $env     = $this->getGwEnvironment($lang);
         $storage = $env->getStorage();
         /* @var $storage MongoStorage */
-        $collection = $storage->getCollection($env->getLang(), 'skins');
-
-        if (ctype_digit($query)) {
-            $criteria = ['key' => new Regex($query, '')];
-        } else {
-            $criteria = ['data.name' => new Regex($this->queryToRegex($query), 'i')];
+        $collection = $storage->getCollection($env->getLang(), $collectionName);
+        $options    = [];
+        if ($limit) {
+            $options['limit'] = (int)$limit;
         }
-        $data = iterator_to_array(
-            $collection->find($criteria, [
-                'limit' => 100,
-                'sort'  => ['data.name' => 1],
-            ])
-        );
-
-        $data = array_map(function ($item) {
-            return [
-                'id'    => (int)$item['data']['id'],
-                'icon'  => image($item['data']['icon'] ?? 'empty'),
-                'value' => $item['data']['name'],
-            ];
-        }, $data);
-
-        return new JsonResponse($data);
-    }
-
-    /**
-     *
-     * @see https://docs.mongodb.com/php-library/master/tutorial/
-     *
-     * @Route("/{_locale}/tools/chatcode/items-{query}.json", requirements={"_locale" = "de|en|es|fr", "query" = ".+"})
-     * @param string $query
-     * @param null   $type
-     * @return Response
-     */
-    public function chatcodeItemsSearchAction($query, $type = null)
-    {
-        $env     = $this->getGwEnvironment();
-        $storage = $env->getStorage();
-        /* @var $storage MongoStorage */
-        $collection = $storage->getCollection($env->getLang(), 'items');
-
-        if (ctype_digit($query)) {
-            $criteria = ['key' => new Regex($query, '')];
-        } else {
-            $criteria = ['data.name' => new Regex($this->queryToRegex($query), 'i')];
+        if (!empty($sort) && is_array($sort)) {
+            $options['sort'] = $sort;
         }
-        if ($type) {
-            $criteria += ['data.type' => $type];
+
+        $items = [];
+        foreach ($collection->find($criteria, $options) as $doc) {
+            if ($class) {
+                $items[$doc['key']] = new $class($env, $doc['key']);
+            } elseif (isset($doc['data'])) {
+                $items[$doc['key']] = $doc['data'];
+            }
         }
-        $data = iterator_to_array(
-            $collection->find($criteria, [
-                'limit' => 100,
-                'sort'  => ['data.name' => 1],
-            ])
-        );
 
-        $data = array_map(function ($item) {
-            return [
-                'id'       => (int)$item['data']['id'],
-                'icon'     => image($item['data']['icon'] ?? 'empty'),
-                'value'    => $item['data']['name'],
-                'chatlink' => chatlink_item($item['data']['id']),
-                'rarity'   => $item['data']['rarity'] ?? '',
-            ];
-        }, $data);
-
-        return new JsonResponse($data);
+        return $items;
     }
-
-    /**
-     *
-     * @see https://docs.mongodb.com/php-library/master/tutorial/
-     *
-     * @Route("/{_locale}/tools/chatcode/upgrades-{query}.json",
-     *     requirements={"_locale" = "de|en|es|fr", "query" = ".+"})
-     * @param string $query
-     * @return Response
-     */
-    public function chatcodeUpgradesSearchAction($query)
-    {
-        return $this->chatcodeItemsSearchAction($query, 'UpgradeComponent');
-    }
-
-    /**
-     * @param $query
-     * @return string
-     */
-    protected function queryToRegex($query)
-    {
-        $query = preg_replace('!\s+!', ' ', $query);
-        $query = trim($query);
-        if (empty($query)) {
-            return '.+';
-        }
-        $parts = explode(' ', $query);
-        $parts = array_map('preg_quote', $parts);
-        $regex = implode('.+', $parts);
-        return $regex;
-    }
-
 
     /**
      *
@@ -249,7 +321,7 @@ class ToolsController extends AbstractController
      * @return Response
      * @internal param string $page
      */
-    protected function renderTool($tool, $context)
+    private function renderTool($tool, $context)
     {
         $response = $this->render('tools/tool-' . $tool . '.html.twig', $context);
         $response->setMaxAge(900);

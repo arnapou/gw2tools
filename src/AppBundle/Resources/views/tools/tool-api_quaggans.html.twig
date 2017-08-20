@@ -1,0 +1,57 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <h1>{{ 'tools.api_quaggans'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'quaggans?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
+
+    {% set columns = quaggans|columns(2, false) %}
+
+    <div class="row">
+        {% for column in columns %}
+            <div class="col-xs-6">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>{{ 'global.id'|trans }}</th>
+                        <th>{{ 'global.icon'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for quaggan in column %}
+                        <tr>
+                            <td>{{ quaggan.id }}</td>
+                            <td>
+                                <a href="{{ quaggan.url }}" target="_blank">
+                                    <img src="{{ quaggan.url }}"/>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        td {
+            line-height: 3em;
+        }
+
+        td:first-child {
+            width: 65%;
+        }
+
+        td img {
+            width: 3em;
+            height: 3em;
+        }
+    </style>
+
+{% endblock %}

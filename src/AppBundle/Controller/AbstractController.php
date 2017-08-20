@@ -15,6 +15,7 @@ use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Gw2tool\Account;
+use Gw2tool\Gw2ApiEnvironmentTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ use Symfony\Component\Translation\Translator;
 abstract class AbstractController extends Controller
 {
 
-    use \Gw2tool\Gw2ApiEnvironmentTrait;
+    use Gw2ApiEnvironmentTrait;
 
     /**
      *

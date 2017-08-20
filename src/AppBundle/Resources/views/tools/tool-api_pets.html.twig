@@ -1,0 +1,47 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block content %}
+
+    <h1>{{ 'tools.api_pets'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'pets?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
+
+    {% for pet in pets %}
+        <div class="pet-wrapper">
+            <div>
+                {{ 'global.id'|trans }}={{ pet.id }}
+            </div>
+            <div class="pet">
+                <span {{ pet|gwlink|raw }}>
+                    <span class="pet-icon-wrapper">
+                        <img src="{{ pet|image }}"/>
+                    </span>
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+
+    <style>
+        .pet-wrapper {
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+            margin-bottom: 1em;
+            margin-right: .4em;
+        }
+
+        .pet {
+            vertical-align: top;
+            display: inline-block;
+            position: relative;
+            width: 8em;
+            height: 8em;
+            overflow: hidden;
+        }
+    </style>
+
+{% endblock %}

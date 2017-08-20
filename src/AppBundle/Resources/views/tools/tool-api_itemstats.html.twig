@@ -2,7 +2,13 @@
 
 {% block content %}
 
-    <h1>{{ 'tools.itemstatslist'|trans }}</h1>
+    <h1>{{ 'tools.api_itemstats'|trans }}</h1>
+
+    <div class="well well-sm">
+        <a href="{{ client.baseurl~'itemstats?ids=all&lang='~lang }}" target="_blank">
+            <i class="glyphicon glyphicon-new-window"></i> {{ 'global.api_link'|trans }}
+        </a>
+    </div>
 
     <table class="table table-condensed table-hover">
         <thead>
@@ -54,6 +60,7 @@
             width: 3em;
             vertical-align: middle;
         }
+
         td.stat-image img {
             width: 24px;
         }

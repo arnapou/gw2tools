@@ -124,7 +124,7 @@ $(function () {
     $(document).on('click', '.page-account .action-replace-token', function () {
         bootbox.prompt(messages['action-replace-token'], function (result) {
             if (result && isValidToken(result)) {
-                $.post('/api/token-replace', {code: CODE, token: result})
+                $.post('/api/token-replace', {code: CODE, newtoken: result})
                     .done(function (json) {
                         if (json) {
                             if (json.ok) {
