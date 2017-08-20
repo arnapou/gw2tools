@@ -1,3 +1,7 @@
+## 2.1.20 (2017-08-20)
+
+  - added several api pages in tools menu
+  
 ## 2.1.19 (2017-08-19)
 
   - added PoF professions
