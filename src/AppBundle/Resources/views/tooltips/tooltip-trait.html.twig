@@ -1,5 +1,5 @@
 
-{% import "AppBundle::macro.html.twig" as macro %}
+{% import "AppBundle::tooltips/tooltip-skill.html.twig" as macro %}
 
 <div class="gwitem">
 
@@ -17,27 +17,12 @@
         {{ trait.getdescription|striptags|nl2br }}
     </div>
     
-    {{ macro.facts(trait.getfacts) }}
+    {{ macro.facts(trait.getfacts, trait.id) }}
 
 </div>
 
-{% for skill in trait.skills %}
-    <div class="gwitem">
+{% for skill in trait.getskills %}
 
-        <div class="gwitemheader">
-            <div class="gwicon">
-                <img title="{{ skill.name }}" src="{{ skill.icon|image }}" />
-            </div>
+    {{ macro.skill(skill) }}
 
-            <div class="gwname">
-                {{ skill.name }}
-            </div>
-        </div>
-
-        <div>
-            {{ skill.description|striptags|nl2br }}
-        </div>
-
-        {{ macro.facts(skill.getfacts) }}
-    </div>
 {% endfor %}

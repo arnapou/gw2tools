@@ -1,8 +1,6 @@
-{% extends "AppBundle::base.html.twig" %}
+{% extends "AppBundle::tools/base.html.twig" %}
 
 {% block content %}
-
-    <h1>{{ 'tools.api_quaggans'|trans }}</h1>
 
     <div class="well well-sm">
         <a href="{{ client.baseurl~'quaggans?ids=all&lang='~lang }}" target="_blank">

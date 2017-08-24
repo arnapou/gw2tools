@@ -1,21 +1,132 @@
+{% import _self as self %}
 
-{% import "AppBundle::macro.html.twig" as macro %}
+{{ self.skill(skill, 1) }}
 
-<div class="gwitem">
 
-    <div class="gwitemheader">
-        <div class="gwicon">
-            <img title="{{ skill.getname }}" src="{{ skill|image }}" />
+
+{% macro skill(skill, withfacts) %}
+    {% import _self as self %}
+
+    <div class="gwitem">
+
+        <div class="gwitemheader">
+            <div class="gwicon">
+                <img title="{{ skill.getname }}" src="{{ skill|image }}"/>
+            </div>
+
+            <div class="gwname">
+                {{ skill.getname }}
+            </div>
         </div>
 
-        <div class="gwname">
-            {{ skill.getname }}
+        <div>
+            {{ skill.getdescription|striptags|nl2br }}
         </div>
+
+        {% if withfacts is defined and withfacts %}
+
+            {{ self.facts(skill) }}
+
+        {% endif %}
     </div>
 
-    <div>
-        {{ skill.getdescription|striptags|nl2br }}
-    </div>
+{% endmacro %}
 
-    {{ macro.facts(skill.getfacts) }}
-</div>
+
+
+{% macro facts(obj, traitid) %}
+    {% import _self as self %}
+
+    {% for fact in obj.getFacts() %}
+        {{ self.fact(fact) }}
+    {% endfor %}
+
+    {% for fact in obj.getTraitedFacts() %}
+        {{ self.fact(fact, traitid) }}
+    {% endfor %}
+
+{% endmacro %}
+
+
+
+{% macro fact(fact, traitid) %}
+    {% set show = 1 %}
+    {% if traitid is defined and fact.requires_trait is defined and traitid != fact.requires_trait %}
+        {% set show = 0 %}
+    {% endif %}
+    {% if show %}
+    <div class="gwfact gwfact-{{ fact.type|lower }}">
+        {% if 'AttributeAdjust' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            +{{ fact.value }} {{ ('attribute.'~fact.target)|trans }}
+
+        {% elseif 'Buff' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.status }}{% if fact.duration %} ({{ fact.duration }}s){% endif %}{% if fact.description %}: {{ fact.description|br2nl|striptags|nl2br }}{% endif %}
+
+        {% elseif 'BuffConversion' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ 'traits.buff_conversion'|trans({'pct': fact.percent, 'src': ('attribute.'~fact.source)|trans, 'dst': ('attribute.'~fact.target)|trans}) }}
+
+        {% elseif 'ComboField' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.fieldtype }}
+
+        {% elseif 'ComboFinisher' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.fieldtype }}
+
+        {% elseif 'Damage' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: ? {% if fact.hit_count > 1 %}(x{{ fact.hit_count }}){% endif %}
+
+        {% elseif 'Distance' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.distance }}
+
+        {% elseif 'NoData' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}
+
+        {% elseif 'Number' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.value }}
+
+        {% elseif 'Percent' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.percent }}%
+
+        {% elseif 'PrefixedBuff' == fact.type %}
+            <img src="{{ fact.prefix.icon|image }}"/>
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.status }}{% if fact.duration %} ({{ fact.duration }}s){% endif %}{% if fact.description %}: {{ fact.description|br2nl|striptags|nl2br }}{% endif %}
+
+        {% elseif 'Radius' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.distance }}
+
+        {% elseif 'Range' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.value }}
+
+        {% elseif 'Recharge' == fact.type %}
+            {{ fact.value }}
+            {% if fact.icon %}
+                <img src="{{ fact.icon|image }}" style="max-width: 1.5em; max-height: 1.5em"/>
+            {% else %}
+                <i class="glyphicon glyphicon-repeat"></i>
+            {% endif %}
+
+        {% elseif 'Time' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}: {{ fact.duration }}s
+
+        {% elseif 'Unblockable' == fact.type %}
+            {% if fact %}<img src="{{ fact.icon|image }}" />{% endif %}
+            {{ fact.text }}
+
+        {% endif %}
+
+    </div>
+    {% endif %}
+{% endmacro %}

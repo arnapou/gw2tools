@@ -1,0 +1,9 @@
+{% extends "AppBundle::base.html.twig" %}
+
+ {% block title %}
+     {{ parent() }} &raquo; {{ page_title }}
+ {% endblock %}
+
+{% block pre_content %}
+    <h1>{{ page_title }}</h1>
+{% endblock %}

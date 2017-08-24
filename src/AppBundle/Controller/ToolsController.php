@@ -323,6 +323,7 @@ class ToolsController extends AbstractController
      */
     private function renderTool($tool, $context)
     {
+        $context['page_title'] = $this->trans('tools.' . $tool);
         $response = $this->render('tools/tool-' . $tool . '.html.twig', $context);
         $response->setMaxAge(900);
         $response->setExpires(new \DateTime('@' . (time() + 900)));

@@ -1,0 +1,52 @@
+{% spaceless %}
+    <div class="row">
+        <div class="col-xs-6">
+            <ul>
+                <li>
+                    <i class="glyphicon glyphicon-user"></i> {{ "footer.site_development"|trans }}:
+                    <a href="mailto:arnaud@arnapou.net">Arnaud Buathier</a>
+                </li>
+                <li>
+                    <img src="{{ asset('assets/images/misc/github.png') }}"/> GitHub:
+                    <a href="https://github.com/arnapou/gw2tools"
+                       target="_blank">{{ "footer.gw2tools_project"|trans }}</a>&nbsp;
+                    <em>(v{{ asset_version('') }})</em>
+                </li>
+                <li>
+                    <i class="glyphicon glyphicon-list-alt"></i> {{ "footer.changelog"|trans }}:
+                    <a href="https://github.com/arnapou/gw2tools/blob/master/CHANGELOG.md"
+                       target="_blank">{{ "footer.project_changelog"|trans }}</a>
+                </li>
+                <li>
+                    <i class="glyphicon glyphicon-wrench"></i> {{ "footer.technical"|trans }}:
+                    <a href="{{ path('technical-infos') }}">{{ "footer.for_developers"|trans }}</a>
+                </li>
+                <li>
+                    <i class="glyphicon glyphicon-globe"></i> {{ "footer.languages"|trans }}:
+                    {% for lang in module.langs %}
+                        {% if not loop.first %}
+                            <span>, </span>
+                        {% endif %}
+                        <a href="/{{ lang }}{{ app.request.pathinfo|slice(3) }}">{{ lang|upper }}</a>
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-6">
+            <div class="logo">
+                <a href="http://guildwars2.com/" target="_blank">
+                    <img src="/assets/images/logo/gw2.png" width="128"/>
+                </a>
+                <a href="http://www.arena.net/" target="_blank">
+                    <img src="/assets/images/logo/anet.png" width="128"/>
+                </a>
+                <a href="http://us.ncsoft.com/" target="_blank">
+                    <img src="/assets/images/logo/ncsoft.png" width="128"/>
+                </a>
+            </div>
+            <p>
+                &copy; {{ "footer.anet_copyright"|trans }}
+            </p>
+        </div>
+    </div>
+{% endspaceless %}

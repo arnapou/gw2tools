@@ -1,10 +1,8 @@
-{% extends "AppBundle::base.html.twig" %}
+{% extends "AppBundle::tools/base.html.twig" %}
 
 {% import "AppBundle::macro.html.twig" as macro %}
 
 {% block content %}
-
-    <h1>{{ 'tools.api_professionskills'|trans }}</h1>
 
     <div class="well well-sm">
         <a href="{{ client.baseurl~'specializations?ids=all&lang='~lang }}" target="_blank">
@@ -35,9 +33,10 @@
                             <table class="table table-hover table-condensed">
                                 <tbody>
                                 {% for weapon in prof.weapons %}
+                                    {% set type = weapon.gettype == 'Spear' ? 'Harpoon' : weapon.gettype %}
                                     <tr class="skills">
-                                        <td title="{{ ('itemtype.'~weapon.gettype)|trans }}">
-                                            <i class="ic-weapon-{{ weapon.gettype|lower }}"></i>
+                                        <td title="{{ ('itemtype.'~type)|trans }}">
+                                            <i class="ic-weapon-{{ type|lower }}"></i>
                                         </td>
                                         <td>
                                             {% set att = none %}

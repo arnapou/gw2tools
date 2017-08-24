@@ -1,10 +1,8 @@
-{% extends "AppBundle::base.html.twig" %}
+{% extends "AppBundle::tools/base.html.twig" %}
 
 {% import "AppBundle::macro.html.twig" as macro %}
 
 {% block content %}
-
-    <h1>{{ 'tools.api_specializations'|trans }}</h1>
 
     <div class="well well-sm">
         <a href="{{ client.baseurl~'specializations?ids=all&lang='~lang }}" target="_blank">

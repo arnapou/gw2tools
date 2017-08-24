@@ -1,0 +1,58 @@
+{% spaceless %}
+    {% set users = module.cookieusers %}
+
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">
+                {{ ('menu.tools'|trans) }} <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu scrollable-menu">
+                {% for str in [
+                'chatcode',
+                'api_itemstats',
+                'api_pets',
+                'api_files',
+                'api_quaggans',
+                'api_minis',
+                'api_gliders',
+                'api_outfits',
+                'api_mailcarriers',
+                'api_titles',
+                'api_specializations',
+                'api_professionskills',
+                ] %}
+                    <li>
+                        <a href="/{{ lang }}/tools/{{ str }}/">{{ ('tools.'~str)|trans }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+
+        {% if account or (users|length) %}
+            {% if users|length %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        {{ account.name ? account.name : ('menu.accounts'|trans) }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu scrollable-menu">
+                        {% for usr in users %}
+                            <li>
+                                <a href="/{{ lang }}/{{ usr.code }}/" class="account-link">
+                                    <small> ... {{ usr.token|slice(-4) }}</small>
+                                    {{ usr.name ? usr.name : '??????' }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% elseif account %}
+                <li>
+                    <p class="navbar-text"><b>{{ account.name }}</b></p>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+
+{% endspaceless %}
