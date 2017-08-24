@@ -17,12 +17,12 @@
         {{ trait.getdescription|striptags|nl2br }}
     </div>
     
-    {{ macro.facts(trait.getfacts, trait.id) }}
+    {{ macro.facts(trait, trait.id) }}
 
 </div>
 
 {% for skill in trait.getskills %}
 
-    {{ macro.skill(skill) }}
+    {{ macro.skill(skill, loop.length > 1 ? 0 : 1) }}
 
 {% endfor %}
