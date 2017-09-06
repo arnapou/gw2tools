@@ -541,4 +541,12 @@ class ApiController extends AbstractController
         $allowedRights[] = 'other.disable_statistics';
         return $allowedRights;
     }
+
+    /**
+     * @return string
+     */
+    function getViewPrefix()
+    {
+        return '';
+    }
 }

@@ -14,12 +14,16 @@ use AppBundle\Entity\Token;
 use Arnapou\GW2Api\Model\Character;
 use Gw2tool\Account;
 use Gw2tool\Exception\AccessNotAllowedException;
+use Gw2tool\Menu;
+use Gw2tool\MenuItem;
 use Gw2tool\MenuList;
 use Gw2tool\Statistics;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PageController extends AbstractController
 {
@@ -62,7 +66,10 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}"})
+     * @Route("/{_locale}/{_code}/", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}"
+     * })
      */
     public function homeAction(Request $request)
     {
@@ -71,8 +78,15 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/statistics/{dataset}.json", requirements={"_locale" = "de|en|es|fr", "_code" =
-     *                                                        "[a-zA-Z0-9]{10}", "dataset" = "[a-zA-Z0-9_-]+"})
+     * @Route("/{_locale}/{_code}/statistics/{dataset}.json", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "dataset" = "[a-zA-Z0-9_-]+"
+     * })
+     * @param         $_code
+     * @param         $dataset
+     * @param Request $request
+     * @return JsonResponse
      */
     public function statisticsJsonAction($_code, $dataset, Request $request)
     {
@@ -106,8 +120,15 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/{page}/", requirements={"_locale" = "de|en|es|fr", "_code" = "[a-zA-Z0-9]{10}",
-     *                                      "page" = "[a-zA-Z0-9_]+"})
+     * @Route("/{_locale}/{_code}/{page}/", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "page" = "(?!raidplanner)[a-zA-Z0-9_]+"
+     * })
+     * @param         $_code
+     * @param         $page
+     * @param Request $request
+     * @return Response
      */
     public function pageAction($_code, $page, Request $request)
     {
@@ -117,8 +138,15 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/{page}/content.html", requirements={"_locale" = "de|en|es|fr", "_code" =
-     *                                                  "[a-zA-Z0-9]{10}", "page" = "[a-zA-Z0-9_]+"})
+     * @Route("/{_locale}/{_code}/{page}/content.html", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "page" = "[a-zA-Z0-9_]+"
+     * })
+     * @param         $_code
+     * @param         $page
+     * @param Request $request
+     * @return Response
      */
     public function pageContentAction($_code, $page, Request $request)
     {
@@ -132,9 +160,17 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/gw2skills-{mode}/{name}", requirements={"_locale" = "de|en|es|fr", "_code" =
-     *                                                      "[a-zA-Z0-9]{10}", "name" = "[^.]+", "mode" =
-     *                                                      "pve|pvp|wvw"})
+     * @Route("/{_locale}/{_code}/gw2skills-{mode}/{name}", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "name" = "[^.]+",
+     *     "mode" = "pve|pvp|wvw"
+     * })
+     * @param         $_code
+     * @param         $mode
+     * @param         $name
+     * @param Request $request
+     * @return RedirectResponse|NotFoundHttpException
      */
     public function gw2skillsBuildAction($_code, $mode, $name, Request $request)
     {
@@ -151,8 +187,15 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/character/{name}", requirements={"_locale" = "de|en|es|fr", "_code" =
-     *                                               "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
+     * @Route("/{_locale}/{_code}/character/{name}", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "name" = "[^.]+"
+     * })
+     * @param         $_code
+     * @param         $name
+     * @param Request $request
+     * @return Response|NotFoundHttpException
      */
     public function characterAction($_code, $name, Request $request)
     {
@@ -166,8 +209,15 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/character/{name}.html", requirements={"_locale" = "de|en|es|fr", "_code" =
-     *                                                    "[a-zA-Z0-9]{10}", "name" = "[^.]+"})
+     * @Route("/{_locale}/{_code}/character/{name}.html", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "name" = "[^.]+"
+     * })
+     * @param         $_code
+     * @param         $name
+     * @param Request $request
+     * @return Response|NotFoundHttpException
      */
     public function characterContentAction($_code, $name, Request $request)
     {
@@ -185,9 +235,17 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/{folder}/{guildid}", requirements={"_locale" = "de|en|es|fr", "_code" =
-     *                                                 "[a-zA-Z0-9]{10}", "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+",
-     *                                                 "folder" = "guild(_stash)?"})
+     * @Route("/{_locale}/{_code}/{folder}/{guildid}", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+",
+     *     "folder" = "guild(_stash)?"
+     * })
+     * @param         $_code
+     * @param         $guildid
+     * @param         $folder
+     * @param Request $request
+     * @return Response|NotFoundHttpException
      */
     public function guildStashAction($_code, $guildid, $folder, Request $request)
     {
@@ -201,10 +259,17 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/{folder}/{guildid}.html", requirements={"_locale" = "de|en|es|fr", "_code" =
-     *                                                      "[a-zA-Z0-9]{10}", "guildid" =
-     *                                                      "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+", "folder" =
-     *                                                      "guild(_stash)?"})
+     * @Route("/{_locale}/{_code}/{folder}/{guildid}.html", requirements={
+     *     "_locale" = "de|en|es|fr",
+     *     "_code" = "[a-zA-Z0-9]{10}",
+     *     "guildid" = "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+",
+     *     "folder" = "guild(_stash)?"
+     * })
+     * @param         $_code
+     * @param         $folder
+     * @param         $guildid
+     * @param Request $request
+     * @return Response|NotFoundHttpException
      */
     public function guildStashContentAction($_code, $folder, $guildid, Request $request)
     {
@@ -223,6 +288,10 @@ class PageController extends AbstractController
     /**
      *
      * @param string $_code
+     * @param string $page
+     * @param bool   $ownerMandatory
+     * @return array
+     * @throws AccessNotAllowedException
      */
     protected function getContext($_code, $page, $ownerMandatory = false)
     {
@@ -233,7 +302,7 @@ class PageController extends AbstractController
                 throw $this->createNotFoundException('Unknown code.');
             }
             $this->isOwner = $this->isTokenOwner($this->token);
-            if (!$this->isOwner && $ownerMandatory && !$this->token->hasRight($page)) {
+            if (!$this->isOwner && $ownerMandatory && $page !== null && !$this->token->hasRight($page)) {
                 throw new AccessNotAllowedException();
             }
             if (!$this->checkToken($this->token)) {
@@ -243,7 +312,7 @@ class PageController extends AbstractController
             $this->characters = $this->getCharacters($this->account);
             $this->guilds     = $this->getGuilds($this->account);
             $this->menu       = new MenuList($this->getTranslator(), $this->characters, $this->guilds);
-            if (!$this->menu->pageExists($page)) {
+            if ($page !== null && !$this->menu->pageExists($page)) {
                 throw $this->createNotFoundException('Unknown page.');
             }
             $statistics = new Statistics($this, $this->account);
@@ -278,7 +347,7 @@ class PageController extends AbstractController
             $parameters['account']    = $this->account;
             $parameters['characters'] = $this->characters;
         }
-        return parent::render('pages/' . $view, $parameters, $response);
+        return parent::render($view, $parameters, $response);
     }
 
     /**
@@ -290,10 +359,10 @@ class PageController extends AbstractController
         if ($this->token) {
             $code = $this->token->getCode();
             $path = rawurldecode($this->getRequest()->getPathInfo());
-            foreach ($this->getMenu() as /* @var $menu Menu */
-                     $menu) {
-                foreach ($menu->getItems() as /* @var $item MenuItem */
-                         $item) {
+            foreach ($this->getMenu() as $menu) {
+                /* @var $menu Menu */
+                foreach ($menu->getItems() as $item) {
+                    /* @var $item MenuItem */
                     if ($item->getUri() && '/' . $this->getTranslator()->getLocale() . '/' . $code . '/' . $item->getUri() === $path) {
                         return [$menu->getLabel(), $item->getLabel()];
                     }
@@ -375,5 +444,13 @@ class PageController extends AbstractController
             return false;
         }
         return $this->token->hasRight('guild_stash/' . $guildid);
+    }
+
+    /**
+     * @return string
+     */
+    function getViewPrefix()
+    {
+        return 'pages/';
     }
 }

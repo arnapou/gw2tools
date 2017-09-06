@@ -8,9 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * Token
  *
  * @ORM\Table(name="raidmember", indexes={
- *      @ORM\Index(name="name"         , columns={"name"}    ),
- *      @ORM\Index(name="creator"      , columns={"creator"} ),
- *      @ORM\Index(name="datecreation" , columns={"datecreation"} )
+ *      @ORM\Index(name="name"          , columns={"name"}    ),
+ *      @ORM\Index(name="date_creation" , columns={"date_creation"} )
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RaidMemberRepository")
  */

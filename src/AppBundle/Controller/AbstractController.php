@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
 use AppBundle\Repository\TokenRepository;
-use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Gw2tool\Account;
@@ -33,7 +33,7 @@ abstract class AbstractController extends Controller
     private $cookieUsers = null;
 
     /**
-     * 
+     *
      * @return Request
      */
     public function getRequest()
@@ -42,7 +42,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @param Token $token
      * @return boolean
      */
@@ -57,18 +57,18 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @param string $token
      * @return Account
      */
     protected function getAccount($token)
     {
-        $env = $this->getGwEnvironment()->setAccessToken((string) $token);
+        $env = $this->getGwEnvironment()->setAccessToken((string)$token);
         return new Account($env);
     }
 
     /**
-     * 
+     *
      * @param Account $account
      * @return array
      */
@@ -83,7 +83,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @param Account $account
      * @return array
      */
@@ -97,7 +97,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @param Token $token
      * @return boolean
      */
@@ -127,7 +127,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @return TokenRepository
      */
     public function getTokenRepository()
@@ -136,7 +136,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getLangs()
@@ -145,7 +145,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getCookieTokens()
@@ -158,15 +158,15 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getCookieUsers()
     {
         if ($this->cookieUsers === null) {
             $savedAccessToken = $this->getGwEnvironment()->getAccessToken();
-            $items            = [];
-            $repo             = $this->getTokenRepository();
+            $items = [];
+            $repo = $this->getTokenRepository();
             foreach ($this->getCookieTokens() as $token) {
                 $object = $repo->findOneByToken($token);
                 if ($object && $this->checkToken($object)) {
@@ -180,7 +180,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getDataPath()
@@ -188,18 +188,24 @@ abstract class AbstractController extends Controller
         return $this->get('kernel')->getRootDir() . '/../data';
     }
 
-    protected function render($view, array $parameters = array(), Response $response = null)
+    protected function render($view, array $parameters = [], Response $response = null)
     {
+        $view = $this->getViewPrefix() . $view;
         if (strpos($view, ':') === false) {
             $view = 'AppBundle::' . $view;
         }
-        $parameters['lang']   = $this->getTranslator()->getLocale();
+        $parameters['lang'] = $this->getTranslator()->getLocale();
         $parameters['module'] = $this;
         return parent::render($view, $parameters, $response);
     }
 
     /**
-     * 
+     * @return string
+     */
+    abstract function getViewPrefix();
+
+    /**
+     *
      * @return Translator
      */
     public function getTranslator()
@@ -219,7 +225,7 @@ abstract class AbstractController extends Controller
      *
      * @return string The translated string
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
@@ -237,13 +243,13 @@ abstract class AbstractController extends Controller
      *
      * @return string The translated string
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         return $this->getTranslator()->transChoice($id, $number, $parameters, $domain, $locale);
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getEnv()

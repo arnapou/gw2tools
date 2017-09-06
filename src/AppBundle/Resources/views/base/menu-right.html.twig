@@ -8,9 +8,17 @@
                 {{ ('menu.tools'|trans) }} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu scrollable-menu">
-                <li>
-                    <a href="/{{ lang }}/raidplanner/">{{ 'raidplanner'|trans }}</a>
-                </li>
+                {% if account and (users|length) %}
+                    {% for usr in users %}
+                        {% if account.name == usr.name %}
+                            <li>
+                                <a href="/{{ lang }}/{{ usr.code }}/raidplanner/">
+                                    {{ 'raidplanner'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
                 {% for str in [
                 'chatcode',
                 'api_itemstats',

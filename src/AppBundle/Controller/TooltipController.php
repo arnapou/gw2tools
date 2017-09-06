@@ -25,8 +25,11 @@ class TooltipController extends AbstractController
 {
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/trait-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @param         $id
+     * @param Request $request
+     * @return Response
      */
     public function tooltipTraitAction($id, Request $request)
     {
@@ -38,8 +41,11 @@ class TooltipController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/pet-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @param         $id
+     * @param Request $request
+     * @return Response
      */
     public function tooltipPetAction($id, Request $request)
     {
@@ -51,8 +57,11 @@ class TooltipController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/pvpamulet-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @param         $id
+     * @param Request $request
+     * @return Response
      */
     public function tooltipPvpAmuletAction($id, Request $request)
     {
@@ -64,8 +73,11 @@ class TooltipController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/skill-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @param         $id
+     * @param Request $request
+     * @return Response
      */
     public function tooltipSkillAction($id, Request $request)
     {
@@ -77,8 +89,11 @@ class TooltipController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/specialization-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @param         $id
+     * @param Request $request
+     * @return Response
      */
     public function tooltipSpecializationAction($id, Request $request)
     {
@@ -90,8 +105,11 @@ class TooltipController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/skin-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @param         $id
+     * @param Request $request
+     * @return Response
      */
     public function tooltipSkinAction($id, Request $request)
     {
@@ -103,8 +121,11 @@ class TooltipController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/item-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @param         $id
+     * @param Request $request
+     * @return Response
      */
     public function tooltipItemAction($id, Request $request)
     {
@@ -116,8 +137,11 @@ class TooltipController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/tooltip/slot-{code}.html", requirements={"_locale" = "de|en|es|fr", "code" = "[0-9]+(-((up|in|sk|cn|ch|st|z[a-z])[0-9]+|(bn|bt).+))*"})
+     * @param         $code
+     * @param Request $request
+     * @return Response
      */
     public function tooltipSlotAction($code, Request $request)
     {
@@ -178,7 +202,7 @@ class TooltipController extends AbstractController
     protected function renderTooltip($page, $context)
     {
         try {
-            $response = $this->render('tooltips/tooltip-' . $page . '.html.twig', $context());
+            $response = $this->render('tooltip-' . $page . '.html.twig', $context());
             $response->setMaxAge(900);
             $response->setExpires(new \DateTime('@' . (time() + 900)));
             $response->setPublic();
@@ -192,5 +216,13 @@ class TooltipController extends AbstractController
                 . '</script>';
             return new Response($html);
         }
+    }
+
+    /**
+     * @return string
+     */
+    function getViewPrefix()
+    {
+        return 'tooltips/';
     }
 }

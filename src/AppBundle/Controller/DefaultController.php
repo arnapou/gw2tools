@@ -72,4 +72,12 @@ class DefaultController extends AbstractController
 
         return $this->redirect('/' . $locale . '/');
     }
+
+    /**
+     * @return string
+     */
+    function getViewPrefix()
+    {
+        return '';
+    }
 }

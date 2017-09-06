@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *        @ORM\UniqueConstraint(name="UNIQPK", columns={"member_id", "roster_id", "date"})
  *     },
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RaidMemberRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RaidWeekRepository")
  */
 class RaidWeek
 {

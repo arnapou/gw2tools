@@ -11,24 +11,30 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RaidplannerController extends AbstractController
+class RaidplannerController extends PageController
 {
 
     /**
      *
-     * @Route("/{_locale}/raidplanner/", requirements={"_locale" = "de|en|es|fr"})
+     * @Route("/{_locale}/{_code}/raidplanner/", requirements={"_locale" = "de|en|es|fr"})
+     * @param         $_code
+     * @param Request $request
      * @return Response
      */
-    public function indexAction()
+    public function indexAction($_code, Request $request)
     {
-        $context = [];
+        $context = $this->getContext($_code, null, true);
         return $this->render('index.html.twig', $context);
     }
 
-    protected function render($view, array $parameters = [], Response $response = null)
+    /**
+     * @return string
+     */
+    function getViewPrefix()
     {
-        return parent::render('raidplanner/' . $view, $parameters, $response);
+        return 'raidplanner/';
     }
 }

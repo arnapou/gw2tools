@@ -9,6 +9,7 @@
  */
 namespace AppBundle\Controller;
 
+use Arnapou\GW2Api\Core\ClientVersion1;
 use Arnapou\GW2Api\Core\Curl;
 use Gw2tool\FileVault;
 use Gw2tool\ResponseFile;
@@ -56,8 +57,11 @@ class ProxyController extends AbstractController
 
     /**
      *
-     * @Route("/proxy/file/{signature}/{file}.{format}", requirements={"signature": "[a-fA-F0-9]+", "file": "[0-9]+",
-     *                                                   "format": "jpg|png"})
+     * @Route("/proxy/file/{signature}/{file}.{format}", requirements={
+     *     "signature": "[a-fA-F0-9]+",
+     *     "file": "[0-9]+",
+     *     "format": "jpg|png"
+     * })
      *
      * @param string  $signature
      * @param string  $file
@@ -72,7 +76,7 @@ class ProxyController extends AbstractController
             $retention = $this->getParameter('proxy.file.retention');
             $vault     = new FileVault($this->getDataPath() . '/proxy/file');
             return $this->getVaultResponseFile($vault, $url, $retention);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             
         }
     }
@@ -101,7 +105,7 @@ class ProxyController extends AbstractController
                 }
                 return $response;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             
         }
     }
@@ -129,8 +133,16 @@ class ProxyController extends AbstractController
                 }
                 return $response;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             
         }
+    }
+
+    /**
+     * @return string
+     */
+    function getViewPrefix()
+    {
+        return '';
     }
 }
