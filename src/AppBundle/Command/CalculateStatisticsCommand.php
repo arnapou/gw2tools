@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Token;
@@ -23,21 +24,22 @@ class CalculateStatisticsCommand extends AbstractCommand
     {
         $this
             ->setName('gw2tool:statistics')
-            ->setDescription('Calculate statistics.')
-        ;
+            ->setDescription('Calculate statistics.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $env        = $this->getGwEnvironment('en');
-        $cache      = $env->getCache(); /* @var $cache MongoCache */
+        $env   = $this->getGwEnvironment('en');
+        $cache = $env->getCache();
+        /* @var $cache MongoCache */
         $collection = $cache->getMongoDB()->selectCollection('statistics');
         $manager    = $this->getDoctrine()->getManager();
         $repo       = $this->getDoctrine()->getRepository(Token::class);
 
         $tokens = [];
-        foreach ($repo->findAll() as /* @var $token Token */ $token) {
+        foreach ($repo->findAll() as /* @var $token Token */
+                 $token) {
             $tokens[$token->getName()] = $token;
         }
 
@@ -49,7 +51,8 @@ class CalculateStatisticsCommand extends AbstractCommand
             $statistics[$data['account']] = $data;
         }
 
-        foreach ($tokens as $accountName => /* @var $token Token */ $token) {
+        foreach ($tokens as $accountName => /* @var $token Token */
+                 $token) {
             if ($token->hasRight('other.disable_statistics')) {
                 $collection->deleteMany(['name' => $accountName]);
                 continue;
@@ -66,7 +69,7 @@ class CalculateStatisticsCommand extends AbstractCommand
 
                 $disableAccount = false;
                 try {
-                    $env->setAccessToken((string) $token);
+                    $env->setAccessToken((string)$token);
                     $account = new Account($env);
                     $account->getName(); // used only to trigger InvalidTokenException if something is wrong
 

@@ -1,0 +1,29 @@
+{% extends "AppBundle::raidplanner/base.html.twig" %}
+
+{% block content %}
+
+    {% if lang == 'fr' %}
+
+        <div class="text-danger">
+            <p>
+                <i class="glyphicon glyphicon-exclamation-sign"></i> <b>Interdit</b>
+            </p>
+            <p>
+                Circulez, il n'y a rien à voir. Vous n'avez pas le droit d'accéder à cette page.
+            </p>
+        </div>
+
+    {% else %}
+
+        <div class="text-danger">
+            <p>
+                <i class="glyphicon glyphicon-exclamation-sign"></i> <b>Forbidden</b>
+            </p>
+            <p>
+                There is nothing to see. You have not the right to access this page.
+            </p>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "AppBundle::raidplanner/base.html.twig" %}
+
+{% block raidcontent %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>{{ member.roster.name }}</b>
+
+            {% if member.canDeleteRoster %}
+                <button type="button" data-href="./delete-{{ member.roster.id }}"
+                        class="pull-right btn btn-xs btn-danger action-delete">
+                    {{ 'raidplanner.delete'|trans }}
+                </button>
+            {% endif %}
+
+            {% if member.canModifyRoster %}
+                <a href="./modify-{{ member.roster.id }}" type="button"
+                   class="pull-right btn btn-xs btn-primary action-info">
+                    {{ 'raidplanner.modify'|trans }}
+                </a>
+                <button type="button" class="pull-right btn btn-xs btn-info action-add-member">
+                    {{ 'raidplanner.add_member'|trans }}
+                </button>
+            {% endif %}
+
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th></th>
+                    {% for i in 1..7 %}
+                        {% set time = (date~'12:00:00')|date('U') + 86400 * (i-1) %}
+                        <th class="day">
+                            {{ ('weekday.'~i)|trans }}<br/>{{ time|date('j/m') }}
+                        </th>
+                    {% endfor %}
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for member in members %}
+                    <tr data-weekid="{{ weeks[member.id].id }}">
+                        <td>
+                            {% if member.isCreator %}
+                                <i class="glyphicon glyphicon-user text-danger"
+                                   title="{{ 'raidplanner.creator'|trans }}"></i>
+                            {% elseif member.isOfficer %}
+                                <i class="glyphicon glyphicon-user text-info"
+                                   title="{{ 'raidplanner.admin'|trans }}"></i>
+                            {% else %}
+                                <i class="glyphicon glyphicon-user"></i>
+                            {% endif %}
+                            {{ member.name }}
+                        </td>
+                        {% for i in 1..7 %}
+                            <td class="day">
+                                {{ weeks[member.id].getStatus(i) }}
+                            </td>
+                        {% endfor %}
+                        <td>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a href="./list" class="btn btn-sm btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i> {{ 'raidplanner.returnlist'|trans }}
+    </a>
+
+    <script>
+        $(function () {
+
+        });
+    </script>
+
+    <style>
+        .panel-heading .btn {
+            margin-left: 1em;
+        }
+
+        tr .day {
+            width: 9%;
+            text-align: center;
+        }
+        tr th:last-child,
+        tr td:last-child {
+            width: 12em;
+        }
+
+    </style>
+
+{% endblock %}

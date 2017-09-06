@@ -302,7 +302,8 @@ class PageController extends AbstractController
                 throw $this->createNotFoundException('Unknown code.');
             }
             $this->isOwner = $this->isTokenOwner($this->token);
-            if (!$this->isOwner && $ownerMandatory && $page !== null && !$this->token->hasRight($page)) {
+            if (!$this->isOwner && $ownerMandatory && $page === null ||
+                !$this->isOwner && $ownerMandatory && $page !== null && !$this->token->hasRight($page)) {
                 throw new AccessNotAllowedException();
             }
             if (!$this->checkToken($this->token)) {
@@ -356,7 +357,7 @@ class PageController extends AbstractController
      */
     public function getBreadcrumb()
     {
-        if ($this->token) {
+        if ($this->token && $this->getMenu() ) {
             $code = $this->token->getCode();
             $path = rawurldecode($this->getRequest()->getPathInfo());
             foreach ($this->getMenu() as $menu) {

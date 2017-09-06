@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *        @ORM\Index(name="date", columns={"date"})
  *     },
  *     uniqueConstraints={
- *        @ORM\UniqueConstraint(name="UNIQPK", columns={"member_id", "roster_id", "date"})
+ *        @ORM\UniqueConstraint(name="UNIQPK", columns={"member_id", "date"})
  *     },
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RaidWeekRepository")
@@ -29,18 +29,10 @@ class RaidWeek
     /**
      * @var RaidMember
      *
-     * @ORM\ManyToOne(targetEntity="RaidMember")
-     * @ORM\JoinColumn(name="member_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RaidMember")
+     * @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $member;
-
-    /**
-     * @var RaidRoster
-     *
-     * @ORM\ManyToOne(targetEntity="RaidRoster")
-     * @ORM\JoinColumn(name="roster_id", referencedColumnName="id")
-     */
-    private $roster;
 
     /**
      * @var string
@@ -123,22 +115,6 @@ class RaidWeek
     }
 
     /**
-     * @return RaidRoster
-     */
-    public function getRoster()
-    {
-        return $this->roster;
-    }
-
-    /**
-     * @param RaidRoster $roster
-     */
-    public function setRoster($roster)
-    {
-        $this->roster = $roster;
-    }
-
-    /**
      * @return string
      */
     public function getDate()
@@ -163,7 +139,7 @@ class RaidWeek
         if (!\in_array($index, [1, 2, 3, 4, 5, 6, 7])) {
             throw new \InvalidArgumentException("The status index is not valid.");
         }
-        $property = "status$index";
+        $property        = "status$index";
         $this->$property = $status;
     }
 

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,7 +19,7 @@ class DefaultController extends AbstractController
 {
 
     /**
-     * 
+     *
      * @Route("/{_locale}/", requirements={"_locale" = "de|en|es|fr"}, name="index")
      */
     public function indexAction(Request $request)
@@ -27,7 +28,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/menu.html", requirements={"_locale" = "de|en|es|fr"})
      */
     public function menuAction(Request $request)
@@ -36,7 +37,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/{_locale}/technical-infos", requirements={"_locale" = "de|en|es|fr"}, name="technical-infos")
      */
     public function technicalInfosAction(Request $request)
@@ -46,9 +47,9 @@ class DefaultController extends AbstractController
 
     /**
      * redirect to the browser locale if found
-     * 
+     *
      * @Route("/")
-     * 
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

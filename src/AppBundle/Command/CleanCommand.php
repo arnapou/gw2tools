@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Token;
@@ -21,8 +22,7 @@ class CleanCommand extends AbstractCommand
     {
         $this
             ->setName('gw2tool:clean')
-            ->setDescription('Clean old accounts and codes.')
-        ;
+            ->setDescription('Clean old accounts and codes.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -33,8 +33,9 @@ class CleanCommand extends AbstractCommand
         /*
          * clean statistics into mongodb
          */
-        $env        = $this->getGwEnvironment('en');
-        $cache      = $env->getCache(); /* @var $cache MongoCache */
+        $env   = $this->getGwEnvironment('en');
+        $cache = $env->getCache();
+        /* @var $cache MongoCache */
         $collection = $cache->getMongoDB()->selectCollection('statistics');
         $collection->deleteMany(['last_update' => ['$lt' => $limitTime]]);
 

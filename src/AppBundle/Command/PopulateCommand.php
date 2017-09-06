@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Command;
 
 use Arnapou\GW2Api\Model\AbstractStoredObject;
@@ -26,8 +27,7 @@ class PopulateCommand extends AbstractCommand
             ->setName('gw2tool:populate')
             ->setDescription('Populate mongoDB storage with all Gw2 API objects.')
             ->addArgument('lang', InputArgument::REQUIRED, 'The language.')
-            ->addArgument('apiname', InputArgument::OPTIONAL, 'The optional api name.')
-        ;
+            ->addArgument('apiname', InputArgument::OPTIONAL, 'The optional api name.');
     }
 
     protected function getRandomizedTime($t)
@@ -49,8 +49,9 @@ class PopulateCommand extends AbstractCommand
         $argumentApiName = $input->getArgument('apiname');
 
         $env     = $this->getGwEnvironment($lang);
-        $storage = $env->getStorage(); /* @var $storage MongoStorage */
-        $client  = $env->getClientVersion2();
+        $storage = $env->getStorage();
+        /* @var $storage MongoStorage */
+        $client = $env->getClientVersion2();
         foreach ($this->getArrayClasses($env, $lang) as $class) {
             try {
                 $apiName   = $class['name'];
@@ -73,10 +74,10 @@ class PopulateCommand extends AbstractCommand
                 $n = count($notFreshIds);
                 $k = 0;
                 if ($n) {
-                    $step      = ceil($n / 150);
-                    $bar       = new ProgressBar($output, $n);
+                    $step = ceil($n / 150);
+                    $bar  = new ProgressBar($output, $n);
                     $bar->setFormat('  [%bar%] %percent:3s%% %current%/%max%  %elapsed:6s%/%estimated:-6s%  %memory:6s%');
-                    $i         = 0;
+                    $i = 0;
                     $bar->start();
                     $chunkSize = 2 * $step < 500 ? 500 : 2 * $step;
                     $chunks    = array_chunk($notFreshIds, $chunkSize);

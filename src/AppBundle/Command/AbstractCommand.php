@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Command;
 
 use Arnapou\GW2Api\Environment;
@@ -19,7 +20,7 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
     use \Gw2tool\Gw2ApiEnvironmentTrait;
 
     /**
-     * 
+     *
      * @return RegistryInterface
      */
     public function getDoctrine()
@@ -28,7 +29,7 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getLocales()
@@ -37,9 +38,9 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
     }
 
     /**
-     * 
+     *
      * @param Environment $env
-     * @param string $lang
+     * @param string      $lang
      * @return array
      */
     protected function getArrayClasses(Environment $env, $lang)
@@ -47,7 +48,8 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
         $array = [];
         foreach ($this->getAbstractStoredObjectClasses($env) as $class) {
             try {
-                $obj     = new $class($env, 0); /* @var $obj AbstractStoredObject */
+                $obj = new $class($env, 0);
+                /* @var $obj AbstractStoredObject */
                 $array[] = [
                     'method' => $obj->getApiMethod(),
                     'name'   => $obj->getApiName(),
@@ -55,7 +57,7 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
                     'time'   => 86400,
                 ];
             } catch (\Exception $ex) {
-                
+
             }
         }
         $array[] = [
@@ -106,7 +108,7 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
                     $classes[] = $class;
                 }
             } catch (\Exception $ex) {
-                
+
             }
         }
         return $classes;

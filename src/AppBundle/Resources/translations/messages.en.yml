@@ -494,3 +494,26 @@ weight.Heavy: "Heavy"
 weight.Light: "Light"
 weight.Medium: "Medium"
 raidplanner: 'Raid planner'
+raidplanner.no_rosters: "You don't belong to any roster."
+raidplanner.create: "Create a raid roster"
+raidplanner.name: 'Roster name'
+raidplanner.description: 'Description'
+raidplanner.save: 'Save'
+raidplanner.cancel: 'Cancel'
+raidplanner.error.empty_name: "The name cannot be empty."
+raidplanner.role: "Role"
+raidplanner.creator: "Creator"
+raidplanner.officer: "Officer"
+raidplanner.detail: "Detail"
+raidplanner.return: "Return"
+raidplanner.returnlist: "Return to list"
+raidplanner.delete: "Delete"
+raidplanner.modify: "Modify"
+raidplanner.add_member: "Add member"
+weekday.1: 'Monday'
+weekday.2: 'Tuesday'
+weekday.3: 'Wednesday'
+weekday.4: 'Thursday'
+weekday.5: 'Friday'
+weekday.6: 'Saturday'
+weekday.7: 'Sunday'

@@ -1,0 +1,75 @@
+{% extends "AppBundle::raidplanner/base.html.twig" %}
+
+{% block raidcontent %}
+
+    {% if rosters|length %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ 'raidplanner.name'|trans }}</th>
+                        <th>{{ 'raidplanner.role'|trans }}</th>
+                        <th>{{ 'raidplanner.description'|trans }}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in rosters %}
+                        <tr>
+                            <td>
+                                {% if item.member.isCreator %}
+                                    <i class="glyphicon glyphicon-user text-danger"
+                                       title="{{ 'raidplanner.creator'|trans }}"></i>
+                                {% elseif item.member.isOfficer %}
+                                    <i class="glyphicon glyphicon-user text-info"
+                                       title="{{ 'raidplanner.admin'|trans }}"></i>
+                                {% else %}
+                                    <i class="glyphicon glyphicon-user"></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ item.roster.name }}</td>
+                            <td>{{ item.member.role }}</td>
+                            <td>{{ item.roster.description }}</td>
+                            <td>
+                                <a href="./detail-{{ item.roster.id }}" class="btn btn-xs btn-primary">
+                                    {{ 'raidplanner.detail'|trans }} <i class="glyphicon glyphicon-chevron-right"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-warning" role="alert">
+            {{ 'raidplanner.no_rosters'|trans }}
+        </div>
+
+    {% endif %}
+
+    <a href="./create" class="btn btn-sm btn-primary">
+        <i class="glyphicon glyphicon-plus"></i> {{ 'raidplanner.create'|trans }}
+    </a>
+
+    <style>
+        tr td:first-child {
+            width: 2em;
+        }
+
+        tr td:nth-child(2),
+        tr td:nth-child(3) {
+            width: 25%;
+        }
+
+        tr td:last-child {
+            text-align: right;
+        }
+    </style>
+
+{% endblock %}
+

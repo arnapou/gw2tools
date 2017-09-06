@@ -10,6 +10,11 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\RaidMember;
+use AppBundle\Entity\RaidRoster;
+use AppBundle\Entity\Token;
+use Doctrine\ORM\Query\Expr\Join;
+
 /**
  * RaidRosterRepository
  *
@@ -18,5 +23,32 @@ namespace AppBundle\Repository;
  */
 class RaidRosterRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * @param Token $token
+     * @return array
+     */
+    public function getRosters(Token $token)
+    {
+        $items = $this->_em->createQueryBuilder()
+            ->select('m')
+            ->from(RaidRoster::class, 'r')
+            ->join(RaidMember::class, 'm', Join::INNER_JOIN, 'r.id = m.roster')
+            ->where('m.name = :member OR r.name = :member')
+            ->setParameter('member', $token->getName())
+            ->orderBy('r.name')
+            ->getQuery()
+            ->getResult();
+
+        $results = [];
+        foreach ($items as $item) {
+            $results[] = [
+                'member' => $item,
+                'roster' => $item->getRoster(),
+            ];
+        }
+
+        return $results;
+    }
 
 }

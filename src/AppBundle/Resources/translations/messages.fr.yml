@@ -494,3 +494,26 @@ weight.Heavy: "Lourd"
 weight.Light: "Léger"
 weight.Medium: "Intermédiaire"
 raidplanner: 'Planificateur de raid'
+raidplanner.no_rosters: "Vous n'appartenez à aucun groupe."
+raidplanner.create: "Créer un groupe de raid"
+raidplanner.name: 'Nom du roster'
+raidplanner.description: 'Description'
+raidplanner.save: 'Enregistrer'
+raidplanner.cancel: 'Annuler'
+raidplanner.error.empty_name: "Le nom ne peut pas être vide."
+raidplanner.role: "Rôle"
+raidplanner.creator: "Créateur"
+raidplanner.officer: "Officier"
+raidplanner.detail: "Détail"
+raidplanner.return: "Retour"
+raidplanner.returnlist: "Retour à la liste"
+raidplanner.delete: "Supprimer"
+raidplanner.modify: "Modifier"
+raidplanner.add_member: "Ajouter un membre"
+weekday.1: 'Lundi'
+weekday.2: 'Mardi'
+weekday.3: 'Mercredi'
+weekday.4: 'Jeudi'
+weekday.5: 'Vendredi'
+weekday.6: 'Samedi'
+weekday.7: 'Dimanche'

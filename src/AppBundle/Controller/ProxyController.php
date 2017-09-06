@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Controller;
 
 use Arnapou\GW2Api\Core\ClientVersion1;
@@ -20,10 +21,10 @@ class ProxyController extends AbstractController
 {
 
     /**
-     * 
+     *
      * @param FileVault $vault
-     * @param string $url
-     * @param integer $retention
+     * @param string    $url
+     * @param integer   $retention
      * @return ResponseFile
      */
     protected function getVaultResponseFile(FileVault $vault, $url, $retention)
@@ -34,7 +35,7 @@ class ProxyController extends AbstractController
                 return $vault->getResponse($url);
             }
         }
-        $curl     = new Curl();
+        $curl = new Curl();
         $curl->setUrl($url);
         $curl->setTimeout(10);
         $response = $curl->execute();
@@ -47,7 +48,7 @@ class ProxyController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @return integer
      */
     public function getGuildEmblemSize()
@@ -77,7 +78,7 @@ class ProxyController extends AbstractController
             $vault     = new FileVault($this->getDataPath() . '/proxy/file');
             return $this->getVaultResponseFile($vault, $url, $retention);
         } catch (\Exception $e) {
-            
+
         }
     }
 
@@ -106,7 +107,7 @@ class ProxyController extends AbstractController
                 return $response;
             }
         } catch (\Exception $e) {
-            
+
         }
     }
 
@@ -134,7 +135,7 @@ class ProxyController extends AbstractController
                 return $response;
             }
         } catch (\Exception $e) {
-            
+
         }
     }
 

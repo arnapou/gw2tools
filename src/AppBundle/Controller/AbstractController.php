@@ -165,8 +165,8 @@ abstract class AbstractController extends Controller
     {
         if ($this->cookieUsers === null) {
             $savedAccessToken = $this->getGwEnvironment()->getAccessToken();
-            $items = [];
-            $repo = $this->getTokenRepository();
+            $items            = [];
+            $repo             = $this->getTokenRepository();
             foreach ($this->getCookieTokens() as $token) {
                 $object = $repo->findOneByToken($token);
                 if ($object && $this->checkToken($object)) {
@@ -194,7 +194,7 @@ abstract class AbstractController extends Controller
         if (strpos($view, ':') === false) {
             $view = 'AppBundle::' . $view;
         }
-        $parameters['lang'] = $this->getTranslator()->getLocale();
+        $parameters['lang']   = $this->getTranslator()->getLocale();
         $parameters['module'] = $this;
         return parent::render($view, $parameters, $response);
     }

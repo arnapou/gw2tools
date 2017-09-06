@@ -10,6 +10,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\RaidMember;
+use AppBundle\Entity\RaidWeek;
+
 /**
  * RaidWeekRepository
  *
@@ -19,4 +22,75 @@ namespace AppBundle\Repository;
 class RaidWeekRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    /**
+     * @param RaidMember $member
+     * @param            $date
+     * @return RaidWeek
+     */
+    public function getWeek(RaidMember $member, $date)
+    {
+        $items = $this->createQueryBuilder('w')
+            ->andWhere('w.date = :date AND w.member = :id')
+            ->setParameter('id', $member->getId())
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+
+        if (count($items) === 0) {
+            $week = new RaidWeek();
+            $week->setMember($member);
+            $week->setDate($date);
+
+            $this->_em->persist($week);
+            $this->_em->flush();
+        } else {
+            $week = $items[0];
+        }
+
+        return $week;
+    }
+
+    /**
+     * @param array      $members
+     * @param            $date
+     * @return array
+     */
+    public function getWeeks(array $members, $date)
+    {
+        $items = $this->createQueryBuilder('w')
+            ->andWhere('w.date = :date AND w.member IN (:ids)')
+            ->setParameter('ids', array_map(function (RaidMember $item) {
+                return $item->getId();
+            }, $members))
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+
+        $weeks = [];
+        foreach ($items as $item) {
+            $weeks[$item->getMember()->getId()] = $item;
+        }
+
+        $newWeeks = [];
+        foreach ($members as $member) {
+            if (!isset($weeks[$member->getId()])) {
+                $week = new RaidWeek();
+                $week->setMember($member);
+                $week->setDate($date);
+
+                $newWeeks[] = $week;
+            }
+        }
+        if (count($newWeeks)) {
+            foreach ($newWeeks as $week) {
+                $this->_em->persist($week);
+            }
+            $this->_em->flush();
+            foreach ($newWeeks as $week) {
+                $weeks[$week->getMember()->getId()] = $week;
+            }
+        }
+
+        return $weeks;
+    }
 }

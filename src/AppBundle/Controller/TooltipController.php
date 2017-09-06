@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Controller;
 
 use Arnapou\GW2Api\Model\Item;
@@ -33,11 +34,11 @@ class TooltipController extends AbstractController
      */
     public function tooltipTraitAction($id, Request $request)
     {
-        return $this->renderTooltip('trait', function() use($id) {
-                return [
-                    'trait' => new SpecializationTrait($this->getGwEnvironment(), $id),
-                ];
-            });
+        return $this->renderTooltip('trait', function () use ($id) {
+            return [
+                'trait' => new SpecializationTrait($this->getGwEnvironment(), $id),
+            ];
+        });
     }
 
     /**
@@ -49,11 +50,11 @@ class TooltipController extends AbstractController
      */
     public function tooltipPetAction($id, Request $request)
     {
-        return $this->renderTooltip('pet', function() use($id) {
-                return [
-                    'pet' => new Pet($this->getGwEnvironment(), $id),
-                ];
-            });
+        return $this->renderTooltip('pet', function () use ($id) {
+            return [
+                'pet' => new Pet($this->getGwEnvironment(), $id),
+            ];
+        });
     }
 
     /**
@@ -65,11 +66,11 @@ class TooltipController extends AbstractController
      */
     public function tooltipPvpAmuletAction($id, Request $request)
     {
-        return $this->renderTooltip('pvpamulet', function() use($id) {
-                return [
-                    'pvpamulet' => new PvpAmulet($this->getGwEnvironment(), $id),
-                ];
-            });
+        return $this->renderTooltip('pvpamulet', function () use ($id) {
+            return [
+                'pvpamulet' => new PvpAmulet($this->getGwEnvironment(), $id),
+            ];
+        });
     }
 
     /**
@@ -81,11 +82,11 @@ class TooltipController extends AbstractController
      */
     public function tooltipSkillAction($id, Request $request)
     {
-        return $this->renderTooltip('skill', function() use($id) {
-                return [
-                    'skill' => new Skill($this->getGwEnvironment(), $id),
-                ];
-            });
+        return $this->renderTooltip('skill', function () use ($id) {
+            return [
+                'skill' => new Skill($this->getGwEnvironment(), $id),
+            ];
+        });
     }
 
     /**
@@ -97,11 +98,11 @@ class TooltipController extends AbstractController
      */
     public function tooltipSpecializationAction($id, Request $request)
     {
-        return $this->renderTooltip('specialization', function() use($id) {
-                return [
-                    'specialization' => new Specialization($this->getGwEnvironment(), $id),
-                ];
-            });
+        return $this->renderTooltip('specialization', function () use ($id) {
+            return [
+                'specialization' => new Specialization($this->getGwEnvironment(), $id),
+            ];
+        });
     }
 
     /**
@@ -113,11 +114,11 @@ class TooltipController extends AbstractController
      */
     public function tooltipSkinAction($id, Request $request)
     {
-        return $this->renderTooltip('skin', function() use($id) {
-                return [
-                    'skin' => new Skin($this->getGwEnvironment(), $id),
-                ];
-            });
+        return $this->renderTooltip('skin', function () use ($id) {
+            return [
+                'skin' => new Skin($this->getGwEnvironment(), $id),
+            ];
+        });
     }
 
     /**
@@ -129,16 +130,17 @@ class TooltipController extends AbstractController
      */
     public function tooltipItemAction($id, Request $request)
     {
-        return $this->renderTooltip('item', function() use($id) {
-                return [
-                    'item' => new Item($this->getGwEnvironment(), $id),
-                ];
-            });
+        return $this->renderTooltip('item', function () use ($id) {
+            return [
+                'item' => new Item($this->getGwEnvironment(), $id),
+            ];
+        });
     }
 
     /**
      *
-     * @Route("/{_locale}/tooltip/slot-{code}.html", requirements={"_locale" = "de|en|es|fr", "code" = "[0-9]+(-((up|in|sk|cn|ch|st|z[a-z])[0-9]+|(bn|bt).+))*"})
+     * @Route("/{_locale}/tooltip/slot-{code}.html", requirements={"_locale" = "de|en|es|fr", "code" =
+     *                                               "[0-9]+(-((up|in|sk|cn|ch|st|z[a-z])[0-9]+|(bn|bt).+))*"})
      * @param         $code
      * @param Request $request
      * @return Response
@@ -186,16 +188,16 @@ class TooltipController extends AbstractController
                 }
             }
         }
-        return $this->renderTooltip('item', function() use($data) {
-                return [
-                    'item' => new InventorySlot($this->getGwEnvironment(), $data),
-                ];
-            });
+        return $this->renderTooltip('item', function () use ($data) {
+            return [
+                'item' => new InventorySlot($this->getGwEnvironment(), $data),
+            ];
+        });
     }
 
     /**
-     * 
-     * @param string $page
+     *
+     * @param string   $page
      * @param callable $context
      * @return Response
      */

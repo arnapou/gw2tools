@@ -32,8 +32,8 @@ class RaidMember
     /**
      * @var RaidRoster
      *
-     * @ORM\ManyToOne(targetEntity="RaidRoster")
-     * @ORM\JoinColumn(name="roster_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RaidRoster")
+     * @ORM\JoinColumn(name="roster_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $roster;
 
@@ -47,9 +47,16 @@ class RaidMember
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_admin", type="boolean")
+     * @ORM\Column(name="is_officer", type="boolean")
      */
-    private $isAdmin = false;
+    private $isOfficer = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive = true;
 
     /**
      * @var int
@@ -122,25 +129,41 @@ class RaidMember
     /**
      * @return bool
      */
-    public function isAdmin()
-    {
-        return $this->isAdmin;
-    }
-
-    /**
-     * @return bool
-     */
     public function isCreator()
     {
         return $this->name === $this->getRoster()->getCreator();
     }
 
     /**
-     * @param bool $isAdmin
+     * @return bool
      */
-    public function setIsAdmin($isAdmin)
+    public function isOfficer()
     {
-        $this->isAdmin = $isAdmin;
+        return $this->isOfficer;
+    }
+
+    /**
+     * @param bool $bool
+     */
+    public function setIsOfficer($bool)
+    {
+        $this->isOfficer = $bool;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $bool
+     */
+    public function setIsActive($bool)
+    {
+        $this->isActive = $bool;
     }
 
     /**
@@ -157,6 +180,22 @@ class RaidMember
     public function setDateCreation($dateCreation)
     {
         $this->dateCreation = $dateCreation;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canModifyRoster()
+    {
+        return $this->isOfficer || $this->isCreator();
+    }
+
+    /**
+     * @return bool
+     */
+    public function canDeleteRoster()
+    {
+        return $this->isCreator();
     }
 
 }
