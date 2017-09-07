@@ -223,7 +223,7 @@ class TooltipController extends AbstractController
     /**
      * @return string
      */
-    function getViewPrefix()
+    public function getViewPrefix()
     {
         return 'tooltips/';
     }

@@ -202,7 +202,7 @@ abstract class AbstractController extends Controller
     /**
      * @return string
      */
-    abstract function getViewPrefix();
+    abstract public function getViewPrefix();
 
     /**
      *

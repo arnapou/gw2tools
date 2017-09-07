@@ -23,6 +23,31 @@ class RaidplannerController extends PageController
 
     /**
      *
+     * @Route("/{_locale}/{_code}/raidplanner/", requirements={"_locale" = "de|en|es|fr"})
+     * @param         $_code
+     * @param Request $request
+     * @return Response
+     */
+    public function indexAction($_code, Request $request)
+    {
+        try {
+            $repo    = $this->getDoctrine()->getRepository(RaidRoster::class);
+            $context = $this->getContext($_code, null, true);
+            $rosters = $repo->getRosters($this->token);
+
+            if (count($rosters) == 1) {
+                return $this->redirect('./detail-' . $rosters[0]['roster']->getId());
+            } else {
+                return $this->redirect('./list');
+            }
+
+        } catch (AccessNotAllowedException $ex) {
+            return $this->render('error-access-not-allowed.html.twig');
+        }
+    }
+
+    /**
+     *
      * @Route("/{_locale}/{_code}/raidplanner/list", requirements={"_locale" = "de|en|es|fr"})
      * @param         $_code
      * @param Request $request
@@ -38,31 +63,6 @@ class RaidplannerController extends PageController
             $context['rosters']   = $repo->getRosters($this->token);
 
             return $this->render('list.html.twig', $context);
-        } catch (AccessNotAllowedException $ex) {
-            return $this->render('error-access-not-allowed.html.twig');
-        }
-    }
-
-    /**
-     *
-     * @Route("/{_locale}/{_code}/raidplanner/", requirements={"_locale" = "de|en|es|fr"})
-     * @param         $_code
-     * @param Request $request
-     * @return Response
-     */
-    public function indexAction($_code, Request $request)
-    {
-        try {
-            $repo    = $this->getDoctrine()->getRepository(RaidRoster::class);
-            $context = $this->getContext($_code, null, true);
-            $rosters = $repo->getRosters($this->token);
-
-            if (count($rosters) == 1) {
-                return $this->redirect('./detail-' . $rosters[0]->getId());
-            } else {
-                return $this->redirect('./list');
-            }
-
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
@@ -215,7 +215,9 @@ class RaidplannerController extends PageController
             $context['member']    = $repoMember->getMember($id, $this->token);
             $context['members']   = $repoMember->getMembers($id);
             $context['date']      = $this->getDate($request);
+            $context['curdate']   = $this->getDate();
             $context['weeks']     = $repoWeek->getWeeks($context['members'], $context['date']);
+            $context['sums']      = $this->calcSums($context['weeks']);
 
             return $this->render('detail.html.twig', $context);
         } catch (AccessNotAllowedException $ex) {
@@ -227,9 +229,9 @@ class RaidplannerController extends PageController
      * @param Request $request
      * @return string
      */
-    private function getDate(Request $request)
+    private function getDate(Request $request = null)
     {
-        $date = $request->get('date');
+        $date = $request ? $request->get('date') : null;
         if (!preg_match('!^(2[0-9]{3})-([0-9]{2})-([0-9]{2})$!', (string)$date, $m)) {
             $date = date('Y-m-d');
         } elseif (!checkdate($m[2], $m[3], $m[1])) {
@@ -242,8 +244,24 @@ class RaidplannerController extends PageController
     /**
      * @return string
      */
-    function getViewPrefix()
+    public function getViewPrefix()
     {
         return 'raidplanner/';
+    }
+
+    /**
+     * @param array $weeks
+     * @return array
+     */
+    private function calcSums(array $weeks)
+    {
+        $sums = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0];
+        foreach ($weeks as $week) {
+            /** @var $week RaidWeek */
+            foreach ($week->getStatuses() as $index => $status) {
+                $sums[$index] += $status === RaidWeek::PRESENT ? 1 : 0;
+            }
+        }
+        return $sums;
     }
 }

@@ -517,3 +517,11 @@ weekday.4: 'Thursday'
 weekday.5: 'Friday'
 weekday.6: 'Saturday'
 weekday.7: 'Sunday'
+raidplanner.week.previous: "Previous week"
+raidplanner.week.next: "Next week"
+raidplanner.week.refresh: "Refresh week"
+raidplanner.week.current: "Current week"
+raidplanner.status.none: "Off"
+raidplanner.status.present: "Present"
+raidplanner.status.maybe: "Maybe"
+raidplanner.status.backup: "Backup"

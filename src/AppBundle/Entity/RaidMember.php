@@ -198,4 +198,15 @@ class RaidMember
         return $this->isCreator();
     }
 
+    /**
+     * @param RaidWeek $week
+     * @return bool
+     */
+    public function canModifyWeek(RaidWeek $week)
+    {
+        return $this->isCreator()
+            || $this->isOfficer()
+            || $week->getMember()->getId() === $this->getId();
+    }
+
 }

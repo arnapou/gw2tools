@@ -334,7 +334,7 @@ class ToolsController extends AbstractController
     /**
      * @return string
      */
-    function getViewPrefix()
+    public function getViewPrefix()
     {
         return 'tools/';
     }

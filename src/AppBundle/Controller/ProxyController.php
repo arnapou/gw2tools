@@ -142,7 +142,7 @@ class ProxyController extends AbstractController
     /**
      * @return string
      */
-    function getViewPrefix()
+    public function getViewPrefix()
     {
         return '';
     }

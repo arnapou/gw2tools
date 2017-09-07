@@ -19,6 +19,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RaidWeek
 {
+
+    const NONE = 'none';
+    const PRESENT = 'present';
+    const MAYBE = 'maybe';
+    const BACKUP = 'backup';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -140,11 +146,12 @@ class RaidWeek
             throw new \InvalidArgumentException("The status index is not valid.");
         }
         $property        = "status$index";
-        $this->$property = $status;
+        $this->$property = \in_array($status, $this->getStatusList()) ? $status : self::NONE;
     }
 
     /**
      * @param integer $index
+     * @return string
      */
     public function getStatus($index)
     {
@@ -152,7 +159,7 @@ class RaidWeek
             throw new \InvalidArgumentException("The status index is not valid.");
         }
         $property = "status$index";
-        return $this->$property;
+        return $this->$property ?: self::NONE;
     }
 
     /**
@@ -171,15 +178,27 @@ class RaidWeek
     public function getStatuses()
     {
         return [
-            1 => $this->status1,
-            2 => $this->status2,
-            3 => $this->status3,
-            4 => $this->status4,
-            5 => $this->status5,
-            6 => $this->status6,
-            7 => $this->status7,
+            1 => $this->status1 ?: self::NONE,
+            2 => $this->status2 ?: self::NONE,
+            3 => $this->status3 ?: self::NONE,
+            4 => $this->status4 ?: self::NONE,
+            5 => $this->status5 ?: self::NONE,
+            6 => $this->status6 ?: self::NONE,
+            7 => $this->status7 ?: self::NONE,
         ];
     }
 
+    /**
+     * @return array
+     */
+    public function getStatusList()
+    {
+        return [
+            self::NONE,
+            self::PRESENT,
+            self::MAYBE,
+            self::BACKUP
+        ];
+    }
 
 }

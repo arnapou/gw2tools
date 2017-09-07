@@ -545,7 +545,7 @@ class ApiController extends AbstractController
     /**
      * @return string
      */
-    function getViewPrefix()
+    public function getViewPrefix()
     {
         return '';
     }
