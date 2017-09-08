@@ -284,7 +284,7 @@ class RaidplannerController extends PageController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/raidplanner/edit-member-{id}-{weekid}-{index}", name="raidplanner_edit_day",
+     * @Route("/{_locale}/{_code}/raidplanner/edit-day-{id}-{weekid}-{index}", name="raidplanner_edit_day",
      *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+", "weekid" = "[0-9]+", "index" = "[1-7]"}
      *     )
      * @Method("POST")

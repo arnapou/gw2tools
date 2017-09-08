@@ -209,10 +209,10 @@
                                             data-url="{{ path('raidplanner_edit_day', {
                                                 '_code': code,
                                                 'id': member.roster.id,
-                                                'weekid': weeks[member.id].id,
+                                                'weekid': weekcreator.id,
                                                 'index': i
                                             }) }}"
-                                            data-value="{{ weeks[member.id].text(i) }}"
+                                            data-value="{{ weekcreator.text(i) }}"
                                             class="btn btn-xs btn-default action-edit-day"
                                             title="{{ 'raidplanner.modify'|trans }}">
                                         <i class="glyphicon glyphicon-pencil"></i>
