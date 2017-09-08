@@ -10,7 +10,6 @@
                     <tr>
                         <th></th>
                         <th>{{ 'raidplanner.name'|trans }}</th>
-                        <th>{{ 'raidplanner.role'|trans }}</th>
                         <th>{{ 'raidplanner.description'|trans }}</th>
                         <th></th>
                     </tr>
@@ -30,10 +29,10 @@
                                 {% endif %}
                             </td>
                             <td>{{ item.roster.name }}</td>
-                            <td>{{ item.member.role }}</td>
                             <td>{{ item.roster.description }}</td>
                             <td>
-                                <a href="./detail-{{ item.roster.id }}" class="btn btn-xs btn-primary">
+                                <a href="{{ path('raidplanner_detail', {'_code': code, 'id': item.roster.id }) }}"
+                                   class="btn btn-xs btn-primary">
                                     {{ 'raidplanner.detail'|trans }} <i class="glyphicon glyphicon-chevron-right"></i>
                                 </a>
                             </td>
@@ -52,7 +51,7 @@
 
     {% endif %}
 
-    <a href="./create" class="btn btn-sm btn-primary">
+    <a href="{{ path('raidplanner_create', {'_code': code}) }}" class="btn btn-sm btn-primary">
         <i class="glyphicon glyphicon-plus"></i> {{ 'raidplanner.create'|trans }}
     </a>
 
@@ -61,8 +60,7 @@
             width: 2em;
         }
 
-        tr td:nth-child(2),
-        tr td:nth-child(3) {
+        tr td:nth-child(2) {
             width: 25%;
         }
 

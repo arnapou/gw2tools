@@ -40,9 +40,9 @@ class RaidMember
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", length=200)
+     * @ORM\Column(name="text", type="string", length=200)
      */
-    private $role = '';
+    private $text = '';
 
     /**
      * @var bool
@@ -87,6 +87,17 @@ class RaidMember
     }
 
     /**
+     * @return array
+     */
+    public function getNameParts()
+    {
+        if (\preg_match('!^(.+)\.([0-9]+)$!', $this->name, $m)) {
+            return [$m[1], $m[2]];
+        }
+        return [$this->name, ''];
+    }
+
+    /**
      * @param string $name
      */
     public function setName($name)
@@ -113,17 +124,17 @@ class RaidMember
     /**
      * @return string
      */
-    public function getRole()
+    public function getText()
     {
-        return $this->role;
+        return $this->text;
     }
 
     /**
-     * @param string $role
+     * @param string $text
      */
-    public function setRole($role)
+    public function setText($text)
     {
-        $this->role = $role;
+        $this->text = $text;
     }
 
     /**
@@ -193,9 +204,65 @@ class RaidMember
     /**
      * @return bool
      */
+    public function canAddMemberRoster()
+    {
+        return $this->isOfficer || $this->isCreator();
+    }
+
+    /**
+     * @return bool
+     */
     public function canDeleteRoster()
     {
         return $this->isCreator();
+    }
+
+    /**
+     * @return bool
+     */
+    public function canLeaveRoster()
+    {
+        return $this->isCreator() ? false : true;
+    }
+
+    /**
+     * @param RaidWeek $week
+     * @return bool
+     */
+    public function canModifyDay(RaidWeek $week)
+    {
+        return $week->getMember()->getRoster()->getId() == $this->getRoster()->getId() // only for the same roster
+            && $week->getMember()->getName() === $this->getRoster()->getCreator()
+            && (
+                $this->isCreator() || $this->isOfficer()
+            );
+    }
+
+    /**
+     * @param RaidMember $member
+     * @return bool
+     */
+    public function canRemoveMember(RaidMember $member)
+    {
+        return $member->getRoster()->getId() == $this->getRoster()->getId() // only for the same roster
+            && $this->canAddMemberRoster()                                  // should have the right to add
+            && $member->getId() != $this->getId()                           // cannot remove itself
+            && !$member->isCreator()                                        // cannot remove the creator
+            ;
+    }
+
+    /**
+     * @param RaidMember $member
+     * @return bool
+     */
+    public function canEditMember(RaidMember $member)
+    {
+        return $member->getRoster()->getId() == $this->getRoster()->getId() // only for the same roster
+            && (
+                $this->isCreator()
+                || $this->isOfficer()
+                || $member->getId() === $this->getId()
+            );
     }
 
     /**
@@ -204,9 +271,12 @@ class RaidMember
      */
     public function canModifyWeek(RaidWeek $week)
     {
-        return $this->isCreator()
-            || $this->isOfficer()
-            || $week->getMember()->getId() === $this->getId();
+        return $week->getMember()->getRoster()->getId() == $this->getRoster()->getId() // only for the same roster
+            && (
+                $this->isCreator()
+                || $this->isOfficer()
+                || $week->getMember()->getId() === $this->getId()
+            );
     }
 
 }

@@ -2,8 +2,12 @@
 
 {% block raidcontent %}
 
-    <form action="{% if member.roster.id %}./modify-{{ member.roster.id }}{% else %}./create{% endif %}" method="post"
-          class="form-horizontal">
+    {% set formaction = path('raidplanner_create', {'_code': code}) %}
+    {% if member.roster.id %}
+        {% set formaction = path('raidplanner_modify', {'_code': code, 'id': member.roster.id }) %}
+    {% endif %}
+
+    <form action="{{ formaction }}" method="post" class="form-horizontal">
         {% if error is defined %}
             <div class="alert alert-danger" role="alert">
                 {{ error }}
@@ -23,7 +27,8 @@
                 {{ 'raidplanner.description'|trans }}
             </label>
             <div class="col-sm-10">
-                <textarea name="description" id="description" class="form-control">{{ member.roster.description }}</textarea>
+                <textarea name="description" id="description"
+                          class="form-control">{{ member.roster.description }}</textarea>
             </div>
         </div>
         <div class="form-group">
@@ -33,11 +38,13 @@
                 </button>
                 &nbsp;
                 {% if member.roster.id %}
-                    <a href="./detail-{{ member.roster.id }}" class="btn btn-sm btn-default">
+                    <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id }) }}"
+                       class="btn btn-sm btn-default">
                         <i class="glyphicon glyphicon-remove"></i> {{ 'raidplanner.cancel'|trans }}
                     </a>
                 {% else %}
-                    <a href="./list" class="btn btn-sm btn-default">
+                    <a href="{{ path('raidplanner_list', {'_code': code}) }}"
+                       class="btn btn-sm btn-default">
                         <i class="glyphicon glyphicon-remove"></i> {{ 'raidplanner.cancel'|trans }}
                     </a>
                 {% endif %}

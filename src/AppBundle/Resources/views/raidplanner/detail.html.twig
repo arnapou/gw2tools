@@ -19,20 +19,32 @@
 
             <div class="pull-right">
 
-                {% if member.canModifyRoster %}
+                {% if member.canAddMemberRoster %}
                     <button type="button" class="btn btn-xs btn-info action-add-member">
                         {{ 'raidplanner.add_member'|trans }}
                     </button>
+                {% endif %}
 
-                    <a href="./modify-{{ member.roster.id }}" class="btn btn-xs btn-primary">
+                {% if member.canModifyRoster %}
+                    <a href="{{ path('raidplanner_modify', {'_code': code, 'id': member.roster.id}) }}"
+                       class="btn btn-xs btn-primary">
                         {{ 'raidplanner.modify'|trans }}
                     </a>
                 {% endif %}
 
                 {% if member.canDeleteRoster %}
-                    <button type="button" data-href="./delete-{{ member.roster.id }}"
+                    <button type="button"
+                            data-url="{{ path('raidplanner_delete', {'_code': code, 'id': member.roster.id}) }}"
                             class="btn btn-xs btn-danger action-delete">
                         {{ 'raidplanner.delete'|trans }}
+                    </button>
+                {% endif %}
+
+                {% if member.canLeaveRoster %}
+                    <button type="button"
+                            data-url="{{ path('raidplanner_leave', {'_code': code, 'id': member.roster.id}) }}"
+                            class="btn btn-xs btn-danger action-leave">
+                        {{ 'raidplanner.leave_roster'|trans }}
                     </button>
                 {% endif %}
 
@@ -43,7 +55,7 @@
 
             {% if member.roster.description %}
                 <div class="well well-sm">
-                    {{ member.roster.description }}
+                    <small>{{ member.roster.description|nl2br }}</small>
                 </div>
             {% endif %}
 
@@ -51,32 +63,32 @@
                 <thead>
                 <tr>
                     <th>
-                        <a href="./detail-{{ member.roster.id }}?date={{ (time - 86400*7)|date('Y-m-d') }}"
+                        <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}?date={{ (time - 86400*7)|date('Y-m-d') }}"
                            class="btn btn-xs btn-primary" title="{{ 'raidplanner.week.previous'|trans }}">
                             <i class="glyphicon glyphicon-chevron-left"></i>
                         </a>
                         <div class="pull-right">
                             {% if date != curdate %}
-                                <a href="./detail-{{ member.roster.id }}?date={{ curdate }}"
+                                <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}?date={{ curdate }}"
                                    class="btn btn-xs btn-primary" title="{{ 'raidplanner.week.current'|trans }}">
                                     <i class="glyphicon glyphicon-record"></i>
                                 </a>
                             {% endif %}
                             &nbsp;
-                            <a href="./detail-{{ member.roster.id }}?date={{ date }}"
+                            <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}?date={{ date }}"
                                class="btn btn-xs btn-primary" title="{{ 'raidplanner.week.refresh'|trans }}">
                                 <i class="glyphicon glyphicon-refresh"></i>
                             </a>
                         </div>
                     </th>
                     {% for i in 1..7 %}
-                        {% set timeday = (date~'12:00:00')|date('U') + 86400 * (i-1) %}
-                        <th class="day {% if timeday < timenow %}text-muted{% endif %}">
+                        <th class="day {% if timedays[i] < timenow %}text-muted{% endif %}">
                             {{ ('weekday.'~i)|trans }}<br/>{{ timeday|date('j/m') }}
                         </th>
                     {% endfor %}
+                    <th></th>
                     <th>
-                        <a href="./detail-{{ member.roster.id }}?date={{ (time + 86400*7)|date('Y-m-d') }}"
+                        <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}?date={{ (time + 86400*7)|date('Y-m-d') }}"
                            class="btn btn-xs btn-primary" title="{{ 'raidplanner.week.next'|trans }}">
                             <i class="glyphicon glyphicon-chevron-right"></i>
                         </a>
@@ -85,6 +97,7 @@
                 </thead>
                 <tbody>
                 {% for memb in members %}
+                    {% set nameparts = memb.getNameParts %}
                     <tr data-weekid="{{ weeks[memb.id].id }}">
                         <td>
                             {% if memb.isCreator %}
@@ -96,14 +109,14 @@
                             {% else %}
                                 <i class="glyphicon glyphicon-user"></i>
                             {% endif %}
-                            {{ memb.name }}
+                            {{ nameparts[0] }}
+                            <small class="text-muted">.{{ nameparts[1] }}</small>
                         </td>
                         {% for i in 1..7 %}
                             {% set week = weeks[memb.id] %}
                             {% set status = week.getStatus(i) %}
-                            {% set timeday = (date~'12:00:00')|date('U') + 86400 * (i-1) %}
                             <td class="day" data-index="{{ i }}">
-                                {% if member.canModifyWeek(week) and timeday >= timenow %}
+                                {% if member.canModifyWeek(week) and timedays[i] >= timenow %}
                                     <div class="btn-group">
                                         <button class="btn btn-{{ map[status] }} btn-xs dropdown-toggle"
                                                 type="button" data-toggle="dropdown"
@@ -113,8 +126,8 @@
                                             </span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            {% for s in week.getStatusList %}
-                                                <li class="status" data-status="{{ s }}">
+                                            {% for s in statuses %}
+                                                <li class="status status-{{ s }}" data-status="{{ s }}">
                                                     <a href="#">{{ ('raidplanner.status.'~s)|trans }}</a>
                                                 </li>
                                             {% endfor %}
@@ -130,6 +143,28 @@
                             </td>
                         {% endfor %}
                         <td>
+                            <small>{{ memb.text }}</small>
+                        </td>
+                        <td>
+
+                            {% if member.canEditMember(memb) %}
+                                <button type="button"
+                                        data-url="{{ path('raidplanner_edit_member', {'_code': code, 'id': member.roster.id, 'memberid': memb.id }) }}"
+                                        data-value="{{ memb.text }}"
+                                        class="btn btn-xs btn-default action-edit-member"
+                                        title="{{ 'raidplanner.modify'|trans }}">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </button>
+                            {% endif %}
+
+                            {% if member.canRemoveMember(memb) %}
+                                <button type="button"
+                                        data-url="{{ path('raidplanner_remove', {'_code': code, 'id': member.roster.id, 'memberid': memb.id }) }}"
+                                        class="btn btn-xs btn-danger action-remove"
+                                        title="{{ 'raidplanner.remove'|trans }}">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                </button>
+                            {% endif %}
 
                         </td>
                     </tr>
@@ -137,13 +172,50 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td></td>
+                    <td>
+                        <span class="text-muted">{{ 'raidplanner.registered'|trans }}</span>
+                    </td>
                     {% for i in 1..7 %}
-                        {% set timeday = (date~'12:00:00')|date('U') + 86400 * (i-1) %}
-                        <td class="day {% if timeday < timenow %}text-muted{% endif %}">
+                        <td class="day {% if timedays[i] < timenow %}text-muted{% endif %}">
                             {{ sums[i] ?: '' }}
                         </td>
                     {% endfor %}
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    {% for i in 1..7 %}
+                        <td class="day {% if timedays[i] < timenow %}text-muted{% endif %}">
+                            <small>{{ weekcreator.text(i) }}</small>
+                        </td>
+                    {% endfor %}
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    {% for i in 1..7 %}
+                        <td class="day">
+                            {% if timedays[i] >= timenow %}
+                                {% if weekcreator and member.canModifyDay(weekcreator) %}
+                                    <button type="button"
+                                            data-url="{{ path('raidplanner_edit_day', {
+                                                '_code': code,
+                                                'id': member.roster.id,
+                                                'weekid': weeks[member.id].id,
+                                                'index': i
+                                            }) }}"
+                                            data-value="{{ weeks[member.id].text(i) }}"
+                                            class="btn btn-xs btn-default action-edit-day"
+                                            title="{{ 'raidplanner.modify'|trans }}">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    <td></td>
                     <td></td>
                 </tr>
                 </tfoot>
@@ -151,7 +223,7 @@
         </div>
     </div>
 
-    <a href="./list" class="btn btn-sm btn-default">
+    <a href="{{ path('raidplanner_list', {'_code': code}) }}" class="btn btn-sm btn-default">
         <i class="glyphicon glyphicon-chevron-left"></i> {{ 'raidplanner.returnlist'|trans }}
     </a>
 
@@ -162,28 +234,160 @@
 
     <script>
         $(function () {
+
+            // statuses mapped with bootstrap classes
             var map = {{ map|json_encode|raw }};
 
-            $('li.status a').click(function (e) {
-                var status = $(this).parents('li').data('status');
-                var index = $(this).parents('td').data('index');
-                var weekid = $(this).parents('tr').data('weekid');
-                var $button = $(this).parents('.btn-group').find('button');
-                $button.find('.status').text($(this).text());
-
-                //
-                // TODO ajax call
-                //
-
+            /**
+             * @param $button
+             * @param status
+             */
+            function changeStatus($button, status) {
                 for (var k in map) {
                     if (typeof k === 'string') {
                         $button.removeClass('btn-' + map[k]);
                     }
                 }
+                $button.find('.status').text(
+                    $button.parents('.btn-group').find('li.status-' + status + ' a').text()
+                );
                 $button.addClass('btn-' + (status in map ? map[status] : 'default'));
+            }
+
+            /**
+             * @param json
+             */
+            function genericReloadOnSuccess(json) {
+                if (typeof json.error === 'string') {
+                    bootbox.alert(json.error);
+                } else {
+                    window.location.reload();
+                }
+            }
+
+            /**
+             * save date status
+             */
+            $('li.status a').click(function (e) {
                 e.stopPropagation();
+                var status = $(this).parents('li').data('status');
+                var index = $(this).parents('td').data('index');
+                var weekid = $(this).parents('tr').data('weekid');
+                var $button = $(this).parents('.btn-group').find('button');
+
+                changeStatus($button, status);
                 $button.dropdown('toggle');
+
+                $.post({{ path('raidplanner_save_date', {'_code': code, 'id': member.roster.id})|json_encode|raw }},
+                    {
+                        roster: {{ member.roster.id }},
+                        status: status,
+                        weekid: weekid,
+                        index: index,
+                    },
+                    function (json) {
+                        if (typeof json.sum === 'number') {
+                            $button.parents('table.table').find('tfoot td').eq(index).text(json.sum ? json.sum : '');
+                        }
+                        if (typeof json.status === 'string' && json.status !== status) {
+                            changeStatus($button, json.status);
+                        }
+                        if (typeof json.error === 'string') {
+                            bootbox.alert(json.error);
+                        }
+                    });
+
+                return false;
             });
+
+            /**
+             * action delete roster
+             */
+            $('button.action-delete').click(function () {
+                var url = $(this).data('url');
+                bootbox.confirm({{ "raidplanner.confirm_delete"|trans|json_encode|raw }}, function (ok) {
+                    if (ok) {
+                        window.location = url;
+                    }
+                });
+            });
+
+            /**
+             * action leave roster
+             */
+            $('button.action-leave').click(function () {
+                var url = $(this).data('url');
+                bootbox.confirm({{ "raidplanner.confirm_leave"|trans|json_encode|raw }}, function (ok) {
+                    if (ok) {
+                        window.location = url;
+                    }
+                });
+            });
+
+            /**
+             * action remove roster
+             */
+            $('button.action-remove').click(function () {
+                var url = $(this).data('url');
+                bootbox.confirm({{ "raidplanner.confirm_remove"|trans|json_encode|raw }}, function (ok) {
+                    if (ok) {
+                        window.location = url;
+                    }
+                });
+            });
+
+            /**
+             * action add member to roster
+             */
+            $('button.action-add-member').click(function () {
+                bootbox.prompt({
+                    title: {{ "raidplanner.add_member"|trans|json_encode|raw }},
+                    placeholder: 'John Doe.1234',
+                    callback: function (result) {
+                        if (result) {
+                            $.post({{ path('raidplanner_add_member', {'_code': code, 'id': member.roster.id})|json_encode|raw }},
+                                {member: result},
+                                genericReloadOnSuccess);
+                        }
+                    }
+                });
+            });
+
+            /**
+             * action edit text of member
+             */
+            $('button.action-edit-member').click(function () {
+                var value = $(this).data('value');
+                var url = $(this).data('url');
+                bootbox.prompt({
+                    title: {{ "raidplanner.edit_member"|trans|json_encode|raw }},
+                    value: value,
+                    callback: function (result) {
+                        if (result) {
+                            $.post(url, {text: result}, genericReloadOnSuccess);
+                        }
+                    }
+                });
+            });
+
+            /**
+             * action edit text of day
+             */
+            $('button.action-edit-day').click(function () {
+                var value = $(this).data('value');
+                var url = $(this).data('url');
+                bootbox.prompt({
+                    title: {{ "raidplanner.edit_day"|trans|json_encode|raw }},
+                    value: value,
+                    callback: function (result) {
+                        if (result) {
+                            $.post(url, {text: result}, genericReloadOnSuccess);
+                        }
+                    }
+                });
+            });
+
+
         });
     </script>
 {% endblock %}
@@ -201,10 +405,20 @@
             text-align: center;
         }
 
+        tr th:first-child,
+        tr td:first-child {
+            width: 20%;
+        }
+
         tr th:last-child,
         tr td:last-child {
-            width: 12em;
+            width: 2em;
             text-align: right;
+            white-space: nowrap;
+        }
+
+        tr td:last-child .btn {
+            margin-left: 0.5em;
         }
 
         tr th:first-child,
@@ -214,6 +428,10 @@
 
         .btn.disabled, .btn[disabled] {
             cursor: default;
+        }
+
+        table.table > tfoot tr:last-child td {
+            border-top: 0;
         }
 
     </style>

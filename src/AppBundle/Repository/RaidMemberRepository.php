@@ -53,7 +53,7 @@ class RaidMemberRepository extends \Doctrine\ORM\EntityRepository
     /**
      * @param       $rosterId
      * @throws AccessNotAllowedException
-     * @return array
+     * @return RaidMember[]
      */
     public function getMembers($rosterId)
     {

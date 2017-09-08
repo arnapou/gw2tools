@@ -14,16 +14,21 @@ use AppBundle\Entity\RaidMember;
 use AppBundle\Entity\RaidRoster;
 use AppBundle\Entity\RaidWeek;
 use Gw2tool\Exception\AccessNotAllowedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class RaidplannerController extends PageController
 {
+    const MAX_RAID_MEMBERS = 10;
 
     /**
      *
-     * @Route("/{_locale}/{_code}/raidplanner/", requirements={"_locale" = "de|en|es|fr"})
+     * @Route("/{_locale}/{_code}/raidplanner/", name="raidplanner",
+     *     requirements={"_locale" = "de|en|es|fr"}
+     *     )
      * @param         $_code
      * @param Request $request
      * @return Response
@@ -31,14 +36,14 @@ class RaidplannerController extends PageController
     public function indexAction($_code, Request $request)
     {
         try {
-            $repo    = $this->getDoctrine()->getRepository(RaidRoster::class);
+            $repo = $this->getDoctrine()->getRepository(RaidRoster::class);
             $context = $this->getContext($_code, null, true);
             $rosters = $repo->getRosters($this->token);
 
             if (count($rosters) == 1) {
-                return $this->redirect('./detail-' . $rosters[0]['roster']->getId());
+                return $this->redirectToRosterDetail($rosters[0]['roster']);
             } else {
-                return $this->redirect('./list');
+                return $this->redirectToRoute('raidplanner_list');
             }
 
         } catch (AccessNotAllowedException $ex) {
@@ -48,7 +53,9 @@ class RaidplannerController extends PageController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/raidplanner/list", requirements={"_locale" = "de|en|es|fr"})
+     * @Route("/{_locale}/{_code}/raidplanner/list", name="raidplanner_list",
+     *     requirements={"_locale" = "de|en|es|fr"}
+     *     )
      * @param         $_code
      * @param Request $request
      * @return Response
@@ -56,11 +63,11 @@ class RaidplannerController extends PageController
     public function listAction($_code, Request $request)
     {
         try {
-            $repo    = $this->getDoctrine()->getRepository(RaidRoster::class);
+            $repo = $this->getDoctrine()->getRepository(RaidRoster::class);
             $context = $this->getContext($_code, null, true);
 
             $context['page_name'] = $this->trans('raidplanner');
-            $context['rosters']   = $repo->getRosters($this->token);
+            $context['rosters'] = $repo->getRosters($this->token);
 
             return $this->render('list.html.twig', $context);
         } catch (AccessNotAllowedException $ex) {
@@ -70,7 +77,9 @@ class RaidplannerController extends PageController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/raidplanner/create", requirements={"_locale" = "de|en|es|fr"})
+     * @Route("/{_locale}/{_code}/raidplanner/create", name="raidplanner_create",
+     *     requirements={"_locale" = "de|en|es|fr"}
+     *     )
      * @param         $_code
      * @param Request $request
      * @return Response
@@ -78,7 +87,7 @@ class RaidplannerController extends PageController
     public function createAction($_code, Request $request)
     {
         try {
-            $context              = $this->getContext($_code, null, true);
+            $context = $this->getContext($_code, null, true);
             $context['page_name'] = $this->trans('raidplanner');
 
             try {
@@ -101,7 +110,7 @@ class RaidplannerController extends PageController
                     $manager->persist($member);
                     $manager->flush();
 
-                    return $this->redirect('./detail-' . $roster->getId());
+                    return $this->redirectToRosterDetail($roster);
                 }
             } catch (\Exception $ex) {
                 $context['error'] = $ex->getMessage();
@@ -115,7 +124,9 @@ class RaidplannerController extends PageController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/raidplanner/modify-{id}", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @Route("/{_locale}/{_code}/raidplanner/modify-{id}", name="raidplanner_modify",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"}
+     *     )
      * @param         $_code
      * @param         $id
      * @param Request $request
@@ -124,16 +135,16 @@ class RaidplannerController extends PageController
     public function modifyAction($_code, $id, Request $request)
     {
         try {
-            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member  = $repo->getMember($id, $this->token);
-            $roster  = $member->getRoster();
+            $member = $repo->getMember($id, $this->token);
+            $roster = $member->getRoster();
 
             $context['page_name'] = $this->trans('raidplanner');
-            $context['member']    = $member;
+            $context['member'] = $member;
 
             if (!$context['member']->canModifyRoster()) {
-                return $this->redirect('./detail-' . $roster->getId());
+                return $this->redirectToRosterDetail($roster);
             }
 
             try {
@@ -149,7 +160,7 @@ class RaidplannerController extends PageController
                     $manager->persist($roster);
                     $manager->flush();
 
-                    return $this->redirect('./detail-' . $roster->getId());
+                    return $this->redirectToRosterDetail($roster);
                 }
             } catch (\Exception $ex) {
                 $context['error'] = $ex->getMessage();
@@ -163,7 +174,136 @@ class RaidplannerController extends PageController
 
     /**
      *
-     * @Route("/{_locale}/{_code}/raidplanner/delete-{id}", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @Route("/{_locale}/{_code}/raidplanner/add-member-{id}", name="raidplanner_add_member",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"}
+     *     )
+     * @Method("POST")
+     * @param         $_code
+     * @param         $id
+     * @param Request $request
+     * @return Response
+     */
+    public function addMemberAction($_code, $id, Request $request)
+    {
+        $json = [];
+        try {
+            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $context = $this->getContext($_code, null, true);
+            $member = $repo->getMember($id, $this->token);
+
+            if ($member->canAddMemberRoster()) {
+                $newMemberName = trim($request->get('member'));
+                if (empty($newMemberName)) {
+                    throw new \Exception('raidplanner.error.empty_name');
+                }
+
+                foreach ($repo->getMembers($id) as $member) {
+                    if ($member->getName() === $newMemberName) {
+                        throw new \Exception('raidplanner.error.member_already_exists');
+                    }
+                }
+
+                $newMember = new RaidMember();
+                $newMember->setName($newMemberName);
+                $newMember->setRoster($member->getRoster());
+
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($newMember);
+                $manager->flush();
+
+                $json['member_id'] = $newMember->getId();
+            }
+
+        } catch (\Exception $ex) {
+            $this->jsonError($json, $ex);
+        }
+        return new JsonResponse($json);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/edit-member-{id}-{memberid}", name="raidplanner_edit_member",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+", "memberid" = "[0-9]+"}
+     *     )
+     * @Method("POST")
+     * @param         $_code
+     * @param         $id
+     * @param         $memberid
+     * @param Request $request
+     * @return Response
+     */
+    public function editMemberAction($_code, $id, $memberid, Request $request)
+    {
+        $json = [];
+        try {
+            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $context = $this->getContext($_code, null, true);
+            $member = $repo->getMember($id, $this->token);
+
+            $memberToEdit = $repo->find($memberid);
+
+            if ($memberToEdit && $member->canEditMember($memberToEdit)) {
+
+                $memberToEdit->setText((string)$request->get('text'));
+
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($memberToEdit);
+                $manager->flush();
+
+                $json['member_id'] = $memberToEdit->getId();
+            }
+
+        } catch (\Exception $ex) {
+            $this->jsonError($json, $ex);
+        }
+        return new JsonResponse($json);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/edit-member-{id}-{weekid}-{index}", name="raidplanner_edit_day",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+", "weekid" = "[0-9]+", "index" = "[1-7]"}
+     *     )
+     * @Method("POST")
+     * @param         $_code
+     * @param         $id
+     * @param         $weekid
+     * @param         $index
+     * @param Request $request
+     * @return Response
+     */
+    public function editDayAction($_code, $id, $weekid, $index, Request $request)
+    {
+        $json = [];
+        try {
+            $repoMember = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repoWeek = $this->getDoctrine()->getRepository(RaidWeek::class);
+            $context = $this->getContext($_code, null, true);
+            $member = $repoMember->getMember($id, $this->token);
+            $week = $repoWeek->find($weekid);
+
+            if ($member->canModifyDay($week)) {
+
+                $week->setText($index, (string)$request->get('text'));
+
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($week);
+                $manager->flush();
+
+                $json['week_id'] = $week->getId();
+            }
+
+        } catch (\Exception $ex) {
+            $this->jsonError($json, $ex);
+        }
+        return new JsonResponse($json);
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/delete-{id}", name="raidplanner_delete",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"}
+     *     )
      * @param         $_code
      * @param         $id
      * @param Request $request
@@ -172,33 +312,100 @@ class RaidplannerController extends PageController
     public function deleteAction($_code, $id, Request $request)
     {
         try {
-            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member  = $repo->getMember($id, $this->token);
-            $roster  = $member->getRoster();
+            $member = $repo->getMember($id, $this->token);
+            $roster = $member->getRoster();
 
-            $context['page_name'] = $this->trans('raidplanner');
-            $context['member']    = $member;
-
-            if (!$context['member']->canDeleteRoster()) {
-                return $this->redirect('./detail-' . $roster->getId());
+            if (!$member->canDeleteRoster()) {
+                return $this->redirectToRosterDetail($roster);
             }
 
             $manager = $this->getDoctrine()->getManager();
             $manager->remove($roster);
             $manager->flush();
 
-            return $this->redirect('./list');
+            return $this->redirectToRoute('raidplanner_list');
 
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
     }
 
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/leave-{id}", name="raidplanner_leave",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"}
+     *     )
+     * @param         $_code
+     * @param         $id
+     * @param Request $request
+     * @return Response
+     */
+    public function leaveAction($_code, $id, Request $request)
+    {
+        try {
+            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $context = $this->getContext($_code, null, true);
+            $member = $repo->getMember($id, $this->token);
+            $roster = $member->getRoster();
+
+            if (!$member->canLeaveRoster()) {
+                return $this->redirectToRosterDetail($roster);
+            }
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->remove($member);
+            $manager->flush();
+
+            return $this->redirectToRoute('raidplanner_list');
+
+        } catch (AccessNotAllowedException $ex) {
+            return $this->render('error-access-not-allowed.html.twig');
+        }
+    }
 
     /**
      *
-     * @Route("/{_locale}/{_code}/raidplanner/detail-{id}", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})
+     * @Route("/{_locale}/{_code}/raidplanner/remove-{id}-{memberid}", name="raidplanner_remove",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+", "memberid" = "[0-9]+"}
+     *     )
+     * @param         $_code
+     * @param         $id
+     * @param         $memberid
+     * @param Request $request
+     * @return Response
+     */
+    public function removeAction($_code, $id, $memberid, Request $request)
+    {
+        try {
+            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $context = $this->getContext($_code, null, true);
+            $member = $repo->getMember($id, $this->token);
+            $roster = $member->getRoster();
+
+            $memberToRemove = $repo->find($memberid);
+
+            if (!empty($memberToRemove) && $member->canRemoveMember($memberToRemove)) {
+
+                $manager = $this->getDoctrine()->getManager();
+                $manager->remove($memberToRemove);
+                $manager->flush();
+
+            }
+
+            return $this->redirectToRosterDetail($roster);
+
+        } catch (AccessNotAllowedException $ex) {
+            return $this->render('error-access-not-allowed.html.twig');
+        }
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/detail-{id}", name="raidplanner_detail",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"}
+     *     )
      * @param         $_code
      * @param         $id
      * @param Request $request
@@ -208,21 +415,88 @@ class RaidplannerController extends PageController
     {
         try {
             $repoMember = $this->getDoctrine()->getRepository(RaidMember::class);
-            $repoWeek   = $this->getDoctrine()->getRepository(RaidWeek::class);
-            $context    = $this->getContext($_code, null, true);
+            $repoWeek = $this->getDoctrine()->getRepository(RaidWeek::class);
+            $context = $this->getContext($_code, null, true);
 
             $context['page_name'] = $this->trans('raidplanner');
-            $context['member']    = $repoMember->getMember($id, $this->token);
-            $context['members']   = $repoMember->getMembers($id);
-            $context['date']      = $this->getDate($request);
-            $context['curdate']   = $this->getDate();
-            $context['weeks']     = $repoWeek->getWeeks($context['members'], $context['date']);
-            $context['sums']      = $this->calcSums($context['weeks']);
+            $context['member'] = $repoMember->getMember($id, $this->token);
+            $context['members'] = $repoMember->getMembers($id);
+            $context['date'] = $this->getDate($request);
+            $context['curdate'] = $this->getDate();
+            $context['weeks'] = $repoWeek->getWeeks($context['members'], $context['date']);
+            $context['sums'] = $this->calcSums($context['weeks']);
+            $context['statuses'] = RaidWeek::getStatusList();
+            $context['timedays'] = $this->getTimeDays($context['date']);
+            $context['weekcreator'] = $this->getWeekCreator($context['weeks']);
 
             return $this->render('detail.html.twig', $context);
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/save-date", name="raidplanner_save_date",
+     *     requirements={"_locale" = "de|en|es|fr"}
+     *     )
+     * @Method("POST")
+     * @param         $_code
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function saveDateAction($_code, Request $request)
+    {
+        $json = [];
+        try {
+            $id = (string)$request->get('roster');
+            $status = $request->get('status');
+            $weekid = (string)$request->get('weekid');
+            $index = (string)$request->get('index');
+
+            if (!\ctype_digit($id)) {
+                throw new \Exception('roster parameter is not an id.');
+            }
+            if (!\ctype_digit($weekid)) {
+                throw new \Exception('weekid parameter is not an id.');
+            }
+            if (!\ctype_digit($index) || $index < 1 || $index > 7) {
+                throw new \Exception('index parameter is not a valid integer.');
+            }
+            if (!\in_array($status, RaidWeek::getStatusList())) {
+                throw new \Exception('status parameter is not valid.');
+            }
+
+            $repoMember = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repoWeek = $this->getDoctrine()->getRepository(RaidWeek::class);
+            $context = $this->getContext($_code, null, true);
+
+            $member = $repoMember->getMember($id, $this->token);
+            $members = $repoMember->getMembers($id);
+            $week = $repoWeek->find($weekid);
+            $weeks = $repoWeek->getWeeks($members, $week->getDate());
+            $sums = $this->calcSums($weeks);
+
+            if (!$member->canModifyWeek($week)) {
+                throw new \Exception('you have not the right to modify this week.');
+            }
+            if ($sums[$index] >= self::MAX_RAID_MEMBERS && $status === RaidWeek::PRESENT) {
+                $status = RaidWeek::BACKUP;
+            }
+
+            $week->setStatus($index, $status);
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($week);
+            $manager->flush();
+
+            $json['sum'] = $this->calcSums($weeks)[$index];
+            $json['status'] = $status;
+
+        } catch (\Exception $ex) {
+            $this->jsonError($json, $ex);
+        }
+        return new JsonResponse($json);
     }
 
     /**
@@ -264,4 +538,69 @@ class RaidplannerController extends PageController
         }
         return $sums;
     }
+
+    protected function redirectToRoute($route, array $parameters = [], $status = 302)
+    {
+        if (!isset($parameters['_code']) && $this->token) {
+            $parameters['_code'] = $this->token->getCode();
+        }
+        return parent::redirectToRoute($route, $parameters, $status);
+    }
+
+    private function jsonError(&$json, \Exception $exception)
+    {
+        if (\strpos($exception->getMessage(), 'raidplanner.error.') === 0) {
+            $json['error'] = $this->trans($exception->getMessage());
+        } else {
+            $json['error'] = $this->trans('raidplanner.error.generic');
+        }
+
+        if ($this->getEnv() === 'dev') {
+            $json['exception'] = [
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => $exception->getTraceAsString(),
+            ];
+        }
+    }
+
+    /**
+     * @param RaidRoster $roster
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    private function redirectToRosterDetail(RaidRoster $roster)
+    {
+        return $this->redirectToRoute('raidplanner_detail', ['id' => $roster->getId()]);
+    }
+
+    /**
+     * @param $date
+     * @return array
+     */
+    private function getTimeDays($date)
+    {
+        $time = \strtotime($date . " 12:00:00");
+        $times = [];
+        for ($i = 1; $i <= 7; $i++) {
+            $times[$i] = $time;
+            $time += 86400;
+        }
+        return $times;
+    }
+
+    /**
+     * @param RaidWeek[] $weeks
+     * @return RaidWeek
+     */
+    private function getWeekCreator($weeks)
+    {
+        foreach ($weeks as $week) {
+            if ($week->getMember()->isCreator()) {
+                return $week;
+            }
+        }
+        return null;
+    }
+
 }

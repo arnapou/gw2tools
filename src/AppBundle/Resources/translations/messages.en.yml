@@ -383,6 +383,41 @@ race.Charr: "Charr"
 race.Human: "Human"
 race.Norn: "Norn"
 race.Sylvari: "Sylvari"
+raidplanner.add_member: "Add member"
+raidplanner.cancel: 'Cancel'
+raidplanner.confirm_delete: "Do you really want to delete this roster ? It cannot be undone !"
+raidplanner.confirm_leave: "Do you really want to leave this roster ? It cannot be undone !"
+raidplanner.confirm_remove: "Do you really want to remove this member ? It cannot be undone !"
+raidplanner.create: "Create a raid roster"
+raidplanner.creator: "Creator"
+raidplanner.delete: "Delete"
+raidplanner.description: 'Description'
+raidplanner.detail: "Detail"
+raidplanner.edit_day: "Edit text"
+raidplanner.edit_member: "Edit text"
+raidplanner.error.empty_name: "The name cannot be empty."
+raidplanner.error.generic: "An unknown error occurred, please contact the administrator."
+raidplanner.error.member_already_exists: "A member with this name already exists in the group."
+raidplanner.leave_roster: "Leave the roster"
+raidplanner.modify: "Modify"
+raidplanner.name: 'Roster name'
+raidplanner.no_rosters: "You don't belong to any roster."
+raidplanner.officer: "Officer"
+raidplanner.registered: 'Registered'
+raidplanner.remove: "Remove"
+raidplanner.return: "Return"
+raidplanner.returnlist: "Return to list"
+raidplanner.role: "Role"
+raidplanner.save: 'Save'
+raidplanner.status.backup: "Backup"
+raidplanner.status.maybe: "Maybe"
+raidplanner.status.none: "Off"
+raidplanner.status.present: "Present"
+raidplanner.week.current: "Current week"
+raidplanner.week.next: "Next week"
+raidplanner.week.previous: "Previous week"
+raidplanner.week.refresh: "Refresh week"
+raidplanner: 'Raid planner'
 ranks.Bear: "Bear"
 ranks.Deer: "Deer"
 ranks.Dolyak: "Dolyak"
@@ -489,27 +524,6 @@ traits.buff_conversion: "Gain %dst based on a percentage of %src%: %pct%%"
 traits.pve: "Build Pve"
 traits.pvp: "Build Pvp"
 traits.wvw: "Build Wvw"
-weight.Clothing: "Clothing"
-weight.Heavy: "Heavy"
-weight.Light: "Light"
-weight.Medium: "Medium"
-raidplanner: 'Raid planner'
-raidplanner.no_rosters: "You don't belong to any roster."
-raidplanner.create: "Create a raid roster"
-raidplanner.name: 'Roster name'
-raidplanner.description: 'Description'
-raidplanner.save: 'Save'
-raidplanner.cancel: 'Cancel'
-raidplanner.error.empty_name: "The name cannot be empty."
-raidplanner.role: "Role"
-raidplanner.creator: "Creator"
-raidplanner.officer: "Officer"
-raidplanner.detail: "Detail"
-raidplanner.return: "Return"
-raidplanner.returnlist: "Return to list"
-raidplanner.delete: "Delete"
-raidplanner.modify: "Modify"
-raidplanner.add_member: "Add member"
 weekday.1: 'Monday'
 weekday.2: 'Tuesday'
 weekday.3: 'Wednesday'
@@ -517,11 +531,7 @@ weekday.4: 'Thursday'
 weekday.5: 'Friday'
 weekday.6: 'Saturday'
 weekday.7: 'Sunday'
-raidplanner.week.previous: "Previous week"
-raidplanner.week.next: "Next week"
-raidplanner.week.refresh: "Refresh week"
-raidplanner.week.current: "Current week"
-raidplanner.status.none: "Off"
-raidplanner.status.present: "Present"
-raidplanner.status.maybe: "Maybe"
-raidplanner.status.backup: "Backup"
+weight.Clothing: "Clothing"
+weight.Heavy: "Heavy"
+weight.Light: "Light"
+weight.Medium: "Medium"

@@ -383,6 +383,41 @@ race.Charr: "Charr"
 race.Human: "Humain"
 race.Norn: "Norn"
 race.Sylvari: "Sylvari"
+raidplanner.add_member: "Ajouter un membre"
+raidplanner.cancel: 'Annuler'
+raidplanner.confirm_delete: "Voulez-vous vraiment supprimer ce groupe ? Cette action ne peut pas être annulée !"
+raidplanner.confirm_leave: "Voulez-vous vraiment quitter ce groupe ? Cette action ne peut pas être annulée !"
+raidplanner.confirm_remove: "Voulez-vous vraiment supprimer ce membre ? Cette action ne peut pas être annulée !"
+raidplanner.create: "Créer un groupe de raid"
+raidplanner.creator: "Créateur"
+raidplanner.delete: "Supprimer"
+raidplanner.description: 'Description'
+raidplanner.detail: "Détail"
+raidplanner.edit_day: "Modifier le texte"
+raidplanner.edit_member: "Modifier le texte"
+raidplanner.error.empty_name: "Le nom ne peut pas être vide."
+raidplanner.error.generic: "Une erreur inconnue est survenue, merci de contacter l'administrateur."
+raidplanner.error.member_already_exists: "Un membre avec ce nom existe déjà dans le groupe."
+raidplanner.leave_roster: "Quitter le groupe"
+raidplanner.modify: "Modifier"
+raidplanner.name: 'Nom du roster'
+raidplanner.no_rosters: "Vous n'appartenez à aucun groupe."
+raidplanner.officer: "Officier"
+raidplanner.registered: 'Enregistrés'
+raidplanner.remove: "Retirer"
+raidplanner.return: "Retour"
+raidplanner.returnlist: "Retour à la liste"
+raidplanner.role: "Rôle"
+raidplanner.save: 'Enregistrer'
+raidplanner.status.backup: "Secours"
+raidplanner.status.maybe: "Peut-être"
+raidplanner.status.none: "Absent"
+raidplanner.status.present: "Présent"
+raidplanner.week.current: "Semaine actuelle"
+raidplanner.week.next: "Semaine suivante"
+raidplanner.week.previous: "Semaine précédente"
+raidplanner.week.refresh: "Recharge la semaine"
+raidplanner: 'Planificateur de raid'
 ranks.Bear: "Ours"
 ranks.Deer: "Daim"
 ranks.Dolyak: "Dolyak"
@@ -489,27 +524,6 @@ traits.buff_conversion: "Gain de %dst% basé sur un pourcentage de %src%: %pct%%
 traits.pve: "Build Jce"
 traits.pvp: "Build Jcj"
 traits.wvw: "Build McM"
-weight.Clothing: "Tenue"
-weight.Heavy: "Lourd"
-weight.Light: "Léger"
-weight.Medium: "Intermédiaire"
-raidplanner: 'Planificateur de raid'
-raidplanner.no_rosters: "Vous n'appartenez à aucun groupe."
-raidplanner.create: "Créer un groupe de raid"
-raidplanner.name: 'Nom du roster'
-raidplanner.description: 'Description'
-raidplanner.save: 'Enregistrer'
-raidplanner.cancel: 'Annuler'
-raidplanner.error.empty_name: "Le nom ne peut pas être vide."
-raidplanner.role: "Rôle"
-raidplanner.creator: "Créateur"
-raidplanner.officer: "Officier"
-raidplanner.detail: "Détail"
-raidplanner.return: "Retour"
-raidplanner.returnlist: "Retour à la liste"
-raidplanner.delete: "Supprimer"
-raidplanner.modify: "Modifier"
-raidplanner.add_member: "Ajouter un membre"
 weekday.1: 'Lundi'
 weekday.2: 'Mardi'
 weekday.3: 'Mercredi'
@@ -517,11 +531,7 @@ weekday.4: 'Jeudi'
 weekday.5: 'Vendredi'
 weekday.6: 'Samedi'
 weekday.7: 'Dimanche'
-raidplanner.week.previous: "Semaine précédente"
-raidplanner.week.next: "Semaine suivante"
-raidplanner.week.refresh: "Recharge la semaine"
-raidplanner.week.current: "Semaine actuelle"
-raidplanner.status.none: "Absent"
-raidplanner.status.present: "Présent"
-raidplanner.status.maybe: "Peut-être"
-raidplanner.status.backup: "Secours"
+weight.Clothing: "Tenue"
+weight.Heavy: "Lourd"
+weight.Light: "Léger"
+weight.Medium: "Intermédiaire"
