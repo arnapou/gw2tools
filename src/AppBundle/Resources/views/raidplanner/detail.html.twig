@@ -89,7 +89,7 @@
                     </th>
                     {% for i in 1..7 %}
                         <th class="day {% if timedays[i] < timenow %}text-muted{% endif %}">
-                            {{ ('weekday.'~i)|trans }}<br/>{{ timeday|date('j/m') }}
+                            {{ ('weekday.'~i)|trans }}<br/>{{ timedays[i]|date('j/m') }}
                         </th>
                     {% endfor %}
                     <th></th>
