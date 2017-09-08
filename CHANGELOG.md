@@ -1,3 +1,8 @@
+## 2.2.0 (2017-09-08)
+
+  - added a raid planner tool
+  - added gw2skills stat icons for PoF
+  
 ## 2.1.20 (2017-08-20)
 
   - added several api pages in tools menu
