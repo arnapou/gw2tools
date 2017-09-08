@@ -19,6 +19,11 @@
 
             <div class="pull-right">
 
+                <a href="{{ path('raidplanner_history', {'_code': code, 'id': member.roster.id}) }}"
+                   class="btn btn-xs btn-primary">
+                    {{ 'raidplanner.history'|trans }}
+                </a>
+
                 {% if member.canAddMemberRoster %}
                     <button type="button" class="btn btn-xs btn-info action-add-member">
                         {{ 'raidplanner.add_member'|trans }}
@@ -78,6 +83,7 @@
                             <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}?date={{ date }}"
                                class="btn btn-xs btn-primary" title="{{ 'raidplanner.week.refresh'|trans }}">
                                 <i class="glyphicon glyphicon-refresh"></i>
+                                <small class="timer-auto-refresh" data-delay="100" style="margin-left: .5em"></small>
                             </a>
                         </div>
                     </th>
@@ -266,6 +272,13 @@
             }
 
             /**
+             *
+             */
+            function genericAlways() {
+                refresh.start();
+            }
+
+            /**
              * save date status
              */
             $('li.status a').click(function (e) {
@@ -305,10 +318,10 @@
              */
             $('button.action-delete').click(function () {
                 var url = $(this).data('url');
+                refresh.pause();
                 bootbox.confirm({{ "raidplanner.confirm_delete"|trans|json_encode|raw }}, function (ok) {
-                    if (ok) {
-                        window.location = url;
-                    }
+                    if (ok) window.location = url;
+                    refresh.start();
                 });
             });
 
@@ -317,10 +330,10 @@
              */
             $('button.action-leave').click(function () {
                 var url = $(this).data('url');
+                refresh.pause();
                 bootbox.confirm({{ "raidplanner.confirm_leave"|trans|json_encode|raw }}, function (ok) {
-                    if (ok) {
-                        window.location = url;
-                    }
+                    if (ok) window.location = url;
+                    refresh.start();
                 });
             });
 
@@ -329,10 +342,10 @@
              */
             $('button.action-remove').click(function () {
                 var url = $(this).data('url');
+                refresh.pause();
                 bootbox.confirm({{ "raidplanner.confirm_remove"|trans|json_encode|raw }}, function (ok) {
-                    if (ok) {
-                        window.location = url;
-                    }
+                    if (ok) window.location = url;
+                    refresh.start();
                 });
             });
 
@@ -340,14 +353,18 @@
              * action add member to roster
              */
             $('button.action-add-member').click(function () {
+                refresh.pause();
                 bootbox.prompt({
                     title: {{ "raidplanner.add_member"|trans|json_encode|raw }},
                     placeholder: 'John Doe.1234',
                     callback: function (result) {
-                        if (result) {
+                        if (typeof result === 'string') {
                             $.post({{ path('raidplanner_add_member', {'_code': code, 'id': member.roster.id})|json_encode|raw }},
-                                {member: result},
-                                genericReloadOnSuccess);
+                                {member: result})
+                                .done(genericReloadOnSuccess)
+                                .always(genericAlways);
+                        } else {
+                            genericAlways();
                         }
                     }
                 });
@@ -359,12 +376,17 @@
             $('button.action-edit-member').click(function () {
                 var value = $(this).data('value');
                 var url = $(this).data('url');
+                refresh.pause();
                 bootbox.prompt({
                     title: {{ "raidplanner.edit_member"|trans|json_encode|raw }},
                     value: value,
                     callback: function (result) {
-                        if (result) {
-                            $.post(url, {text: result}, genericReloadOnSuccess);
+                        if (typeof result === 'string') {
+                            $.post(url, {text: result})
+                                .done(genericReloadOnSuccess)
+                                .always(genericAlways);
+                        } else {
+                            genericAlways();
                         }
                     }
                 });
@@ -376,12 +398,17 @@
             $('button.action-edit-day').click(function () {
                 var value = $(this).data('value');
                 var url = $(this).data('url');
+                refresh.pause();
                 bootbox.prompt({
                     title: {{ "raidplanner.edit_day"|trans|json_encode|raw }},
                     value: value,
                     callback: function (result) {
-                        if (result) {
-                            $.post(url, {text: result}, genericReloadOnSuccess);
+                        if (typeof result === 'string') {
+                            $.post(url, {text: result})
+                                .done(genericReloadOnSuccess)
+                                .always(genericAlways);
+                        } else {
+                            genericAlways();
                         }
                     }
                 });

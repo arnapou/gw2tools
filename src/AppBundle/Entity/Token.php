@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Token
  *
  * @ORM\Table(name="tokens", indexes={
- *      @ORM\Index(name="name"       , columns={"name"}       ), 
+ *      @ORM\Index(name="name"       , columns={"name"}       ),
  *      @ORM\Index(name="lastaccess" , columns={"lastaccess"} )
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TokenRepository")
@@ -238,7 +239,7 @@ class Token
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function __toString()
@@ -247,7 +248,7 @@ class Token
     }
 
     /**
-     * 
+     *
      * @param string $right
      * @return boolean
      */
@@ -257,7 +258,7 @@ class Token
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getRights()
@@ -270,7 +271,7 @@ class Token
     }
 
     /**
-     * 
+     *
      * @param array $rights
      * @return Token
      */

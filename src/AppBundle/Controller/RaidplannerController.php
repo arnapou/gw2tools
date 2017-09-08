@@ -10,9 +10,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\RaidHistory;
 use AppBundle\Entity\RaidMember;
 use AppBundle\Entity\RaidRoster;
 use AppBundle\Entity\RaidWeek;
+use AppBundle\Repository\RaidHistoryRepository;
 use Gw2tool\Exception\AccessNotAllowedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,7 +38,7 @@ class RaidplannerController extends PageController
     public function indexAction($_code, Request $request)
     {
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidRoster::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidRoster::class);
             $context = $this->getContext($_code, null, true);
             $rosters = $repo->getRosters($this->token);
 
@@ -63,11 +65,11 @@ class RaidplannerController extends PageController
     public function listAction($_code, Request $request)
     {
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidRoster::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidRoster::class);
             $context = $this->getContext($_code, null, true);
 
             $context['page_name'] = $this->trans('raidplanner');
-            $context['rosters'] = $repo->getRosters($this->token);
+            $context['rosters']   = $repo->getRosters($this->token);
 
             return $this->render('list.html.twig', $context);
         } catch (AccessNotAllowedException $ex) {
@@ -87,7 +89,7 @@ class RaidplannerController extends PageController
     public function createAction($_code, Request $request)
     {
         try {
-            $context = $this->getContext($_code, null, true);
+            $context              = $this->getContext($_code, null, true);
             $context['page_name'] = $this->trans('raidplanner');
 
             try {
@@ -108,6 +110,7 @@ class RaidplannerController extends PageController
                     $manager = $this->getDoctrine()->getManager();
                     $manager->persist($roster);
                     $manager->persist($member);
+                    $this->history(RaidHistory::ROSTER_CREATION, $roster, $member);
                     $manager->flush();
 
                     return $this->redirectToRosterDetail($roster);
@@ -135,13 +138,14 @@ class RaidplannerController extends PageController
     public function modifyAction($_code, $id, Request $request)
     {
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member = $repo->getMember($id, $this->token);
-            $roster = $member->getRoster();
+            $member  = $repo->getMember($id, $this->token);
+            $roster  = $member->getRoster();
 
             $context['page_name'] = $this->trans('raidplanner');
-            $context['member'] = $member;
+            $context['member']    = $member;
+            $context['members']   = $repo->getMembers($id);
 
             if (!$context['member']->canModifyRoster()) {
                 return $this->redirectToRosterDetail($roster);
@@ -157,6 +161,24 @@ class RaidplannerController extends PageController
                     }
 
                     $manager = $this->getDoctrine()->getManager();
+
+                    $officers = $request->get('officers');
+                    if ($member->isCreator()) {
+                        $officers = is_array($officers) ? $officers : [];
+                        foreach ($context['members'] as $member) {
+                            $isOfficer = isset($officers[$member->getId()]) && $officers[$member->getId()];
+                            if ($member->isOfficer() != $isOfficer) {
+                                $member->setIsOfficer($isOfficer);
+                                $manager->persist($member);
+                                if ($isOfficer) {
+                                    $this->history(RaidHistory::OFFICER_PROMOTE, $roster, $member);
+                                } else {
+                                    $this->history(RaidHistory::OFFICER_RETROGRADE, $roster, $member);
+                                }
+                            }
+                        }
+                    }
+
                     $manager->persist($roster);
                     $manager->flush();
 
@@ -187,9 +209,9 @@ class RaidplannerController extends PageController
     {
         $json = [];
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member = $repo->getMember($id, $this->token);
+            $member  = $repo->getMember($id, $this->token);
 
             if ($member->canAddMemberRoster()) {
                 $newMemberName = trim($request->get('member'));
@@ -209,6 +231,7 @@ class RaidplannerController extends PageController
 
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($newMember);
+                $this->history(RaidHistory::MEMBER_NEW, $newMember->getRoster(), $newMember);
                 $manager->flush();
 
                 $json['member_id'] = $newMember->getId();
@@ -236,9 +259,9 @@ class RaidplannerController extends PageController
     {
         $json = [];
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member = $repo->getMember($id, $this->token);
+            $member  = $repo->getMember($id, $this->token);
 
             $memberToEdit = $repo->find($memberid);
 
@@ -277,10 +300,10 @@ class RaidplannerController extends PageController
         $json = [];
         try {
             $repoMember = $this->getDoctrine()->getRepository(RaidMember::class);
-            $repoWeek = $this->getDoctrine()->getRepository(RaidWeek::class);
-            $context = $this->getContext($_code, null, true);
-            $member = $repoMember->getMember($id, $this->token);
-            $week = $repoWeek->find($weekid);
+            $repoWeek   = $this->getDoctrine()->getRepository(RaidWeek::class);
+            $context    = $this->getContext($_code, null, true);
+            $member     = $repoMember->getMember($id, $this->token);
+            $week       = $repoWeek->find($weekid);
 
             if ($member->canModifyDay($week)) {
 
@@ -312,10 +335,10 @@ class RaidplannerController extends PageController
     public function deleteAction($_code, $id, Request $request)
     {
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member = $repo->getMember($id, $this->token);
-            $roster = $member->getRoster();
+            $member  = $repo->getMember($id, $this->token);
+            $roster  = $member->getRoster();
 
             if (!$member->canDeleteRoster()) {
                 return $this->redirectToRosterDetail($roster);
@@ -345,10 +368,10 @@ class RaidplannerController extends PageController
     public function leaveAction($_code, $id, Request $request)
     {
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member = $repo->getMember($id, $this->token);
-            $roster = $member->getRoster();
+            $member  = $repo->getMember($id, $this->token);
+            $roster  = $member->getRoster();
 
             if (!$member->canLeaveRoster()) {
                 return $this->redirectToRosterDetail($roster);
@@ -356,6 +379,7 @@ class RaidplannerController extends PageController
 
             $manager = $this->getDoctrine()->getManager();
             $manager->remove($member);
+            $this->history(RaidHistory::MEMBER_LEAVE, $roster, $member);
             $manager->flush();
 
             return $this->redirectToRoute('raidplanner_list');
@@ -379,10 +403,10 @@ class RaidplannerController extends PageController
     public function removeAction($_code, $id, $memberid, Request $request)
     {
         try {
-            $repo = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
             $context = $this->getContext($_code, null, true);
-            $member = $repo->getMember($id, $this->token);
-            $roster = $member->getRoster();
+            $member  = $repo->getMember($id, $this->token);
+            $roster  = $member->getRoster();
 
             $memberToRemove = $repo->find($memberid);
 
@@ -390,6 +414,7 @@ class RaidplannerController extends PageController
 
                 $manager = $this->getDoctrine()->getManager();
                 $manager->remove($memberToRemove);
+                $this->history(RaidHistory::MEMBER_REMOVE, $roster, $member, ['removed' => $memberToRemove->getName()]);
                 $manager->flush();
 
             }
@@ -415,21 +440,52 @@ class RaidplannerController extends PageController
     {
         try {
             $repoMember = $this->getDoctrine()->getRepository(RaidMember::class);
-            $repoWeek = $this->getDoctrine()->getRepository(RaidWeek::class);
-            $context = $this->getContext($_code, null, true);
+            $repoWeek   = $this->getDoctrine()->getRepository(RaidWeek::class);
+            $context    = $this->getContext($_code, null, true);
 
-            $context['page_name'] = $this->trans('raidplanner');
-            $context['member'] = $repoMember->getMember($id, $this->token);
-            $context['members'] = $repoMember->getMembers($id);
-            $context['date'] = $this->getDate($request);
-            $context['curdate'] = $this->getDate();
-            $context['weeks'] = $repoWeek->getWeeks($context['members'], $context['date']);
-            $context['sums'] = $this->calcSums($context['weeks']);
-            $context['statuses'] = RaidWeek::getStatusList();
-            $context['timedays'] = $this->getTimeDays($context['date']);
+            $context['page_name']   = $this->trans('raidplanner');
+            $context['member']      = $repoMember->getMember($id, $this->token);
+            $context['members']     = $repoMember->getMembers($id);
+            $context['date']        = $this->getDate($request);
+            $context['curdate']     = $this->getDate();
+            $context['weeks']       = $repoWeek->getWeeks($context['members'], $context['date']);
+            $context['sums']        = $this->calcSums($context['weeks']);
+            $context['statuses']    = RaidWeek::getStatusList();
+            $context['timedays']    = $this->getTimeDays($context['date']);
             $context['weekcreator'] = $this->getWeekCreator($context['weeks']);
 
             return $this->render('detail.html.twig', $context);
+        } catch (AccessNotAllowedException $ex) {
+            return $this->render('error-access-not-allowed.html.twig');
+        }
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/history-{id}", name="raidplanner_history",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"}
+     *     )
+     * @param         $_code
+     * @param         $id
+     * @param Request $request
+     * @return Response
+     */
+    public function historyAction($_code, $id, Request $request)
+    {
+        try {
+            $repoMember  = $this->getDoctrine()->getRepository(RaidMember::class);
+            $repoHistory = $this->getDoctrine()->getRepository(RaidHistory::class);
+            $context     = $this->getContext($_code, null, true);
+            $member      = $repoMember->getMember($id, $this->token);
+            $page        = $request->get('page');
+            $pagination  = $repoHistory->getPagination($member->getRoster(), $page);
+
+            $context['page_name']  = $this->trans('raidplanner');
+            $context['member']     = $member;
+            $context['history']    = $repoHistory->getHistory($member->getRoster(), $page);
+            $context['pagination'] = $pagination;
+
+            return $this->render('history.html.twig', $context);
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
@@ -449,10 +505,10 @@ class RaidplannerController extends PageController
     {
         $json = [];
         try {
-            $id = (string)$request->get('roster');
+            $id     = (string)$request->get('roster');
             $status = $request->get('status');
             $weekid = (string)$request->get('weekid');
-            $index = (string)$request->get('index');
+            $index  = (string)$request->get('index');
 
             if (!\ctype_digit($id)) {
                 throw new \Exception('roster parameter is not an id.');
@@ -468,14 +524,14 @@ class RaidplannerController extends PageController
             }
 
             $repoMember = $this->getDoctrine()->getRepository(RaidMember::class);
-            $repoWeek = $this->getDoctrine()->getRepository(RaidWeek::class);
-            $context = $this->getContext($_code, null, true);
+            $repoWeek   = $this->getDoctrine()->getRepository(RaidWeek::class);
+            $context    = $this->getContext($_code, null, true);
 
-            $member = $repoMember->getMember($id, $this->token);
+            $member  = $repoMember->getMember($id, $this->token);
             $members = $repoMember->getMembers($id);
-            $week = $repoWeek->find($weekid);
-            $weeks = $repoWeek->getWeeks($members, $week->getDate());
-            $sums = $this->calcSums($weeks);
+            $week    = $repoWeek->find($weekid);
+            $weeks   = $repoWeek->getWeeks($members, $week->getDate());
+            $sums    = $this->calcSums($weeks);
 
             if (!$member->canModifyWeek($week)) {
                 throw new \Exception('you have not the right to modify this week.');
@@ -488,9 +544,14 @@ class RaidplannerController extends PageController
 
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($week);
+            $this->history(RaidHistory::STATUS_CHANGE, $member->getRoster(), $member, [
+                'date'   => date('Y-m-d', strtotime($week->getDate() . ' 12:00:00') + 86400 * ($index - 1)),
+                'status' => $status,
+                'target' => $week->getMember()->getName(),
+            ]);
             $manager->flush();
 
-            $json['sum'] = $this->calcSums($weeks)[$index];
+            $json['sum']    = $this->calcSums($weeks)[$index];
             $json['status'] = $status;
 
         } catch (\Exception $ex) {
@@ -558,11 +619,27 @@ class RaidplannerController extends PageController
         if ($this->getEnv() === 'dev') {
             $json['exception'] = [
                 'message' => $exception->getMessage(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => $exception->getTraceAsString(),
+                'file'    => $exception->getFile(),
+                'line'    => $exception->getLine(),
+                'trace'   => $exception->getTraceAsString(),
             ];
         }
+    }
+
+    /**
+     * @param            $type
+     * @param RaidRoster $roster
+     * @param RaidMember $member
+     * @param array      $data
+     */
+    private function history($type, RaidRoster $roster, RaidMember $member = null, $data = [])
+    {
+        $history = new RaidHistory();
+        $history->setRoster($roster);
+        $history->setType($type);
+        $history->setMemberName($member ? $member->getName() : '');
+        $history->setData($data);
+        $this->getDoctrine()->getManager()->persist($history);
     }
 
     /**
@@ -580,11 +657,11 @@ class RaidplannerController extends PageController
      */
     private function getTimeDays($date)
     {
-        $time = \strtotime($date . " 12:00:00");
+        $time  = \strtotime($date . " 12:00:00");
         $times = [];
         for ($i = 1; $i <= 7; $i++) {
             $times[$i] = $time;
-            $time += 86400;
+            $time      += 86400;
         }
         return $times;
     }

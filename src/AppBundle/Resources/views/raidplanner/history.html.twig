@@ -1,0 +1,86 @@
+{% extends "AppBundle::raidplanner/base.html.twig" %}
+
+{% set transmap = {
+'%_none%' : 'default',
+'%_present%' : 'success',
+'%_maybe%' : 'warning',
+'%_backup%' : 'info',
+'%.backup%': 'raidplanner.status.backup'|trans,
+'%.maybe%': 'raidplanner.status.maybe'|trans,
+'%.none%': 'raidplanner.status.none'|trans,
+'%.present%': 'raidplanner.status.present'|trans
+} %}
+
+{% block raidcontent %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>{{ member.roster.name }}</b>
+
+            <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}"
+               class="btn btn-xs btn-primary pull-right" title="{{ 'raidplanner.return'|trans }}">
+                <i class="glyphicon glyphicon-chevron-left"></i> {{ 'raidplanner.return'|trans }}
+            </a>
+
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>{{ 'raidplanner.date'|trans }}</th>
+                    <th>{{ 'raidplanner.type'|trans }}</th>
+                    <th>{{ 'raidplanner.description'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in history %}
+                    <tr>
+                        <td>{{ item.datecreation|date('Y-m-d H:i:s') }}</td>
+                        <td>{{ ('raidplanner.history.'~item.type)|trans }}</td>
+                        <td>{{ ('raidplanner.history.'~item.type~'.text')|trans(item.dataTrans)|replace(transmap)|raw }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div>
+
+        {% if pagination.pages|length > 1 %}
+            <div class="pull-right">
+
+                <div class="btn-group" role="group">
+                    {% for p in pagination.pages %}
+                        {% if p %}
+                            <a href="?page={{ p }}" type="button"
+                               class="btn btn-sm btn-{{ p == pagination.page ? 'primary' : 'default' }}">
+                                {{ p }}
+                            </a>
+                        {% else %}
+                            <span class="btn btn-sm btn-default">...</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            </div>
+        {% endif %}
+
+        <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}"
+           class="btn btn-sm btn-primary" title="{{ 'raidplanner.return'|trans }}">
+            <i class="glyphicon glyphicon-chevron-left"></i> {{ 'raidplanner.return'|trans }}
+        </a>
+
+    </div>
+
+    <style>
+        td:first-child {
+            width: 12em;
+            white-space: nowrap;
+        }
+    </style>
+
+{% endblock %}
+

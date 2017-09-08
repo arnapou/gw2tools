@@ -26,14 +26,14 @@ class RaidRoster
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=200)
+     * @ORM\Column(name="name", type="string", length=50)
      */
     private $name = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="creator", type="string", length=200)
+     * @ORM\Column(name="creator", type="string", length=50)
      */
     private $creator = '';
 

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Token;
@@ -22,7 +23,7 @@ class TokenRepository extends \Doctrine\ORM\EntityRepository
 {
 
     /**
-     * 
+     *
      * @param string $token
      * @return Token
      */
@@ -32,7 +33,7 @@ class TokenRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * 
+     *
      * @param string $code
      * @return Token
      */
@@ -42,7 +43,7 @@ class TokenRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * 
+     *
      * @param string $token
      * @return Token
      */
@@ -68,7 +69,7 @@ class TokenRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function generateNewCode()

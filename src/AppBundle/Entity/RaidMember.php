@@ -25,7 +25,7 @@ class RaidMember
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=200)
+     * @ORM\Column(name="name", type="string", length=50)
      */
     private $name = '';
 
@@ -40,7 +40,7 @@ class RaidMember
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="string", length=200)
+     * @ORM\Column(name="text", type="string", length=50)
      */
     private $text = '';
 

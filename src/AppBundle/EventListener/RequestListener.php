@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;

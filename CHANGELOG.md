@@ -1,3 +1,7 @@
+## 2.2.1 (2017-09-08)
+
+  - added history in raid planner tool
+  
 ## 2.2.0 (2017-09-08)
 
   - added a raid planner tool

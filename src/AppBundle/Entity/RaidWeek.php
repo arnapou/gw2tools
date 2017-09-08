@@ -20,10 +20,10 @@ use Doctrine\ORM\Mapping as ORM;
 class RaidWeek
 {
 
-    const NONE = 'none';
+    const NONE    = 'none';
     const PRESENT = 'present';
-    const MAYBE = 'maybe';
-    const BACKUP = 'backup';
+    const MAYBE   = 'maybe';
+    const BACKUP  = 'backup';
 
     /**
      * @ORM\Id
@@ -194,7 +194,7 @@ class RaidWeek
         if (!\in_array($index, [1, 2, 3, 4, 5, 6, 7])) {
             throw new \InvalidArgumentException("The status index is not valid.");
         }
-        $property = "status$index";
+        $property        = "status$index";
         $this->$property = \in_array($status, self::getStatusList()) ? $status : self::NONE;
     }
 
@@ -246,7 +246,7 @@ class RaidWeek
         if (!\in_array($index, [1, 2, 3, 4, 5, 6, 7])) {
             throw new \InvalidArgumentException("The text index is not valid.");
         }
-        $property = "text$index";
+        $property        = "text$index";
         $this->$property = $text;
     }
 

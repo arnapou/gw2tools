@@ -357,7 +357,7 @@ class PageController extends AbstractController
      */
     public function getBreadcrumb()
     {
-        if ($this->token && $this->getMenu() ) {
+        if ($this->token && $this->getMenu()) {
             $code = $this->token->getCode();
             $path = rawurldecode($this->getRequest()->getPathInfo());
             foreach ($this->getMenu() as $menu) {

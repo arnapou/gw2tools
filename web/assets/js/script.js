@@ -355,10 +355,61 @@ $(function () {
     });
 
     /**
+     * refresh automatique
+     */
+    refresh.init();
+
+    /**
      * load contenet
      */
     $('[data-content="ajax"]').trigger('loadContent');
-})
+});
+
+/**
+ *
+ * @type {{init, pause, start, reset}}
+ */
+var refresh = (function () {
+    var $elements = $('.timer-auto-refresh');
+
+    return {
+        init: function () {
+            $elements.each(function () {
+                var $this = $(this);
+                var delay = parseInt($this.data('delay') || '300');
+                var func = function () {
+                    var time = $this.data('time');
+                    $this.data('time', $this.data('run') ? time - 1 : time);
+                    if (time >= 0) {
+                        $this.text(time);
+                        $this.data('func', window.setTimeout(func, 1000));
+                    } else {
+                        $this.data('func', null);
+                        window.location.reload();
+                    }
+                };
+                $this.data('time', delay);
+                $this.data('run', 1);
+                func();
+            });
+        },
+        pause: function () {
+            $elements.data('run', 0);
+        },
+        start: function () {
+            $elements.data('run', 1);
+        },
+        reset: function () {
+            $elements.each(function () {
+                var $this = $(this);
+                var delay = parseInt($this.data('delay') || '300');
+                $this.data('time', delay);
+                $this.data('run', 1);
+            });
+        }
+    };
+})();
+
 
 /**
  * statistics / render pie chart
