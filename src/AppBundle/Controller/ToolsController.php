@@ -48,9 +48,14 @@ class ToolsController extends AbstractController
                 }
 
                 // sanitize and order attributes
+                $sum = 0;
                 $attrs = [];
                 foreach ($stat['attributes'] as $attr => $value) {
                     $attrs[] = ['name' => $attr, 'value' => $value];
+                    $sum += $value;
+                }
+                if($sum == 0){
+                    continue;
                 }
                 usort($attrs, function ($a, $b) {
                     $ret = $a['value'] <=> $b['value'];
