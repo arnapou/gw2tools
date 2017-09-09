@@ -15,6 +15,7 @@ use AppBundle\Entity\RaidMember;
 use AppBundle\Entity\RaidRoster;
 use AppBundle\Entity\RaidWeek;
 use AppBundle\Repository\RaidHistoryRepository;
+use Arnapou\GW2Api\Model\Item;
 use Gw2tool\Exception\AccessNotAllowedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -162,8 +163,10 @@ class RaidplannerController extends PageController
 
                     $manager = $this->getDoctrine()->getManager();
 
-                    $officers = $request->get('officers');
                     if ($member->isCreator()) {
+
+                        //officers
+                        $officers = $request->get('officers');
                         $officers = is_array($officers) ? $officers : [];
                         foreach ($context['members'] as $member) {
                             $isOfficer = isset($officers[$member->getId()]) && $officers[$member->getId()];
@@ -177,6 +180,23 @@ class RaidplannerController extends PageController
                                 }
                             }
                         }
+
+                        // names
+                        $names = $request->get('names');
+                        if (is_array($names)) {
+                            foreach ($context['members'] as $member) {
+                                $name = $names[$member->getId()] ?? null;
+                                if ($name && $member->getName() != $name) {
+                                    $manager->persist($member);
+                                    $this->history(RaidHistory::MEMBER_CHANGE_NAME, $roster, $member, [
+                                        'old_name' => $member->getName(),
+                                        'new_name' => $name,
+                                    ]);
+                                    $member->setName($name);
+                                }
+                            }
+                        }
+
                     }
 
                     $manager->persist($roster);
@@ -454,7 +474,59 @@ class RaidplannerController extends PageController
             $context['timedays']    = $this->getTimeDays($context['date']);
             $context['weekcreator'] = $this->getWeekCreator($context['weeks']);
 
+            if ($context['member']->checkData($this->account)) {
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($context['member']);
+                $manager->flush();
+            }
+
             return $this->render('detail.html.twig', $context);
+        } catch (AccessNotAllowedException $ex) {
+            return $this->render('error-access-not-allowed.html.twig');
+        }
+    }
+
+    /**
+     *
+     * @Route("/{_locale}/{_code}/raidplanner/characters-{id}-{memberid}", name="raidplanner_characters",
+     *     requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+", "memberid" = "[0-9]+"}
+     *     )
+     * @param         $_code
+     * @param         $id
+     * @param         $memberid
+     * @param Request $request
+     * @return Response
+     */
+    public function charactersAction($_code, $id, $memberid, Request $request)
+    {
+        try {
+            $repo    = $this->getDoctrine()->getRepository(RaidMember::class);
+            $context = $this->getContext($_code, null, true);
+            $me      = $repo->getMember($id, $this->token);
+            $member  = $repo->find($memberid);
+
+            if ($me->getRoster()->getId() != $member->getRoster()->getId()) {
+                return $this->redirectToRosterDetail($me->getRoster());
+            }
+
+            $env      = $this->getGwEnvironment();
+            $data     = $member->getData();
+            $upgrades = [];
+            if (isset($data['characters'])) {
+                foreach ($data['characters'] as $char) {
+                    foreach ($char['blocks'] as $block) {
+                        foreach ($block['upgrades'] as $id => $qty) {
+                            $upgrades[$id] = new Item($env, $id);
+                        }
+                    }
+                }
+            }
+
+            $context['page_name'] = $this->trans('raidplanner');
+            $context['member']    = $member;
+            $context['upgrades']  = $upgrades;
+
+            return $this->render('characters.html.twig', $context);
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }

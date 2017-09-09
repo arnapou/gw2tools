@@ -1,3 +1,7 @@
+## 2.2.2 (2017-09-09)
+
+  - added stuff check for members in raid planner
+  
 ## 2.2.1 (2017-09-08)
 
   - added history in raid planner tool

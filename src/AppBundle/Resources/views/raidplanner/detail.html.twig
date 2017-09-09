@@ -106,17 +106,42 @@
                     {% set nameparts = memb.getNameParts %}
                     <tr data-weekid="{{ weeks[memb.id].id }}">
                         <td>
-                            {% if memb.isCreator %}
-                                <i class="glyphicon glyphicon-user text-danger"
-                                   title="{{ 'raidplanner.creator'|trans }}"></i>
-                            {% elseif memb.isOfficer %}
-                                <i class="glyphicon glyphicon-user text-info"
-                                   title="{{ 'raidplanner.officer'|trans }}"></i>
+                            {% if memb.hasData %}
+                                {% if memb.isCreator %}
+                                    <a href="{{ path('raidplanner_characters', {'_code': code, 'id': member.roster.id, 'memberid': memb.id}) }}"
+                                       class="btn btn-xs btn-danger" title="{{ 'raidplanner.creator'|trans }}">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </a>
+                                {% elseif memb.isOfficer %}
+                                    <a href="{{ path('raidplanner_characters', {'_code': code, 'id': member.roster.id, 'memberid': memb.id}) }}"
+                                       class="btn btn-xs btn-info" title="{{ 'raidplanner.officer'|trans }}">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('raidplanner_characters', {'_code': code, 'id': member.roster.id, 'memberid': memb.id}) }}"
+                                       class="btn btn-xs btn-default">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </a>
+                                {% endif %}
                             {% else %}
-                                <i class="glyphicon glyphicon-user"></i>
+                                {% if memb.isCreator %}
+                                    <button type="button" class="btn btn-xs btn-danger" disabled
+                                            title="{{ 'raidplanner.creator'|trans }}">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </button>
+                                {% elseif memb.isOfficer %}
+                                    <button type="button" class="btn btn-xs btn-info" disabled
+                                            title="{{ 'raidplanner.officer'|trans }}">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </button>
+                                {% else %}
+                                    <button type="button" class="btn btn-xs btn-default" disabled>
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </button>
+                                {% endif %}
                             {% endif %}
-                            {{ nameparts[0] }}
-                            <small class="text-muted">.{{ nameparts[1] }}</small>
+                            {{ nameparts[0] }}<span class="text-muted"
+                                                    style="margin-left: .2em; font-size: 75%;">.{{ nameparts[1] }}</span>
                         </td>
                         {% for i in 1..7 %}
                             {% set week = weeks[memb.id] %}

@@ -1,0 +1,168 @@
+{% extends "AppBundle::raidplanner/base.html.twig" %}
+
+{% set transmap = {
+'%_none%' : 'default',
+'%_present%' : 'primary',
+'%_maybe%' : 'warning',
+'%_backup%' : 'info',
+
+'%.backup%': 'raidplanner.status.backup'|trans,
+'%.maybe%': 'raidplanner.status.maybe'|trans,
+'%.none%': 'raidplanner.status.none'|trans,
+'%.present%': 'raidplanner.status.present'|trans
+} %}
+
+{% set memberdata = member.getData %}
+
+{% block raidcontent %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>{{ member.roster.name }}</b>
+            &nbsp; &raquo; &nbsp;
+            <b>{{ member.name }}</b>
+
+            <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}"
+               class="btn btn-xs btn-primary pull-right" title="{{ 'raidplanner.return'|trans }}">
+                <i class="glyphicon glyphicon-chevron-left"></i> {{ 'raidplanner.return'|trans }}
+            </a>
+
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>{{ 'global.name'|trans }}</th>
+                    <th>{{ 'global.armor'|trans }}</th>
+                    <th>{{ 'global.trinkets'|trans }}</th>
+                    <th>{{ 'global.weapons'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for charname, char in memberdata.characters %}
+                    <tr>
+                        <td>
+                            <span class="character-name">
+                                <i class="ic-profession-{{ char.profession|lower }}"></i>
+                                {{ charname }}
+                            </span>
+                            <div class="text-muted"
+                                 style="margin-top: 1em; margin-left: 1.8em;">
+                                <small>
+                                    {{ 'global.age'|trans }}: {{ (char.age/3600)|round }} {{ 'global.hours'|trans|lower }}
+                                </small>
+                            </div>
+                        </td>
+                        {% for cat in ['Armor', 'Trinket', 'Weapon'] %}
+                            <td>
+                                {% for block in char.blocks %}
+                                    {% if block.cat == cat %}
+                                        <div class="block border rarity-{{ block.rarity }}">
+                                            <span title="{{ ('rarity.'~block.rarity)|trans }} - {{ ('stats.'~block.stat)|trans }} - {{ ('itemtype.'~block.type)|trans }}">
+                                                <span>{% if block.count > 1 %}x{{ block.count }}{% endif %}</span>
+                                                <i class="ic-{{ cat|lower|replace({
+                                                    'trinket': 'armor'
+                                                }) }}-{{ block.type|lower|replace({
+                                                    'armor': 'coat',
+                                                    'trinket': 'ring'
+                                                }) }}"></i>
+                                                <img src="{{ block.stat|imagestat }}"/>
+                                            </span>
+                                            {% for upid, qty in block.upgrades %}
+                                                {% if upgrades[upid] is defined %}
+                                                    <span class="upgrade">{% if qty > 1 %}x{{ qty }}{% endif %}</span>
+                                                    <span {{ upgrades[upid]|gwlink|raw }}>
+                                                        <img src="{{ upgrades[upid]|image }}"/>
+                                                    </span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div>
+
+        {% if pagination.pages|length > 1 %}
+            <div class="pull-right">
+
+                <div class="btn-group" role="group">
+                    {% for p in pagination.pages %}
+                        {% if p %}
+                            <a href="?page={{ p }}" type="button"
+                               class="btn btn-sm btn-{{ p == pagination.page ? 'primary' : 'default' }}">
+                                {{ p }}
+                            </a>
+                        {% else %}
+                            <span class="btn btn-sm btn-default">...</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            </div>
+        {% endif %}
+
+        <a href="{{ path('raidplanner_detail', {'_code': code, 'id': member.roster.id}) }}"
+           class="btn btn-sm btn-primary" title="{{ 'raidplanner.return'|trans }}">
+            <i class="glyphicon glyphicon-chevron-left"></i> {{ 'raidplanner.return'|trans }}
+        </a>
+
+    </div>
+
+    <style>
+        td:first-child {
+            width: 12em;
+            white-space: nowrap;
+        }
+
+        td:nth-child(2) {
+            width: 15em;
+        }
+
+        td:nth-child(3) {
+            width: 2em;
+        }
+
+        .block {
+            display: inline-block;
+            margin-right: 1em;
+            margin-bottom: .5em;
+            border-radius: 3px;
+            padding: 0 .2em;
+            white-space: nowrap;
+        }
+
+        .block * {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 !important;
+        }
+
+        .block .upgrade {
+            padding: 0 .1em 0 .5em;
+        }
+
+        .block i {
+            font-size: 1.2em;
+        }
+
+        .block img {
+            max-height: 1.5em;
+        }
+
+        .block span img {
+            vertical-align: top;
+        }
+    </style>
+
+{% endblock %}
+

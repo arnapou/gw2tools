@@ -2,7 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use Arnapou\GW2Api\Model\Character;
+use Arnapou\GW2Api\Model\InventorySlot;
+use Arnapou\GW2Api\Model\Item;
 use Doctrine\ORM\Mapping as ORM;
+use Gw2tool\Account;
 
 /**
  * Token
@@ -15,6 +19,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RaidMember
 {
+
+    const CHECK_DELAY = 900;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -65,6 +72,13 @@ class RaidMember
      */
     private $dateCreation;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="data", type="text")
+     */
+    private $data = '';
+
     public function __construct()
     {
         $this->dateCreation = time();
@@ -103,6 +117,33 @@ class RaidMember
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasData()
+    {
+        return !empty($this->data);
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        if ($this->data) {
+            return unserialize($this->data);
+        }
+        return [];
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData($data)
+    {
+        $this->data = !empty($data) && is_array($data) ? serialize($data) : '';
     }
 
     /**
@@ -223,6 +264,98 @@ class RaidMember
     public function canLeaveRoster()
     {
         return $this->isCreator() ? false : true;
+    }
+
+    /**
+     * @param Account $account
+     * @return bool
+     */
+    public function checkData(Account $account)
+    {
+        $data      = $this->getData();
+        $lastCheck = isset($data['last_check']) ? $data['last_check'] : 0;
+        if (time() - $lastCheck > self::CHECK_DELAY) {
+            try {
+
+                $data['characters'] = [];
+                if ($account->hasPermission(Account::PERMISSION_CHARACTERS)) {
+                    foreach ($account->getCharacters() as $character) {
+                        if ($character->getLevel() >= 80) {
+                            $char   = [
+                                'profession' => $character->getData('profession'),
+                                'age'        => $character->getAge(),
+                            ];
+                            $blocks = [];
+                            foreach ($character->getEquipmentsBySubtype() as $subtype => $items) {
+                                foreach ($items as $item) {
+                                    /** @var $item InventorySlot */
+                                    $statName = $item->getStatName();
+                                    $rarity   = $item->getRarity();
+                                    if (empty($statName) || $subtype === Item::SUBTYPE_ARMOR_HELM_AQUATIC) {
+                                        continue;
+                                    }
+                                    $key = $statName . ':' . $rarity;
+                                    $cat = Item::TYPE_ARMOR;
+                                    if ($item->getType() == Item::TYPE_ARMOR) {
+                                        $key  .= ':' . Item::TYPE_ARMOR;
+                                        $type = Item::TYPE_ARMOR;
+                                    } elseif ($item->getType() == Item::TYPE_WEAPON) {
+                                        $key  .= ':' . $subtype;
+                                        $type = $subtype;
+                                        $cat  = Item::TYPE_WEAPON;
+                                    } elseif ($item->getType() == Item::TYPE_TRINKET) {
+                                        $key  .= ':' . Item::TYPE_TRINKET;
+                                        $type = Item::TYPE_TRINKET;
+                                        $cat  = Item::TYPE_TRINKET;
+                                    } elseif ($subtype === Character::SLOT_BACKPACK) {
+                                        $key  .= ':' . Character::SLOT_BACKPACK;
+                                        $type = Character::SLOT_BACKPACK;
+                                    } else {
+                                        continue;
+                                    }
+                                    if (!isset($blocks[$key])) {
+                                        $blocks[$key] = [
+                                            'count'    => 0,
+                                            'cat'      => $cat,
+                                            'type'     => $type,
+                                            'stat'     => $statName,
+                                            'rarity'   => $rarity,
+                                            'upgrades' => [],
+                                        ];
+                                    }
+                                    $blocks[$key]['count']++;
+                                    foreach ($item->getUpgrades() as $upgrade) {
+                                        if (!isset($blocks[$key]['upgrades'][$upgrade->getId()])) {
+                                            $blocks[$key]['upgrades'][$upgrade->getId()] = 1;
+                                        } else {
+                                            $blocks[$key]['upgrades'][$upgrade->getId()]++;
+                                        }
+                                    }
+                                }
+
+                            }
+                            usort($blocks, function ($a, $b) {
+                                return $a['type'] <=> $b['type']
+                                    ?: $a['rarity'] <=> $b['rarity']
+                                        ?: $a['stat'] <=> $b['stat'];
+                            });
+
+                            $char['blocks'] = $blocks;
+
+                            $data['characters'][$character->getName()] = $char;
+                        }
+                    }
+                }
+
+
+            } catch (\Exception $e) {
+
+            }
+            $data['last_check'] = time();
+            $this->setData($data);
+            return true;
+        }
+        return false;
     }
 
     /**

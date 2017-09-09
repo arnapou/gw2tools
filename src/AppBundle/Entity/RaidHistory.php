@@ -23,6 +23,7 @@ class RaidHistory
     const MEMBER_LEAVE       = 'member_leave';
     const MEMBER_REMOVE      = 'member_remove';
     const STATUS_CHANGE      = 'status_change';
+    const MEMBER_CHANGE_NAME = 'member_change_name';
 
     /**
      * @ORM\Id

@@ -34,16 +34,25 @@
         {% if member.isCreator %}
             <div class="form-group">
                 <label for="description" class="col-sm-2 control-label">
-                    {{ 'raidplanner.officers'|trans }}
+                    {{ 'raidplanner.members'|trans }}
                 </label>
-                <div class="col-sm-10">
+                <div class="col-sm-10 members">
                     {% for memb in members %}
                         {% if not memb.isCreator %}
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="officers[{{ memb.id }}]" value="1" {% if memb.isOfficer %}checked{% endif %}>
-                                    {{ memb.name }}
-                                </label>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" name="names[{{ memb.id }}]"
+                                           value="{{ memb.name }}"/>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="officers[{{ memb.id }}]" value="1"
+                                                   {% if memb.isOfficer %}checked{% endif %}>
+                                            {{ 'raidplanner.officer'|trans }}
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -67,8 +76,15 @@
                         <i class="glyphicon glyphicon-remove"></i> {{ 'raidplanner.cancel'|trans }}
                     </a>
                 {% endif %}
+
             </div>
         </div>
     </form>
+
+    <style>
+        .members .row {
+            margin-bottom: .2em;
+        }
+    </style>
 
 {% endblock %}
