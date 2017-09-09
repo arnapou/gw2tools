@@ -40,12 +40,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for charname, char in memberdata.characters %}
+                {% for char in memberdata.characters %}
                     <tr>
                         <td>
                             <span class="character-name">
-                                <i class="ic-profession-{{ char.profession|lower }}"></i>
-                                {{ charname }}
+                                <i class="ic-profession-{{ char.prof|lower }}"></i>
+                                {{ char.name }}
                             </span>
                             <div class="text-muted"
                                  style="margin-top: 1em; margin-left: 1.8em;">

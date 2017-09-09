@@ -282,8 +282,9 @@ class RaidMember
                     foreach ($account->getCharacters() as $character) {
                         if ($character->getLevel() >= 80) {
                             $char   = [
-                                'profession' => $character->getData('profession'),
-                                'age'        => $character->getAge(),
+                                'prof' => $character->getData('profession'),
+                                'age'  => $character->getAge(),
+                                'name' => $character->getName(),
                             ];
                             $blocks = [];
                             foreach ($character->getEquipmentsBySubtype() as $subtype => $items) {
@@ -342,9 +343,13 @@ class RaidMember
 
                             $char['blocks'] = $blocks;
 
-                            $data['characters'][$character->getName()] = $char;
+                            $data['characters'][] = $char;
                         }
                     }
+                    usort($data['characters'], function ($a, $b) {
+                        return $a['prof'] <=> $b['prof']
+                            ?: $a['name'] <=> $b['name'];
+                    });
                 }
 
 
