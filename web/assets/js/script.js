@@ -1,17 +1,25 @@
 $(function () {
 
     var messages = {
+        'yes': 'Yes',
+        'no': 'No',
         'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
         'action-delete-token': "Do you really want to delete the api key ?<br />It cannot be cancelled.",
         'action-replace-token': "Paste your api key:",
         'bad-token': 'The provided api key is not valid.',
+        'restore-token': "An API key was found in your browser. Do you want to restore your cookies with it ?",
+        'restore-tokens': "API keys were found in your browser.  Do you want to restore your cookies with them ?"
     };
     if (LANG == 'fr') {
         messages = {
+            'yes': 'Oui',
+            'no': 'Non',
             'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
             'action-delete-token': "Etes-vous sûr(e) de vouloir supprimer la clé d'application ?<br />Cette action ne peut pas être annulée.",
             'action-replace-token': "Collez votre clé d'application :",
             'bad-token': "La clé d'application n'est pas valide.",
+            'restore-token': "Une clé d'application a été retrouvé dans votre navigateur. Voulez-vous restorer vos cookies avec elle ?",
+            'restore-tokens': "Des clés d'application ont été retrouvées dans votre navigateur. Voulez-vous restorer vos cookies avec elles ?"
         };
     }
 
@@ -28,11 +36,53 @@ $(function () {
     }
 
     function saveTokens(tokens) {
-        if (tokens.length > 20) {
-            tokens = tokens.reverse().slice(0, 20).reverse();
+        if (typeof tokens !== 'string') {
+            if (tokens.length > 20) {
+                tokens = tokens.reverse().slice(0, 20).reverse();
+            }
+            tokens = tokens.join('|');
         }
-        Cookies.set('accesstoken', tokens.join('|'), {expires: cookieRetention});
+
+        Cookies.set('accesstoken', tokens, {expires: cookieRetention});
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('accesstoken', tokens);
+        }
     }
+
+    /**
+     * refresh cookie
+     */
+    (function (tokens) {
+        if (tokens) {
+            saveTokens(tokens);
+        } else if (typeof localStorage !== 'undefined') {
+            var data = localStorage.getItem('accesstoken');
+            if (typeof data === 'string' && data.match(/^\s*([A-F0-9-]{70,80})(\|[A-F0-9-]{70,80})*\s*$/)) {
+                var question = data.match(/\|/) ? messages['restore-tokens'] : messages['restore-token'];
+                bootbox.confirm({
+                    message: question,
+                    buttons: {
+                        confirm: {
+                            label: messages['yes'],
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: messages['no'],
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (ok) {
+                        if (ok) {
+                            saveTokens(data);
+                            window.location.reload();
+                        } else {
+                            localStorage.setItem('accesstoken', '');
+                        }
+                    }
+                });
+            }
+        }
+    })(Cookies.get('accesstoken'));
 
     /**
      * ajax load of page content
@@ -322,15 +372,6 @@ $(function () {
         });
 
     })();
-
-    /**
-     * refresh cookie
-     */
-    (function (tokens) {
-        if (tokens) {
-            Cookies.set('accesstoken', tokens, {expires: cookieRetention});
-        }
-    })(Cookies.get('accesstoken'));
 
     /**
      * checks a the end of loaded content

@@ -1,3 +1,8 @@
+## 2.2.3 (2017-09-10)
+
+  - added the possibility to restore cookies from localStorage if possible
+    (for people who clean often their cookies)
+  
 ## 2.2.2 (2017-09-09)
 
   - added stuff check for members in raid planner
