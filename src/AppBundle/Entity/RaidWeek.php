@@ -21,6 +21,7 @@ class RaidWeek
 {
 
     const NONE    = 'none';
+    const ABSENT  = 'absent';
     const PRESENT = 'present';
     const MAYBE   = 'maybe';
     const BACKUP  = 'backup';
@@ -297,8 +298,9 @@ class RaidWeek
         return [
             self::NONE,
             self::PRESENT,
-            self::MAYBE,
             self::BACKUP,
+            self::MAYBE,
+            self::ABSENT,
         ];
     }
 

@@ -1,12 +1,14 @@
 {% extends "AppBundle::raidplanner/base.html.twig" %}
 
 {% set transmap = {
-'%_none%' : 'default',
+'%_none%' : 'link',
+'%_absent%' : 'default',
 '%_present%' : 'primary',
 '%_maybe%' : 'warning',
 '%_backup%' : 'info',
 
 '%.backup%': 'raidplanner.status.backup'|trans,
+'%.absent%': 'raidplanner.status.absent'|trans,
 '%.maybe%': 'raidplanner.status.maybe'|trans,
 '%.none%': 'raidplanner.status.none'|trans,
 '%.present%': 'raidplanner.status.present'|trans
@@ -80,6 +82,10 @@
         td:first-child {
             width: 12em;
             white-space: nowrap;
+        }
+
+        .label-link {
+            color: #18bc9c;
         }
     </style>
 
