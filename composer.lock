@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "a1cc550854a2110189b3c7ade722ea84b8d3400f"
+                "reference": "d199b102e7142f26d7ccb2a9ae0f5ac12310ab90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/a1cc550854a2110189b3c7ade722ea84b8d3400f",
-                "reference": "a1cc550854a2110189b3c7ade722ea84b8d3400f",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/d199b102e7142f26d7ccb2a9ae0f5ac12310ab90",
+                "reference": "d199b102e7142f26d7ccb2a9ae0f5ac12310ab90",
                 "shasum": ""
             },
             "require": {
@@ -46,20 +46,20 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2017-09-08 16:03:45"
+            "time": "2017-09-11 14:16:07"
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12"
+                "reference": "9dd73a03951357922d8aee6cc084500de93e2343"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
-                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/9dd73a03951357922d8aee6cc084500de93e2343",
+                "reference": "9dd73a03951357922d8aee6cc084500de93e2343",
                 "shasum": ""
             },
             "require": {
@@ -105,7 +105,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2017-03-06T11:59:08+00:00"
+            "time": "2017-09-11T07:24:36+00:00"
         },
         {
             "name": "doctrine/annotations",
