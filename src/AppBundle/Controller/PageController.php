@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
 use Arnapou\GW2Api\Model\Character;
+use Arnapou\GW2Skills\LinkBuilder;
 use Gw2tool\Account;
 use Gw2tool\Exception\AccessNotAllowedException;
 use Gw2tool\Menu;
@@ -181,7 +182,9 @@ class PageController extends AbstractController
         $character = $this->characters[$name];
         /* @var $character Character */
 
-        $url = $character->getGw2SkillsLink($mode);
+        $builder = new LinkBuilder($character->getEnvironment());
+        $url     = $builder->getLink($character, $mode);
+
         return $this->redirect($url);
     }
 

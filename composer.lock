@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnapou/gw2apiclient.git",
-                "reference": "d199b102e7142f26d7ccb2a9ae0f5ac12310ab90"
+                "reference": "a537be03784e9f01463216cafef5a16b35b05731"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/d199b102e7142f26d7ccb2a9ae0f5ac12310ab90",
-                "reference": "d199b102e7142f26d7ccb2a9ae0f5ac12310ab90",
+                "url": "https://api.github.com/repos/arnapou/gw2apiclient/zipball/a537be03784e9f01463216cafef5a16b35b05731",
+                "reference": "a537be03784e9f01463216cafef5a16b35b05731",
                 "shasum": ""
             },
             "require": {
@@ -28,7 +28,8 @@
             "autoload": {
                 "psr-4": {
                     "Arnapou\\GW2Api\\": "src/Arnapou/GW2Api/",
-                    "Arnapou\\GW2Skills\\": "src/Arnapou/GW2Skills/"
+                    "Arnapou\\GW2Skills\\": "src/Arnapou/GW2Skills/",
+                    "Arnapou\\DeltaConnected\\": "src/Arnapou/DeltaConnected/"
                 },
                 "files": [
                     "src/Arnapou/GW2Api/functions.php"
@@ -46,7 +47,7 @@
                 "source": "https://github.com/arnapou/gw2apiclient/tree/master",
                 "issues": "https://github.com/arnapou/gw2apiclient/issues"
             },
-            "time": "2017-09-11 14:16:07"
+            "time": "2017-09-16 10:20:04"
         },
         {
             "name": "composer/ca-bundle",
@@ -2393,16 +2394,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "13db89f6617d512df9ba6b6416fbc2cbbb5c9784"
+                "reference": "27d159bd9bd14a3bd9d3e136081c321a0d621c03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/13db89f6617d512df9ba6b6416fbc2cbbb5c9784",
-                "reference": "13db89f6617d512df9ba6b6416fbc2cbbb5c9784",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/27d159bd9bd14a3bd9d3e136081c321a0d621c03",
+                "reference": "27d159bd9bd14a3bd9d3e136081c321a0d621c03",
                 "shasum": ""
             },
             "require": {
@@ -2451,7 +2452,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-08-28T11:33:29+00:00"
+            "time": "2017-09-05T11:23:06+00:00"
         }
     ],
     "aliases": [],

@@ -1,6 +1,9 @@
 <?php
 namespace AppBundle\Twig;
 
+use Arnapou\DeltaConnected\BuildTemplate;
+use Arnapou\GW2Api\Model\Character;
+
 class TwigExtension extends \Twig_Extension
 {
 
@@ -26,7 +29,13 @@ class TwigExtension extends \Twig_Extension
             new \Twig_SimpleFilter('gwlink', [$this, 'gwlink']),
             new \Twig_SimpleFilter('idtoname', [$this, 'idtoname']),
             new \Twig_SimpleFilter('tpsum', [$this, 'tpsum']),
+            new \Twig_SimpleFilter('dctraits', [$this, 'dctraits']),
         );
+    }
+
+    public function dctraits(Character $char, $mode){
+        $bd = new BuildTemplate($char->getEnvironment());
+        return $bd->getTraits($char, $mode);
     }
 
     public function tpsum($items, $subkey = null)

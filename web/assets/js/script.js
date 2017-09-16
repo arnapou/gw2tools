@@ -3,6 +3,7 @@ $(function () {
     var messages = {
         'yes': 'Yes',
         'no': 'No',
+        'dctraitlink': '[Deltaconnected] Traits template for copy/paste in game',
         'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
         'action-delete-token': "Do you really want to delete the api key ?<br />It cannot be cancelled.",
         'action-replace-token': "Paste your api key:",
@@ -14,6 +15,7 @@ $(function () {
         messages = {
             'yes': 'Oui',
             'no': 'Non',
+            'dctraitlink': '[Deltaconnected] Template de traits pour copier-coller en jeu',
             'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
             'action-delete-token': "Etes-vous sûr(e) de vouloir supprimer la clé d'application ?<br />Cette action ne peut pas être annulée.",
             'action-replace-token': "Collez votre clé d'application :",
@@ -239,6 +241,21 @@ $(function () {
         var id = $(this).data('id');
         $('.page-masteries .mastery').hide();
         $('#' + id).show();
+    });
+
+    /**
+     * Deltaconnected trait links
+     */
+    $(document).on('click', '.dctraitlink', function(e){
+        var value = $(this).data('template');
+        console.log(value);
+        bootbox.prompt({
+            title: messages.dctraitlink,
+            value: value,
+            callback: function(){ }
+        });
+        e.stopPropagation();
+        return false;
     });
 
     /**

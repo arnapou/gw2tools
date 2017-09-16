@@ -1,3 +1,7 @@
+## 2.2.4 (2017-09-16)
+
+  - added arcdps build template for copy-paste IG
+
 ## 2.2.3 (2017-09-10)
 
   - added the possibility to restore cookies from localStorage if possible
