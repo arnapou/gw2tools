@@ -1,8 +1,11 @@
 $(function () {
 
     var messages = {
+        'ok': 'Ok',
         'yes': 'Yes',
         'no': 'No',
+        'close': 'Close',
+        'copy_clipboard': 'Copy to clipboard',
         'dctraitlink': '[Deltaconnected] Traits template for copy/paste in game',
         'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
         'action-delete-token': "Do you really want to delete the api key ?<br />It cannot be cancelled.",
@@ -13,8 +16,11 @@ $(function () {
     };
     if (LANG == 'fr') {
         messages = {
+            'ok': 'Ok',
             'yes': 'Oui',
             'no': 'Non',
+            'close': 'Fermer',
+            'copy_clipboard': 'Copier dans le presse-papier',
             'dctraitlink': '[Deltaconnected] Template de traits pour copier-coller en jeu',
             'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
             'action-delete-token': "Etes-vous sûr(e) de vouloir supprimer la clé d'application ?<br />Cette action ne peut pas être annulée.",
@@ -26,6 +32,7 @@ $(function () {
     }
 
     var cookieRetention = 90;
+    var isClipboardCopySupported = document.queryCommandSupported && document.queryCommandSupported('copy');
 
     function isValidToken(token) {
         token = String(token);
@@ -248,11 +255,28 @@ $(function () {
      */
     $(document).on('click', '.dctraitlink', function(e){
         var value = $(this).data('template');
-        console.log(value);
         bootbox.prompt({
             title: messages.dctraitlink,
+            buttons: {
+                confirm: {
+                    label: isClipboardCopySupported ? messages['copy_clipboard'] : messages['ok']
+                },
+                cancel: {
+                    label: messages['close']
+                }
+            },
             value: value,
-            callback: function(){ }
+            className: 'deltaconnected-dialog',
+            callback: function(result){
+                if(isClipboardCopySupported && result !== null) {
+                    $('.deltaconnected-dialog input').select();
+                    try {
+                        document.execCommand('copy');
+                    } catch (err) {
+                        bootbox.alert('Oops, something went wrong and I was unable to copy to clipboard. Use your own Ctrl+C instead :(');
+                    }
+                }
+            }
         });
         e.stopPropagation();
         return false;

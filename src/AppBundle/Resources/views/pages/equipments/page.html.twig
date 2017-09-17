@@ -2,15 +2,62 @@
 
 {% block content %}
 
-	<div class="page-{{ page }}" data-content="ajax" data-src="./content.html">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+    <div class="page-{{ page }}" data-content="ajax" data-src="./content.html">
+        <div class="panel panel-default">
+            <div class="panel-heading">
                 <i class="ic-armor-coat"></i> {{ page_name }}
             </div>
-			<div class="panel-body">
-				<div class="spinner-loader"></div> <em>{{ "global.loading"|trans }}</em>
-			</div>
-		</div>
-	</div>
+            <div class="panel-body">
+                <div class="spinner-loader"></div>
+                <em>{{ "global.loading"|trans }}</em>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('.equipment-tabs button').click(function () {
+                $('.equipment-tabs button').removeClass('btn-primary').addClass('btn-default');
+                $(this).removeClass('btn-default').addClass('btn-primary');
+
+                $('.equipment-tab').hide();
+                $('.equipment-tab.tab-' + $(this).data('tab')).show();
+            }).eq(0).trigger('click');
+        })
+    </script>
+
+    <style>
+
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        $(function () {
+            $(document).on('click', '.equipment-tabs button', function () {
+                $('.equipment-tabs button').removeClass('btn-primary').addClass('btn-default');
+                $(this).removeClass('btn-default').addClass('btn-primary');
+
+                $('.equipment-tab').hide();
+                $('.equipment-tab.tab-' + $(this).data('tab')).show();
+            }).eq(0).trigger('click');
+        })
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <style>
+        .equipment-tabs {
+            margin-bottom: 1.5em;
+        }
+    </style>
 
 {% endblock %}

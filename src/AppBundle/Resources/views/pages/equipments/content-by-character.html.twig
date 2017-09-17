@@ -1,0 +1,131 @@
+{% spaceless %}
+
+    {% import "AppBundle::macro.html.twig" as macro %}
+
+    {% set sets = [
+        { 'types': ['Helm', 'Shoulders', 'Coat', 'Gloves', 'Leggings', 'Boots', 'HelmAquatic'],
+          'grouped': 1,
+          'class': 'armor-coat'
+        },
+        { 'types': ['Amulet', 'Accessory', 'Ring', 'Backpack'],
+          'grouped': 1,
+          'class': 'armor-amulet'
+        },
+        { 'types': ['Greatsword', 'Hammer', 'Rifle', 'Staff', 'LongBow', 'ShortBow'],
+          'class': 'weapon-hammer'
+        },
+        { 'types': ['Sword', 'Axe', 'Mace', 'Dagger', 'Scepter', 'Pistol'],
+          'class': 'weapon-sword'
+        },
+        { 'types': ['Focus', 'Warhorn', 'Shield', 'Torch'],
+          'class': 'weapon-focus'
+        },
+        { 'types': ['Speargun', 'Harpoon', 'Trident'],
+          'class': 'weapon-trident'
+        },
+    ] %}
+
+    {% for char in characters %}
+        {% if module.isAllowedCharacter(char) %}
+            {% set equipments = char.getEquipmentsBySubtype() %}
+            <div class="panel panel-default equipments-by-characters">
+                <div class="panel-heading">
+                    {{ macro.charname(_context, char) }}
+                </div>
+                <div class="panel-body">
+                    {% set index = 0 %}
+                    {% set nbColumns = 8 %}
+                    <table class="table table-condensed equipments">
+                        <tbody>
+                        <tr>
+                            {% for set in sets %}
+                                {% if set.grouped != 1 %}
+
+                                    <td>
+                                        <div class="cell-title"><i class="ic-{{ set.class }}"></i></div>
+                                        {% for type in set.types %}
+                                            {% if equipments[type] %}
+                                                {% for item in equipments[type] %}
+                                                    {% if item %}
+                                                            {{ macro.object(item, 0, 1) }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    {% set index = index + 1 %}
+
+                                    {% if index == nbColumns %}
+                                    {% set index = 0 %}
+                                        </tr><tr>
+                                    {% endif %}
+
+                                {% else %}
+
+                                    {% set max = 0 %}
+
+                                    {% for type, items in equipments %}
+                                        {% if type in set.types %}
+                                            {% set n = (type in ['Ring', 'Accessory']) ? (items|length/2)|round(0, 'ceil') : items|length %}
+                                            {% if n > max %}
+                                                {% set max = n %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if max > 0 %}
+                                        {% for n in 0..(max-1) %}
+                                            <td>
+                                                <div class="cell-title"><i class="ic-{{ set.class }}"></i></div>
+                                                {% for type in set.types %}
+                                                    {% if equipments[type] %}
+                                                        {% if (type in ['Ring', 'Accessory']) %}
+
+                                                            {% set item = equipments[type][2 * n] %}
+                                                            {% if item %}
+                                                                {{ macro.object(item, 0, 1) }}
+                                                            {% endif %}
+
+                                                            {% set item = equipments[type][2 * n + 1] %}
+                                                            {% if item %}
+                                                                {{ macro.object(item, 0, 1) }}
+                                                            {% endif %}
+
+                                                        {% else %}
+
+                                                            {% set item = equipments[type][n] %}
+                                                            {% if item %}
+                                                                {{ macro.object(item, 0, 1) }}
+                                                            {% endif %}
+
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            {% set index = index + 1 %}
+
+                                            {% if index == nbColumns %}
+                                            {% set index = 0 %}
+                                                </tr><tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if index < nbColumns - 1 %}
+                                {% for i in index..(nbColumns - 1) %}
+                                    <td></td>
+                                {% endfor %}
+                            {% endif %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+{% endspaceless %}
+

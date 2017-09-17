@@ -1,131 +1,20 @@
 {% spaceless %}
-    {% import "AppBundle::macro.html.twig" as macro %}
 
-    {% set tables = [
-        {
-            'types': [
-                ['armor', 'Helm'], 
-                ['armor', 'Shoulders'], 
-                ['armor', 'Coat'], 
-                ['armor', 'Gloves'], 
-                ['armor', 'Leggings'], 
-                ['armor', 'Boots'],
-            ],
-            'limit': 5
-        },
-        {
-            'types': [
-                ['armor', 'Amulet'], 
-                ['armor', 'Accessory'], 
-                ['armor', 'Ring'], 
-                ['armor', 'Backpack'], 
-                ['armor', 'HelmAquatic'], 
-                none,
-            ],
-            'limit': 10
-        },
-        {
-            'types': [
-                ['weapon', 'Greatsword'], 
-                ['weapon', 'Hammer'], 
-                ['weapon', 'Rifle'], 
-                ['weapon', 'Staff'], 
-                ['weapon', 'LongBow'], 
-                ['weapon', 'ShortBow'],
-            ],
-            'limit': 5
-        },
-        {
-            'types': [
-                ['weapon', 'Focus'], 
-                ['weapon', 'Warhorn'], 
-                ['weapon', 'Shield'], 
-                ['weapon', 'Torch'], 
-                none,
-                none,
-            ],
-            'limit': 5
-        },
-        {
-            'types': [
-                ['weapon', 'Sword'], 
-                ['weapon', 'Axe'], 
-                ['weapon', 'Mace'], 
-                ['weapon', 'Dagger'], 
-                ['weapon', 'Scepter'], 
-                ['weapon', 'Pistol'],
-            ],
-            'limit': 5
-        },
-        {
-            'types': [
-                ['weapon', 'Speargun'], 
-                ['weapon', 'Harpoon'], 
-                ['weapon', 'Trident'], 
-                ['gathering', 'Foraging'], 
-                ['gathering', 'Logging'], 
-                ['gathering', 'Mining'],
-            ],
-            'limit': 5
-        },
-    ] %}
+    <div class="btn-group equipment-tabs" role="toolbar">
+        <button type="button" class="btn btn-primary" data-tab="by-character">
+            {{ 'global.equipment_by_character'|trans }}
+        </button>
+        <button type="button" class="btn btn-default" data-tab="by-stuff">
+            {{ 'global.equipment_by_stuff'|trans }}
+        </button>
+    </div>
 
-    {% set characters = account.characters %}
+    <div class="equipment-tab tab-by-character">
+        {% include "AppBundle:pages/equipments:content-by-character.html.twig" %}
+    </div>
 
-    {% for i, table in tables %}
-        <div class="panel panel-default equipments">
-            <div class="panel-heading">
-                <table class="table table-condensed table-hover">
-                    <thead>
-                    <th style="vertical-align: middle">
-                        {% if i == 0 %}
-                            {{ page_name }}
-                        {% endif %}
-                    </th>
-                    {% for type in table.types %}
-                        {% if type %}
-                            <th title="{{ ('itemtype.'~type.1)|trans }}">
-                                <i class="ic-{{ type.0 }}-{{ type.1|lower }}"></i>
-                            </th>
-                        {% else %}
-                            <th>
-                            </th>
-                        {% endif %}
-                    {% endfor %}
-                    </thead>
-                </table>
-            </div>
-            <div class="panel-body">
-                <table class="table table-condensed table-hover equipments">
-                    <tbody>
-                        {% for char in characters %}
-                            {% if module.isAllowedCharacter(char) %}
-                                {% set equipments = char.getEquipmentsBySubtype() %}
-                                <tr>
-                                    <td>
-                                        {{ macro.charname(_context, char) }}
-                                    </td>
-                                    {% for type in table.types %}
-                                        {% if type %}
-                                            <td>
-                                                {% if equipments[type.1] %}
-                                                    {% for item in equipments[type.1]|slice(0, table.limit) %}
-                                                        {{ macro.object(item, 0, 1) }}
-                                                    {% endfor %}
-                                                {% endif %}
-                                            </td>
-                                        {% else %}
-                                            <td>
-                                            </td>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    {% endfor %}
+    <div class="equipment-tab tab-by-stuff" style="display: none">
+        {% include "AppBundle:pages/equipments:content-by-stuff.html.twig" %}
+    </div>
 
 {% endspaceless %}

@@ -1289,6 +1289,20 @@ img.currency {
     width: auto;
 }
 
+.page-equipments .equipments-by-characters td {
+    width: 12.5% !important;
+}
+
+.page-equipments .equipments-by-characters tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+.page-equipments .equipments-by-characters .cell-title {
+    margin-bottom: .5em;
+    padding-left: 1.9em;
+    font-size: .8em;
+}
+
 .page-equipments .equipments .panel-heading {
     padding-top: 0;
     padding-bottom: 0;

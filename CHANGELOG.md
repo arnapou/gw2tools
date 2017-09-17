@@ -1,3 +1,8 @@
+## 2.2.5 (2017-09-17)
+
+  - added new equipments page mode
+  - added automatic copy to clipboard for arcdps build template
+
 ## 2.2.4 (2017-09-16)
 
   - added arcdps build template for copy-paste IG
