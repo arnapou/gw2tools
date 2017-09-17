@@ -30,6 +30,11 @@
             {% set equipments = char.getEquipmentsBySubtype() %}
             <div class="panel panel-default equipments-by-characters">
                 <div class="panel-heading">
+                    <div class="pull-right">
+                        <a href="../gw2skills-pve/{{ char.getname }}" class="gw2skillslink" target="_blank">
+                            <i class="glyphicon glyphicon-link"></i>Gw2Skills
+                        </a>
+                    </div>
                     {{ macro.charname(_context, char) }}
                 </div>
                 <div class="panel-body">
