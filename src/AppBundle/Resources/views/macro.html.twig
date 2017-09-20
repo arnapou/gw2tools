@@ -1,4 +1,3 @@
-
 {% macro object(obj, force, nopic) %}
     {% if obj.getId() %}
         <div class="inventory-slot">
@@ -11,13 +10,13 @@
             {% else %}#}
             {% if obj.gettype != 'Gathering' %}
                 <div class="stat">
-                    <img src="{{ obj.getStatname()|imagestat }}" title="{{ ('stats.'~obj.getStatname())|trans }}" />
+                    <img src="{{ obj.getStatname()|imagestat }}" title="{{ ('stats.'~obj.getStatname())|trans }}"/>
                     {#                        <span class="rarity border rarity-{{ obj.getRarity() }}"></span>#}
                 </div>
             {% endif %}
             <div class="item">
                 <span {{ obj|gwlink|raw }}>
-                    <img src="{{ obj|image }}" class="item rarity-{{ obj.getRarity() }}" />
+                    <img src="{{ obj|image }}" class="item rarity-{{ obj.getRarity() }}"/>
                     {% if obj.getCharges() %}
                         <span class="charges">{{ obj.getCharges() }}</span>
                     {% endif %}
@@ -29,14 +28,14 @@
                     <div class="upgrades">
                         {% for upgrade in obj.upgrades %}
                             <span {{ upgrade|gwlink|raw }}>
-                                <img src="{{ upgrade|image }}" class="infusion" />
+                                <img src="{{ upgrade|image }}" class="infusion"/>
                             </span>
                         {% endfor %}
                     </div>
                     <div class="infusions">
                         {% for infusion in obj.infusions %}
                             <span {{ infusion|gwlink|raw }}>
-                                <img src="{{ infusion|image }}" class="upgrade" />
+                                <img src="{{ infusion|image }}" class="upgrade"/>
                             </span>
                         {% endfor %}
                     </div>
@@ -46,11 +45,11 @@
     {% elseif force %}
         <div class="inventory-slot empty">
             <div class="stat">
-                <img src="/assets/images/empty.png" class="item" />
+                <img src="/assets/images/empty.png" class="item"/>
             </div>
             <div class="item">
                 <span>
-                    <img src="/assets/images/cross.svg" class="item rarity-Junk" />
+                    <img src="/assets/images/cross.svg" class="item rarity-Junk"/>
                 </span>
             </div>
         </div>
@@ -102,7 +101,7 @@
         <div class="slots">
             <div class="bag">
                 <div class="slot">
-                    <img src="/assets/images/misc/shared-slot.png" />
+                    <img src="/assets/images/misc/shared-slot.png"/>
                 </div>
             </div>
 
@@ -124,10 +123,10 @@
                 <div class="slot">
                     {% if bag.getId() %}
                         <span {{ bag|gwlink|raw }}>
-                            <img src="{{ bag|image }}" />
+                            <img src="{{ bag|image }}"/>
                         </span>
                     {% else %}
-                        <img src="{{ ""|image }}" class="nothing" />
+                        <img src="{{ ""|image }}" class="nothing"/>
                     {% endif %}
                 </div>
             </div>
@@ -147,7 +146,7 @@
     <div class="stash slotbars">
         <div class="stash-header">
             <div>
-                <img src="{{ stash.getUpgrade|image }}" />
+                <img src="{{ stash.getUpgrade|image }}"/>
             </div>
             <div>
                 <b>{{ stash.getUpgrade.getName }}</b>
@@ -181,7 +180,7 @@
     <div class="slot rarity-{{ item.getRarity() }}">
         {% if item.getId() %}
             <span {{ item|gwlink|raw }}>
-                <img src="{{ item|image }}" />
+                <img src="{{ item|image }}"/>
                 {% if item.getCount() > 1 %}
                     <span class="count">{{ item.getCount() }}</span>
                 {% elseif item.getCharges() %}
@@ -201,7 +200,7 @@
 
 {% macro inventory_slot_amount(value) %}
     {% set g = (value / 10000)|round(0, 'floor') %}
-    {%  if g >=1 %}
+    {% if g >=1 %}
         <span class="amount" data-amount="{{ value }}">
             <span class="gold">{{ g }}</span>
         </span>
@@ -214,23 +213,26 @@
 {% macro specializations(build, show_id) %}
     {% for spe in build.getSpecializations() %}
         {% if spe %}
-            {% if show_id is defined and show_id %}
-                <span class="pull-right">{{ 'global.id'|trans }}={{ spe.id }}</span>
-            {% endif %}
-            <b class="{{ spe.isElite() ? 'text-danger' : '' }}">{{ spe.getName() }}</b>
-            <div class="specialization">
-                <img src="{{ spe.getbackground|image }}" class="background" />
-                <img src="/assets/images/specialization-mask.svg" class="mask" />
-                {% for i, trait in spe.getminortraits %}
-                    <div class="trait minor-{{ i+1 }}">
-                        <img src="{{ trait.geticon|image }}" {{ trait|gwlink|raw }} />
-                    </div>
-                {% endfor %}
-                {% for i, trait in spe.getmajortraits %}
-                    <div class="trait major-{{ i+1 }} {{ (trait.getId() in spe.traitsids) ? '' : 'not-selected' }}">
-                        <img src="{{ trait.geticon|image }}" {{ trait|gwlink|raw }} />
-                    </div>
-                {% endfor %}
+            <div class="spe-{{ spe.getid }}">
+                {% if show_id is defined and show_id %}
+                    <span class="pull-right">{{ 'global.id'|trans }}={{ spe.id }}</span>
+                {% endif %}
+                <b class="{{ spe.isElite() ? 'text-danger' : '' }}">{{ spe.getName() }}</b>
+                <div class="specialization">
+                    <img src="{{ spe.getbackground|image }}" class="background"/>
+                    <img src="/assets/images/specialization-mask.svg" class="mask"/>
+                    {% for i, trait in spe.getminortraits %}
+                        <div class="trait minor-{{ i+1 }}" data-id="{{ trait.getId }}">
+                            <img src="{{ trait.geticon|image }}" {{ trait|gwlink|raw }} />
+                        </div>
+                    {% endfor %}
+                    {% for i, trait in spe.getmajortraits %}
+                        <div class="trait major-{{ i+1 }} {{ (trait.getId() in spe.traitsids) ? '' : 'not-selected' }}"
+                             data-id="{{ trait.getId }}">
+                            <img src="{{ trait.geticon|image }}" {{ trait|gwlink|raw }} />
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         {% endif %}
     {% endfor %}

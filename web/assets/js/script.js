@@ -253,7 +253,7 @@ $(function () {
     /**
      * Deltaconnected trait links
      */
-    $(document).on('click', '.dctraitlink', function(e){
+    $(document).on('click', '.dctraitlink', function (e) {
         var value = $(this).data('template');
         bootbox.prompt({
             title: messages.dctraitlink,
@@ -267,8 +267,8 @@ $(function () {
             },
             value: value,
             className: 'deltaconnected-dialog',
-            callback: function(result){
-                if(isClipboardCopySupported && result !== null) {
+            callback: function (result) {
+                if (isClipboardCopySupported && result !== null) {
                     $('.deltaconnected-dialog input').select();
                     try {
                         document.execCommand('copy');
