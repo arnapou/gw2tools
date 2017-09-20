@@ -35,7 +35,7 @@ class TwigExtension extends \Twig_Extension
 
     public function dctraits(Character $char, $mode){
         $bd = new BuildTemplate($char->getEnvironment());
-        return $bd->getTraits($char, $mode);
+        return $bd->getTraitsFromCharacter($char, $mode);
     }
 
     public function tpsum($items, $subkey = null)
