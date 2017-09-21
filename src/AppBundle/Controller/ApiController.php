@@ -11,6 +11,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
+use Arnapou\DeltaConnected\BuildTemplate;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Arnapou\GW2Api\Storage\MongoStorage;
@@ -290,6 +291,28 @@ class ApiController extends AbstractController
         }
     }
 
+    /**
+     *
+     * @Route("/api/arcdps-traits")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function arcdpsTraitsAction(Request $request)
+    {
+        try {
+            $lang          = $this->getRequestLang($request);
+            $mode          = $request->get('mode', 'pve');
+            $profession    = $request->get('profession');
+            $speIds        = $request->get('specializations');
+            $traitIds      = $request->get('traits');
+            $buildTemplate = new BuildTemplate($this->getGwEnvironment($lang));
+            return new JsonResponse([
+                'template' => $buildTemplate->getTraits($profession, $speIds, $traitIds, $mode),
+            ]);
+        } catch (\Exception $ex) {
+            return $this->createJsonError($ex);
+        }
+    }
 
     /**
      *

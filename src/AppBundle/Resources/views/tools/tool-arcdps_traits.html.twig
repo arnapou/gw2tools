@@ -29,7 +29,17 @@
 
         <div class="panel-body">
             {% for prof in professions|slice(0, 1) %}
-                <div class="tab tab-{{ prof.id }}" style="display: {{ loop.first ? 'inline-block' : 'none' }}">
+                <div class="tab tab-{{ prof.id }}" style="display: {{ loop.first ? 'block' : 'none' }}">
+                    <div class="row">
+                        <div class="col-xs-2">
+                        <span class="dctraitlink">
+                            <i class="glyphicon glyphicon-book"></i>Arcdps template =
+                        </span>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control"/>
+                        </div>
+                    </div>
                     <div class="spemenu">
                         {% for spe in prof.getSpecializations() %}
                             {% if spe %}

@@ -134,6 +134,8 @@
     <script>
         $(function () {
 
+            var chained = null;
+
             var typeheadSettings = {
                 name: 'items',
                 display: 'value',
@@ -197,11 +199,14 @@
                     skin: int($('.qSkin').data('item_id')),
                     quantity: int($('.qQuantity input').val())
                 };
-                $.getJSON('/api/chatlink-generate', data, function (json) {
-                    if (typeof json.chatlink === 'string') {
-                        $('.result .chatlink').val(json.chatlink);
-                    }
-                });
+                var ajaxRequest = function(){
+                    return $.getJSON('/api/chatlink-generate', data, function (json) {
+                        if (typeof json.chatlink === 'string') {
+                            $('.result .chatlink').val(json.chatlink);
+                        }
+                    });
+                };
+                chained = (chained === null) ? ajaxRequest() : chained.then(ajaxRequest);
             }
 
             function update($container, suggestion) {
