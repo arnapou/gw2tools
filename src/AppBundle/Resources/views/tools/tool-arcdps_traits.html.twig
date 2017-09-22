@@ -85,7 +85,7 @@
 
         .spemenu > div img {
             max-width: 100%;
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
         .spemenu > div.selected img,
@@ -109,6 +109,9 @@
 
         .specialization .not-selected .action {
             opacity: .5;
+        }
+        .specialization .not-selected .action:hover {
+            opacity: 1;
         }
 
         .specialization .not-selected .action:before {
@@ -167,6 +170,10 @@
                         $spemenu.find('> div.selected.elite').each(specializationUnselect);
                     }
                     $spemenu.find('> div.selected').eq(2).each(specializationUnselect);
+                    specializationSelect.call(this);
+                }
+            }).each(function (i) {
+                if (i < 3) {
                     specializationSelect.call(this);
                 }
             });

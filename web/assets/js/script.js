@@ -1,3 +1,5 @@
+var isClipboardCopySupported = document.queryCommandSupported && document.queryCommandSupported('copy');
+
 $(function () {
 
     var messages = {
@@ -5,8 +7,10 @@ $(function () {
         'yes': 'Yes',
         'no': 'No',
         'close': 'Close',
-        'copy_clipboard': 'Copy to clipboard',
-        'dctraitlink': '[Deltaconnected] Traits template for copy/paste in game',
+        'arcdps_title': '[Arcdps] Templates for copy/paste in game',
+        'arcdps_copy_traits': 'Copy traits',
+        'arcdps_copy_skills': 'Copy skills',
+        'arcdps_copy_all': 'Copy all',
         'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
         'action-delete-token': "Do you really want to delete the api key ?<br />It cannot be cancelled.",
         'action-replace-token': "Paste your api key:",
@@ -20,8 +24,10 @@ $(function () {
             'yes': 'Oui',
             'no': 'Non',
             'close': 'Fermer',
-            'copy_clipboard': 'Copier dans le presse-papier',
-            'dctraitlink': '[Deltaconnected] Template de traits pour copier-coller en jeu',
+            'arcdps_title': '[Arcdps] Templates pour copier-coller en jeu',
+            'arcdps_copy_traits': 'Copier les traits',
+            'arcdps_copy_skills': 'Copier les compétences',
+            'arcdps_copy_all': 'Copier tout',
             'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
             'action-delete-token': "Etes-vous sûr(e) de vouloir supprimer la clé d'application ?<br />Cette action ne peut pas être annulée.",
             'action-replace-token': "Collez votre clé d'application :",
@@ -32,7 +38,6 @@ $(function () {
     }
 
     var cookieRetention = 90;
-    var isClipboardCopySupported = document.queryCommandSupported && document.queryCommandSupported('copy');
 
     function isValidToken(token) {
         token = String(token);
@@ -253,29 +258,57 @@ $(function () {
     /**
      * Deltaconnected trait links
      */
-    $(document).on('click', '.dctraitlink', function (e) {
-        var value = $(this).data('template');
-        bootbox.prompt({
-            title: messages.dctraitlink,
+    $(document).on('click', 'a.dctraitlink', function (e) {
+        var tplskills = $(this).data('tplskills');
+        var tpltraits = $(this).data('tpltraits');
+
+        var getHtml = function (cls, btnText) {
+            var disabled = isClipboardCopySupported ? '' : 'disabled="disabled"';
+            var html = '<div class="row ' + cls + '">';
+            html += '<div class="col-xs-7">';
+            html += '<input type="text" class="form-control" readonly="readonly">';
+            html += '</div>';
+            html += '<div class="col-xs-5">';
+            html += '<button type="button" class="btn btn-default" ' + disabled + '>' + btnText + '</button>';
+            html += '</div>';
+            return html + '</div>';
+        };
+
+        var dialog = bootbox.dialog({
+            title: messages.arcdps_title,
             buttons: {
-                confirm: {
-                    label: isClipboardCopySupported ? messages['copy_clipboard'] : messages['ok']
-                },
                 cancel: {
-                    label: messages['close']
-                }
-            },
-            value: value,
-            className: 'deltaconnected-dialog',
-            callback: function (result) {
-                if (isClipboardCopySupported && result !== null) {
-                    $('.deltaconnected-dialog input').select();
-                    try {
-                        document.execCommand('copy');
-                    } catch (err) {
-                        bootbox.alert('Oops, something went wrong and I was unable to copy to clipboard. Use your own Ctrl+C instead :(');
+                    label: messages.close
+                },
+                copy_all: {
+                    label: isClipboardCopySupported ? messages.arcdps_copy_all : messages.ok,
+                    callback: function () {
+                        var $dialog = $(dialog);
+                        $dialog.find('.copy_all').text(
+                            $dialog.find('.tpltraits input').val() +
+                            $dialog.find('.tplskills input').val()
+                        );
+                        copyToClipboard($dialog.find('.copy_all').get(0));
                     }
                 }
+            },
+            message:
+            getHtml('tpltraits', messages.arcdps_copy_traits) +
+            getHtml('tplskills', messages.arcdps_copy_skills) +
+            '<div class="copy_all" style="display: none"></div>',
+            onEscape: true,
+            className: 'deltaconnected-dialog'
+        }).on('shown.bs.modal', function (e) {
+            var $dialog = $(dialog);
+            $dialog.find('.tpltraits input').val(tpltraits ? tpltraits : '');
+            $dialog.find('.tplskills input').val(tplskills ? tplskills : '');
+            if(isClipboardCopySupported){
+                $dialog.find('.tpltraits .btn, .tplskills .btn').click(function(){
+                    $dialog.find('.copy_all').text(
+                        $(this).parents('.row').find('input').val()
+                    );
+                    copyToClipboard($dialog.find('.copy_all').get(0));
+                });
             }
         });
         e.stopPropagation();
@@ -656,4 +689,59 @@ function formatNumber(n) {
     return String(n).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, function ($1) {
         return $1 + "."
     });
+}
+
+/**
+ * copy/paste from https://stackoverflow.com/questions/22581345/click-button-copy-to-clipboard-using-jquery
+ */
+function copyToClipboard(elem) {
+    if (!isClipboardCopySupported || !elem) return;
+    // create hidden text element, if it doesn't already exist
+    var targetId = "_hiddenCopyText_";
+    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+    var origSelectionStart, origSelectionEnd;
+    if (isInput) {
+        // can just use the original source element for the selection and copy
+        target = elem;
+        origSelectionStart = elem.selectionStart;
+        origSelectionEnd = elem.selectionEnd;
+    } else {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("textarea");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.textContent = elem.textContent;
+    }
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+
+    // copy the selection
+    var succeed;
+    try {
+        succeed = document.execCommand("copy");
+    } catch (e) {
+        bootbox.alert('Oops, something went wrong and I was unable to copy to clipboard. Use your own Ctrl+C instead :(');
+        succeed = false;
+    }
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+
+    if (isInput) {
+        // restore prior selection
+        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+    } else {
+        // clear temporary content
+        target.textContent = "";
+    }
+    return succeed;
 }

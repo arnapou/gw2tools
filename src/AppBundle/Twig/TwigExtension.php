@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Twig;
 
 use Arnapou\DeltaConnected\BuildTemplate;
@@ -14,7 +15,7 @@ class TwigExtension extends \Twig_Extension
 
     public function getFilters()
     {
-        return array(
+        return [
 //            new \Twig_SimpleFilter('striptags', 'striptags'),
             new \Twig_SimpleFilter('br2nl', [$this, 'br2nl']),
             new \Twig_SimpleFilter('image', [$this, 'image']),
@@ -30,10 +31,18 @@ class TwigExtension extends \Twig_Extension
             new \Twig_SimpleFilter('idtoname', [$this, 'idtoname']),
             new \Twig_SimpleFilter('tpsum', [$this, 'tpsum']),
             new \Twig_SimpleFilter('dctraits', [$this, 'dctraits']),
-        );
+            new \Twig_SimpleFilter('dcskills', [$this, 'dcskills']),
+        ];
     }
 
-    public function dctraits(Character $char, $mode){
+    public function dctraits(Character $char, $mode)
+    {
+        $bd = new BuildTemplate($char->getEnvironment());
+        return $bd->getTraitsFromCharacter($char, $mode);
+    }
+
+    public function dcskills(Character $char, $mode)
+    {
         $bd = new BuildTemplate($char->getEnvironment());
         return $bd->getTraitsFromCharacter($char, $mode);
     }
