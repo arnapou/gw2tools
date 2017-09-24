@@ -100,22 +100,24 @@ abstract class AbstractController extends Controller
     /**
      *
      * @param Token $token
-     * @return boolean
+     * @param null  $exception
+     * @return bool
+     * @throws ApiUnavailableException
      */
-    public function checkToken(Token $token)
+    public function checkToken(Token $token, &$exception = null)
     {
         try {
             $account = $this->getAccount($token);
             $token->setName($account->getName());
             $token->setIsValid(true);
             $token->updateLastaccess();
-        } catch (InvalidTokenException $e) {
+        } catch (InvalidTokenException $exception) {
             $token->setIsValid(false);
-        } catch (MissingPermissionException $e) {
+        } catch (MissingPermissionException $exception) {
             $token->setIsValid(false);
-        } catch (ApiUnavailableException $e) {
-            // nothing to change on active
-        } catch (\Exception $e) {
+        } catch (ApiUnavailableException $exception) {
+            return false;
+        } catch (\Exception $exception) {
             $token->setIsValid(false);
         }
         $manager = $this->getDoctrine()->getManager();

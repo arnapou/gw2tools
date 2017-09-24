@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
 use Arnapou\DeltaConnected\BuildTemplate;
+use Arnapou\GW2Api\Exception\ApiUnavailableException;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Arnapou\GW2Api\Storage\MongoStorage;
@@ -244,7 +245,10 @@ class ApiController extends AbstractController
             if (empty($entityToken)) {
                 $entityToken = $repo->newToken($paramToken);
             }
-            if (!$this->checkToken($entityToken)) {
+            if (!$this->checkToken($entityToken, $exception)) {
+                if($exception instanceof ApiUnavailableException){
+                    throw $exception;
+                }
                 throw new InvalidTokenException('Invalid token.');
             }
 
@@ -264,6 +268,8 @@ class ApiController extends AbstractController
             return $this->createJsonError($this->trans('error.invalid-token'));
         } catch (MissingPermissionException $e) {
             return $this->createJsonError('The token is missing "' . $e->getMessage() . '" permission.');
+        } catch (ApiUnavailableException $e) {
+            return $this->createJsonError($e->getMessage());
         }
     }
 
