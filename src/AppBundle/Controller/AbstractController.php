@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
 use AppBundle\Repository\TokenRepository;
+use Arnapou\GW2Api\Exception\ApiUnavailableException;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Gw2tool\Account;
@@ -112,6 +113,8 @@ abstract class AbstractController extends Controller
             $token->setIsValid(false);
         } catch (MissingPermissionException $e) {
             $token->setIsValid(false);
+        } catch (ApiUnavailableException $e) {
+            // nothing to change on active
         } catch (\Exception $e) {
             $token->setIsValid(false);
         }
