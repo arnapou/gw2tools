@@ -11,6 +11,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
+use Arnapou\GW2Api\Exception\ApiUnavailableException;
 use Arnapou\GW2Api\Model\Character;
 use Arnapou\GW2Skills\LinkBuilder;
 use Gw2tool\Account;
@@ -295,6 +296,7 @@ class PageController extends AbstractController
      * @param bool   $ownerMandatory
      * @return array
      * @throws AccessNotAllowedException
+     * @throws ApiUnavailableException
      */
     protected function getContext($_code, $page, $ownerMandatory = false)
     {
@@ -309,7 +311,10 @@ class PageController extends AbstractController
                 !$this->isOwner && $ownerMandatory && $page !== null && !$this->token->hasRight($page)) {
                 throw new AccessNotAllowedException();
             }
-            if (!$this->checkToken($this->token)) {
+            if (!$this->checkToken($this->token, $exception)) {
+                if($exception instanceof ApiUnavailableException){
+                    throw $exception;
+                }
                 throw $this->createNotFoundException('The account is invalid or the official GW2 API is down. Try again later.');
             }
             $this->account    = $this->getAccount($this->token);
