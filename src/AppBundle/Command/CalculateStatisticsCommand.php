@@ -13,6 +13,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Token;
 use Arnapou\GW2Api\Cache\MongoCache;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
+use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Gw2tool\Account;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
