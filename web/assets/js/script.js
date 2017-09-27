@@ -299,16 +299,9 @@ $(function () {
         }).on('shown.bs.modal', function (e) {
             if (isClipboardCopySupported) {
                 $(dialog).find('.tpltraits .btn, .tplskills .btn').click(function () {
-                    if($(this).parents('.row').hasClass('tpltraits')) {
-
-                        $(this).parents('.row').find('input').select();
-                        document.execCommand('copy');
-                    }else {
-
-                        copyToClipboard(
-                            $(this).parents('.row').find('input').val()
-                        );
-                    }
+                    copyToClipboard(
+                        $(this).parents('.row').find('input').val()
+                    );
                 });
             }
         });
@@ -715,7 +708,7 @@ function copyToClipboard($element) {
     }
 
     var $modalBody = $('.bootbox .modal-body');
-    if($modalBody.length) {
+    if ($modalBody.length) {
         $modalBody.append($target);
     }
 
