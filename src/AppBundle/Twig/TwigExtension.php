@@ -44,7 +44,7 @@ class TwigExtension extends \Twig_Extension
     public function dcskills(Character $char, $mode)
     {
         $bd = new BuildTemplate($char->getEnvironment());
-        return $bd->getTraitsFromCharacter($char, $mode);
+        return $bd->getSkillsFromCharacter($char, $mode);
     }
 
     public function tpsum($items, $subkey = null)

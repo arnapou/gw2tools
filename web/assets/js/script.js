@@ -26,7 +26,7 @@ $(function () {
             'close': 'Fermer',
             'arcdps_title': '[Arcdps] Templates pour copier-coller en jeu',
             'arcdps_copy_traits': 'Copier les traits',
-            'arcdps_copy_skills': 'Copier les compétences',
+            'arcdps_copy_skills': 'Copier les skills',
             'arcdps_copy_all': 'Copier tout',
             'alert-ajax': "Loading of content failed for some reason, please retry or contact the administrator.",
             'action-delete-token': "Etes-vous sûr(e) de vouloir supprimer la clé d'application ?<br />Cette action ne peut pas être annulée.",
@@ -262,14 +262,14 @@ $(function () {
         var tplskills = $(this).data('tplskills');
         var tpltraits = $(this).data('tpltraits');
 
-        var getHtml = function (cls, btnText) {
+        var getHtml = function (cls, btnText, value) {
             var disabled = isClipboardCopySupported ? '' : 'disabled="disabled"';
-            var html = '<div class="row ' + cls + '">';
-            html += '<div class="col-xs-7">';
-            html += '<input type="text" class="form-control" readonly="readonly">';
+            var html = '<div class="row ' + cls + '" style="margin-bottom: .2em">';
+            html += '<div class="col-xs-8">';
+            html += '<input type="text" class="form-control" readonly="readonly" value="' + value + '">';
             html += '</div>';
-            html += '<div class="col-xs-5">';
-            html += '<button type="button" class="btn btn-default" ' + disabled + '>' + btnText + '</button>';
+            html += '<div class="col-xs-4">';
+            html += '<button type="button" class="btn btn-default" ' + disabled + ' style="display: block; width: 100%">' + btnText + '</button>';
             html += '</div>';
             return html + '</div>';
         };
@@ -283,31 +283,32 @@ $(function () {
                 copy_all: {
                     label: isClipboardCopySupported ? messages.arcdps_copy_all : messages.ok,
                     callback: function () {
-                        var $dialog = $(dialog);
-                        $dialog.find('.copy_all').text(
-                            $dialog.find('.tpltraits input').val() +
-                            $dialog.find('.tplskills input').val()
+                        copyToClipboard(
+                            $(dialog).find('.tpltraits input').val() +
+                            $(dialog).find('.tplskills input').val()
                         );
-                        copyToClipboard($dialog.find('.copy_all').get(0));
                     }
                 }
             },
             message:
-            getHtml('tpltraits', messages.arcdps_copy_traits) +
-            getHtml('tplskills', messages.arcdps_copy_skills) +
+            getHtml('tpltraits', messages.arcdps_copy_traits, tpltraits) +
+            getHtml('tplskills', messages.arcdps_copy_skills, tplskills) +
             '<div class="copy_all" style="display: none"></div>',
             onEscape: true,
             className: 'deltaconnected-dialog'
         }).on('shown.bs.modal', function (e) {
-            var $dialog = $(dialog);
-            $dialog.find('.tpltraits input').val(tpltraits ? tpltraits : '');
-            $dialog.find('.tplskills input').val(tplskills ? tplskills : '');
-            if(isClipboardCopySupported){
-                $dialog.find('.tpltraits .btn, .tplskills .btn').click(function(){
-                    $dialog.find('.copy_all').text(
-                        $(this).parents('.row').find('input').val()
-                    );
-                    copyToClipboard($dialog.find('.copy_all').get(0));
+            if (isClipboardCopySupported) {
+                $(dialog).find('.tpltraits .btn, .tplskills .btn').click(function () {
+                    if($(this).parents('.row').hasClass('tpltraits')) {
+
+                        $(this).parents('.row').find('input').select();
+                        document.execCommand('copy');
+                    }else {
+
+                        copyToClipboard(
+                            $(this).parents('.row').find('input').val()
+                        );
+                    }
                 });
             }
         });
@@ -692,56 +693,47 @@ function formatNumber(n) {
 }
 
 /**
- * copy/paste from https://stackoverflow.com/questions/22581345/click-button-copy-to-clipboard-using-jquery
+ *
  */
-function copyToClipboard(elem) {
-    if (!isClipboardCopySupported || !elem) return;
-    // create hidden text element, if it doesn't already exist
-    var targetId = "_hiddenCopyText_";
-    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
-    var origSelectionStart, origSelectionEnd;
-    if (isInput) {
-        // can just use the original source element for the selection and copy
-        target = elem;
-        origSelectionStart = elem.selectionStart;
-        origSelectionEnd = elem.selectionEnd;
-    } else {
-        // must use a temporary form element for the selection and copy
-        target = document.getElementById(targetId);
-        if (!target) {
-            var target = document.createElement("textarea");
-            target.style.position = "absolute";
-            target.style.left = "-9999px";
-            target.style.top = "0";
-            target.id = targetId;
-            document.body.appendChild(target);
-        }
-        target.textContent = elem.textContent;
+function copyToClipboard($element) {
+    if (!isClipboardCopySupported) return;
+
+    var targetId = "hiddenClipboardCopyTextarea";
+    var $target = $('#' + targetId);
+    var text = '';
+
+    if ($target.length === 0) {
+        $target = $('<textarea style="position: absolute; left: -999px; top: 0" id="' + targetId + '"></textarea>');
     }
-    // select the content
-    var currentFocus = document.activeElement;
-    target.focus();
-    target.setSelectionRange(0, target.value.length);
+
+    if (typeof $element === 'string') {
+        text = $element;
+    } else if ($element.is('input') || $element.is('textarea')) {
+        text = $element.val();
+    } else {
+        text = $element.text();
+    }
+
+    var $modalBody = $('.bootbox .modal-body');
+    if($modalBody.length) {
+        $modalBody.append($target);
+    }
+
+    $target.val(text);
+    $target.focus();
+    $target.select();
 
     // copy the selection
     var succeed;
     try {
-        succeed = document.execCommand("copy");
+        succeed = document.execCommand('copy');
     } catch (e) {
         bootbox.alert('Oops, something went wrong and I was unable to copy to clipboard. Use your own Ctrl+C instead :(');
         succeed = false;
     }
-    // restore original focus
-    if (currentFocus && typeof currentFocus.focus === "function") {
-        currentFocus.focus();
-    }
 
-    if (isInput) {
-        // restore prior selection
-        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
-    } else {
-        // clear temporary content
-        target.textContent = "";
-    }
+    $target.val('');
+    $target.appendTo('body');
+
     return succeed;
 }

@@ -194,20 +194,20 @@ class ToolsController extends AbstractController
         ]);
     }
 
-    /**
-     *
-     * @Route("/{_locale}/tools/arcdps_traits/", requirements={"_locale" = "de|en|es|fr"})
-     * @return Response
-     */
-    public function arcdpsTraitsAction()
-    {
-        $professions = $this->getAllItems('professions', Profession::class, null, [], null, ['data.name' => 1]);
-
-        return $this->renderTool('arcdps_traits', [
-            'professions' => $professions,
-            'client'      => $this->getGwEnvironment()->getClientVersion2(),
-        ]);
-    }
+//    /**
+//     *
+//     * @Route("/{_locale}/tools/arcdps_traits/", requirements={"_locale" = "de|en|es|fr"})
+//     * @return Response
+//     */
+//    public function arcdpsTraitsAction()
+//    {
+//        $professions = $this->getAllItems('professions', Profession::class, null, [], null, ['data.name' => 1]);
+//
+//        return $this->renderTool('arcdps_traits', [
+//            'professions' => $professions,
+//            'client'      => $this->getGwEnvironment()->getClientVersion2(),
+//        ]);
+//    }
 
     /**
      *
