@@ -1,3 +1,8 @@
+## 2.2.6 (2017-09-27)
+
+  - bugfix in item stat name
+  - added automatic copy to clipboard for arcdps skill template
+
 ## 2.2.5 (2017-09-17)
 
   - added new equipments page mode
