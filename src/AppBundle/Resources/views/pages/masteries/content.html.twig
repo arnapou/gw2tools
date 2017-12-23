@@ -4,7 +4,7 @@
     {% set totals = account.getMasteryRegionTotals() %}
     
     <div class="regions">
-        {% for region in ['Tyria', 'Maguuma'] %}
+        {% for region in ['Tyria', 'Maguuma', 'Desert'] %}
             <div class="region">
                 <div class="region-name">
                     <i class="ic-ui-masteries {{ region|lower}}"></i> {{ ('region.'~region)|trans }}
