@@ -20,6 +20,9 @@ use Gw2tool\Account;
 class RaidMember
 {
 
+    const MEMBER    = '';
+    const ALLY      = 'ally';
+    const OFFICER   = 'officer';
     const CHECK_DELAY = 900;
 
     /**
@@ -32,7 +35,7 @@ class RaidMember
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50)
+     * @ORM\Column(name="name", type="string", length=100)
      */
     private $name = '';
 
@@ -47,23 +50,16 @@ class RaidMember
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="string", length=50)
+     * @ORM\Column(name="text", type="string", length=200)
      */
     private $text = '';
 
     /**
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(name="is_officer", type="boolean")
+     * @ORM\Column(name="status", type="string", length=10)
      */
-    private $isOfficer = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     */
-    private $isActive = true;
+    private $status = self::MEMBER;
 
     /**
      * @var int
@@ -191,31 +187,31 @@ class RaidMember
      */
     public function isOfficer()
     {
-        return $this->isOfficer;
-    }
-
-    /**
-     * @param bool $bool
-     */
-    public function setIsOfficer($bool)
-    {
-        $this->isOfficer = $bool;
+        return $this->status === self::OFFICER;
     }
 
     /**
      * @return bool
      */
-    public function isActive()
+    public function isAlly()
     {
-        return $this->isActive;
+        return $this->status === self::ALLY;
     }
 
     /**
-     * @param bool $bool
+     * @return string
      */
-    public function setIsActive($bool)
+    public function getStatus()
     {
-        $this->isActive = $bool;
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
     /**
@@ -239,7 +235,7 @@ class RaidMember
      */
     public function canModifyRoster()
     {
-        return $this->isOfficer || $this->isCreator();
+        return $this->isOfficer() || $this->isCreator();
     }
 
     /**
@@ -247,7 +243,7 @@ class RaidMember
      */
     public function canAddMemberRoster()
     {
-        return $this->isOfficer || $this->isCreator();
+        return $this->isOfficer() || $this->isCreator();
     }
 
     /**

@@ -420,10 +420,12 @@ raidplanner.history.status_change.text: "date <span class=\"text-info\">%date%</
 raidplanner.history.status_change: "Status change"
 raidplanner.history: "History"
 raidplanner.leave_roster: "Leave the roster"
+raidplanner.member: 'Member'
 raidplanner.members: 'Members'
 raidplanner.modify: "Modify"
 raidplanner.name: 'Roster name'
 raidplanner.no_rosters: "You don't belong to any roster."
+raidplanner.ally: "Ally"
 raidplanner.officer: "Officer"
 raidplanner.officers: "Officers"
 raidplanner.registered: 'Registered'

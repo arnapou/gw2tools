@@ -100,49 +100,49 @@ class RaidWeek
     /**
      * @var string
      *
-     * @ORM\Column(name="text1", type="string", length=50)
+     * @ORM\Column(name="text1", type="string", length=100)
      */
     private $text1 = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="text2", type="string", length=50)
+     * @ORM\Column(name="text2", type="string", length=100)
      */
     private $text2 = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="text3", type="string", length=50)
+     * @ORM\Column(name="text3", type="string", length=100)
      */
     private $text3 = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="text4", type="string", length=50)
+     * @ORM\Column(name="text4", type="string", length=100)
      */
     private $text4 = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="text5", type="string", length=50)
+     * @ORM\Column(name="text5", type="string", length=100)
      */
     private $text5 = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="text6", type="string", length=50)
+     * @ORM\Column(name="text6", type="string", length=100)
      */
     private $text6 = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="text7", type="string", length=50)
+     * @ORM\Column(name="text7", type="string", length=100)
      */
     private $text7 = '';
 

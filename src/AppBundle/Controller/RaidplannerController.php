@@ -165,19 +165,21 @@ class RaidplannerController extends PageController
 
                     if ($member->isCreator()) {
 
-                        //officers
-                        $officers = $request->get('officers');
-                        $officers = is_array($officers) ? $officers : [];
+                        // statuses
+                        $statuses = $request->get('statuses');
+                        $statuses = is_array($statuses) ? $statuses : [];
                         foreach ($context['members'] as $member) {
-                            $isOfficer = isset($officers[$member->getId()]) && $officers[$member->getId()];
-                            if ($member->isOfficer() != $isOfficer) {
-                                $member->setIsOfficer($isOfficer);
+                            $status = isset($statuses[$member->getId()]) ? $statuses[$member->getId()] : '';
+                            if ($member->getStatus() != $status) {
+                                $member->setStatus($status);
                                 $manager->persist($member);
-                                if ($isOfficer) {
-                                    $this->history(RaidHistory::OFFICER_PROMOTE, $roster, $member);
-                                } else {
-                                    $this->history(RaidHistory::OFFICER_RETROGRADE, $roster, $member);
-                                }
+                                // TODO better status history management
+//                                $isOfficer = $status === RaidMember::OFFICER;
+//                                if ($isOfficer) {
+//                                    $this->history(RaidHistory::OFFICER_PROMOTE, $roster, $member);
+//                                } else {
+//                                    $this->history(RaidHistory::OFFICER_RETROGRADE, $roster, $member);
+//                                }
                             }
                         }
 
