@@ -15,6 +15,7 @@ use Arnapou\GW2Api\Core\Curl;
 use Gw2tool\FileVault;
 use Gw2tool\ResponseFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProxyController extends AbstractController
@@ -76,10 +77,11 @@ class ProxyController extends AbstractController
             $url       = 'https://render.guildwars2.com/file/' . $signature . '/' . $file . '.' . $format;
             $retention = $this->getParameter('proxy.file.retention');
             $vault     = new FileVault($this->getDataPath() . '/proxy/file');
-            return $this->getVaultResponseFile($vault, $url, $retention);
+            $response = $this->getVaultResponseFile($vault, $url, $retention);
         } catch (\Exception $e) {
-
+            $response = null;
         }
+        return $response ?: new RedirectResponse($url);
     }
 
     /**
