@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Gw2tool;
 
 use AppBundle\Entity\Token;
@@ -78,7 +79,8 @@ class Menu implements \IteratorAggregate
             return $this->items;
         }
         $items = [];
-        foreach ($this->items as /* @var $item MenuItem */ $item) {
+        foreach ($this->items as $item) {
+            /* @var $item MenuItem */
             if ($item->getRight() == '' || $token->hasRight($item->getRight())) {
                 $items[] = $item;
             }
