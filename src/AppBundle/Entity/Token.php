@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Token
 {
-
     /**
      * @var string
      *
@@ -46,7 +45,7 @@ class Token
     private $lastaccess;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="valid", type="boolean")
      */
@@ -152,7 +151,7 @@ class Token
     /**
      * Set lastaccess
      *
-     * @param integer $lastaccess
+     * @param int $lastaccess
      *
      * @return Token
      */
@@ -186,7 +185,7 @@ class Token
     /**
      * Set valid
      *
-     * @param boolean $bool
+     * @param bool $bool
      *
      * @return Token
      */
@@ -199,7 +198,7 @@ class Token
     /**
      * Get valid
      *
-     * @return boolean
+     * @return bool
      */
     public function isValid()
     {
@@ -250,7 +249,7 @@ class Token
     /**
      *
      * @param string $right
-     * @return boolean
+     * @return bool
      */
     public function hasRight($right)
     {

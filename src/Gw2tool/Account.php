@@ -9,7 +9,6 @@
  */
 namespace Gw2tool;
 
-use AppBundle\Entity\Token;
 use Arnapou\GW2Api\Model\Achievement;
 use Arnapou\GW2Api\Model\AchievementCategory;
 use Arnapou\GW2Api\Model\AchievementGroup;
@@ -27,14 +26,12 @@ use MongoDB\Collection as MongoCollection;
 
 class Account extends \Arnapou\GW2Api\Model\Account
 {
-
     const STATISTIC_RETENTION_SECONDS = 14400; // 4 hours
 
     /**
      *
-     * @var type 
+     * @var type
      */
-
     private $characterEquipments = [];
 
     public function getCharacterNames()
@@ -50,7 +47,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getAchievementsCalculation()
@@ -91,7 +88,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @param MongoCollection $collection
      */
     public function removeStatistics(MongoCollection $collection, $quiet = true)
@@ -106,7 +103,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @param MongoCollection $collection
      */
     public function calculateStatistics(MongoCollection $collection, $quiet = true)
@@ -146,7 +143,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @param Character $char
      * @return array
      */
@@ -184,7 +181,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getSkinItems($skin_ids)
@@ -211,7 +208,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @param Dyes $dyes
      * @return array
      */
@@ -243,12 +240,11 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getTitlesAchievementCategories()
     {
-
         $env   = $this->getEnvironment();
         $lang  = $env->getLang();
         $cache = $env->getCache();
@@ -302,12 +298,11 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDyeItems()
     {
-
         $env     = $this->getEnvironment();
         $storage = $env->getStorage();
         $lang    = $env->getLang();
@@ -333,7 +328,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @param Minis $minis
      * @return array
      */
@@ -364,7 +359,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return int
      */
     public function getCharactersCount()
@@ -373,7 +368,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return int
      */
     public function getCharactersLevel80Count()
@@ -388,7 +383,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getStatsWallet()
@@ -404,7 +399,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getStatsPvp()
@@ -426,7 +421,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getStatsUnlocks()
@@ -443,7 +438,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getTotalDeaths()
@@ -456,7 +451,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getTotalAge()
@@ -469,7 +464,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     protected function getItemsRarityCount($rarity)
@@ -509,7 +504,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getAscendedCount()
@@ -518,7 +513,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getLegendariesCount()
@@ -527,7 +522,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getGenderCount()
@@ -543,7 +538,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getRaceCount()
@@ -562,7 +557,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getProfessionCount()
@@ -585,14 +580,14 @@ class Account extends \Arnapou\GW2Api\Model\Account
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getCurrencies()
     {
         $client     = $this->getEnvironment()->getClientVersion2();
         $currencies = $client->apiCurrencies($client->apiCurrencies());
-        usort($currencies, function($a, $b) {
+        usort($currencies, function ($a, $b) {
             if ($a['order'] == $b['order']) {
                 return 0;
             }

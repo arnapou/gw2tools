@@ -19,7 +19,6 @@ use Gw2tool\Account;
  */
 class RaidMember
 {
-
     const MEMBER    = '';
     const ALLY      = 'ally';
     const OFFICER   = 'officer';
@@ -272,7 +271,6 @@ class RaidMember
         $lastCheck = isset($data['last_check']) ? $data['last_check'] : 0;
         if (time() - $lastCheck > self::CHECK_DELAY) {
             try {
-
                 $data['characters'] = [];
                 if ($account->hasPermission(Account::PERMISSION_CHARACTERS)) {
                     foreach ($account->getCharacters() as $character) {
@@ -329,7 +327,6 @@ class RaidMember
                                         }
                                     }
                                 }
-
                             }
                             usort($blocks, function ($a, $b) {
                                 return $a['type'] <=> $b['type']
@@ -347,10 +344,7 @@ class RaidMember
                             ?: $a['name'] <=> $b['name'];
                     });
                 }
-
-
             } catch (\Exception $e) {
-
             }
             $data['last_check'] = time();
             $this->setData($data);
@@ -412,5 +406,4 @@ class RaidMember
                 || $week->getMember()->getId() === $this->getId()
             );
     }
-
 }

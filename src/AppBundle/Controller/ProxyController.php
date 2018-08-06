@@ -20,12 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProxyController extends AbstractController
 {
-
     /**
      *
      * @param FileVault $vault
      * @param string    $url
-     * @param integer   $retention
+     * @param int   $retention
      * @return ResponseFile
      */
     protected function getVaultResponseFile(FileVault $vault, $url, $retention)
@@ -50,7 +49,7 @@ class ProxyController extends AbstractController
 
     /**
      *
-     * @return integer
+     * @return int
      */
     public function getGuildEmblemSize()
     {
@@ -109,7 +108,6 @@ class ProxyController extends AbstractController
                 return $response;
             }
         } catch (\Exception $e) {
-
         }
     }
 
@@ -137,7 +135,6 @@ class ProxyController extends AbstractController
                 return $response;
             }
         } catch (\Exception $e) {
-
         }
     }
 

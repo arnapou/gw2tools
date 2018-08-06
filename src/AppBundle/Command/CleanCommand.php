@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanCommand extends AbstractCommand
 {
-
     protected function configure()
     {
         $this
@@ -27,7 +26,6 @@ class CleanCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $limitTime = time() - 365 * 86400; // 1 year
 
         /*
@@ -44,6 +42,6 @@ class CleanCommand extends AbstractCommand
          */
         $conn  = $this->getDoctrine()->getConnection();
         $table = $this->getDoctrine()->getManager()->getClassMetadata(Token::class)->getTableName();
-        $conn->exec("DELETE FROM `" . $table . "` WHERE `lastaccess` < " . $limitTime);
+        $conn->exec('DELETE FROM `' . $table . '` WHERE `lastaccess` < ' . $limitTime);
     }
 }

@@ -289,7 +289,7 @@ function imagestat($stat)
     if (empty($stat)) {
         return '/assets/images/nothing.svg';
     }
-    $stat = strtolower(str_replace("'s", "", $stat));
+    $stat = strtolower(str_replace("'s", '', $stat));
     $stat = str_replace(' and ', '+', $stat);
     $stat = preg_replace('![^a-z]+!', '-', $stat);
     $file = __DIR__ . '/../../web/assets/images/stats/' . $stat . '.svg';
@@ -302,8 +302,8 @@ function imagestat($stat)
 /**
  *
  * @param array   $array
- * @param integer $n
- * @param boolean $fill
+ * @param int $n
+ * @param bool $fill
  * @return array
  */
 function chunk($array, $n, $fill = true)
@@ -334,7 +334,7 @@ function chunk($array, $n, $fill = true)
 
 /**
  *
- * @param integer $value
+ * @param int $value
  * @return string
  */
 function amount($value)

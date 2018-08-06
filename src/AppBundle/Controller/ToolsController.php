@@ -22,12 +22,10 @@ use Arnapou\GW2Api\Model\Profession;
 use Arnapou\GW2Api\Model\Title;
 use Arnapou\GW2Api\Storage\MongoStorage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ToolsController extends AbstractController
 {
-
     /**
      *
      * @Route("/{_locale}/tools/api_itemstats/", requirements={"_locale" = "de|en|es|fr"})

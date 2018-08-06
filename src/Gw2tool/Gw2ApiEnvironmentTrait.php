@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait Gw2ApiEnvironmentTrait
 {
-
     /**
      *
      * @var array
@@ -73,11 +72,11 @@ trait Gw2ApiEnvironmentTrait
         // log gw2 api requests if debug
         if ($container->getParameter('gw2apiclient.debug.request')) {
             $logger = $container->get('monolog.logger.' . $logchannel); /* @var $logger \Monolog\Logger */
-            $env->getEventListener()->bind(Environment::onRequest, function($event) use ($logger, $tokenCode) {
+            $env->getEventListener()->bind(Environment::onRequest, function ($event) use ($logger, $tokenCode) {
                 $message = str_pad($event['code'], 5)
-                    . "  " . str_pad(sprintf("%.3f", $event['time']), 7)
-                    . "  " . str_pad($tokenCode, 12)
-                    . "  " . $event['url'];
+                    . '  ' . str_pad(sprintf('%.3f', $event['time']), 7)
+                    . '  ' . str_pad($tokenCode, 12)
+                    . '  ' . $event['url'];
                 $logger->info($message);
             });
         }

@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand
 {
-
     use \Gw2tool\Gw2ApiEnvironmentTrait;
 
     /**
@@ -57,7 +56,6 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
                     'time'   => 86400,
                 ];
             } catch (\Exception $ex) {
-
             }
         }
         $array[] = [
@@ -77,7 +75,6 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
      */
     private function getAbstractStoredObjectClasses(Environment $env)
     {
-
         $folder = __DIR__ . '/../../../vendor/arnapou/gw2apiclient/src/Arnapou/GW2Api/Model';
         if (!is_dir($folder)) {
             throw new \Exception('Unable to find the GW2Api model folder.');
@@ -95,7 +92,7 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
                 continue;
             }
             try {
-                $class          = "Arnapou\\GW2Api\\Model\\" . $basename;
+                $class          = 'Arnapou\\GW2Api\\Model\\' . $basename;
                 $parents        = class_parents($class);
                 $isStorageClass = false;
                 foreach ($parents as $parent) {
@@ -108,7 +105,6 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
                     $classes[] = $class;
                 }
             } catch (\Exception $ex) {
-
             }
         }
         return $classes;

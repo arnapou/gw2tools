@@ -11,5 +11,4 @@ namespace Gw2tool\Exception;
 
 class AccessNotAllowedException extends \Exception
 {
-    
 }

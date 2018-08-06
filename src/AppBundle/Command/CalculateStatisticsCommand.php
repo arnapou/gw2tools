@@ -20,7 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CalculateStatisticsCommand extends AbstractCommand
 {
-
     protected function configure()
     {
         $this
@@ -30,7 +29,6 @@ class CalculateStatisticsCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $env   = $this->getGwEnvironment('en');
         $cache = $env->getCache();
         /* @var $cache MongoCache */
@@ -67,7 +65,6 @@ class CalculateStatisticsCommand extends AbstractCommand
                 empty($data) || // no data previously calculated > do it !
                 $data['last_update'] <= time() - Account::STATISTIC_RETENTION_SECONDS // old, we should calculate again
             ) {
-
                 $disableAccount = false;
                 try {
                     $env->setAccessToken((string)$token);
@@ -75,14 +72,14 @@ class CalculateStatisticsCommand extends AbstractCommand
                     $account->getName(); // used only to trigger InvalidTokenException if something is wrong
 
                     if ($account->calculateStatistics($collection)) {
-                        $output->writeln("statistics calclulated for <info>" . $accountName . "</info>");
+                        $output->writeln('statistics calclulated for <info>' . $accountName . '</info>');
                     }
                 } catch (InvalidTokenException $ex) {
                     $disableAccount = true;
                 } catch (MissingPermissionException $ex) {
                     $disableAccount = true;
                 } catch (\Exception $ex) {
-                    $output->writeln("<error>" . $ex->getMessage() . "</error>");
+                    $output->writeln('<error>' . $ex->getMessage() . '</error>');
 
                     if ($data) {
                         $data['last_update'] = time();
@@ -95,7 +92,7 @@ class CalculateStatisticsCommand extends AbstractCommand
                     $manager->flush();
                     $collection->deleteMany(['name' => $accountName]);
 
-                    $output->writeln("disabled statistics for <info>" . $accountName . "</info>");
+                    $output->writeln('disabled statistics for <info>' . $accountName . '</info>');
                 }
             }
         }

@@ -11,10 +11,9 @@ namespace Gw2tool;
 
 class MenuItem
 {
-
     /**
      *
-     * @var boolean
+     * @var bool
      */
     protected $separator = false;
 
@@ -55,7 +54,7 @@ class MenuItem
     protected $permission;
 
     /**
-     * 
+     *
      * @param string $label
      */
     public function __construct($page, $label, $uri = null, $icon = null)
@@ -68,140 +67,140 @@ class MenuItem
     }
 
     /**
-     * 
-     * @return boolean
+     *
+     * @return bool
      */
-    function getSeparator()
+    public function getSeparator()
     {
         return $this->separator;
     }
 
     /**
-     * 
+     *
      * @return string
      */
-    function getIcon()
+    public function getIcon()
     {
         return $this->icon;
     }
 
     /**
-     * 
+     *
      * @return string
      */
-    function getPage()
+    public function getPage()
     {
         return $this->page;
     }
 
     /**
-     * 
+     *
      * @return string
      */
-    function getUri()
+    public function getUri()
     {
         return $this->uri;
     }
 
     /**
-     * 
+     *
      * @return string
      */
-    function getLabel()
+    public function getLabel()
     {
         return $this->label;
     }
 
     /**
-     * 
+     *
      * @return string
      */
-    function getRight()
+    public function getRight()
     {
         return $this->right;
     }
 
     /**
-     * 
+     *
      * @return string
      */
-    function getPermission()
+    public function getPermission()
     {
         return $this->permission;
     }
 
     /**
-     * 
-     * @param boolean $separator
+     *
+     * @param bool $separator
      * @return MenuItem
      */
-    function setSeparator($separator)
+    public function setSeparator($separator)
     {
         $this->separator = $separator;
         return $this;
     }
 
     /**
-     * 
+     *
      * @param string $page
      * @return MenuItem
      */
-    function setPage($page)
+    public function setPage($page)
     {
         $this->page = $page;
         return $this;
     }
 
     /**
-     * 
+     *
      * @param string $uri
      * @return MenuItem
      */
-    function setUri($uri)
+    public function setUri($uri)
     {
         $this->uri = $uri;
         return $this;
     }
 
     /**
-     * 
+     *
      * @param string $icon
      * @return MenuItem
      */
-    function setIcon($icon)
+    public function setIcon($icon)
     {
         $this->icon = $icon;
         return $this;
     }
 
     /**
-     * 
+     *
      * @param string $label
      * @return MenuItem
      */
-    function setLabel($label)
+    public function setLabel($label)
     {
         $this->label = $label;
         return $this;
     }
 
     /**
-     * 
+     *
      * @param string $right
      * @return MenuItem
      */
-    function setRight($right)
+    public function setRight($right)
     {
         $this->right = $right;
         return $this;
     }
 
     /**
-     * 
+     *
      * @param string $permission
      * @return MenuItem
      */
-    function setPermission($permission)
+    public function setPermission($permission)
     {
         $this->permission = $permission;
         return $this;

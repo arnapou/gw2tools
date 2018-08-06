@@ -14,12 +14,10 @@ use Arnapou\GW2Api\Cache\MongoCache;
 use Arnapou\GW2Api\Environment;
 use Arnapou\GW2Api\Model\Character;
 use Arnapou\GW2Api\Model\Item;
-use Gw2tool\Account;
 use MongoDB\Collection as MongoCollection;
 
 class Statistics
 {
-
     /**
      *
      * @var string
@@ -50,9 +48,7 @@ class Statistics
      */
     protected $env;
 
-    /**
-     * 
-     */
+    
     public function __construct(AbstractController $controller, Account $account)
     {
         $this->controller = $controller;
@@ -75,18 +71,18 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return int
      */
     public function getCount()
     {
-        return $this->cacheGet('statistics/count', function() {
-                return $this->collection->count();
-            });
+        return $this->cacheGet('statistics/count', function () {
+            return $this->collection->count();
+        });
     }
 
     /**
-     * 
+     *
      * @return MongoCollection
      */
     public function getCollection()
@@ -95,7 +91,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return Account
      */
     public function getAccount()
@@ -104,7 +100,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @param string $key
      * @return string
      */
@@ -114,10 +110,10 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @param string $key
      * @param callable $callable
-     * @param integer $expiration
+     * @param int $expiration
      * @return array
      */
     protected function cacheGet($key, $callable, $expiration = 900)
@@ -134,7 +130,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @param string $array
      * @param mixed $uservalue
      * @return array
@@ -164,7 +160,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @param string $key
      * @param string $subkey
      * @param mixed $uservalue
@@ -173,43 +169,43 @@ class Statistics
     protected function calcPercentiles($key, $subkey, $uservalue = null)
     {
         $cacheKey = 'percentile/' . $key . '/' . $subkey . '/' . ($this->account ? $this->account->getName() : '');
-        return $this->cacheGet($cacheKey, function() use ($key, $subkey, $uservalue) {
-                $array = $this->cacheGet('rawpercentile/' . $key . '/' . $subkey, function() use ($key, $subkey) {
-                    foreach ($this->collection->find() as $row) {
-                        if (isset($row[$key], $row[$key][$subkey])) {
-                            $array[] = $row[$key][$subkey];
-                        }
+        return $this->cacheGet($cacheKey, function () use ($key, $subkey, $uservalue) {
+            $array = $this->cacheGet('rawpercentile/' . $key . '/' . $subkey, function () use ($key, $subkey) {
+                foreach ($this->collection->find() as $row) {
+                    if (isset($row[$key], $row[$key][$subkey])) {
+                        $array[] = $row[$key][$subkey];
                     }
-                    rsort($array);
-                    return $array;
-                }, 4 * 3600);
-                return $this->doCalcPercentiles($array, $uservalue);
-            }, 900);
+                }
+                rsort($array);
+                return $array;
+            }, 4 * 3600);
+            return $this->doCalcPercentiles($array, $uservalue);
+        }, 900);
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetUsers()
     {
         $cacheKey = 'percentile/users_connections/' . ($this->account ? $this->account->getName() : '');
-        return $this->cacheGet($cacheKey, function() {
-                $array = $this->cacheGet('rawpercentile/users_connections', function() {
-                    $conn  = $this->controller->getConnection();
-                    $sql   = "SELECT " . time() . " - `lastaccess` as n FROM `tokens` ORDER BY n";
-                    $array = [];
-                    foreach ($conn->query($sql) as $row) {
-                        $array[] = floor($row['n'] / 86400);
-                    }
-                    return $array;
-                }, 3600);
-                return $this->doCalcPercentiles($array);
-            }, 900);
+        return $this->cacheGet($cacheKey, function () {
+            $array = $this->cacheGet('rawpercentile/users_connections', function () {
+                $conn  = $this->controller->getConnection();
+                $sql   = 'SELECT ' . time() . ' - `lastaccess` as n FROM `tokens` ORDER BY n';
+                $array = [];
+                foreach ($conn->query($sql) as $row) {
+                    $array[] = floor($row['n'] / 86400);
+                }
+                return $array;
+            }, 3600);
+            return $this->doCalcPercentiles($array);
+        }, 900);
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetItemsLegendary()
@@ -219,7 +215,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetItemsAscended()
@@ -229,7 +225,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetItemsAscendedWeapons()
@@ -239,7 +235,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetItemsAscendedArmors()
@@ -249,7 +245,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetItemsAscendedBacks()
@@ -259,7 +255,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetItemsAscendedTrinkets()
@@ -269,7 +265,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetPvpWinrates()
@@ -279,7 +275,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetPvpWins()
@@ -289,7 +285,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetPvpTotals()
@@ -299,7 +295,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetPvpRanks()
@@ -309,7 +305,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetCharacters()
@@ -319,7 +315,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetDeaths()
@@ -329,7 +325,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetAge()
@@ -339,7 +335,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetLevel80()
@@ -349,7 +345,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetDyes()
@@ -359,7 +355,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetSkins()
@@ -369,7 +365,7 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetWallet($id)
@@ -379,13 +375,13 @@ class Statistics
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetProfessions()
     {
-        return $this->cacheGet('pie/professions/', function() {
-                $data = [
+        return $this->cacheGet('pie/professions/', function () {
+            $data = [
                     Character::PROFESSION_ELEMENTALIST => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_ELEMENTALIST)],
                     Character::PROFESSION_ENGINEER     => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_ENGINEER)],
                     Character::PROFESSION_GUARDIAN     => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_GUARDIAN)],
@@ -396,61 +392,61 @@ class Statistics
                     Character::PROFESSION_THIEF        => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_THIEF)],
                     Character::PROFESSION_WARRIOR      => ['y' => 0, 'name' => $this->trans('profession.' . Character::PROFESSION_WARRIOR)],
                 ];
-                foreach ($this->collection->find() as $row) {
-                    if (isset($row['profession'])) {
-                        foreach ($row['profession'] as $key => $value) {
-                            $data[$key]['y'] += $value;
-                        }
+            foreach ($this->collection->find() as $row) {
+                if (isset($row['profession'])) {
+                    foreach ($row['profession'] as $key => $value) {
+                        $data[$key]['y'] += $value;
                     }
                 }
-                return array_values($data);
-            }, 4 * 3600);
+            }
+            return array_values($data);
+        }, 4 * 3600);
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetGenders()
     {
-        return $this->cacheGet('pie/genders/', function() {
-                $data = [
+        return $this->cacheGet('pie/genders/', function () {
+            $data = [
                     Character::GENDER_MALE   => ['y' => 0, 'name' => $this->trans('gender.' . Character::GENDER_MALE)],
                     Character::GENDER_FEMALE => ['y' => 0, 'name' => $this->trans('gender.' . Character::GENDER_FEMALE)],
                 ];
-                foreach ($this->collection->find() as $row) {
-                    if (isset($row['gender'])) {
-                        foreach ($row['gender'] as $key => $value) {
-                            $data[$key]['y'] += $value;
-                        }
+            foreach ($this->collection->find() as $row) {
+                if (isset($row['gender'])) {
+                    foreach ($row['gender'] as $key => $value) {
+                        $data[$key]['y'] += $value;
                     }
                 }
-                return array_values($data);
-            }, 4 * 3600);
+            }
+            return array_values($data);
+        }, 4 * 3600);
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getDatasetRaces()
     {
-        return $this->cacheGet('pie/races/', function() {
-                $data = [
+        return $this->cacheGet('pie/races/', function () {
+            $data = [
                     Character::RACE_ASURA   => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_ASURA)],
                     Character::RACE_CHARR   => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_CHARR)],
                     Character::RACE_HUMAN   => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_HUMAN)],
                     Character::RACE_NORN    => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_NORN)],
                     Character::RACE_SYLVARI => ['y' => 0, 'name' => $this->trans('race.' . Character::RACE_SYLVARI)],
                 ];
-                foreach ($this->collection->find() as $row) {
-                    if (isset($row['race'])) {
-                        foreach ($row['race'] as $key => $value) {
-                            $data[$key]['y'] += $value;
-                        }
+            foreach ($this->collection->find() as $row) {
+                if (isset($row['race'])) {
+                    foreach ($row['race'] as $key => $value) {
+                        $data[$key]['y'] += $value;
                     }
                 }
-                return array_values($data);
-            }, 4 * 3600);
+            }
+            return array_values($data);
+        }, 4 * 3600);
     }
 }

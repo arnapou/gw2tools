@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class ResponseFile extends \Symfony\Component\HttpFoundation\Response
 {
-
     /**
      *
      * @var SplFileInfo
@@ -105,23 +104,23 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response
     /**
      *
      * @param string $filename
-     * @return Response 
+     * @return Response
      */
     public function setContentDispositionInline($filename)
     {
-        $filename = str_replace(array('\\', '/', ':'), '_', $filename);
+        $filename = str_replace(['\\', '/', ':'], '_', $filename);
         $this->headers->set('Content-Disposition', 'inline; filename="' . $filename . '"');
         return $this;
     }
 
     /**
-     * 
+     *
      * @param string $filename
-     * @return Response 
+     * @return Response
      */
     public function setContentDispositionAttachment($filename)
     {
-        $filename = str_replace(array('\\', '/', ':'), '_', $filename);
+        $filename = str_replace(['\\', '/', ':'], '_', $filename);
         $this->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
         return $this;
     }
@@ -129,7 +128,7 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response
     /**
      *
      * @param string $filename
-     * @return Response 
+     * @return Response
      */
     public function forceDownload($filename)
     {
@@ -140,7 +139,7 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response
 
     /**
      *
-     * @return Response 
+     * @return Response
      */
     public function setNoCache()
     {
@@ -157,7 +156,7 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response
     /**
      *
      * @param int $length
-     * @return Response 
+     * @return Response
      */
     public function setContentLength($length)
     {
@@ -166,7 +165,7 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response
     }
 
     /**
-     * 
+     *
      * @param string $type
      * @return Response
      */
@@ -177,7 +176,7 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getStatusText()

@@ -9,14 +9,13 @@
  */
 namespace Gw2tool;
 
-use \FilesystemIterator;
-use \RecursiveIteratorIterator;
-use \RecursiveDirectoryIterator;
-use \Exception;
+use FilesystemIterator;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Exception;
 
 class FileVault implements \Iterator
 {
-
     /**
      *
      * @var string
@@ -36,7 +35,7 @@ class FileVault implements \Iterator
     protected $currentFilename;
 
     /**
-     * 
+     *
      * @param string $path
      */
     public function __construct($path)
@@ -45,13 +44,13 @@ class FileVault implements \Iterator
             Fn::createDirectoryIfNotExists($path);
         }
         if (!is_writable($path)) {
-            throw new Exception("The FileVault path is not writable.");
+            throw new Exception('The FileVault path is not writable.');
         }
         $this->repository = rtrim(rtrim($path, '\\'), '/');
     }
 
     /**
-     * 
+     *
      * @param string $filename
      * @return string
      */
@@ -63,9 +62,9 @@ class FileVault implements \Iterator
     }
 
     /**
-     * 
+     *
      * @param string $filename
-     * @return boolean
+     * @return bool
      */
     public function exists($filename)
     {
@@ -74,7 +73,7 @@ class FileVault implements \Iterator
     }
 
     /**
-     * 
+     *
      * @param string $filename
      * @return string
      */
@@ -86,7 +85,7 @@ class FileVault implements \Iterator
     }
 
     /**
-     * 
+     *
      * @param type $filename
      * @throws Exception
      */
@@ -98,7 +97,7 @@ class FileVault implements \Iterator
     }
 
     /**
-     * 
+     *
      * @param string $filename
      * @return ResponseFile
      */
@@ -110,7 +109,7 @@ class FileVault implements \Iterator
     }
 
     /**
-     * 
+     *
      * @param string $filename
      */
     public function remove($filename)
@@ -125,7 +124,7 @@ class FileVault implements \Iterator
     }
 
     /**
-     * 
+     *
      * @param string $filename
      * @param string $content
      * @throws Exception
@@ -141,13 +140,13 @@ class FileVault implements \Iterator
             stream_copy_to_stream($content, $fh);
             fclose($fh);
         } else {
-            throw new Exception("The content is an invalid type (not resource or string).");
+            throw new Exception('The content is an invalid type (not resource or string).');
         }
         file_put_contents($path . '.original-filename', $filename, LOCK_EX);
     }
 
     /**
-     * 
+     *
      * @param string $from
      * @param string $to
      */
@@ -162,7 +161,7 @@ class FileVault implements \Iterator
     }
 
     /**
-     * 
+     *
      * @param string $from
      * @param string $to
      */

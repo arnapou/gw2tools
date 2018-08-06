@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
@@ -8,7 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class MongoService
 {
-
     /**
      *
      * @var Container
@@ -17,19 +17,19 @@ class MongoService
 
     /**
      *
-     * @var EntityManager 
+     * @var EntityManager
      */
     private $em;
 
     /**
      *
-     * @var MongoClient 
+     * @var MongoClient
      */
     private $client = null;
 
     /**
      *
-     * @var MongoDatabase 
+     * @var MongoDatabase
      */
     private $cacheDatabase = null;
 
@@ -40,7 +40,7 @@ class MongoService
     }
 
     /**
-     * 
+     *
      * @return MongoClient
      */
     public function getClient()
@@ -50,14 +50,14 @@ class MongoService
                 'typeMap' => [
                     'root'     => 'array',
                     'document' => 'array',
-                ]
+                ],
             ]);
         }
         return $this->client;
     }
 
     /**
-     * 
+     *
      * @return MongoDatabase
      */
     public function getCacheDatabase()

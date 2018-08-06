@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TooltipController extends AbstractController
 {
-
     /**
      *
      * @Route("/{_locale}/tooltip/trait-{id}.html", requirements={"_locale" = "de|en|es|fr", "id" = "[0-9]+"})

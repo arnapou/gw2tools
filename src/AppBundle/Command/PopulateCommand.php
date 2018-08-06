@@ -10,7 +10,6 @@
 
 namespace AppBundle\Command;
 
-use Arnapou\GW2Api\Model\AbstractStoredObject;
 use Arnapou\GW2Api\Storage\MongoStorage;
 use MongoDB\BSON\UTCDateTime as MongoDate;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +19,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class PopulateCommand extends AbstractCommand
 {
-
     protected function configure()
     {
         $this

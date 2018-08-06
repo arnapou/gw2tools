@@ -13,23 +13,21 @@ use Gw2tool\Exception\JsonException;
 
 class Fn
 {
-
     /**
-     * 
+     *
      * @param string $path
      */
     private function __construct()
     {
-        
     }
 
     /**
-     * 
+     *
      * @param string $chars
-     * @param integer $length
+     * @param int $length
      * @return string
      */
-    static function randomString($chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890', $length = 10)
+    public static function randomString($chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890', $length = 10)
     {
         $nbchars = strlen($chars);
         $string  = '';
@@ -40,11 +38,11 @@ class Fn
     }
 
     /**
-     * 
+     *
      * @param string $json
      * @return array
      */
-    static function jsonDecode($json)
+    public static function jsonDecode($json)
     {
         $json = trim($json);
         if ($json === '' || ($json[0] !== '{' && $json[0] !== '[' && $json[0] !== '"')) {
@@ -53,7 +51,7 @@ class Fn
         $array         = \json_decode($json, true);
         $jsonLastError = json_last_error();
         if ($jsonLastError !== JSON_ERROR_NONE) {
-            $errors = array(
+            $errors = [
                 JSON_ERROR_DEPTH            => 'Max depth reached.',
                 JSON_ERROR_STATE_MISMATCH   => 'Mismatch modes or underflow.',
                 JSON_ERROR_CTRL_CHAR        => 'Character control error.',
@@ -62,7 +60,7 @@ class Fn
                 JSON_ERROR_RECURSION        => 'Recursion detected.',
                 JSON_ERROR_INF_OR_NAN       => 'Inf or NaN',
                 JSON_ERROR_UNSUPPORTED_TYPE => 'Unsupported type.',
-            );
+            ];
             throw new JsonException('Json error : ' . (isset($errors[$jsonLastError]) ? $errors[$jsonLastError] : 'Unknown error'));
         }
         return $array;
@@ -73,7 +71,7 @@ class Fn
      * @param string $filename
      * @return string
      */
-    static function fileMimeType($filename)
+    public static function fileMimeType($filename)
     {
         static $types;
         static $mode;
@@ -105,7 +103,7 @@ class Fn
 
         // default mecanism
         if (!isset($types)) {
-            $types = array(
+            $types = [
                 // application
                 'ai'        => 'application/postscript',
                 'asd'       => 'application/astound',
@@ -350,7 +348,7 @@ class Fn
                 '3qd3d'     => 'x-world/x-3dmf',
                 'qd3'       => 'x-world/x-3dmf',
                 'wrl'       => 'x-world/x-vrml',
-            );
+            ];
         }
 
         $ext = strtolower(self::fileExtension($filename));
@@ -365,7 +363,7 @@ class Fn
      * @param string $path
      * @param octal $mode
      */
-    static function createDirectoryIfNotExists($path, $mode = 0777)
+    public static function createDirectoryIfNotExists($path, $mode = 0777)
     {
         if (!file_exists($path)) {
             @mkdir($path, $mode, true);
@@ -377,7 +375,7 @@ class Fn
      * @param string $filename
      * @return string
      */
-    static function fileExtension($filename)
+    public static function fileExtension($filename)
     {
         $ext = '';
         $i   = strrpos($filename, '.');

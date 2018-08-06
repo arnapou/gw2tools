@@ -21,7 +21,6 @@ use AppBundle\Entity\RaidWeek;
  */
 class RaidWeekRepository extends \Doctrine\ORM\EntityRepository
 {
-
     /**
      * @param RaidMember $member
      * @param            $date

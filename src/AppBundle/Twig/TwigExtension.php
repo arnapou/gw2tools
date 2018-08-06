@@ -7,7 +7,6 @@ use Arnapou\GW2Api\Model\Character;
 
 class TwigExtension extends \Twig_Extension
 {
-
     public function getName()
     {
         return 'gw2tool';

@@ -8,7 +8,6 @@ use Symfony\Component\Filesystem\LockHandler;
 
 class RequestListener
 {
-
     /**
      *
      * @var LockHandler

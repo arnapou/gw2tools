@@ -29,7 +29,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PageController extends AbstractController
 {
-
     /**
      *
      * @var Token
@@ -62,7 +61,7 @@ class PageController extends AbstractController
 
     /**
      *
-     * @var boolean
+     * @var bool
      */
     protected $isOwner = false;
 
@@ -312,7 +311,7 @@ class PageController extends AbstractController
                 throw new AccessNotAllowedException();
             }
             if (!$this->checkToken($this->token, $exception)) {
-                if($exception instanceof ApiUnavailableException){
+                if ($exception instanceof ApiUnavailableException) {
                     throw $exception;
                 }
                 throw $this->createNotFoundException('The account is invalid or the official GW2 API is down. Try again later.');
@@ -325,10 +324,10 @@ class PageController extends AbstractController
                 throw $this->createNotFoundException('Unknown page.');
             }
             $statistics = new Statistics($this, $this->account);
-            // 
+            //
             // 2017-03-09 disabled dynamic calculation
             // cron will now compute stats
-            // 
+            //
 //            if (!$this->token->hasRight('other.disable_statistics') && $this->token->isValid()) {
 //                $statistics->calculateStatistics();
 //            }
@@ -403,7 +402,7 @@ class PageController extends AbstractController
      *
      * @param string $right
      * @param string $permission
-     * @return boolean
+     * @return bool
      */
     public function isAllowed($right, $permission = null)
     {
@@ -421,7 +420,7 @@ class PageController extends AbstractController
     /**
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     public function isAllowedCharacter($name)
     {
@@ -441,7 +440,7 @@ class PageController extends AbstractController
     /**
      *
      * @param string $guildid
-     * @return boolean
+     * @return bool
      */
     public function isAllowedGuildStash($guildid)
     {

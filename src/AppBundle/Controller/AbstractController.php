@@ -24,7 +24,6 @@ use Symfony\Component\Translation\Translator;
 
 abstract class AbstractController extends Controller
 {
-
     use Gw2ApiEnvironmentTrait;
 
     /**
@@ -45,7 +44,7 @@ abstract class AbstractController extends Controller
     /**
      *
      * @param Token $token
-     * @return boolean
+     * @return bool
      */
     protected function isTokenOwner(Token $token)
     {

@@ -23,7 +23,6 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class RaidRosterRepository extends \Doctrine\ORM\EntityRepository
 {
-
     /**
      * @param Token $token
      * @return array
@@ -50,5 +49,4 @@ class RaidRosterRepository extends \Doctrine\ORM\EntityRepository
 
         return $results;
     }
-
 }

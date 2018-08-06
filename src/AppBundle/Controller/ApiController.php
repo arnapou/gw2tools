@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApiController extends AbstractController
 {
-
     /**
      *
      * @Route("/api/save-rights")
@@ -246,7 +245,7 @@ class ApiController extends AbstractController
                 $entityToken = $repo->newToken($paramToken);
             }
             if (!$this->checkToken($entityToken, $exception)) {
-                if($exception instanceof ApiUnavailableException){
+                if ($exception instanceof ApiUnavailableException) {
                     throw $exception;
                 }
                 throw new InvalidTokenException('Invalid token.');

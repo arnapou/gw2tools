@@ -13,7 +13,6 @@ use AppBundle\Entity\Token;
 
 class Menu implements \IteratorAggregate
 {
-
     /**
      *
      * @var string
@@ -27,7 +26,7 @@ class Menu implements \IteratorAggregate
     protected $items = [];
 
     /**
-     * 
+     *
      * @param string $label
      */
     public function __construct($label)
@@ -36,7 +35,7 @@ class Menu implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param string $page
      * @param string $label
      * @param string $uri
@@ -51,7 +50,7 @@ class Menu implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @return MenuItem
      */
     public function addSeparator()
@@ -60,7 +59,7 @@ class Menu implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getLabel()
@@ -69,7 +68,7 @@ class Menu implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param Token $token
      * @return array
      */
@@ -93,7 +92,7 @@ class Menu implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param array $items
      * @return array
      */
@@ -128,11 +127,11 @@ class Menu implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param string $label
      * @return Menu
      */
-    static public function create($label)
+    public static function create($label)
     {
         return new self($label);
     }

@@ -21,7 +21,6 @@ use Gw2tool\Fn;
  */
 class TokenRepository extends \Doctrine\ORM\EntityRepository
 {
-
     /**
      *
      * @param string $token

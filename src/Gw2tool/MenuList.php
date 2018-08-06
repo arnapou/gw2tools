@@ -16,16 +16,13 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class MenuList implements \IteratorAggregate
 {
-
     /**
      *
      * @var array
      */
     protected $menus;
 
-    /**
-     * 
-     */
+    
     public function __construct(TranslatorInterface $tr, $characters, $guilds)
     {
 
@@ -83,7 +80,7 @@ class MenuList implements \IteratorAggregate
         $menu->addItem('home', $tr->trans('menu.unlocks.home'), null, 'ic-ui-home')->setPermission(Account::PERMISSION_PROGRESSION);
         $this->addMenu($menu);
 
-        // OTHERS 
+        // OTHERS
         $menu = Menu::create($tr->trans('menu.others'));
         $menu->addItem('tp_buys', $tr->trans('menu.tp.tp_buys'), null, 'ic-ui-blc-balance')->setPermission(Account::PERMISSION_TRADINGPOST);
         $menu->addItem('tp_sells', $tr->trans('menu.tp.tp_sells'), null, 'ic-ui-blc-balance')->setPermission(Account::PERMISSION_TRADINGPOST);
@@ -102,9 +99,9 @@ class MenuList implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param string $page
-     * @return boolean
+     * @return bool
      */
     public function pageExists($page)
     {
@@ -112,7 +109,7 @@ class MenuList implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param string $page
      * @return string
      */
@@ -129,7 +126,7 @@ class MenuList implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getRights()
@@ -146,7 +143,7 @@ class MenuList implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param Menu $menu
      * @return MenuList
      */
@@ -157,11 +154,11 @@ class MenuList implements \IteratorAggregate
     }
 
     /**
-     * 
+     *
      * @param string $label
      * @return Menu
      */
-    static public function create($label)
+    public static function create($label)
     {
         return new self($label);
     }

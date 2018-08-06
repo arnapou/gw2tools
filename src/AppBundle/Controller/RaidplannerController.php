@@ -14,7 +14,6 @@ use AppBundle\Entity\RaidHistory;
 use AppBundle\Entity\RaidMember;
 use AppBundle\Entity\RaidRoster;
 use AppBundle\Entity\RaidWeek;
-use AppBundle\Repository\RaidHistoryRepository;
 use Arnapou\GW2Api\Model\Item;
 use Gw2tool\Exception\AccessNotAllowedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -48,7 +47,6 @@ class RaidplannerController extends PageController
             } else {
                 return $this->redirectToRoute('raidplanner_list');
             }
-
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
@@ -198,7 +196,6 @@ class RaidplannerController extends PageController
                                 }
                             }
                         }
-
                     }
 
                     $manager->persist($roster);
@@ -258,7 +255,6 @@ class RaidplannerController extends PageController
 
                 $json['member_id'] = $newMember->getId();
             }
-
         } catch (\Exception $ex) {
             $this->jsonError($json, $ex);
         }
@@ -288,7 +284,6 @@ class RaidplannerController extends PageController
             $memberToEdit = $repo->find($memberid);
 
             if ($memberToEdit && $member->canEditMember($memberToEdit)) {
-
                 $memberToEdit->setText((string)$request->get('text'));
 
                 $manager = $this->getDoctrine()->getManager();
@@ -297,7 +292,6 @@ class RaidplannerController extends PageController
 
                 $json['member_id'] = $memberToEdit->getId();
             }
-
         } catch (\Exception $ex) {
             $this->jsonError($json, $ex);
         }
@@ -328,7 +322,6 @@ class RaidplannerController extends PageController
             $week       = $repoWeek->find($weekid);
 
             if ($member->canModifyDay($week)) {
-
                 $week->setText($index, (string)$request->get('text'));
 
                 $manager = $this->getDoctrine()->getManager();
@@ -337,7 +330,6 @@ class RaidplannerController extends PageController
 
                 $json['week_id'] = $week->getId();
             }
-
         } catch (\Exception $ex) {
             $this->jsonError($json, $ex);
         }
@@ -371,7 +363,6 @@ class RaidplannerController extends PageController
             $manager->flush();
 
             return $this->redirectToRoute('raidplanner_list');
-
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
@@ -405,7 +396,6 @@ class RaidplannerController extends PageController
             $manager->flush();
 
             return $this->redirectToRoute('raidplanner_list');
-
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
@@ -433,16 +423,13 @@ class RaidplannerController extends PageController
             $memberToRemove = $repo->find($memberid);
 
             if (!empty($memberToRemove) && $member->canRemoveMember($memberToRemove)) {
-
                 $manager = $this->getDoctrine()->getManager();
                 $manager->remove($memberToRemove);
                 $this->history(RaidHistory::MEMBER_REMOVE, $roster, $member, ['removed' => $memberToRemove->getName()]);
                 $manager->flush();
-
             }
 
             return $this->redirectToRosterDetail($roster);
-
         } catch (AccessNotAllowedException $ex) {
             return $this->render('error-access-not-allowed.html.twig');
         }
@@ -627,7 +614,6 @@ class RaidplannerController extends PageController
 
             $json['sum']    = $this->calcSums($weeks)[$index];
             $json['status'] = $status;
-
         } catch (\Exception $ex) {
             $this->jsonError($json, $ex);
         }
@@ -731,7 +717,7 @@ class RaidplannerController extends PageController
      */
     private function getTimeDays($date)
     {
-        $time  = \strtotime($date . " 12:00:00");
+        $time  = \strtotime($date . ' 12:00:00');
         $times = [];
         for ($i = 1; $i <= 7; $i++) {
             $times[$i] = $time;
@@ -753,5 +739,4 @@ class RaidplannerController extends PageController
         }
         return null;
     }
-
 }

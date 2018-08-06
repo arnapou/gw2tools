@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RaidHistory
 {
-
     const ROSTER_CREATION    = 'roster_creation';
     const OFFICER_PROMOTE    = 'officer_promote';
     const OFFICER_RETROGRADE = 'officer_retrograde';
@@ -177,5 +176,4 @@ class RaidHistory
     {
         $this->memberName = $name;
     }
-
 }

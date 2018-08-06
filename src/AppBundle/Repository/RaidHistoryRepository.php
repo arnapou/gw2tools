@@ -21,7 +21,6 @@ use AppBundle\Entity\RaidRoster;
  */
 class RaidHistoryRepository extends \Doctrine\ORM\EntityRepository
 {
-
     const PAGE_SIZE   = 50;
     const NB_ELEMENTS = 10;
 
@@ -103,5 +102,4 @@ class RaidHistoryRepository extends \Doctrine\ORM\EntityRepository
             'right'   => $right,
         ];
     }
-
 }

@@ -127,5 +127,4 @@ class RaidRoster
     {
         $this->dateCreation = $time;
     }
-
 }
