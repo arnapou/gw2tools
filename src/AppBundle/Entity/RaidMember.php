@@ -138,7 +138,7 @@ class RaidMember
      */
     public function setData($data)
     {
-        $this->data = !empty($data) && is_array($data) ? serialize($data) : '';
+        $this->data = !empty($data) && \is_array($data) ? serialize($data) : '';
     }
 
     /**
@@ -268,7 +268,7 @@ class RaidMember
     public function checkData(Account $account)
     {
         $data      = $this->getData();
-        $lastCheck = isset($data['last_check']) ? $data['last_check'] : 0;
+        $lastCheck = $data['last_check'] ?? 0;
         if (time() - $lastCheck > self::CHECK_DELAY) {
             try {
                 $data['characters'] = [];

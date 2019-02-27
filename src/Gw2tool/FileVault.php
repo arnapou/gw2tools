@@ -9,10 +9,10 @@
  */
 namespace Gw2tool;
 
-use FilesystemIterator;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
 use Exception;
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class FileVault implements \Iterator
 {
@@ -132,10 +132,10 @@ class FileVault implements \Iterator
     public function set($filename, $content)
     {
         $path = $this->getVaultFilename($filename);
-        Fn::createDirectoryIfNotExists(dirname($path));
-        if (is_string($content)) {
+        Fn::createDirectoryIfNotExists(\dirname($path));
+        if (\is_string($content)) {
             file_put_contents($path, $content, LOCK_EX);
-        } elseif (is_resource($content)) {
+        } elseif (\is_resource($content)) {
             $fh = fopen($path, 'wb');
             stream_copy_to_stream($content, $fh);
             fclose($fh);

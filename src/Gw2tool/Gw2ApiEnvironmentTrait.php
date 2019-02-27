@@ -63,7 +63,7 @@ trait Gw2ApiEnvironmentTrait
 
         // cache rules
         $cacheRules = $container->getParameter('gw2apiclient.cache.rules');
-        if (is_array($cacheRules)) {
+        if (\is_array($cacheRules)) {
             foreach ($cacheRules as $apiEndpoint => $seconds) {
                 $env->addCacheRetentionRule($apiEndpoint, $seconds);
             }

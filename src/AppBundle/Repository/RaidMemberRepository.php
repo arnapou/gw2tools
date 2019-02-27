@@ -43,7 +43,7 @@ class RaidMemberRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
 
-        if (count($items) !== 1) {
+        if (\count($items) !== 1) {
             throw new AccessNotAllowedException();
         }
 

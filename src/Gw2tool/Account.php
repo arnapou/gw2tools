@@ -152,7 +152,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
         if (!isset($this->characterEquipments[$char->getName()])) {
             $equipment = [];
             foreach ($char->getEquipments() as $slot => /* @var $object Equipment */ $object) {
-                if (in_array($slot, [Character::SLOT_SICKLE, Character::SLOT_AXE, Character::SLOT_PICK])) {
+                if (\in_array($slot, [Character::SLOT_SICKLE, Character::SLOT_AXE, Character::SLOT_PICK])) {
                     continue;
                 }
                 $slot               = strtr($slot, ['1' => '', '2' => '']);
@@ -163,8 +163,8 @@ class Account extends \Arnapou\GW2Api\Model\Account
                     if (
                         empty($object) ||
                         $object->getId() == 0 ||
-                        !in_array($object->getRarity(), [Item::RARITY_LEGENDARY, Item::RARITY_ASCENDED, Item::RARITY_EXOTIC]) ||
-                        !in_array($object->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_BACK, Item::TYPE_TRINKET])
+                        !\in_array($object->getRarity(), [Item::RARITY_LEGENDARY, Item::RARITY_ASCENDED, Item::RARITY_EXOTIC]) ||
+                        !\in_array($object->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_BACK, Item::TYPE_TRINKET])
                     ) {
                         continue;
                     }
@@ -364,7 +364,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
      */
     public function getCharactersCount()
     {
-        return count($this->getCharacters());
+        return \count($this->getCharacters());
     }
 
     /**
@@ -389,7 +389,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
     public function getStatsWallet()
     {
         $ids  = $this->getEnvironment()->getClientVersion2()->apiCurrencies();
-        $data = array_combine($ids, array_fill(0, count($ids), null));
+        $data = array_combine($ids, array_fill(0, \count($ids), null));
         if ($this->hasPermission(self::PERMISSION_WALLET)) {
             foreach ($this->getWallet() as /* @var $currency Currency */ $currency) {
                 $data[$currency->getId()] = $currency->getQuantity();
@@ -480,7 +480,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
             foreach ($this->getCharacterEquipment($character) as $items) {
                 foreach ($items as /* @var $item Item */ $item) {
                     if ($item->getRarity() == $rarity) {
-                        if (in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
+                        if (\in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
                             $data[$item->getType()] ++;
                             $data['Total'] ++;
                         }
@@ -492,7 +492,7 @@ class Account extends \Arnapou\GW2Api\Model\Account
             foreach ($this->getBankVaults() as /* @var $vault BankVault */ $vault) {
                 foreach ($vault->getInventorySlots() as /* @var $item Item */ $item) {
                     if (!empty($item) && $item->getRarity() == $rarity) {
-                        if (in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
+                        if (\in_array($item->getType(), [Item::TYPE_ARMOR, Item::TYPE_WEAPON, Item::TYPE_TRINKET, Item::TYPE_BACK])) {
                             $data[$item->getType()] ++;
                             $data['Total'] ++;
                         }

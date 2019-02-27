@@ -40,7 +40,7 @@ class ToolsController extends AbstractController
             $allstats = $this->getAllItems('itemstats', null, $lang);
             foreach ($allstats as $stat) {
                 if (empty($stat['name']) || !isset($stat['attributes']) ||
-                    !is_array($stat['attributes']) || count($stat['attributes']) < 2
+                    !\is_array($stat['attributes']) || \count($stat['attributes']) < 2
                 ) {
                     continue;
                 }
@@ -70,7 +70,7 @@ class ToolsController extends AbstractController
                     $stats[$key] = [
                         $lang     => $stat['name'],
                         'attrs'   => $attrs,
-                        'nbattrs' => count($attrs),
+                        'nbattrs' => \count($attrs),
                         'key'     => $key,
                     ];
                 } else {
@@ -316,7 +316,7 @@ class ToolsController extends AbstractController
         if ($limit) {
             $options['limit'] = (int)$limit;
         }
-        if (!empty($sort) && is_array($sort)) {
+        if (!empty($sort) && \is_array($sort)) {
             $options['sort'] = $sort;
         }
 

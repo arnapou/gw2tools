@@ -76,7 +76,7 @@ class ResponseFile extends \Symfony\Component\HttpFoundation\Response
 
     public function send()
     {
-        if (function_exists('http_match_etag') && function_exists('http_match_modified')) {
+        if (\function_exists('http_match_etag') && \function_exists('http_match_modified')) {
             $lastModified = $this->getLastModified()->getTimestamp();
             if (http_match_etag($this->getEtag()) || http_match_modified($lastModified)) {
                 $this->setNotModified();

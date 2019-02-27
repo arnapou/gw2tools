@@ -12,10 +12,10 @@ namespace AppBundle\Command;
 
 use Arnapou\GW2Api\Storage\MongoStorage;
 use MongoDB\BSON\UTCDateTime as MongoDate;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class PopulateCommand extends AbstractCommand
 {
@@ -41,7 +41,7 @@ class PopulateCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $lang = $input->getArgument('lang');
-        if (!in_array($lang, $this->getLocales())) {
+        if (!\in_array($lang, $this->getLocales())) {
             throw new \Exception('Value not allowed for argument "lang"');
         }
         $argumentApiName = $input->getArgument('apiname');
@@ -69,7 +69,7 @@ class PopulateCommand extends AbstractCommand
                 }
                 $notFreshIds = array_diff($ids, $freshIds);
 
-                $n = count($notFreshIds);
+                $n = \count($notFreshIds);
                 $k = 0;
                 if ($n) {
                     $step = ceil($n / 150);
@@ -99,9 +99,9 @@ class PopulateCommand extends AbstractCommand
                     $bar->finish();
                 }
                 if ($k) {
-                    $output->writeln('    <info>' . $k . '/' . count($ids) . '</info> objects stored');
+                    $output->writeln('    <info>' . $k . '/' . \count($ids) . '</info> objects stored');
                 } else {
-                    $output->writeln('    ' . $k . '/' . count($ids) . ' objects stored');
+                    $output->writeln('    ' . $k . '/' . \count($ids) . ' objects stored');
                 }
                 $storage->clearCache();
             } catch (\Exception $ex) {

@@ -126,7 +126,7 @@ class TwigExtension extends \Twig_Extension
 
     public function columns($array, $n, $fill = true)
     {
-        return \Gw2tool\chunk($array, ceil(count($array) / $n), $fill);
+        return \Gw2tool\chunk($array, ceil(\count($array) / $n), $fill);
     }
 
     public function chunk($array, $n, $fill = true)

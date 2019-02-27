@@ -142,7 +142,7 @@ class RaidHistory
      */
     public function setData($data)
     {
-        $this->data = !empty($data) && is_array($data) ? serialize($data) : '';
+        $this->data = !empty($data) && \is_array($data) ? serialize($data) : '';
     }
 
     /**

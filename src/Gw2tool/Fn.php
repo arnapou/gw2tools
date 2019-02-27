@@ -29,7 +29,7 @@ class Fn
      */
     public static function randomString($chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890', $length = 10)
     {
-        $nbchars = strlen($chars);
+        $nbchars = \strlen($chars);
         $string  = '';
         while ($length--) {
             $string .= $chars[mt_rand(0, $nbchars - 1)];
@@ -61,7 +61,7 @@ class Fn
                 JSON_ERROR_INF_OR_NAN       => 'Inf or NaN',
                 JSON_ERROR_UNSUPPORTED_TYPE => 'Unsupported type.',
             ];
-            throw new JsonException('Json error : ' . (isset($errors[$jsonLastError]) ? $errors[$jsonLastError] : 'Unknown error'));
+            throw new JsonException('Json error : ' . ($errors[$jsonLastError] ?? 'Unknown error'));
         }
         return $array;
     }
@@ -79,9 +79,9 @@ class Fn
         // avoid multiple calls to function_exists
         // store the result in $mode static variable
         if (!isset($mode)) {
-            if (function_exists('mime_content_type') && file_exists($filename)) {
+            if (\function_exists('mime_content_type') && file_exists($filename)) {
                 $mode = 1;
-            } elseif (function_exists('finfo_file') && file_exists($filename)) {
+            } elseif (\function_exists('finfo_file') && file_exists($filename)) {
                 $mode = 2;
             } else {
                 $mode = 3;
@@ -352,7 +352,7 @@ class Fn
         }
 
         $ext = strtolower(self::fileExtension($filename));
-        if (array_key_exists($ext, $types)) {
+        if (\array_key_exists($ext, $types)) {
             return $types[$ext];
         }
         return 'multipart/mime';
@@ -380,7 +380,7 @@ class Fn
         $ext = '';
         $i   = strrpos($filename, '.');
         if ($i !== false) {
-            $ext = substr($filename, $i + 1, strlen($filename) - $i - 1);
+            $ext = substr($filename, $i + 1, \strlen($filename) - $i - 1);
         }
         return $ext;
     }

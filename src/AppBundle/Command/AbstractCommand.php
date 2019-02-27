@@ -81,7 +81,7 @@ abstract class AbstractCommand extends \Symfony\Bundle\FrameworkBundle\Command\C
         }
 
         $files = glob($folder . '/*.php');
-        if (!is_array($files)) {
+        if (!\is_array($files)) {
             $files = [];
         }
 

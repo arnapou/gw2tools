@@ -44,7 +44,7 @@ class MenuList implements \IteratorAggregate
         $menu->addItem('inventories', $tr->trans('menu.characters.inventories'), null, 'ic-ui-bag')->setPermission(Account::PERMISSION_INVENTORIES);
         $menu->addItem('attributes', $tr->trans('menu.characters.attributes'), null, 'ic-attribute-power');
         $menu->addItem('builds', $tr->trans('menu.characters.builds'), null, 'ic-ui-archetype')->setPermission(Account::PERMISSION_BUILDS);
-        if (!empty($characters) && is_array($characters)) {
+        if (!empty($characters) && \is_array($characters)) {
             $menu->addSeparator();
             foreach ($characters as $name => /* @var $character Character */ $character) {
                 $menu->addItem('character/' . $name, $name, 'character/' . $name, 'ic-profession-' . strtolower($character->getProfession()));
@@ -56,7 +56,7 @@ class MenuList implements \IteratorAggregate
         $menu = Menu::create($tr->trans('menu.vaults'));
         $menu->addItem('bank', $tr->trans('menu.vaults.bank'), null, 'ic-ui-bank')->setPermission(Account::PERMISSION_INVENTORIES);
         $menu->addItem('collectibles', $tr->trans('menu.vaults.collectibles'), null, 'ic-ui-collections')->setPermission(Account::PERMISSION_INVENTORIES);
-        if (!empty($guilds) && is_array($guilds)) {
+        if (!empty($guilds) && \is_array($guilds)) {
             $menu->addSeparator();
             foreach ($guilds as $id => /* @var $guild Guild */ $guild) {
                 $icon = $guild->hasEmblem() ? 'guild-icon-' . $id : 'guild-icon-nothing';
@@ -88,7 +88,7 @@ class MenuList implements \IteratorAggregate
         $menu->addItem('achievements_daily', $tr->trans('menu.achievements.daily'), null, 'ic-ui-arenanet');
         $menu->addItem('achievements', $tr->trans('menu.achievements'), null, 'ic-ui-arenanet');
         $menu->addItem('dungeons_raids', $tr->trans('menu.dungeons_raids'), null, 'ic-ui-dungeon')->setPermission(Account::PERMISSION_PROGRESSION);
-        if (!empty($guilds) && is_array($guilds)) {
+        if (!empty($guilds) && \is_array($guilds)) {
             $menu->addSeparator();
             foreach ($guilds as $id => /* @var $guild Guild */ $guild) {
                 $icon = $guild->hasEmblem() ? 'guild-icon-' . $id : 'guild-icon-nothing';

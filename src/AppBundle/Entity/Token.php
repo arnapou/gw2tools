@@ -226,7 +226,7 @@ class Token
      */
     public function getData()
     {
-        if (is_resource($this->data)) {
+        if (\is_resource($this->data)) {
             $data = stream_get_contents($this->data);
         } else {
             return [];
@@ -253,7 +253,7 @@ class Token
      */
     public function hasRight($right)
     {
-        return in_array($right, $this->getRights());
+        return \in_array($right, $this->getRights());
     }
 
     /**
@@ -264,7 +264,7 @@ class Token
     {
         if ($this->_rights === null) {
             $data          = $this->getData();
-            $this->_rights = isset($data['rights']) ? $data['rights'] : [];
+            $this->_rights = $data['rights'] ?? [];
         }
         return $this->_rights;
     }

@@ -35,7 +35,7 @@ class RaidWeekRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
 
-        if (count($items) === 0) {
+        if (\count($items) === 0) {
             $week = new RaidWeek();
             $week->setMember($member);
             $week->setDate($date);
@@ -80,7 +80,7 @@ class RaidWeekRepository extends \Doctrine\ORM\EntityRepository
                 $newWeeks[] = $week;
             }
         }
-        if (count($newWeeks)) {
+        if (\count($newWeeks)) {
             foreach ($newWeeks as $week) {
                 $this->_em->persist($week);
             }

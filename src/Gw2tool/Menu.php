@@ -103,7 +103,7 @@ class Menu implements \IteratorAggregate
         if (empty($items)) {
             return [];
         }
-        $n = count($items);
+        $n = \count($items);
 
         $offsetStart = 0;
         for ($i = 0; $i < $n; $i++) {
@@ -125,7 +125,7 @@ class Menu implements \IteratorAggregate
         if ($nbItems <= 0) {
             return [];
         }
-        return array_slice($items, $offsetStart, $nbItems);
+        return \array_slice($items, $offsetStart, $nbItems);
     }
 
     /**

@@ -60,7 +60,7 @@ class CalculateStatisticsCommand extends AbstractCommand
                 // ignore if the account was not connected for 1 week
                 continue;
             }
-            $data = isset($statistics[$accountName]) ? $statistics[$accountName] : null;
+            $data = $statistics[$accountName] ?? null;
             if (
                 empty($data) || // no data previously calculated > do it !
                 $data['last_update'] <= time() - Account::STATISTIC_RETENTION_SECONDS // old, we should calculate again

@@ -189,7 +189,7 @@ function gwlink_inventoryslot(InventorySlot $item)
         $url .= '-bt' . $item->getBoundTo();
     }
     $stats = $item->getData('stats');
-    if (!empty($stats) && is_array($stats)) {
+    if (!empty($stats) && \is_array($stats)) {
         if (isset($stats['id'])) {
             $url .= '-st' . $item->getItemStat()->getId();
         }
@@ -257,7 +257,7 @@ function datediff($date)
  */
 function image($url)
 {
-    if (is_string($url) && !empty($url)) {
+    if (\is_string($url) && !empty($url)) {
         if ($url == 'empty') {
             return '/assets/images/empty.png';
         }
@@ -342,7 +342,7 @@ function amount($value)
     if ($value === null || $value === '') {
         return '';
     }
-    if (is_array($value)) {
+    if (\is_array($value)) {
         if (isset($value['buy_total']) && $value['buy_total'] != $value['buy']) {
             return amount($value['buy_total']) . ' - ' . amount($value['sell_total']) . ' / ' . amount($value['buy']) . ' - ' . amount($value['sell']);
         } elseif (isset($value['buy'])) {

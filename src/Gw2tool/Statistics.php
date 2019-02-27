@@ -138,9 +138,9 @@ class Statistics
     protected function doCalcPercentiles($array, $uservalue = null)
     {
         $userindex = null;
-        $n         = ceil(count($array) / 100);
+        $n         = ceil(\count($array) / 100);
         $chunks    = array_chunk($array, $n);
-        $nbchunks  = count($chunks);
+        $nbchunks  = \count($chunks);
         $data      = array_fill(0, 100, null);
         foreach ($chunks as $i => $chunk) {
             $value = $chunk[0];

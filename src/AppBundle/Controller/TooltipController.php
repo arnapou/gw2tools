@@ -10,12 +10,12 @@
 
 namespace AppBundle\Controller;
 
-use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\InventorySlot;
+use Arnapou\GW2Api\Model\Item;
 use Arnapou\GW2Api\Model\Pet;
 use Arnapou\GW2Api\Model\PvpAmulet;
-use Arnapou\GW2Api\Model\Skin;
 use Arnapou\GW2Api\Model\Skill;
+use Arnapou\GW2Api\Model\Skin;
 use Arnapou\GW2Api\Model\Specialization;
 use Arnapou\GW2Api\Model\SpecializationTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

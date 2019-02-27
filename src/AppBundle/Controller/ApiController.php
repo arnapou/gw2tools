@@ -12,11 +12,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Token;
 use Arnapou\DeltaConnected\BuildTemplate;
+use function Arnapou\GW2Api\chatlink_item;
 use Arnapou\GW2Api\Exception\ApiUnavailableException;
 use Arnapou\GW2Api\Exception\InvalidTokenException;
 use Arnapou\GW2Api\Exception\MissingPermissionException;
 use Arnapou\GW2Api\Storage\MongoStorage;
-use function Arnapou\GW2Api\chatlink_item;
 use function Gw2tool\image;
 use Gw2tool\MenuList;
 use Gw2tool\Statistics;
@@ -71,13 +71,13 @@ class ApiController extends AbstractController
             $token   = $this->getAuthentifiedTokenMandatory($request, true);
             $manager = $this->getDoctrine()->getManager();
             $rights  = $request->get('rights');
-            if (!is_array($rights) || empty($rights)) {
+            if (!\is_array($rights) || empty($rights)) {
                 $rights = [];
             }
             $allowedRights   = $this->getAllowedRights($token);
             $sanitizedRights = [];
             foreach ($rights as $right) {
-                if (in_array($right, $allowedRights)) {
+                if (\in_array($right, $allowedRights)) {
                     $sanitizedRights[] = $right;
                 }
             }
@@ -452,7 +452,7 @@ class ApiController extends AbstractController
     {
         $lang    = $request->get('lang', $this->getTranslator()->getLocale());
         $locales = $this->getParameter('locales');
-        if (!in_array($lang, $locales)) {
+        if (!\in_array($lang, $locales)) {
             throw new \Exception(
                 "Language '$lang' not supported'. Allowed languages are " . implode(', ', $locales)
             );
@@ -470,7 +470,7 @@ class ApiController extends AbstractController
         if ($error instanceof \Exception) {
             $error = ['message' => $error->getMessage()];
         }
-        if (!is_array($error)) {
+        if (!\is_array($error)) {
             $error = ['message' => $error];
         }
         return new JsonResponse(['error' => $error], $status);
@@ -519,7 +519,7 @@ class ApiController extends AbstractController
         }
 
         $tokenCookies = $this->getCookieTokens();
-        if (count($tokenCookies) == 1) {
+        if (\count($tokenCookies) == 1) {
             $token = $this->getTokenRepository()->findOneByToken((string)$tokenCookies[0]);
             if (empty($token)) {
                 throw new \Exception('Unknown token stored as cookie.');

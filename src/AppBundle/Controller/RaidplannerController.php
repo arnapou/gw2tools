@@ -42,7 +42,7 @@ class RaidplannerController extends PageController
             $context = $this->getContext($_code, null, true);
             $rosters = $repo->getRosters($this->token);
 
-            if (count($rosters) == 1) {
+            if (\count($rosters) == 1) {
                 return $this->redirectToRosterDetail($rosters[0]['roster']);
             } else {
                 return $this->redirectToRoute('raidplanner_list');
@@ -165,7 +165,7 @@ class RaidplannerController extends PageController
 
                         // statuses
                         $statuses = $request->get('statuses');
-                        $statuses = is_array($statuses) ? $statuses : [];
+                        $statuses = \is_array($statuses) ? $statuses : [];
                         foreach ($context['members'] as $member) {
                             $status = isset($statuses[$member->getId()]) ? $statuses[$member->getId()] : '';
                             if ($member->getStatus() != $status) {
@@ -183,7 +183,7 @@ class RaidplannerController extends PageController
 
                         // names
                         $names = $request->get('names');
-                        if (is_array($names)) {
+                        if (\is_array($names)) {
                             foreach ($context['members'] as $member) {
                                 $name = $names[$member->getId()] ?? null;
                                 if ($name && $member->getName() != $name) {

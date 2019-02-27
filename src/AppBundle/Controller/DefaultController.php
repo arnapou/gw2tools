@@ -58,7 +58,7 @@ class DefaultController extends AbstractController
         $locale = null;
         foreach ($languages as $language) {
             $lang = strtolower(substr($language, 0, 2));
-            if ($lang && in_array($lang, $locales)) {
+            if ($lang && \in_array($lang, $locales)) {
                 $locale = $lang;
                 break;
             }

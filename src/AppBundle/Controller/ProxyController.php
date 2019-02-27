@@ -96,7 +96,7 @@ class ProxyController extends AbstractController
         try {
             $client = $this->getGwEnvironment()->getClientVersion1();
             $infos  = $client->apiGuildDetails($id);
-            if (is_array($infos) && isset($infos['guild_name'])) {
+            if (\is_array($infos) && isset($infos['guild_name'])) {
                 $slug      = strtolower(str_replace(' ', '-', $infos['guild_name']));
                 $url       = 'http://guilds.gw2w2w.com/guilds/' . rawurlencode($slug) . '/' . $this->getGuildEmblemSize() . '.svg';
                 $retention = $this->getParameter('proxy.guild.emblem.retention');
@@ -124,7 +124,7 @@ class ProxyController extends AbstractController
         try {
             $client = new ClientVersion1($this->getGwEnvironment());
             $infos  = $client->apiGuildDetails($id);
-            if (is_array($infos) && isset($infos['guild_name'])) {
+            if (\is_array($infos) && isset($infos['guild_name'])) {
                 $url       = 'http://data.gw2.fr/guild-emblem/name/' . rawurlencode($infos['guild_name']) . '/' . $this->getGuildEmblemSize() . '.png';
                 $retention = $this->getParameter('proxy.guild.emblem.retention');
                 $vault     = new FileVault($this->getDataPath() . '/proxy/guild');
