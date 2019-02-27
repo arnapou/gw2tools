@@ -1,5 +1,14 @@
 <?php
 
+$header = <<<HEADER
+This file is part of the Arnapou GW2Tools package.
+
+(c) Arnaud Buathier <arnaud@arnapou.net>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+HEADER;
+
 $finder = PhpCsFixer\Finder::create()
     ->in([
         __DIR__ . '/src',
@@ -36,5 +45,6 @@ return PhpCsFixer\Config::create()
         'native_function_invocation'            => ['include' => ['@compiler_optimized']],
         'ordered_imports'                       => ['sort_algorithm' => 'alpha'],
         'single_import_per_statement'           => true,
+        'header_comment'                        => ['header' => $header],
     ])
     ->setFinder($finder);
