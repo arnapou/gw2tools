@@ -16,6 +16,7 @@ I have not the time to make a tutorial to explain you how to host yourself this 
 You can contact me at arnaud@arnapou.net for clever questions (I won't learn you PHP, storage, caching system, and so on ...) if you don't understand something I wrote.
 
 
-#### Install 
+### Links 
 
 * ["Minimal" Install tutorial on Ubuntu 18.04](Install.md)
+* [changelog](CHANGELOG.md)
