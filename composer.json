@@ -1,6 +1,7 @@
 {
     "name": "arnapou/gw2tools",
     "description": "Arnapou GW2 tools",
+    "license": "MIT",
     "authors": [
         {
             "name": "Arnaud Buathier",
@@ -8,7 +9,6 @@
             "homepage": "http://arnapou.net"
         }
     ],
-    "license": "proprietary",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -72,6 +72,9 @@
         ]
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
