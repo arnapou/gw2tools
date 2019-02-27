@@ -18,5 +18,6 @@ You can contact me at arnaud@arnapou.net for clever questions (I won't learn you
 
 ### Links 
 
-* ["Minimal" Install tutorial on Ubuntu 18.04](Install.md)
-* [changelog](CHANGELOG.md)
+* ["Minimal" Install tutorial on Ubuntu 18.04](doc/install.md)
+* [Changelog](doc/changelog.md)
+* [Screenshots](doc/screenshots.md)
